@@ -1,6 +1,6 @@
 # Discogs
 
-2026-10-16 17:54 UTC · 107 registros · 89 peticiones nuevas · 1 desde caché
+2026-10-16 18:52 UTC · 107 registros · 89 peticiones nuevas · 1 desde caché
 
 - **Aplicados:** 87 (18 fijados, 69 vía MusicBrainz)
 - **Para revisar:** 0

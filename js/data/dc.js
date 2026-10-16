@@ -8,7 +8,7 @@
   H.data.dc = {
  "version": 1,
  "source": "Discogs",
- "generatedAt": "2026-10-16T17:54:38.311Z",
+ "generatedAt": "2026-10-16T18:52:50.891Z",
  "records": {
   "acid-tracks": {
    "kind": "release",
