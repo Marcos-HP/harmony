@@ -1,6 +1,6 @@
 # Discogs
 
-2026-10-16 17:38 UTC · 107 registros · 89 peticiones nuevas · 1 desde caché · 86 portadas descargadas
+2026-10-16 17:45 UTC · 107 registros · 89 peticiones nuevas · 1 desde caché
 
 - **Aplicados:** 87 (18 fijados, 69 vía MusicBrainz)
 - **Para revisar:** 0
@@ -81,10 +81,10 @@
 | HMY·087 Extres | [EX-3 – Extres](https://www.discogs.com/release/396033) · 1995 · Spain · fijada | Boy Records · BOY - 309 | Vinilo 12″ | 3 · 3/11 | catno: — → BOY - 309; format: — → Vinilo 12″ · Edición fijada a mano en el catálogo. |
 | HMY·088 Ex-P-Cial | [EX-3 – Ex-P-Cial](https://www.discogs.com/release/223053) · 1995 · Spain · fijada | Boy Records · BOY - 339 | Vinilo 12″ | 5 · 5/10 | year: 1996 → 1995 (**desacuerdo**: se marcará en la ficha); catno: — → BOY - 339; format: — → Vinilo 12″ · Edición fijada a mano en el catálogo. |
 | HMY·089 Impact | [Dr. Evil – The Impact](https://www.discogs.com/release/190827) · 2001 · Spain · fijada | PN Records · PNMX 69N | Vinilo 12″ | 2 · 2/3 | catno: — → PNMX 69N; format: — → Vinilo 12″ · Edición fijada a mano en el catálogo. |
-| HMY·090 Boom Dem | [Abel K'Kaña – Boom Dem](https://www.discogs.com/release/813356) · 2006-10-10 · Spain · fijada | C.H.R · CHR-599 | Vinilo 12″ | 3 · 3/3 | format: Vinilo → Vinilo 12″ (**desacuerdo**: se marcará en la ficha) · Edición fijada a mano en el catálogo. |
+| HMY·090 Boom Dem | [Abel K'Kaña – Boom Dem](https://www.discogs.com/release/813356) · 2006-10-10 · Spain · fijada | C.H.R · CHR-599 | Vinilo 12″ | 3 · 3/3 | sin cambios · Edición fijada a mano en el catálogo. |
 | HMY·091 Time Is Up… Later!!! | [DJ Ogalla – Leire](https://www.discogs.com/release/921903) · 2007 · Spain · fijada | C.H.R · CHR-608 | Vinilo 12″ | 3 · 3/3 | label: — → C.H.R; catno: — → CHR-608; format: — → Vinilo 12″ · Edición fijada a mano en el catálogo. |
-| HMY·092 The Drabel | [Abel K'Kaña – The Drabel](https://www.discogs.com/release/1361940) · 2008-06-02 · Spain · fijada | Newstyle Corps · NSC 003 | Vinilo 12″ | 3 · 3/3 | format: Vinilo → Vinilo 12″ (**desacuerdo**: se marcará en la ficha) · Edición fijada a mano en el catálogo. |
-| HMY·093 Oh Break | [Abel K'Kaña – Oh Break](https://www.discogs.com/release/1702902) · 2009-03-24 · Spain · fijada | Newstyle Corps · NSC 006 | Vinilo 12″ | 3 · 3/3 | format: Vinilo → Vinilo 12″ (**desacuerdo**: se marcará en la ficha) · Edición fijada a mano en el catálogo. |
+| HMY·092 The Drabel | [Abel K'Kaña – The Drabel](https://www.discogs.com/release/1361940) · 2008-06-02 · Spain · fijada | Newstyle Corps · NSC 003 | Vinilo 12″ | 3 · 3/3 | sin cambios · Edición fijada a mano en el catálogo. |
+| HMY·093 Oh Break | [Abel K'Kaña – Oh Break](https://www.discogs.com/release/1702902) · 2009-03-24 · Spain · fijada | Newstyle Corps · NSC 006 | Vinilo 12″ | 3 · 3/3 | sin cambios · Edición fijada a mano en el catálogo. |
 | HMY·094 Look at This | [Hermanos Kapiya – Evolution](https://www.discogs.com/release/2551761) · 2010-11-10 · Spain · fijada | Global Noize Recordings · GNR-019 | Vinilo 12″ | 4 · 3/3 | year: 2011 → 2010; label: — → Global Noize Recordings; catno: — → GNR-019; format: — → Vinilo 12″ · Edición fijada a mano en el catálogo. |
 | HMY·095 Pildo | [Pastis & Buenri – Pildo](https://www.discogs.com/release/575057) · 1996 · Spain · fijada | Max Music · NM1514MX | Vinilo 12″ | 3 · 3/7 | label: — → Max Music; catno: — → NM1514MX; format: — → Vinilo 12″ · Edición fijada a mano en el catálogo. |
 | HMY·096 Pont Aeri Vol. 3 | [Skudero & Xavi Metralla - Pont Aeri – Volumen 3](https://www.discogs.com/release/371478) · 1997 · Spain · fijada | Bit Music · 71-171 | Vinilo 12″ | 2 · 2/2 | label: — → Bit Music; catno: — → 71-171; format: — → Vinilo 12″ · Edición fijada a mano en el catálogo. |
@@ -94,9 +94,9 @@
 | HMY·102 Extres-A-2 | [EX-3 – Extres-A-2](https://www.discogs.com/release/170066) · 1996 · Spain · vía MusicBrainz | Boy Records · BOY 415 | Vinilo 12″ | 3 · 3/3 | catno: — → BOY 415; format: — → Vinilo 12″ · Misma edición que MusicBrainz (enlace del lanzamiento). |
 | HMY·103 Anonim | [Anonim Featuring Cyberia – Anonim](https://www.discogs.com/release/179811) · 1996 · Spain · fijada | DJ's At Work · NM5007MX | Vinilo 12″ | 2 · 2/6 | sin cambios · Edición fijada a mano en el catálogo. |
 | HMY·104 Anonim Vol. 2 | [Anonim – Anonim Vol. 2](https://www.discogs.com/release/372903) · 1997-11-17 · Spain · fijada | DJ's At Work · NM5023MX | Vinilo 12″ | 4 · 3/4 | sin cambios · Edición fijada a mano en el catálogo. |
-| HMY·105 Anonim Vol. 3 | [Anonim – Anonim Vol. 3](https://www.discogs.com/release/597824) · 1998 · Spain · fijada | DJ's At Work · NM5087MX | Vinilo 12″ | 5 · 1/4 | sin cambios · Edición fijada a mano en el catálogo. |
-| HMY·106 Anonim 4 | [Anonim – Anonim 4](https://www.discogs.com/release/365589) · 1999 · Spain · fijada | Bit Music · 71-429 | Vinilo 12″ | 4 · 3/7 | sin cambios · Edición fijada a mano en el catálogo. |
-| HMY·107 Anonim 5 | [Anonim Feat. Paola – Anonim 5](https://www.discogs.com/release/1030203) · 2007 · Spain · fijada | Chasis Records · 72769 | Vinilo 12″ | 4 · 2/5 | label: Bit Music → Chasis Records (**desacuerdo**: se marcará en la ficha) · Edición fijada a mano en el catálogo. |
+| HMY·105 Anonim Vol. 3 | [Anonim – Anonim Vol. 3](https://www.discogs.com/release/597824) · 1998 · Spain · fijada | DJ's At Work · NM5087MX | Vinilo 12″ | 5 · 3/4 | sin cambios · Edición fijada a mano en el catálogo. |
+| HMY·106 Anonim 4 | [Anonim – Anonim 4](https://www.discogs.com/release/365589) · 1999 · Spain · fijada | Bit Music · 71-429 | Vinilo 12″ | 4 · 4/7 | sin cambios · Edición fijada a mano en el catálogo. |
+| HMY·107 Anonim 5 | [Anonim Feat. Paola – Anonim 5](https://www.discogs.com/release/1030203) · 2007 · Spain · fijada | Chasis Records · 72769 | Vinilo 12″ | 4 · 2/5 | sin cambios · Edición fijada a mano en el catálogo. |
 
 ## Sin buscar
 

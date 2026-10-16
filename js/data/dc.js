@@ -8,7 +8,7 @@
   H.data.dc = {
  "version": 1,
  "source": "Discogs",
- "generatedAt": "2026-10-16T17:38:47.611Z",
+ "generatedAt": "2026-10-16T17:45:07.798Z",
  "records": {
   "acid-tracks": {
    "kind": "release",
@@ -112,8 +112,7 @@
     "image": {
      "url": "https://i.discogs.com/LvpUwm0WZmQg_n8R1DqaYa8Srqx4SGEzXOsEdfQiEXI/rs:fit/g:sm/q:90/h:600/w:599/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTE5NDkt/MTc0OTc2NTM5MS03/NTUzLmpwZWc.jpeg",
      "w": 599,
-     "h": 600,
-     "file": "art/dc-1949.jpg"
+     "h": 600
     }
    },
    "notes": [
@@ -475,8 +474,7 @@
     "image": {
      "url": "https://i.discogs.com/p8-CT8j6NnqqSX56jpzGY7698pEmB3-DoU-oZgnLubk/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTUzODgz/LTExMTk4MDg1MDEu/anBn.jpeg",
      "w": 600,
-     "h": 600,
-     "file": "art/dc-53883.jpg"
+     "h": 600
     }
    },
    "notes": [
@@ -567,8 +565,7 @@
     "image": {
      "url": "https://i.discogs.com/_VLxiDrWr6hy8gDR3XOBroLXpe33ZGtG9RzAJPI1o-A/rs:fit/g:sm/q:90/h:558/w:549/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTg5MDUt/MTc2NTY1MDAyNi0y/NDEyLnBuZw.jpeg",
      "w": 549,
-     "h": 558,
-     "file": "art/dc-8905.jpg"
+     "h": 558
     }
    },
    "notes": [
@@ -1130,8 +1127,7 @@
     "image": {
      "url": "https://i.discogs.com/cfOYTXY4NDhW_obq0gOT16LL7wAd13xk-EHYusijYTs/rs:fit/g:sm/q:90/h:550/w:550/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTYzMTMt/MTExNzUzNjgxOC5q/cGc.jpeg",
      "w": 550,
-     "h": 550,
-     "file": "art/dc-6313.jpg"
+     "h": 550
     }
    },
    "notes": [
@@ -1372,8 +1368,7 @@
     "image": {
      "url": "https://i.discogs.com/QiJQ9BTdYApTlixcY7w9cw5ipcv0k9z9zu_6fvsj3E0/rs:fit/g:sm/q:90/h:592/w:599/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTIwNTc4/LTEyNDY3MDg0NDUu/anBlZw.jpeg",
      "w": 599,
-     "h": 592,
-     "file": "art/dc-20578.jpg"
+     "h": 592
     }
    },
    "notes": [
@@ -1584,8 +1579,7 @@
     "image": {
      "url": "https://i.discogs.com/jKBBKyxcCNX9YodtFCHmaseenqQ6x-YCK53ldJ355xY/rs:fit/g:sm/q:90/h:585/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTIxMDE5/LTE3MzI2NTY4MjQt/MjQ3OS5wbmc.jpeg",
      "w": 600,
-     "h": 585,
-     "file": "art/dc-21019.jpg"
+     "h": 585
     }
    },
    "notes": [
@@ -1858,8 +1852,7 @@
     "image": {
      "url": "https://i.discogs.com/oHzG5kzpofc8yFe0uIn8O22JOfv_qRjxafxEItv-b00/rs:fit/g:sm/q:90/h:482/w:509/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTE5Njc4/OC0xMTQwMDMzNzA3/LmpwZWc.jpeg",
      "w": 509,
-     "h": 482,
-     "file": "art/dc-196788.jpg"
+     "h": 482
     }
    },
    "notes": [
@@ -2080,8 +2073,7 @@
     "image": {
      "url": "https://i.discogs.com/c80PB4O6mThev-fAHCE2ScaHJ2mGUMeNlREQb7n5t10/rs:fit/g:sm/q:90/h:419/w:547/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTE2MTQx/My0wMDEuanBn.jpeg",
      "w": 547,
-     "h": 419,
-     "file": "art/dc-161413.jpg"
+     "h": 419
     }
    },
    "notes": [
@@ -2195,8 +2187,7 @@
     "image": {
      "url": "https://i.discogs.com/9stvrNoVs_cEA3_clqv91bZ70V2HDSi-nWVD6y-C0Gw/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTE2MzUw/ODYtMTIzMzU5NDY2/Ni5qcGVn.jpeg",
      "w": 600,
-     "h": 600,
-     "file": "art/dc-1635086.jpg"
+     "h": 600
     }
    },
    "notes": [
@@ -2515,8 +2506,7 @@
     "image": {
      "url": "https://i.discogs.com/chhcyT3I8cGfNVlympQ4CjsbThSvLnRXHzNudvi7P-g/rs:fit/g:sm/q:90/h:588/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTUxNjUt/MTQwMTQ3Mzg4Ny05/ODk1LmpwZWc.jpeg",
      "w": 600,
-     "h": 588,
-     "file": "art/dc-5165.jpg"
+     "h": 588
     }
    },
    "notes": [
@@ -3195,8 +3185,7 @@
     "image": {
      "url": "https://i.discogs.com/O2ZsqYkysIToepVAvenYVM9U9MYowYS3d8qLhTs_FxA/rs:fit/g:sm/q:90/h:586/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTE2ODI3/MC0xMjM4OTU3MTky/LmpwZWc.jpeg",
      "w": 600,
-     "h": 586,
-     "file": "art/dc-168270.jpg"
+     "h": 586
     }
    },
    "notes": [
@@ -3919,8 +3908,7 @@
     "image": {
      "url": "https://i.discogs.com/f5pFEt5uKWIgcfssuHEowowyUxiLN7v80k1Htu3aOYU/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTMyNDQ3/LTE3NDU2NzExMTAt/NDA5My5qcGVn.jpeg",
      "w": 600,
-     "h": 600,
-     "file": "art/dc-32447.jpg"
+     "h": 600
     }
    },
    "notes": [
@@ -4096,8 +4084,7 @@
     "image": {
      "url": "https://i.discogs.com/MnSTANLt8mq1QhASU5K2Cp4ch3qqx2Uq8CPbtifvdeo/rs:fit/g:sm/q:90/h:458/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTMwODg4/LTEyNjE3NzQ0NjIu/anBlZw.jpeg",
      "w": 600,
-     "h": 458,
-     "file": "art/dc-30888.jpg"
+     "h": 458
     }
    },
    "notes": [
@@ -4291,8 +4278,7 @@
     "image": {
      "url": "https://i.discogs.com/W10ev2poGATSv-2Ed3NuwuSD2vU13HRiz5EAPrGAWjk/rs:fit/g:sm/q:90/h:595/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTM1MjA0/Ni0xNTIxODg3ODI1/LTgxOTYuanBlZw.jpeg",
      "w": 600,
-     "h": 595,
-     "file": "art/dc-352046.jpg"
+     "h": 595
     }
    },
    "notes": [
@@ -4660,8 +4646,7 @@
     "image": {
      "url": "https://i.discogs.com/wWZcFHJhiYlh_fvF2RToeZsaOnEZB2dENAYyENdq-v4/rs:fit/g:sm/q:90/h:469/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTY1MDc2/MC0xNDM3MDcxMTU2/LTQ0OTIuanBlZw.jpeg",
      "w": 600,
-     "h": 469,
-     "file": "art/dc-650760.jpg"
+     "h": 469
     }
    },
    "notes": [
@@ -4753,8 +4738,7 @@
     "image": {
      "url": "https://i.discogs.com/z7DkTOsOwfAtGAEM93fFZUVGl8qSEniVjMmyclQMYeQ/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTcwNDQz/OC0xNTE5NzI0NzE2/LTI1ODUuanBlZw.jpeg",
      "w": 600,
-     "h": 600,
-     "file": "art/dc-704438.jpg"
+     "h": 600
     }
    },
    "notes": [
@@ -4986,8 +4970,7 @@
     "image": {
      "url": "https://i.discogs.com/R5ZsXQ5Is89A47P8hron4VweTRE5laSYjn1iCUHgvi0/rs:fit/g:sm/q:90/h:600/w:583/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTk5Nzcw/OC0xMjAyODYyMTcw/LmpwZWc.jpeg",
      "w": 583,
-     "h": 600,
-     "file": "art/dc-997708.jpg"
+     "h": 600
     }
    },
    "notes": [
@@ -5155,8 +5138,7 @@
     "image": {
      "url": "https://i.discogs.com/5hV_c_LR_FlnqPi7Yfj4dD4v4O4xyGBucr-ToQxkAbo/rs:fit/g:sm/q:90/h:500/w:500/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTEzMzYw/MTA0LTE1ODYyNDA3/NjYtODM1Ny5qcGVn.jpeg",
      "w": 500,
-     "h": 500,
-     "file": "art/dc-13360104.jpg"
+     "h": 500
     }
    },
    "notes": [
@@ -5250,8 +5232,7 @@
     "image": {
      "url": "https://i.discogs.com/_2WfIYAEGetojPekPOt1ZHVpMyzZXAVydFnQWqV5804/rs:fit/g:sm/q:90/h:523/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTEwNTAy/NzAtMTcwMDg0Mjky/NC04NjA2LmpwZWc.jpeg",
      "w": 600,
-     "h": 523,
-     "file": "art/dc-1050270.jpg"
+     "h": 523
     }
    },
    "notes": [
@@ -5665,8 +5646,7 @@
     "image": {
      "url": "https://i.discogs.com/nnxt1PlFSpph-2mU7EFp-FcUzjkiwCO1NDdaS5LhqNg/rs:fit/g:sm/q:90/h:594/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTExNTg4/MDgtMTY4MDI3Njgx/My05MjQ4LmpwZWc.jpeg",
      "w": 600,
-     "h": 594,
-     "file": "art/dc-1158808.jpg"
+     "h": 594
     }
    },
    "notes": [
@@ -5746,8 +5726,7 @@
     "image": {
      "url": "https://i.discogs.com/9a7B5rQwOTlOQrlnUamI1aDJmFGJyqjbr3iZttfzxDY/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTEzOTU0/MzQ2LTE1NjQ4Mjk5/MzAtNzkyMC5qcGVn.jpeg",
      "w": 600,
-     "h": 600,
-     "file": "art/dc-13954346.jpg"
+     "h": 600
     }
    },
    "notes": [
@@ -5834,8 +5813,7 @@
     "image": {
      "url": "https://i.discogs.com/Zn1mqK5dj7WQ125SjNo2h9DEXo-kJQP0Rvbu0Mtr7FM/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTEyNjM1/NzMtMTIzNDM0MDA4/MC5qcGVn.jpeg",
      "w": 600,
-     "h": 600,
-     "file": "art/dc-1263573.jpg"
+     "h": 600
     }
    },
    "notes": [
@@ -5918,8 +5896,7 @@
     "image": {
      "url": "https://i.discogs.com/gj9YzP1XHWc_YZ4bMVMM1hKx-3tWaTBUIRTg9JFyd0o/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTE4MjQ5/MjEtMTI5NTg4NjMz/Ni5qcGVn.jpeg",
      "w": 600,
-     "h": 600,
-     "file": "art/dc-1824921.jpg"
+     "h": 600
     }
    },
    "notes": [
@@ -6147,8 +6124,7 @@
     "image": {
      "url": "https://i.discogs.com/dkVfbzfz7MsWC3xKxGGv4BnxDEkFQX0-BWR1NcCyUg4/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTgxNTM3/NzEtMTQ1NjE0NjY5/My0xMTkzLmpwZWc.jpeg",
      "w": 600,
-     "h": 600,
-     "file": "art/dc-8153771.jpg"
+     "h": 600
     }
    },
    "notes": [
@@ -6230,8 +6206,7 @@
     "image": {
      "url": "https://i.discogs.com/dn5oA34t3ZDyGIiH84W5mBLSmiyFz89i9UPlZwy02jI/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI5MDc4/ODctMTMwNjcxMTg0/OS5qcGVn.jpeg",
      "w": 600,
-     "h": 600,
-     "file": "art/dc-2907887.jpg"
+     "h": 600
     }
    },
    "notes": [
@@ -6384,8 +6359,7 @@
     "image": {
      "url": "https://i.discogs.com/UU_IN5u2cTHbEzMSWPzW50k0cY70B_l953a_eOQyPFg/rs:fit/g:sm/q:90/h:500/w:500/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTc4Mzk3/MjMtMTQ0OTkxNjE4/Ni04ODU1LmpwZWc.jpeg",
      "w": 500,
-     "h": 500,
-     "file": "art/dc-7839723.jpg"
+     "h": 500
     }
    },
    "notes": [
@@ -6507,8 +6481,7 @@
     "image": {
      "url": "https://i.discogs.com/UqnUiUsIX8-TU2HFmStwh0rsVCWOeSGJa6ShQNTWxTM/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTQ5NTEz/NTQtMTM4MDU1NjU2/NC0xNTM2LmpwZWc.jpeg",
      "w": 600,
-     "h": 600,
-     "file": "art/dc-4951354.jpg"
+     "h": 600
     }
    },
    "notes": [
@@ -6597,8 +6570,7 @@
     "image": {
      "url": "https://i.discogs.com/Wt7dYssjO8xGYPQC453tjWmzGxVjFyCdUQjktD7TZOY/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTQ0OTYy/NjQtMTM2NjU0Mzk5/NC00NDAzLmpwZWc.jpeg",
      "w": 600,
-     "h": 600,
-     "file": "art/dc-4496264.jpg"
+     "h": 600
     }
    },
    "notes": [
@@ -6673,8 +6645,7 @@
     "image": {
      "url": "https://i.discogs.com/nZ6JN89i0cmz1odgJTE5kN1vL2SWvMgfEbffRX1IOKg/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTYwODAx/MjUtMTQxMDU0MjMz/MC03NjU1LmpwZWc.jpeg",
      "w": 600,
-     "h": 600,
-     "file": "art/dc-6080125.jpg"
+     "h": 600
     }
    },
    "notes": [
@@ -6967,8 +6938,7 @@
     "image": {
      "url": "https://i.discogs.com/rHTQCLjWJA1QJoblVXgqYyP3zsVIGRQWxufm1QOPgVI/rs:fit/g:sm/q:90/h:527/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTExMjI1/MjYzLTE2NjM5Mzgz/MDYtMzYwMC5qcGVn.jpeg",
      "w": 600,
-     "h": 527,
-     "file": "art/dc-11225263.jpg"
+     "h": 527
     }
    },
    "notes": [
@@ -7038,8 +7008,7 @@
     "image": {
      "url": "https://i.discogs.com/WQxJkqr4tF9DVNnBg6-DMdF7T0kI24N7PcMKLolc-OU/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTEyNDEw/NDAyLTE1MzQ3MTcz/ODEtMzQwOS5qcGVn.jpeg",
      "w": 600,
-     "h": 600,
-     "file": "art/dc-12410402.jpg"
+     "h": 600
     }
    },
    "notes": [
@@ -7135,8 +7104,7 @@
     "image": {
      "url": "https://i.discogs.com/-1MnZlEXe04_GcjT8Sx3UwT4n-FYT8zHmq01sCV6Y7s/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTc5MTI0/NDItMTQ1MTUwNjU5/Mi03ODA4LmpwZWc.jpeg",
      "w": 600,
-     "h": 600,
-     "file": "art/dc-7912442.jpg"
+     "h": 600
     }
    },
    "notes": [
@@ -7232,8 +7200,7 @@
     "image": {
      "url": "https://i.discogs.com/-1MnZlEXe04_GcjT8Sx3UwT4n-FYT8zHmq01sCV6Y7s/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTc5MTI0/NDItMTQ1MTUwNjU5/Mi03ODA4LmpwZWc.jpeg",
      "w": 600,
-     "h": 600,
-     "file": "art/dc-7912442.jpg"
+     "h": 600
     }
    },
    "notes": [
@@ -7547,8 +7514,7 @@
     "image": {
      "url": "https://i.discogs.com/kfbknnre7TdNMFHVUQM8n7YTgeaQIZtLqM1OuHu7UKo/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTMzODM4/NTk2LTE3NDU4Nzk2/MDctODM2Ni5qcGVn.jpeg",
      "w": 600,
-     "h": 600,
-     "file": "art/dc-33838596.jpg"
+     "h": 600
     }
    },
    "notes": [
@@ -7677,8 +7643,7 @@
     "image": {
      "url": "https://i.discogs.com/3EtGaeQnl2RnSXAXTE7_DHNekacS3j8IFIKVUHnG4p8/rs:fit/g:sm/q:90/h:590/w:597/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTE2Mzc5/NC0xMTYwMTQwODIx/LmpwZWc.jpeg",
      "w": 597,
-     "h": 590,
-     "file": "art/dc-163794.jpg"
+     "h": 590
     }
    },
    "notes": [
@@ -7963,8 +7928,7 @@
     "image": {
      "url": "https://i.discogs.com/SSF_g39At-EsTOFDe52DJx889KFXEtzUYZ_EgbzJyTw/rs:fit/g:sm/q:90/h:475/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTEwNzk2/MC0xMTk4NTIyNjUz/LmpwZWc.jpeg",
      "w": 600,
-     "h": 475,
-     "file": "art/dc-107960.jpg"
+     "h": 475
     }
    },
    "notes": [
@@ -8065,8 +8029,7 @@
     "image": {
      "url": "https://i.discogs.com/EzwRhgrYa4nOtBBII2GGt5mhvYPkglnqgYtdPsqIl5Q/rs:fit/g:sm/q:90/h:600/w:592/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTE1MjE0/MTktMTIyODA2OTk0/Mi5qcGVn.jpeg",
      "w": 592,
-     "h": 600,
-     "file": "art/dc-1521419.jpg"
+     "h": 600
     }
    },
    "notes": [
@@ -8182,8 +8145,7 @@
     "image": {
      "url": "https://i.discogs.com/Q8aGuU3hg_oa29j3YOmTJBogmNznvXQeeuQEuBNe3RU/rs:fit/g:sm/q:90/h:597/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTIxMTY1/LTEyMzUwODUyODEu/anBlZw.jpeg",
      "w": 600,
-     "h": 597,
-     "file": "art/dc-21165.jpg"
+     "h": 597
     }
    },
    "notes": [
@@ -8282,8 +8244,7 @@
     "image": {
      "url": "https://i.discogs.com/7yuEjQjxdmAyOd7UKUdf1IkNJESzK7632hRyFCPbaVk/rs:fit/g:sm/q:90/h:321/w:318/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTU1Njcw/Ny0xMTM0OTkxNDkz/LmpwZWc.jpeg",
      "w": 318,
-     "h": 321,
-     "file": "art/dc-556707.jpg"
+     "h": 321
     }
    },
    "notes": [
@@ -8375,8 +8336,7 @@
     "image": {
      "url": "https://i.discogs.com/JivpD0rs-xya8CITin4Ei5qhzHb9dsilx2LyAguySw4/rs:fit/g:sm/q:90/h:595/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTEyNTY1/NDctMTIwNjA1ODYy/NC5qcGVn.jpeg",
      "w": 600,
-     "h": 595,
-     "file": "art/dc-1256547.jpg"
+     "h": 595
     }
    },
    "notes": [
@@ -8458,8 +8418,7 @@
     "image": {
      "url": "https://i.discogs.com/ah7Z_K3r3MAZ6zKhFy1eYk9ZU_zNPwfz-A3ERRXOQT4/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTIzMDgx/MTUtMTI3NjQzMzQz/MS5qcGVn.jpeg",
      "w": 600,
-     "h": 600,
-     "file": "art/dc-2308115.jpg"
+     "h": 600
     }
    },
    "notes": [
@@ -8541,8 +8500,7 @@
     "image": {
      "url": "https://i.discogs.com/4eScGmYOvCMVWXCQV-zLVr3TGL_a5YtENr3ycBUZOf0/rs:fit/g:sm/q:90/h:600/w:593/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI4MTQ5/NzAtMTMwNzUyNjU4/NS5qcGVn.jpeg",
      "w": 593,
-     "h": 600,
-     "file": "art/dc-2814970.jpg"
+     "h": 600
     }
    },
    "notes": [
@@ -8718,8 +8676,7 @@
     "image": {
      "url": "https://i.discogs.com/WOWCtN4y0Rl2DNzIfPa8b9y34y5MhKH90q3o0ALfIeI/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI4ODMz/MDAtMTMwNzA5MzUz/OC5qcGVn.jpeg",
      "w": 600,
-     "h": 600,
-     "file": "art/dc-2883300.jpg"
+     "h": 600
     }
    },
    "notes": [
@@ -8796,8 +8753,7 @@
     "image": {
      "url": "https://i.discogs.com/I4Sgye7Ej8B6UG7N2Csw0cSEfxnlo-e3JxQ6Z2YSRdI/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI4NzE5/MjU2LTE3MjkzMDI5/NDItNzIwOC5qcGVn.jpeg",
      "w": 600,
-     "h": 600,
-     "file": "art/dc-28719256.jpg"
+     "h": 600
     }
    },
    "notes": [
@@ -8864,8 +8820,7 @@
     "image": {
      "url": "https://i.discogs.com/jkGagZuTeJODkYJzY6vbBz5UIFygi5iIHdD3Qyg0o0k/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTMwODM0/MTE3LTE3MTcxNzE4/NzktOTI4My5qcGVn.jpeg",
      "w": 600,
-     "h": 600,
-     "file": "art/dc-30834117.jpg"
+     "h": 600
     }
    },
    "notes": [
@@ -9151,8 +9106,7 @@
     "image": {
      "url": "https://i.discogs.com/SylktoQMNxbfts7FHIxlf9ieD7V-ldGoEsYewsSh_g8/rs:fit/g:sm/q:90/h:535/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI0MDM4/MjQzLTE2NTkxMjU4/NjAtNzE5Ni5qcGVn.jpeg",
      "w": 600,
-     "h": 535,
-     "file": "art/dc-24038243.jpg"
+     "h": 535
     }
    },
    "notes": [
@@ -9294,8 +9248,7 @@
     "image": {
      "url": "https://i.discogs.com/VXLTNnGjnwpdrJx3eueXZ6thC_MSXF_EIRWvBcjtseI/rs:fit/g:sm/q:90/h:472/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTM1MzU3/Ni0xNTk0NzMyMjk5/LTMzMTcuanBlZw.jpeg",
      "w": 600,
-     "h": 472,
-     "file": "art/dc-353576.jpg"
+     "h": 472
     }
    },
    "notes": [
@@ -10434,8 +10387,7 @@
     "image": {
      "url": "https://i.discogs.com/zzWrRzLLmeVjjlouk5JuE6TpNX72_7ujU7qYeNbpCzQ/rs:fit/g:sm/q:90/h:500/w:500/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTM3MTQ3/OS0xNTIwNzgyODg2/LTI4MTUuanBlZw.jpeg",
      "w": 500,
-     "h": 500,
-     "file": "art/dc-371479.jpg"
+     "h": 500
     }
    },
    "notes": [
@@ -10857,14 +10809,14 @@
       "title": "Anonim 3 (Dragon Mix)",
       "duration": "8:18",
       "artist": null,
-      "video": null
+      "video": "https://www.youtube.com/watch?v=xEg_esMSeTA"
      },
      {
       "pos": "B1",
       "title": "Anonim 3 (Double Mix)",
       "duration": "8:48",
       "artist": null,
-      "video": null
+      "video": "https://www.youtube.com/watch?v=yI81SywU8eo"
      },
      {
       "pos": "B2",
@@ -10974,7 +10926,7 @@
       "title": "Anonim 1 (Remix Hard)",
       "duration": "5:25",
       "artist": null,
-      "video": null
+      "video": "https://www.youtube.com/watch?v=s4aSsf3rh3s"
      }
     ],
     "videos": [
