@@ -195,7 +195,8 @@
       if (r.pinned && t.MB && R.image && R.image.file) { t.cover = null; t.labelArt = null; t.vinylEd = null; t.vinylSleeve = null; t.labelFromVinylEd = false; t.noVinyl = false; }
       // portada: la de Cover Art Archive si la hay; si no, la imagen principal de la edición en Discogs
       if (!t.cover && R.image && R.image.file) { t.cover = R.image.file; t.artFrom = R.url + '/image/'; t.artBy = 'Discogs'; stats.covers++; }
-      t.sides = R.tracks.length ? R.tracks : null;
+      const sides = R.tracks.filter((x) => x.title && x.title.trim());
+      t.sides = sides.length ? sides : null;
       t.videos = R.videos.length ? R.videos : null;
       t.links = t.links || {};
       if (!t.links.discogs) t.links.discogs = { url: R.url, scope: 'release' };

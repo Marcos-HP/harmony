@@ -136,7 +136,7 @@ export function matchVideos(tracks, videos) {
 }
 
 export function summarizeRelease(rel) {
-  const tracks = (rel.tracklist || []).filter((x) => (x.type_ || 'track') === 'track')
+  const tracks = (rel.tracklist || []).filter((x) => (x.type_ || 'track') === 'track' && String(x.title || '').trim())
     .map((x) => ({ pos: x.position || null, title: x.title, duration: x.duration || null, artist: x.artists && x.artists.length ? artistLine(x.artists) : null }));
   const videos = (rel.videos || []).filter((v) => /youtu/.test(v.uri || '')).map((v) => ({ url: v.uri, title: v.title || '', duration: v.duration || null }));
   const vi = matchVideos(tracks, videos);

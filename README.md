@@ -108,6 +108,8 @@ Escribe `js/data/dc.js` y `tools/dc-report.md`, y baja la imagen principal de ca
 - **Portada** cuando Cover Art Archive no la tiene, con el crédito a Discogs.
 - Enlace directo a la edición en Discogs y, en un registro de tipo tema, al vídeo de su corte.
 
+**Primera importación (16-10-2026, en GitHub Actions y sin token)**: 87 aplicados, 18 fijados a mano y 69 por el enlace de MusicBrainz; 39 portadas nuevas, donde Cover Art Archive no tenía. Fijadas tras comprobarlas en Discogs: la serie Anonim, Extres, Ex-P-Cial (el vinilo español de 1995, no el CD mexicano que enlazaba MusicBrainz), Impact, Pildo, Pont Aeri Vol. 3, Elements, Other Side, Boom Dem, Time Is Up… Later!!! (en el maxi *Leire*), The Drabel, Oh Break, Look at This (en *Evolution*; la biografía del grupo habla de *Vol. 6* y la ficha muestra el desacuerdo) y Enter the Time Machine. De la mákina y el newstyle, 20 de 22 registros tienen ya portada real y caras del disco. Sin edición propia en Discogs (solo recopilatorios): Reaching Dreams y Sweet Revenge. Quedan 20 sin buscar hasta que haya token.
+
 ## Qué hay en la web
 - **Inicio**: cabecera, **espectro** en dos vistas (ver abajo), dos rutas editoriales («De Chicago a Ámsterdam» y «De la Ruta a la Masía»), décadas e índice de géneros.
 - **Espectro**: *Carriles* (por defecto en el móvil): una fila por género sobre una escala común, por tempo o por época; toca la escala para marcar un tempo o un año y toca una fila para ver sus temas. *Mapa* (por defecto en el ordenador): BPM × año, cada género una zona y cada registro un punto.
