@@ -358,7 +358,7 @@
     /* Ampliación del 13-10-2026: la mákina catalana */
     T(95, 'pildo', 'Pildo', ['pastis-buenri'], 1996, 'makina', { bpm: 160, ok: ['year'], src: ['w-pastis', 'wes-makina'], tags: ['clasico'],
       note: 'Número 2 en la lista de singles española. Ese año el dúo se convierte en el gran reclamo de Xque, la sala de Calella de Palafrugell donde ya pinchaban en 1995.' }),
-    T(96, 'pont-aeri-vol-3', 'Pont Aeri Vol. 3', ['skudero', 'xavi-metralla'], 1997, 'makina', { kind: 'lanzamiento', bpm: 160, ok: ['year'], src: ['w-skudero', 'wes-pontaeri'], tags: ['clasico'],
+    T(96, 'pont-aeri-vol-3', 'Pont Aeri Vol. 3', ['skudero', 'xavi-metralla'], 1997, 'makina', { dz: { track: 3533487751 }, kind: 'lanzamiento', bpm: 160, ok: ['year'], src: ['w-skudero', 'wes-pontaeri'], tags: ['clasico'],
       note: 'Número 5 en España. Pont Aeri, abierta en diciembre de 1991 y con sedes en Manresa, Terrassa y Vallgorguina, daba nombre a una serie de maxis; este lo firman dos de sus residentes. La fuente no detalla los temas.' }),
     T(97, 'elements', 'Elements', ['skudero'], 1998, 'makina', { bpm: 160, ok: ['year'], src: ['w-skudero'], tags: ['clasico'],
       note: 'Número uno en España. Su continuación, Elements II, también lo fue en 1999.' }),
@@ -366,9 +366,9 @@
       note: 'Mákina cantada, con la voz de Marian Dacal, que salió de las salas: publicado en mayo de 1999, a final de año ya era un éxito de ventas. En 2000 la revista Deejay lo premió como mejor tema comercial nacional y mejor tema de mákina. Abre con un sample de «Open Sesame» de Leila K. Los créditos no coinciden: la página del tema en Wikipedia lo firma DJ Ruboy con DJ Skudero, mientras que MusicBrainz lo acredita a Xavi Metralla & DJ Skudero y la página de Xavi Metralla cuenta ese premio entre los suyos. Aquí se sigue la página del tema.' }),
     T(99, 'reaching-dreams', 'Reaching Dreams', ['xavi-metralla'], 2002, 'makina', { bpm: 160, src: ['wes-metralla'],
       note: 'Mejor tema de mákina nacional de 2002 para la revista Deejay. El año es el del premio; el de edición y el sello están sin contrastar.' }),
-    T(100, 'sweet-revenge', 'Sweet Revenge', ['xavi-metralla'], 2004, 'makina', { bpm: 160, src: ['wes-metralla'], tags: ['joya'],
+    T(100, 'sweet-revenge', 'Sweet Revenge', ['xavi-metralla'], 2004, 'makina', { dz: { track: 594384372 }, bpm: 160, src: ['wes-metralla'], tags: ['joya'],
       note: 'Premiado como mejor tema de mákina de 2004; la fuente no dice por quién. El año es el del premio.' }),
-    T(101, 'other-side', 'Other Side', ['x-centrik'], 2005, 'makina', { bpm: 160, label: 'bit-music', ok: ['year', 'label'], src: ['wes-makina'], tags: ['clasico'],
+    T(101, 'other-side', 'Other Side', ['x-centrik'], 2005, 'makina', { dz: { track: 3533691281 }, bpm: 160, label: 'bit-music', ok: ['year', 'label'], src: ['wes-makina'], tags: ['clasico'],
       note: 'Con la voz de Marian Dacal. Fue el tema de mákina más vendido de 2006: más de 5.000 vinilos y presencia en más de 20 recopilatorios. Candidato a mejor tema de mákina en los DJOners 2007 de la revista Dj1.' }),
     T(102, 'extres-a-2', 'Extres-A-2', ['ex-3'], 1996, 'makina', { bpm: 160, label: 'boy-records', ok: ['year'], src: ['w-ex3'],
       note: 'Número 2 en España: la secuela de Extres.' })

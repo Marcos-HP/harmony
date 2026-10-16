@@ -1,10 +1,10 @@
 # Muestras de Deezer
 
-2026-10-13 19:08 UTC · 102 registros · 61 peticiones nuevas · 678 desde caché
+2026-10-16 16:48 UTC · 102 registros · 6 peticiones nuevas · 3 desde caché
 
-- **Con muestra:** 72 (21 verificadas por ISRC)
+- **Con muestra:** 75 (21 verificadas por ISRC)
 - **Para revisar:** 10
-- **Sin encontrar:** 20
+- **Sin encontrar:** 17
 
 ## Con muestra
 
@@ -81,7 +81,10 @@
 | HMY·090 Boom Dem | [Boom Dem](https://www.deezer.com/track/17263302) · Abel K Kaña | Boom Dem - EP (ep) | alta |  |
 | HMY·091 Time Is Up… Later!!! | [Time Is Up…Later!!!](https://www.deezer.com/track/1694953) · Dj Ogalla | Leire (single) | alta |  |
 | HMY·094 Look at This | [Look At This](https://www.deezer.com/track/2668799642) · Hermanos Kapiya | Evolution (single) | alta |  |
+| HMY·096 Pont Aeri Vol. 3 | [El Tambor De Hojalata](https://www.deezer.com/track/3533487751) · Skudero & Xavi Metralla | Pont Aeri 3 (single) | fijada · fijado | Elegida a mano en el catálogo. |
 | HMY·098 Flying Free | [Flying Free (Original Mix)](https://www.deezer.com/track/3533478361) · Pont Aeri | Pont Aeri, Vol. 4 (ep) | verificada · fijado | Misma grabación que MusicBrainz (ISRC ES5379900141). Elegida a mano en el catálogo. Versión en Deezer: «Original Mix». Deezer no acredita a DJ Ruboy, DJ Skudero. |
+| HMY·100 Sweet Revenge | [Sweet Revenge](https://www.deezer.com/track/594384372) · Pont Aeri vol.8 | Sweet Revenge (single) | fijada · fijado | Elegida a mano en el catálogo. Deezer no acredita a Xavi Metralla. |
+| HMY·101 Other Side | [Other Side](https://www.deezer.com/track/3533691281) · DJ X, Centrik | The Best of Makina 2007 (album) | fijada · fijado | Elegida a mano en el catálogo. |
 
 ## Para revisar
 
@@ -175,9 +178,6 @@
   - Descartado: Break My Heart · Dua Lipa · «Break My Heart»
   - Descartado: OUTBREAK (feat. Cory Brandan) · P.O.D · «OUTBREAK (feat. Cory Brandan)»
   - Prueba `dz: { q: '…' }` con otros términos o fija el tema con `dz: { track: … }`.
-- **HMY·096 Pont Aeri Vol. 3**
-  - Descartado: Makina · Varios Artistas
-  - Prueba `dz: { q: '…' }` con otros términos o fija el tema con `dz: { track: … }`.
 - **HMY·097 Elements**
   - Descartado: Dehlia 98 · Dj Skudero · «Elements»
   - Descartado: Glycerin · Dj Skudero · «Elements»
@@ -187,16 +187,6 @@
   - Descartado: Reaching Dreams (Short Edit) · Pont Aeri · «Reaching Dream (Short Edit)»
   - Descartado: Reaching Dreams (Hardcore Remix) · Pont Aeri · «Reaching Dreams (Hardcore Remix)»
   - Descartado: Reaching Out For My Dreams (Back and Forth 5.0 Official Anthem) · onTune · «Reaching Out For My Dreams (Back and Forth 5.0 Official Anthem)»
-  - Prueba `dz: { q: '…' }` con otros términos o fija el tema con `dz: { track: … }`.
-- **HMY·100 Sweet Revenge**
-  - Descartado: Sweet Revenge · Shaboozey · «The Outlaw Cherie Lee & Other Western Tales»
-  - Descartado: sweet revenge · Novulent · «VOL. 3»
-  - Descartado: Sweet Revenge · Ryuichi Sakamoto · «Sweet Revenge»
-  - Prueba `dz: { q: '…' }` con otros términos o fija el tema con `dz: { track: … }`.
-- **HMY·101 Other Side**
-  - Descartado: Otherside · Red Hot Chili Peppers · «Californication (Deluxe Edition)»
-  - Descartado: other side. · Brent Faiyaz · «Icon»
-  - Descartado: otherside · Lena Raine · «Minecraft: Caves & Cliffs (Original Game Soundtrack)»
   - Prueba `dz: { q: '…' }` con otros términos o fija el tema con `dz: { track: … }`.
 - **HMY·102 Extres-A-2**
   - Descartado: 2 In A Room Express · 2 In A Room · «World Party»

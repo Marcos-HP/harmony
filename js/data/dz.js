@@ -1,5 +1,5 @@
 /* HARMONY · muestras de 30 s de Deezer: qué tema de Deezer corresponde a cada registro.
-   Generado por tools/dz-import.mjs el 2026-10-13. No editar a mano: vuelve a ejecutar el importador.
+   Generado por tools/dz-import.mjs el 2026-10-16. No editar a mano: vuelve a ejecutar el importador.
    Solo identificadores: el audio no se guarda nunca; la web pide la muestra a Deezer al darle a play.
    Para corregir un emparejado, fíjalo en js/data/catalog.js (campo dz) y vuelve a importar ese registro con --only. */
 (function () {
@@ -8,7 +8,7 @@
   H.data.dz = {
  "version": 1,
  "source": "Deezer",
- "generatedAt": "2026-10-13T19:08:16.982Z",
+ "generatedAt": "2026-10-16T16:48:40.734Z",
  "records": {
   "acid-tracks": {
    "kind": "track",
@@ -3630,14 +3630,31 @@
    "alternatives": []
   },
   "pont-aeri-vol-3": {
-   "status": "not-found",
-   "candidates": [
-    {
-     "id": 871141872,
-     "title": "Makina",
-     "artist": "Varios Artistas"
-    }
-   ]
+   "kind": "track",
+   "status": "matched",
+   "apply": true,
+   "level": 0,
+   "confidence": "fijada",
+   "verified": false,
+   "pinned": true,
+   "track": {
+    "id": 3533487751,
+    "title": "El Tambor De Hojalata",
+    "version": null,
+    "artist": "Skudero & Xavi Metralla",
+    "album": "Pont Aeri 3",
+    "albumId": 813322341,
+    "albumType": "single",
+    "released": "1997-01-01",
+    "label": "Divucsa Music",
+    "duration": 342,
+    "isrc": "ES5299700178",
+    "link": "https://www.deezer.com/track/3533487751"
+   },
+   "notes": [
+    "Elegida a mano en el catálogo."
+   ],
+   "alternatives": []
   },
   "elements": {
    "status": "not-found",
@@ -3716,50 +3733,59 @@
    ]
   },
   "sweet-revenge": {
-   "status": "not-found",
-   "candidates": [
-    {
-     "id": 4183619602,
-     "title": "Sweet Revenge",
-     "artist": "Shaboozey",
-     "album": "The Outlaw Cherie Lee & Other Western Tales"
-    },
-    {
-     "id": 3827305311,
-     "title": "sweet revenge",
-     "artist": "Novulent",
-     "album": "VOL. 3"
-    },
-    {
-     "id": 1743344677,
-     "title": "Sweet Revenge",
-     "artist": "Ryuichi Sakamoto",
-     "album": "Sweet Revenge"
-    }
-   ]
+   "kind": "track",
+   "status": "matched",
+   "apply": true,
+   "level": 0,
+   "confidence": "fijada",
+   "verified": false,
+   "pinned": true,
+   "track": {
+    "id": 594384372,
+    "title": "Sweet Revenge",
+    "version": null,
+    "artist": "Pont Aeri vol.8",
+    "album": "Sweet Revenge",
+    "albumId": 79996262,
+    "albumType": "single",
+    "released": "2003-10-01",
+    "label": "Pont Aeri Records",
+    "duration": 495,
+    "isrc": "ES5050301254",
+    "link": "https://www.deezer.com/track/594384372"
+   },
+   "notes": [
+    "Elegida a mano en el catálogo.",
+    "Deezer no acredita a Xavi Metralla."
+   ],
+   "alternatives": []
   },
   "other-side": {
-   "status": "not-found",
-   "candidates": [
-    {
-     "id": 725261,
-     "title": "Otherside",
-     "artist": "Red Hot Chili Peppers",
-     "album": "Californication (Deluxe Edition)"
-    },
-    {
-     "id": 3765666322,
-     "title": "other side.",
-     "artist": "Brent Faiyaz",
-     "album": "Icon"
-    },
-    {
-     "id": 1522831532,
-     "title": "otherside",
-     "artist": "Lena Raine",
-     "album": "Minecraft: Caves & Cliffs (Original Game Soundtrack)"
-    }
-   ]
+   "kind": "track",
+   "status": "matched",
+   "apply": true,
+   "level": 3,
+   "confidence": "fijada",
+   "verified": false,
+   "pinned": true,
+   "track": {
+    "id": 3533691281,
+    "title": "Other Side",
+    "version": null,
+    "artist": "DJ X, Centrik",
+    "album": "The Best of Makina 2007",
+    "albumId": 813407681,
+    "albumType": "album",
+    "released": "2007-03-01",
+    "label": "Divucsa Music",
+    "duration": 416,
+    "isrc": "ES7580500309",
+    "link": "https://www.deezer.com/track/3533691281"
+   },
+   "notes": [
+    "Elegida a mano en el catálogo."
+   ],
+   "alternatives": []
   },
   "extres-a-2": {
    "status": "not-found",
