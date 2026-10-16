@@ -1,6 +1,6 @@
 # Discogs
 
-2026-10-16 17:50 UTC · 107 registros · 89 peticiones nuevas · 1 desde caché
+2026-10-16 17:54 UTC · 107 registros · 89 peticiones nuevas · 1 desde caché
 
 - **Aplicados:** 87 (18 fijados, 69 vía MusicBrainz)
 - **Para revisar:** 0
@@ -85,7 +85,7 @@
 | HMY·091 Time Is Up… Later!!! | [DJ Ogalla – Leire](https://www.discogs.com/release/921903) · 2007 · Spain · fijada | C.H.R · CHR-608 | Vinilo 12″ | 3 · 3/3 | label: — → C.H.R; catno: — → CHR-608; format: — → Vinilo 12″ · Edición fijada a mano en el catálogo. |
 | HMY·092 The Drabel | [Abel K'Kaña – The Drabel](https://www.discogs.com/release/1361940) · 2008-06-02 · Spain · fijada | Newstyle Corps · NSC 003 | Vinilo 12″ | 3 · 3/3 | sin cambios · Edición fijada a mano en el catálogo. |
 | HMY·093 Oh Break | [Abel K'Kaña – Oh Break](https://www.discogs.com/release/1702902) · 2009-03-24 · Spain · fijada | Newstyle Corps · NSC 006 | Vinilo 12″ | 3 · 3/3 | sin cambios · Edición fijada a mano en el catálogo. |
-| HMY·094 Look at This | [Hermanos Kapiya – Evolution](https://www.discogs.com/release/2551761) · 2010-11-10 · Spain · fijada | Global Noize Recordings · GNR-019 | Vinilo 12″ | 4 · 3/3 | year: 2011 → 2010; label: — → Global Noize Recordings; catno: — → GNR-019; format: — → Vinilo 12″ · Edición fijada a mano en el catálogo. |
+| HMY·094 Look at This | [Hermanos Kapiya – Evolution](https://www.discogs.com/release/2551761) · 2010-11-10 · Spain · fijada | Global Noize Recordings · GNR-019 | Vinilo 12″ | 3 · 3/3 | year: 2011 → 2010; label: — → Global Noize Recordings; catno: — → GNR-019; format: — → Vinilo 12″ · Edición fijada a mano en el catálogo. |
 | HMY·095 Pildo | [Pastis & Buenri – Pildo](https://www.discogs.com/release/575057) · 1996 · Spain · fijada | Max Music · NM1514MX | Vinilo 12″ | 3 · 3/7 | label: — → Max Music; catno: — → NM1514MX; format: — → Vinilo 12″ · Edición fijada a mano en el catálogo. |
 | HMY·096 Pont Aeri Vol. 3 | [Skudero & Xavi Metralla - Pont Aeri – Volumen 3](https://www.discogs.com/release/371478) · 1997 · Spain · fijada | Bit Music · 71-171 | Vinilo 12″ | 2 · 2/2 | label: — → Bit Music; catno: — → 71-171; format: — → Vinilo 12″ · Edición fijada a mano en el catálogo. |
 | HMY·097 Elements | [Skudero – Elements](https://www.discogs.com/release/226085) · 1998 · Spain · fijada | Bit Music · 71-300 | Vinilo 12″ | 2 · 2/4 | label: — → Bit Music; catno: — → 71-300; format: — → Vinilo 12″ · Edición fijada a mano en el catálogo. |

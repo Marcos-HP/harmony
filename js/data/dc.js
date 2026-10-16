@@ -8,7 +8,7 @@
   H.data.dc = {
  "version": 1,
  "source": "Discogs",
- "generatedAt": "2026-10-16T17:50:04.735Z",
+ "generatedAt": "2026-10-16T17:54:38.311Z",
  "records": {
   "acid-tracks": {
    "kind": "release",
@@ -9984,13 +9984,6 @@
       "duration": null,
       "artist": null,
       "video": "https://www.youtube.com/watch?v=tpYp1Zkndto"
-     },
-     {
-      "pos": null,
-      "title": "",
-      "duration": null,
-      "artist": null,
-      "video": null
      }
     ],
     "videos": [
