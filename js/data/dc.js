@@ -8,7 +8,7 @@
   H.data.dc = {
  "version": 1,
  "source": "Discogs",
- "generatedAt": "2026-10-16T17:45:07.798Z",
+ "generatedAt": "2026-10-16T17:50:04.735Z",
  "records": {
   "acid-tracks": {
    "kind": "release",
@@ -172,14 +172,14 @@
       "title": "Rock To The Beat (12\")",
       "duration": "5:42",
       "artist": null,
-      "video": null
+      "video": "https://www.youtube.com/watch?v=3wgVAo59Q8k"
      },
      {
       "pos": "4",
       "title": "Rock To The Beat (7\")",
       "duration": "3:16",
       "artist": null,
-      "video": "https://www.youtube.com/watch?v=uufdc-aNXEU"
+      "video": "https://www.youtube.com/watch?v=K3wMoasjuiE"
      }
     ],
     "videos": [
@@ -4331,7 +4331,7 @@
       "title": "Here Comes The Pain (Euphony Remix)",
       "duration": "7:05",
       "artist": null,
-      "video": "https://www.youtube.com/watch?v=h3pGIDPHzy4"
+      "video": null
      }
     ],
     "videos": [
@@ -6759,7 +6759,7 @@
       "title": "Creed Of Chaos (Official Anthem)",
       "duration": "4:18",
       "artist": "Angerfist Ft. Nolz",
-      "video": "https://www.youtube.com/watch?v=mNwKI0ARskU"
+      "video": null
      },
      {
       "pos": "1-10",
@@ -10926,7 +10926,7 @@
       "title": "Anonim 1 (Remix Hard)",
       "duration": "5:25",
       "artist": null,
-      "video": "https://www.youtube.com/watch?v=s4aSsf3rh3s"
+      "video": null
      }
     ],
     "videos": [
