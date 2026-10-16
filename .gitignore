@@ -1,0 +1,5 @@
+# caché de los importadores (respuestas de MusicBrainz y Deezer): se regenera sola
+tools/cache/
+# la web empaquetada la genera GitHub Actions al publicar (y node build.mjs en local)
+dist/
+node_modules/

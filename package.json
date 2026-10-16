@@ -1,0 +1,13 @@
+{
+  "name": "harmony",
+  "version": "0.2.0",
+  "private": true,
+  "description": "Archivo interactivo de música electrónica dura",
+  "scripts": {
+    "build": "node build.mjs",
+    "import": "node tools/mb-import.mjs",
+    "import:deezer": "node tools/dz-import.mjs",
+    "test": "node --test tools/test/mb-import.test.mjs tools/test/merge.test.mjs tools/test/dz-import.test.mjs"
+  },
+  "engines": { "node": ">=18" }
+}

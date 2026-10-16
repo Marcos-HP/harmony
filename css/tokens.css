@@ -1,0 +1,68 @@
+/* HARMONY · tokens
+   Layout: rejilla suiza con medianil fijo; el espectro BPM × año es la portada.
+   Papel blanco y vinilo negro, sin color de acento: el acento es la inversión. */
+:root {
+  --paper: #f3f3ef;
+  --paper-2: #e9e9e4;
+  --ink: #0e0e0d;
+  --ink-2: #4f4f4a;
+  --ink-3: #85857e;
+  --line: #cfcfc8;
+  --wax: #121211;
+  --groove: #4a4a46;
+  --label: #efefe9;
+  --label-ink: #0e0e0d;
+  --plinth: #e4e4de;
+  --plinth-edge: #c9c9c2;
+  --metal: #b9b9b2;
+  --lamp: #ffffff;
+
+  --f-display: 'Archivo', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif;
+  --f-text: 'Newsreader', Georgia, 'Times New Roman', serif;
+  --f-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+
+  --gutter: clamp(16px, 3.2vw, 44px);
+  --max: 1440px;
+  --bar-h: 68px;
+  --top-h: 56px;
+  --ease: cubic-bezier(.2, .7, .1, 1);
+  --kick: 0;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0c0c0b;
+    --paper-2: #161615;
+    --ink: #ebebe6;
+    --ink-2: #a6a69f;
+    --ink-3: #6e6e68;
+    --line: #2c2c29;
+    --wax: #060606;
+    --groove: #3a3a37;
+    --label: #e8e8e2;
+    --label-ink: #0e0e0d;
+    --plinth: #1a1a19;
+    --plinth-edge: #2e2e2b;
+    --metal: #6c6c67;
+    --lamp: #ffffff;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0c0c0b;
+  --paper-2: #161615;
+  --ink: #ebebe6;
+  --ink-2: #a6a69f;
+  --ink-3: #6e6e68;
+  --line: #2c2c29;
+  --wax: #060606;
+  --groove: #3a3a37;
+  --label: #e8e8e2;
+  --label-ink: #0e0e0d;
+  --plinth: #1a1a19;
+  --plinth-edge: #2e2e2b;
+  --metal: #6c6c67;
+  --lamp: #ffffff;
+  color-scheme: dark;
+}
