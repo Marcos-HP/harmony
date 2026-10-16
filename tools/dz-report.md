@@ -1,8 +1,8 @@
 # Muestras de Deezer
 
-2026-10-16 18:53 UTC · 105 registros · 6 peticiones nuevas · 3 desde caché
+2026-10-16 19:21 UTC · 107 registros · 4 peticiones nuevas · 2 desde caché
 
-- **Con muestra:** 78 (21 verificadas por ISRC)
+- **Con muestra:** 80 (21 verificadas por ISRC)
 - **Para revisar:** 10
 - **Sin encontrar:** 17
 
@@ -88,6 +88,8 @@
 | HMY·103 Anonim | [Infinity (DJ Konik Remix)](https://www.deezer.com/track/2564112912) · Anonim | Infinity (DJ Konik Remix) (single) | fijada · fijado | Elegida a mano en el catálogo. Versión en Deezer: «DJ Konik Remix»: es otra versión, no la original. Sale de un lanzamiento de remezclas: «Infinity (DJ Konik Remix)». |
 | HMY·104 Anonim Vol. 2 | [Anonim Vol.2](https://www.deezer.com/track/2564112362) · Anonim | Anonim Vol.2 (single) | fijada · fijado | Elegida a mano en el catálogo. |
 | HMY·105 Anonim Vol. 3 | [Anonim Vol.3 (Over Out Radio Edit)](https://www.deezer.com/track/1527993202) · Anonim | Anonim, Vol. 3 (single) | fijada · fijado | Elegida a mano en el catálogo. Versión en Deezer: «Over Out Radio Edit»: es otra versión, no la original. |
+| HMY·108 Anonim 6 | [Anonim 6](https://www.deezer.com/track/84595231) · Anonim 6 | Anonim 6 (single) | fijada · fijado | Elegida a mano en el catálogo. |
+| HMY·109 Anonim Vol. 7 | [Anonim Vol.7](https://www.deezer.com/track/2650165142) · Anonim | Anonim, Vol. 7 (single) | fijada · fijado | Elegida a mano en el catálogo. |
 
 ## Para revisar
 

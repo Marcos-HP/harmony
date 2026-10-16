@@ -8,7 +8,7 @@
   H.data.dz = {
  "version": 1,
  "source": "Deezer",
- "generatedAt": "2026-10-16T18:53:48.048Z",
+ "generatedAt": "2026-10-16T19:21:42.362Z",
  "records": {
   "acid-tracks": {
    "kind": "track",
@@ -3891,6 +3891,60 @@
    "notes": [
     "Elegida a mano en el catálogo.",
     "Versión en Deezer: «Over Out Radio Edit»: es otra versión, no la original."
+   ],
+   "alternatives": []
+  },
+  "anonim-6": {
+   "kind": "track",
+   "status": "matched",
+   "apply": true,
+   "level": 3,
+   "confidence": "fijada",
+   "verified": false,
+   "pinned": true,
+   "track": {
+    "id": 84595231,
+    "title": "Anonim 6",
+    "version": null,
+    "artist": "Anonim 6",
+    "album": "Anonim 6",
+    "albumId": 8527443,
+    "albumType": "single",
+    "released": "2014-09-03",
+    "label": "DJs at Work",
+    "duration": 360,
+    "isrc": "GBKQU1467210",
+    "link": "https://www.deezer.com/track/84595231"
+   },
+   "notes": [
+    "Elegida a mano en el catálogo."
+   ],
+   "alternatives": []
+  },
+  "anonim-vol-7": {
+   "kind": "track",
+   "status": "matched",
+   "apply": true,
+   "level": 3,
+   "confidence": "fijada",
+   "verified": false,
+   "pinned": true,
+   "track": {
+    "id": 2650165142,
+    "title": "Anonim Vol.7",
+    "version": null,
+    "artist": "Anonim",
+    "album": "Anonim, Vol. 7",
+    "albumId": 544115072,
+    "albumType": "single",
+    "released": "2024-02-07",
+    "label": "DJs at Work",
+    "duration": 532,
+    "isrc": "GBKQU2412543",
+    "link": "https://www.deezer.com/track/2650165142"
+   },
+   "notes": [
+    "Elegida a mano en el catálogo."
    ],
    "alternatives": []
   }
