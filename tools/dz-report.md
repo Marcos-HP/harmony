@@ -1,8 +1,8 @@
 # Muestras de Deezer
 
-2026-10-16 16:48 UTC · 102 registros · 6 peticiones nuevas · 3 desde caché
+2026-10-16 18:53 UTC · 105 registros · 6 peticiones nuevas · 3 desde caché
 
-- **Con muestra:** 75 (21 verificadas por ISRC)
+- **Con muestra:** 78 (21 verificadas por ISRC)
 - **Para revisar:** 10
 - **Sin encontrar:** 17
 
@@ -85,6 +85,9 @@
 | HMY·098 Flying Free | [Flying Free (Original Mix)](https://www.deezer.com/track/3533478361) · Pont Aeri | Pont Aeri, Vol. 4 (ep) | verificada · fijado | Misma grabación que MusicBrainz (ISRC ES5379900141). Elegida a mano en el catálogo. Versión en Deezer: «Original Mix». Deezer no acredita a DJ Ruboy, DJ Skudero. |
 | HMY·100 Sweet Revenge | [Sweet Revenge](https://www.deezer.com/track/594384372) · Pont Aeri vol.8 | Sweet Revenge (single) | fijada · fijado | Elegida a mano en el catálogo. Deezer no acredita a Xavi Metralla. |
 | HMY·101 Other Side | [Other Side](https://www.deezer.com/track/3533691281) · DJ X, Centrik | The Best of Makina 2007 (album) | fijada · fijado | Elegida a mano en el catálogo. |
+| HMY·103 Anonim | [Infinity (DJ Konik Remix)](https://www.deezer.com/track/2564112912) · Anonim | Infinity (DJ Konik Remix) (single) | fijada · fijado | Elegida a mano en el catálogo. Versión en Deezer: «DJ Konik Remix»: es otra versión, no la original. Sale de un lanzamiento de remezclas: «Infinity (DJ Konik Remix)». |
+| HMY·104 Anonim Vol. 2 | [Anonim Vol.2](https://www.deezer.com/track/2564112362) · Anonim | Anonim Vol.2 (single) | fijada · fijado | Elegida a mano en el catálogo. |
+| HMY·105 Anonim Vol. 3 | [Anonim Vol.3 (Over Out Radio Edit)](https://www.deezer.com/track/1527993202) · Anonim | Anonim, Vol. 3 (single) | fijada · fijado | Elegida a mano en el catálogo. Versión en Deezer: «Over Out Radio Edit»: es otra versión, no la original. |
 
 ## Para revisar
 

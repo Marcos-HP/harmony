@@ -8,7 +8,7 @@
   H.data.dz = {
  "version": 1,
  "source": "Deezer",
- "generatedAt": "2026-10-16T16:48:40.734Z",
+ "generatedAt": "2026-10-16T18:53:48.048Z",
  "records": {
   "acid-tracks": {
    "kind": "track",
@@ -3809,6 +3809,90 @@
      "album": "1 (Remastered 2015)"
     }
    ]
+  },
+  "anonim": {
+   "kind": "track",
+   "status": "matched",
+   "apply": true,
+   "level": 0,
+   "confidence": "fijada",
+   "verified": false,
+   "pinned": true,
+   "track": {
+    "id": 2564112912,
+    "title": "Infinity",
+    "version": "(DJ Konik Remix)",
+    "artist": "Anonim",
+    "album": "Infinity (DJ Konik Remix)",
+    "albumId": 518143872,
+    "albumType": "single",
+    "released": "2023-12-01",
+    "label": "DJs at Work",
+    "duration": 320,
+    "isrc": "GBLV62313688",
+    "link": "https://www.deezer.com/track/2564112912"
+   },
+   "notes": [
+    "Elegida a mano en el catálogo.",
+    "Versión en Deezer: «DJ Konik Remix»: es otra versión, no la original.",
+    "Sale de un lanzamiento de remezclas: «Infinity (DJ Konik Remix)»."
+   ],
+   "alternatives": []
+  },
+  "anonim-vol-2": {
+   "kind": "track",
+   "status": "matched",
+   "apply": true,
+   "level": 3,
+   "confidence": "fijada",
+   "verified": false,
+   "pinned": true,
+   "track": {
+    "id": 2564112362,
+    "title": "Anonim Vol.2",
+    "version": null,
+    "artist": "Anonim",
+    "album": "Anonim Vol.2",
+    "albumId": 518143752,
+    "albumType": "single",
+    "released": "2023-12-01",
+    "label": "DJs at Work",
+    "duration": 457,
+    "isrc": "GBLV62313685",
+    "link": "https://www.deezer.com/track/2564112362"
+   },
+   "notes": [
+    "Elegida a mano en el catálogo."
+   ],
+   "alternatives": []
+  },
+  "anonim-vol-3": {
+   "kind": "track",
+   "status": "matched",
+   "apply": true,
+   "level": 2,
+   "confidence": "fijada",
+   "verified": false,
+   "pinned": true,
+   "track": {
+    "id": 1527993202,
+    "title": "Anonim Vol.3",
+    "version": "(Over Out Radio Edit)",
+    "artist": "Anonim",
+    "album": "Anonim, Vol. 3",
+    "albumId": 267046592,
+    "albumType": "single",
+    "released": "2021-10-22",
+    "label": "DJs at Work",
+    "duration": 229,
+    "isrc": "GBLV62113370",
+    "link": "https://www.deezer.com/track/1527993202"
+   },
+   "notes": [
+    "Elegida a mano en el catálogo.",
+    "Versión en Deezer: «Over Out Radio Edit»: es otra versión, no la original."
+   ],
+   "alternatives": []
   }
  }
 };
