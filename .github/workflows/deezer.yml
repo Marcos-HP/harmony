@@ -1,0 +1,36 @@
+name: Importar muestras de Deezer
+# Ejecuta tools/dz-import.mjs en GitHub y sube a la misma rama js/data/dz.js y tools/dz-report.md.
+# Actions → «Importar muestras de Deezer» → Run workflow. «only»: ids del catálogo separados por comas (vacío = todo).
+on:
+  workflow_dispatch:
+    inputs:
+      only:
+        description: 'Registros (ids separados por comas); vacío = todo el catálogo'
+        required: false
+        default: ''
+permissions:
+  contents: write
+concurrency:
+  group: deezer-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Importar
+        env:
+          ONLY: ${{ inputs.only }}
+        run: node tools/dz-import.mjs --contact "https://github.com/${{ github.repository }}" ${ONLY:+--only "$ONLY"}
+      - run: npm test
+      - name: Subir el resultado
+        run: |
+          git add js/data/dz.js tools/dz-report.md
+          if git diff --cached --quiet; then echo "Sin cambios"; exit 0; fi
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit -m "Importación de Deezer${ONLY:+: $ONLY}"
+          git pull --rebase && git push
+        env:
+          ONLY: ${{ inputs.only }}

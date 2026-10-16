@@ -33,4 +33,4 @@ jobs:
           git add js/data/dc.js tools/dc-report.md art/
           if git diff --cached --quiet; then echo "Sin cambios"; exit 0; fi
           git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit -m "Importación de Discogs"
-          git push
+          git pull --rebase && git push
