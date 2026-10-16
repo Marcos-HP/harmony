@@ -74,7 +74,9 @@
     'dc-anonim-2': ['Discogs · Anonim, Anonim Vol. 2 (NM5023MX)', 'https://www.discogs.com/release/372903', '2026-10-16'],
     'dc-anonim-3': ['Discogs · Anonim, Anonim Vol. 3 (NM5087MX)', 'https://www.discogs.com/release/597824', '2026-10-16'],
     'dc-anonim-4': ['Discogs · Anonim, Anonim 4 (71-429)', 'https://www.discogs.com/release/365589', '2026-10-16'],
-    'dc-anonim-5': ['Discogs · Anonim Feat. Paola, Anonim 5 (72769)', 'https://www.discogs.com/release/1030203', '2026-10-16']
+    'dc-anonim-5': ['Discogs · Anonim Feat. Paola, Anonim 5 (72769)', 'https://www.discogs.com/release/1030203', '2026-10-16'],
+    'dc-anonim-6': ['Discogs · Anonim Feat. Yesika, Anonim 6 (DJ005)', 'https://www.discogs.com/release/6194851', '2026-10-16'],
+    'dc-anonim-7': ['Discogs · Anonim Feat. DJ Konik & Ruben XXL, Anonim Vol.7 (DJ2433)', 'https://www.discogs.com/release/29756842', '2026-10-16']
   };
 
   // Sellos. `ok`: campos contrastados (country/founded/note).
@@ -384,7 +386,7 @@
 
     /* Ampliación del 16-10-2026: la serie Anonim */
     T(103, 'anonim', 'Anonim', ['anonim'], 1996, 'makina', { dc: { release: 179811 }, dz: { track: 2564112912 }, kind: 'lanzamiento', bpm: 160, label: 'djs-at-work', release: 'Anonim', catno: 'NM5007MX', format: 'Vinilo 12″', ok: ['year', 'label', 'release', 'catno', 'format'], src: ['dc-anonim-1', 'dc-anonim'], tags: ['joya'],
-      note: 'El primero de la serie, firmado como Anonim Featuring Cyberia: Cyberia es otro alias de Toni Costa. Maxi a 45 rpm con «Anonim (Up Mix)» en la cara A y, en la B, «Infinity» rehecho por DJ Konik y M.C. Redy. Anonim (Espai Inusual) era una sala de Montcada i Reixac abierta entre 1994 y 1998, y la serie lleva su nombre.' }),
+      note: 'El primero de la serie, firmado como Anonim Featuring Cyberia: Cyberia es otro alias de Toni Costa. SpeedSadd lo reeditó en digital en 2026. Maxi a 45 rpm con «Anonim (Up Mix)» en la cara A y, en la B, «Infinity» rehecho por DJ Konik y M.C. Redy. Anonim (Espai Inusual) era una sala de Montcada i Reixac abierta entre 1994 y 1998, y la serie lleva su nombre.' }),
     T(104, 'anonim-vol-2', 'Anonim Vol. 2', ['anonim'], 1997, 'makina', { dc: { release: 372903 }, dz: { track: 2564112362 }, kind: 'lanzamiento', bpm: 160, label: 'djs-at-work', release: 'Anonim Vol. 2', catno: 'NM5023MX', format: 'Vinilo 12″', ok: ['year', 'label', 'release', 'catno', 'format'], src: ['dc-anonim-2', 'dc-anonim'],
       note: 'Salió el 17 de noviembre de 1997. Dos mezclas de «Anonim-2» (Up y Cut), «Anonimak» y la primera entrega de «Moskito», que la serie irá arrastrando de disco en disco.' }),
     T(105, 'anonim-vol-3', 'Anonim Vol. 3', ['anonim'], 1998, 'makina', { dc: { release: 597824 }, dz: { track: 1527993202 }, kind: 'lanzamiento', bpm: 165, label: 'djs-at-work', release: 'Anonim Vol. 3', catno: 'NM5087MX', format: 'Vinilo 12″', ok: ['year', 'label', 'release', 'catno', 'format'], src: ['dc-anonim-3', 'dc-anonim'], tags: ['clasico'],
@@ -392,7 +394,11 @@
     T(106, 'anonim-4', 'Anonim 4', ['anonim'], 1999, 'makina', { dc: { release: 365589 }, kind: 'lanzamiento', bpm: 165, label: 'bit-music', release: 'Anonim 4', catno: '71-429', format: 'Vinilo 12″', ok: ['year', 'label', 'release', 'catno', 'format'], src: ['dc-anonim-4', 'dc-anonim'],
       note: 'La serie pasa a Bit Music. Además de «Anonim 4 (Up Mix)», recoge remezclas de los tres anteriores: «Anonim 3 (Over Out Mix)», «Anonim 2 (Intrack Remix)» y «Anonim 1 (Remix Hard)».' }),
     T(107, 'anonim-5', 'Anonim 5', ['anonim'], 2007, 'makina', { dc: { release: 1030203 }, kind: 'lanzamiento', bpm: 160, label: 'bit-music', release: 'Anonim 5', catno: '72769', format: 'Vinilo 12″', ok: ['year', 'label', 'release', 'catno', 'format'], src: ['dc-anonim-5', 'dc-anonim'],
-      note: 'Ocho años después, firmado como Anonim Feat. Paola y coeditado con Chasis Records. El tema central es «Angel», cantado por Paola, con remezclas de Tss Proyect y Jordi Carreras; en la cara A va también «Moskito 7».' })
+      note: 'Ocho años después, firmado como Anonim Feat. Paola y coeditado con Chasis Records. El tema central es «Angel», cantado por Paola, con remezclas de Tss Proyect y Jordi Carreras; en la cara A va también «Moskito 7».' }),
+    T(108, 'anonim-6', 'Anonim 6', ['anonim'], 2014, 'makina', { dc: { release: 6194851 }, dz: { track: 84595231 }, bpm: 160, label: 'djs-at-work', release: 'Anonim 6', catno: 'DJ005', format: 'Digital', ok: ['year', 'label', 'release', 'catno', 'format'], src: ['dc-anonim-6', 'dc-anonim'],
+      note: 'La serie vuelve a DJ\'s At Work, ya solo en digital: un único tema de seis minutos, firmado como Anonim Feat. Yesika y producido por Tony Costa.' }),
+    T(109, 'anonim-vol-7', 'Anonim Vol. 7', ['anonim'], 2024, 'makina', { dc: { release: 29756842 }, dz: { track: 2650165142 }, kind: 'lanzamiento', bpm: 160, label: 'djs-at-work', release: 'Anonim Vol.7', catno: 'DJ2433', format: 'Digital', ok: ['year', 'label', 'release', 'catno', 'format'], src: ['dc-anonim-7', 'dc-anonim'], tags: ['actual'],
+      note: 'Publicado el 7 de febrero de 2024 y firmado como Anonim Feat. DJ Konik & Ruben XXL: la mezcla original, una versión sin voz y un radio edit. Entre 2021 y 2023, DJ\'s At Work había reeditado en digital los primeros volúmenes.' })
   ];
 
   // Rutas editoriales: el orden importa (es una secuencia).
