@@ -2,7 +2,7 @@
 
 Archivo interactivo de música electrónica dura: hardcore, hardstyle, hard house, hard trance, techno, mákina y newstyle. HTML + CSS + JS sin backend ni dependencias (solo tipografías de Google Fonts: Archivo, Newsreader e IBM Plex Mono). Node 18+ solo para el build, el importador y los tests.
 
-Edición 0.3 · 13-10-2026 · fases 1 y 2 funcionando; fase 3 con la primera importación real de MusicBrainz y el diseño real de 57 discos.
+Edición 0.3 · 16-10-2026 · fases 1 y 2 funcionando; fase 3 con MusicBrainz (diseño real de 57 discos), muestras de Deezer y Discogs como segunda fuente.
 
 ## Cómo abrirlo
 - `dist/index.html`: todo en un único archivo. Doble clic y listo. Si existe `dist/art/`, debe ir junto a él.
@@ -54,7 +54,7 @@ mb: { title: '…', artist: '…' }   // buscar con otros términos
 mb: { skip: true }                 // no buscarlo
 ```
 
-**Tests**: `npm test` (23, incluidos los del importador de Deezer contra un Deezer falso). Prueban normalización, emparejado, elección de edición, resumen, Cover Art Archive (elección de portada y galleta, descargas, `--no-art`), caché, reintentos, `--only`, `--offline`, el ritmo de peticiones, la fusión en la web, la coherencia de la capa importada de verdad (imágenes locales, galleta solo con vinilo), los desacuerdos entre fuentes editoriales y la integridad del catálogo (fuentes, artistas, sellos, rutas). El servidor falso tiene la forma real de las respuestas de la API; todos sus datos son inventados y nunca llegan al catálogo.
+**Tests**: `npm test` (27, incluidos los importadores de Deezer y Discogs contra servidores falsos). Prueban normalización, emparejado, elección de edición, resumen, Cover Art Archive (elección de portada y galleta, descargas, `--no-art`), caché, reintentos, `--only`, `--offline`, el ritmo de peticiones, la fusión en la web, la coherencia de la capa importada de verdad (imágenes locales, galleta solo con vinilo), los desacuerdos entre fuentes editoriales y la integridad del catálogo (fuentes, artistas, sellos, rutas). El servidor falso tiene la forma real de las respuestas de la API; todos sus datos son inventados y nunca llegan al catálogo.
 
 ### Primera importación real (13-10-2026)
 - **81 aplicados**, 13 para revisar y 8 sin encontrar, de 102. Formato del original según MusicBrainz: 32 vinilo, 18 CD, 29 digital y 2 otros.
@@ -88,12 +88,30 @@ Lo que no es la misma producción no se aplica: cualquier palabra entre parénte
 
 **Dónde suena**: en la web publicada (GitHub Pages) y en `dist/index.html` abierto en local. **No suena dentro del artefacto de Claude**: su política de seguridad no deja pedir audio ni scripts a otros sitios. Ahí la ficha lo explica y ofrece el pulso o un archivo propio.
 
+## Discogs: segunda fuente
+```
+DISCOGS_TOKEN=xxxx node tools/dc-import.mjs                 # todo el catálogo
+node tools/dc-import.mjs --token xxxx --only anonim-vol-3   # solo ese registro
+node tools/dc-import.mjs --no-art                           # sin bajar portadas
+```
+En PowerShell: `$env:DISCOGS_TOKEN="xxxx"; node tools/dc-import.mjs`. El token es personal y gratis: discogs.com → Settings → Developers → *Generate new token*. Va en una cabecera, nunca en la URL: no acaba en la caché, ni en `dc.js`, ni en el informe.
+
+Para lo que MusicBrainz casi no tiene: la mákina, el newstyle y lo que solo salió en vinilo en España. Para cada registro elige una edición, por este orden:
+1. **Fijada a mano** en el catálogo: `dc: { release: 597824 }` (o `{ master: … }`, `{ q: '…' }`, `{ skip: true }`).
+2. **La que enlaza MusicBrainz** desde el lanzamiento ya aplicado. No necesita token.
+3. **Búsqueda** (necesita token): la más antigua del artista con el mismo título, en vinilo antes que en otro formato y nunca un recopilatorio. Solo se aplica con confianza alta; si da otro año que MusicBrainz, queda para revisar.
+
+Escribe `js/data/dc.js` y `tools/dc-report.md`, y baja la imagen principal de cada edición a `art/dc-<id>.jpg`. La web lo fusiona después de MusicBrainz con la misma regla: lo editorial se sustituye y lo contrastado que no coincide se marca como desacuerdo. Además aporta:
+- **Caras del disco**: los cortes con su posición y duración. Si Discogs asocia vídeos de YouTube a la edición, cada corte enlaza el suyo (con varias mezclas del mismo tema, decide la versión; un vídeo que no se puede atribuir a un corte no se enlaza).
+- **Portada** cuando Cover Art Archive no la tiene, con el crédito a Discogs.
+- Enlace directo a la edición en Discogs y, en un registro de tipo tema, al vídeo de su corte.
+
 ## Qué hay en la web
 - **Inicio**: cabecera, **espectro** en dos vistas (ver abajo), dos rutas editoriales («De Chicago a Ámsterdam» y «De la Ruta a la Masía»), décadas e índice de géneros.
 - **Espectro**: *Carriles* (por defecto en el móvil): una fila por género sobre una escala común, por tempo o por época; toca la escala para marcar un tempo o un año y toca una fila para ver sus temas. *Mapa* (por defecto en el ordenador): BPM × año, cada género una zona y cada registro un punto.
 - **Géneros**: *Explorar* (por defecto): un género en el centro, arriba de dónde viene y abajo hacia dónde va y con qué convive, sobre una línea del tiempo que se ajusta a los años en juego. Las ramas bajan desde el año en que nace cada género nuevo. Toca cualquier fila y pasa al centro (las que siguen en pantalla se desplazan); el recorrido queda como migas para volver atrás, y hay selector por familias y «Al azar». Al lado, la ficha del género con un punto que late a su tempo central, sus registros y sus acciones. *Mapa completo*: todas las relaciones a la vez (en el móvil, desplazable). Página por género con rango de BPM, época, origen, nota de clasificación discutible, de dónde viene y hacia dónde va (con acceso directo al explorador), registros, artistas y sellos.
 - **Catálogo**: búsqueda, filtros combinables (género, década, artista, sello, BPM con preajustes, solo año contrastado), chips para quitar filtros, orden y tres vistas: lista, editorial y vinilo (cajas por sello).
-- **Ficha**: cada dato con su estado y su fuente, desacuerdos entre fuentes, enlaces para escuchar fuera (directos o búsquedas), edición física, fuentes y relacionados con el motivo de la relación.
+- **Ficha**: cada dato con su estado y su fuente, desacuerdos entre fuentes, caras del disco (Discogs), enlaces para escuchar fuera (Spotify, YouTube Music, YouTube y SoundCloud; directos o búsquedas), edición física, fuentes y relacionados con el motivo de la relación.
 - **Diseño de los discos**: cuando el disco existe y Cover Art Archive tiene su imagen, se ve **tal cual y en color**. Harmony no redibuja ningún diseño real. Regla por formato:
   - **Listas, fichas, rutas y cajas** muestran la portada de la edición original, sea cual sea su formato. Un CD se ve como un CD: su portada dentro de una caja con bisagra, no estirada a funda de vinilo. Si el original no tiene imagen pero su edición en vinilo sí, se ve la funda del vinilo y la ficha lo dice.
   - **El plato y la mesa son tocadiscos: solo gira vinilo.** La galleta real sale del vinilo original o, si el original es un CD, de su primera edición en vinilo. Si no hay vinilo (o no hay foto de su galleta), gira el disco de Harmony, marcado «Prensa Harmony».
@@ -108,8 +126,8 @@ Lo que no es la misma producción no se aplica: cualquier palabra entre parénte
 
 ## Estructura
 ```
-js/data/      genres.js (6 familias, 24 géneros, relaciones) · catalog.js (capa editorial: 102 registros, sellos, artistas, fuentes, rutas)
-              mb.js (capa de MusicBrainz) · dz.js (muestras de Deezer); las dos las generan los importadores: no editar
+js/data/      genres.js (6 familias, 24 géneros, relaciones) · catalog.js (capa editorial: 107 registros, sellos, artistas, fuentes, rutas)
+              mb.js (MusicBrainz) · dc.js (Discogs) · dz.js (muestras de Deezer); las generan los importadores: no editar
 js/lib/       util.js · theme.js (tema claro/oscuro) · archive.js (índice, fusión con MusicBrainz, búsqueda, filtros, orden, relacionados, sorpréndeme) · links.js
 js/art/       art.js → fundas generativas, etiqueta del disco, reglas de BPM y época
 js/audio/     engine.js (mezclador Web Audio de dos canales) · analysis.js (BPM, fase y forma de onda) · deezer.js (muestras de 30 s)
@@ -117,7 +135,7 @@ js/ui/        components.js · controls.js (potenciómetros y faders) · deck.js
 js/views/     spectrum.js · lanes.js · home.js · lineage.js (explorador de linajes) · genres.js · catalog.js · pages.js (artista, sello, caja) · js/app.js (rutas, ficha, atajos)
 css/          tokens.css (claro/oscuro) · base.css · views.css · deck.css
 art/          diseño real de los discos (generado por el importador)
-tools/        mb-import.mjs · dz-import.mjs · mb-report.md y dz-report.md (generados) · cache/ (generada) · test/
+tools/        mb-import.mjs · dc-import.mjs · dz-import.mjs · sus informes *-report.md (generados) · cache/ (generada) · test/
 ```
 Rutas con hash: `#espectro`, `#generos`, `#catalogo`, `#caja`, `#g-makina`, `#a-skudero`, `#l-bit-music`, `#t-flying-free`.
 
@@ -129,13 +147,13 @@ Rutas con hash: `#espectro`, `#generos`, `#catalogo`, `#caja`, `#g-makina`, `#a-
 - Ampliaciones del 13-10-2026: Rotterdam Terror Corps, Evil Activities, DJ Mad Dog y Nosferatu; Dr. Evil, Abel K Kaña, Dj Ogalla y Hermanos Kapiya; EX-3 y Chimo Bayo; y la mákina catalana: Pastis & Buenri, DJ Skudero, Xavi Metralla, DJ Ruboy y DJ X-Centrik, con los sellos Bit Music y Boy Records. Dj Balas, Wakan Dj, Bassdrum Project, Papero, Dj Aleix y Tony Bass (newstyle) y DJ Sisu, DJ Sonic, Gerard Requena, Dani Fiesta, Joan Creus y Fran Bit (mákina) figuran como nombres de referencia a la espera de producciones contrastadas.
 
 ## Datos: qué es verdad y qué no
-- Cada registro lleva `ok` (campos contrastados), `okBy` (con qué fuente) y `src`. Las fuentes llevan su fecha de consulta: Wikipedia (12-10-2026); Wikipedia en otros idiomas, el diario Ara, la web de la Masía, HardMusic.es, Last.fm, Makinaria, La Màkina del Temps y otras (13-10-2026). Capa de MusicBrainz: ver arriba.
+- Cada registro lleva `ok` (campos contrastados), `okBy` (con qué fuente) y `src`. Las fuentes llevan su fecha de consulta: Wikipedia (12-10-2026); Wikipedia en otros idiomas, el diario Ara, la web de la Masía, HardMusic.es, Last.fm, Makinaria, La Màkina del Temps y otras (13-10-2026); las fichas de Discogs de la serie Anonim (16-10-2026). Capas de MusicBrainz y Discogs: ver arriba.
 - La interfaz lo marca: ● contrastado · ◍ fuentes en desacuerdo · ○ editorial · ≈ estimado · — sin datos.
 - **Desacuerdos entre fuentes editoriales**: `alt: { year: [1995, 'w-ex3'] }` en un registro muestra los dos valores en la ficha (p. ej. Ex-P-Cial: 1996 según la página de la mákina, 1995 según la de EX-3).
 - **BPM**: estimados por la redacción según género y época (≈), salvo que la fuente dé el tempo (`ok` incluye `bpm`): Flying Free, 158 BPM.
 - **Años de premios**: cuando la fuente solo da el año de un premio (Reaching Dreams, Sweet Revenge, Time Is Up), el año queda sin contrastar y la nota lo dice.
-- **N.º de catálogo**: los de HardMusic.es (C.H.R. y Newstyle Corps) y los que vengan de MusicBrainz. El número HMY es el registro del archivo.
-- **Enlaces**: directos solo si MusicBrainz los tiene; si no, búsquedas. Sin precios ni disponibilidad.
+- **N.º de catálogo**: los de HardMusic.es (C.H.R. y Newstyle Corps), los de Discogs y los que vengan de MusicBrainz. El número HMY es el registro del archivo.
+- **Enlaces**: directos solo si MusicBrainz o Discogs los tienen; si no, búsquedas (SoundCloud siempre lo es, salvo enlace de MusicBrainz). Sin precios ni disponibilidad.
 - Géneros sin registros contrastados: uptempo, nu style, hard house americano y schranz.
 
 Añadir un registro: una línea `T(...)` en `js/data/catalog.js` y `node tools/mb-import.mjs --only <id>`. Un género: un objeto en `js/data/genres.js` (+ relaciones). La interfaz se genera sola.
@@ -155,8 +173,7 @@ Pendiente:
 El artefacto no puede cargar imágenes de otros servidores. Por eso las imágenes de `dist/art/` se publican junto a `dist/artifact.html` con la misma ruta relativa (`art/…`).
 
 ## Siguientes pasos
-1. Ejecutar `tools/dz-import.mjs`, revisar `tools/dz-report.md` y publicar en GitHub Pages para que suenen las muestras.
-2. Revisar los 13 de `tools/mb-report.md` y los 8 sin encontrar: fijar la edición original con `mb: {...}` si está en MusicBrainz, o dejarlos editoriales.
-3. Discogs como segunda fuente para lo que MusicBrainz no tenga (su API pide token para buscar; el ID de edición ya llega desde MusicBrainz).
-4. YouTube para el tema entero en el plato, con el vídeo a la vista.
-5. Rellenar uptempo, schranz, nu style y hard house americano, y producciones contrastadas de los nombres de referencia de la mákina y el newstyle.
+1. Primera importación real de Discogs con token (`tools/dc-import.mjs`), revisar `tools/dc-report.md`, y luego `dz-import --only anonim,anonim-vol-2,anonim-vol-3,anonim-4,anonim-5` por si Deezer tiene la serie.
+2. Revisar los 13 de `tools/mb-report.md` y los 8 sin encontrar: fijar la edición con `mb: {...}` o con `dc: {...}`.
+3. YouTube para el tema entero en el plato, con el vídeo a la vista: los vídeos por corte de Discogs ya están en la capa.
+4. Rellenar uptempo, schranz, nu style y hard house americano, y producciones contrastadas de los nombres de referencia de la mákina y el newstyle.

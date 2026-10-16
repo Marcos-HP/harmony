@@ -213,6 +213,15 @@ img, svg { max-width: 100%; }
 .sh-sec h3 { margin: 0; padding-top: 10px; border-top: 1px solid var(--ink); }
 .sh-sec .fine { margin: 0; }
 .src-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; }
+/* caras del disco (Discogs) */
+.sides { list-style: none; margin: 0; padding: 0; }
+.sides li { display: grid; grid-template-columns: 34px minmax(0, 1fr) 48px 104px; gap: 10px; align-items: center; padding: 7px 0; border-bottom: 1px solid var(--line); }
+.sd-pos { color: var(--ink-2); font-size: 11px; }
+.sd-t { min-width: 0; overflow-wrap: anywhere; font-size: 15px; }
+.sd-a { display: block; font-size: 13px; color: var(--ink-2); }
+.sd-d { color: var(--ink-2); font-size: 11px; text-align: right; }
+.sides .chip { justify-self: end; }
+@media (max-width: 520px) { .sides li { grid-template-columns: 28px minmax(0, 1fr) auto; } .sd-d { display: none; } }
 .rel { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 .rel-main { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 10px; text-align: left; align-items: start; width: 100%; padding: 6px; border: 1px solid var(--line); }
 .rel-main:hover { border-color: var(--ink); }

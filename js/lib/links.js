@@ -6,7 +6,7 @@
   const H = (window.H = window.H || {});
   const q = (s) => encodeURIComponent(s);
   const SCOPE = { recording: 'tema', release: 'lanzamiento', 'release-group': 'todas las ediciones' };
-  const NAMES = { bandcamp: 'Bandcamp', beatport: 'Beatport', deezer: 'Deezer', apple: 'Apple Music', soundcloud: 'SoundCloud', tidal: 'Tidal' };
+  const NAMES = { bandcamp: 'Bandcamp', beatport: 'Beatport', deezer: 'Deezer', apple: 'Apple Music', tidal: 'Tidal' };
 
   function query(t) {
     const main = t.artists[0] === 'various' ? '' : t.A.map((a) => a.name).join(' ');
@@ -23,7 +23,9 @@
       return {
         spotify: d.spotify ? direct('Spotify', d.spotify) : { name: 'Spotify', url: 'https://open.spotify.com/search/' + q(s), direct: false },
         ytmusic: yt ? { name: 'YouTube Music', url: 'https://music.youtube.com/watch?v=' + q(yt), direct: true, scope: 'tema' } : { name: 'YouTube Music', url: 'https://music.youtube.com/search?q=' + q(s), direct: false },
-        youtube: d.youtube ? direct('YouTube', d.youtube) : { name: 'YouTube', url: 'https://www.youtube.com/results?search_query=' + q(s), direct: false }
+        youtube: d.youtube ? direct('YouTube', d.youtube) : { name: 'YouTube', url: 'https://www.youtube.com/results?search_query=' + q(s), direct: false },
+        // en SoundCloud vive mucha mákina que no está en las plataformas: sesiones, remasters, subidas de los propios DJ
+        soundcloud: d.soundcloud ? direct('SoundCloud', d.soundcloud) : { name: 'SoundCloud', url: 'https://soundcloud.com/search/sounds?q=' + q(s), direct: false }
       };
     },
     // Otros servicios con enlace directo verificado (sin búsquedas: si no hay enlace, no aparecen)
@@ -44,6 +46,7 @@
       return {
         spotify: { name: 'Spotify', url: 'https://open.spotify.com/search/' + q(g.name), direct: false },
         youtube: { name: 'YouTube', url: 'https://www.youtube.com/results?search_query=' + q(g.name + ' mix'), direct: false },
+        soundcloud: { name: 'SoundCloud', url: 'https://soundcloud.com/search/sets?q=' + q(g.name), direct: false },
         discogs: { name: 'Discogs', url: 'https://www.discogs.com/search/?type=all&q=' + q(g.name), direct: false }
       };
     },

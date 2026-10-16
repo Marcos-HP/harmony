@@ -84,7 +84,7 @@
         <span class="sh-vin-pics">${t.vinylSleeve && t.cover ? `<span class="sh-vs">${C.cover(t, { src: t.vinylSleeve, kind: 'vinyl' })}</span>` : ''}${t.labelFromVinylEd ? `<span class="sh-lb">${C.discLabel(t)}</span>` : ''}</span>
         <figcaption class="mono">${orig} ${t.labelFromVinylEd ? 'En el plato gira su edición en vinilo' : 'Funda de su edición en vinilo'}: <a href="${V.url}" target="_blank" rel="noopener">«${e(V.title)}»${yr} ↗</a>${t.labelFromVinylEd ? '' : '. Sin foto de su galleta, en el plato gira el disco de Harmony'}.</figcaption></figure>`;
     }
-    if (t.labelArt) return `<figure class="sh-labelart"><span class="sh-lb">${C.discLabel(t)}</span><figcaption class="mono">Galleta del vinilo original${t.artFrom ? ` · <a href="${t.artFrom}" target="_blank" rel="noopener">Cover Art Archive ↗</a>` : ''}</figcaption></figure>`;
+    if (t.labelArt) return `<figure class="sh-labelart"><span class="sh-lb">${C.discLabel(t)}</span><figcaption class="mono">Galleta del vinilo original${t.artFrom ? ` · <a href="${t.artFrom}" target="_blank" rel="noopener">${t.artBy || 'Cover Art Archive'} ↗</a>` : ''}</figcaption></figure>`;
     if (V) return `<p class="fine sh-vinote">${orig} Hay edición en vinilo, <a href="${V.url}" target="_blank" rel="noopener">«${e(V.title)}»${yr} ↗</a>, pero sin foto de su galleta: en el plato gira el disco de Harmony.</p>`;
     if (t.noVinyl) return `<p class="fine sh-vinote">MusicBrainz no registra ninguna edición en vinilo de este tema: salió en ${e(H.A.FORMAT_ES[t.fmtKind])}. En el plato gira el disco de Harmony.</p>`;
     return '';
@@ -122,7 +122,7 @@
       <button class="ibtn sh-close" type="button" aria-label="Cerrar ficha">${U.icon('close')}</button>
     </header>
     <div class="sh-top">
-      <figure class="sh-sleeve">${C.cover(t)}<figcaption class="mono"><span class="cap-gen">Funda generada por Harmony a partir del género y el registro. No es la carátula original.</span><span class="cap-cov">${t.cover ? `Portada de la edición original${t.fmtKind && t.fmtKind !== 'vinyl' ? ' (' + H.A.FORMAT_ES[t.fmtKind] + ')' : ''}${t.artFrom ? ` · <a href="${t.artFrom}" target="_blank" rel="noopener">Cover Art Archive ↗</a>` : ''}` : t.vinylSleeve && t.vinylEd ? `Funda de su edición en vinilo · <a href="${t.vinylEd.artUrl}" target="_blank" rel="noopener">Cover Art Archive ↗</a>` : ''}</span></figcaption></figure>
+      <figure class="sh-sleeve">${C.cover(t)}<figcaption class="mono"><span class="cap-gen">Funda generada por Harmony a partir del género y el registro. No es la carátula original.</span><span class="cap-cov">${t.cover ? `Portada de la edición original${t.fmtKind && t.fmtKind !== 'vinyl' ? ' (' + H.A.FORMAT_ES[t.fmtKind] + ')' : ''}${t.artFrom ? ` · <a href="${t.artFrom}" target="_blank" rel="noopener">${t.artBy || 'Cover Art Archive'} ↗</a>` : ''}` : t.vinylSleeve && t.vinylEd ? `Funda de su edición en vinilo · <a href="${t.vinylEd.artUrl}" target="_blank" rel="noopener">Cover Art Archive ↗</a>` : ''}</span></figcaption></figure>
       <div class="sh-id">
         <p class="mono eyebrow">${e(t.G.F.name)} · ${C.kind(t)}</p>
         <h2 class="sh-title" id="sheet-title">${e(t.title)}</h2>
@@ -138,6 +138,11 @@
     <dl class="sh-data">${dl.map(([f, k, v, s]) => `<div class="${s === 'na' ? 'is-na' : ''}"><dt class="mono">${k}</dt><dd>${v}</dd><dd>${statusCell(f, s)}</dd></div>`).join('')}</dl>
     ${t.conflicts && t.conflicts.length ? `<div class="sh-conflict"><p class="mono">${C.mark('cf')} Fuentes en desacuerdo</p>${t.conflicts.map((c) => `<p>${FIELD[c.field] || c.field}: ${e(c.by || 'la fuente anterior')} dice <b>${e(c.ed)}</b>; ${e(c.otherBy)}, <b>${e(c.other)}</b>. Se muestra el primero hasta revisarlo.</p>`).join('')}</div>` : ''}
     ${vinylBlock(t)}
+    ${t.sides ? `<section class="sh-sec sh-sides">
+      <h3 class="mono">Caras del disco</h3>
+      <ol class="sides">${t.sides.map((x) => `<li><span class="mono sd-pos">${e(x.pos || '')}</span><span class="sd-t">${e(x.title)}${x.artist ? `<span class="sd-a">${e(x.artist)}</span>` : ''}</span><span class="mono sd-d">${e(x.duration || '')}</span>${x.video ? `<a class="chip chip-sm chip-direct" href="${x.video}" target="_blank" rel="noopener">YouTube <span class="mono">↗</span></a>` : '<span></span>'}</li>`).join('')}</ol>
+      <p class="fine">Según <a href="${t.DC.release.url}" target="_blank" rel="noopener">Discogs ↗</a>${t.DC.release.released ? ', edición de ' + e(fmtD(t.DC.release.released)) : ''}. ${t.videos ? `Los vídeos son los que Discogs asocia a esta edición, subidos por terceros: Harmony solo los enlaza${t.videos.length > t.sides.filter((x) => x.video).length ? `; hay ${t.videos.length - t.sides.filter((x) => x.video).length} más sin corte claro en la ficha de Discogs` : ''}.` : 'Discogs no asocia vídeos a esta edición.'}</p>
+    </section>` : ''}
     ${t.dz ? `<section class="sh-sec sh-listen">
       <h3 class="mono">Escuchar en Harmony</h3>
       <p class="fine"><b>Muestra de 30 s de Deezer</b>: ${e(H.Dz ? H.Dz.origin(t) : t.dz.title)}. ${t.dz.verified ? 'Es la misma grabación que registra MusicBrainz (mismo ISRC).' : t.dz.pinned ? '' : 'Emparejada por título y artista.'} ${e(t.dz.notes.filter((n) => !/^Misma grabación/.test(n)).join(' '))} Suena en el plato y en la mesa con pitch, ecualizador y BPM medido; uso privado, Harmony no la guarda.</p>
@@ -145,9 +150,9 @@
     </section>` : ''}
     <section class="sh-sec">
       <h3 class="mono">Escuchar fuera de Harmony</h3>
-      <div class="chips">${['spotify', 'ytmusic', 'youtube'].map((k) => `<a class="chip ${L[k].direct ? 'chip-direct' : ''}" href="${L[k].url}" target="_blank" rel="noopener">${L[k].name} <span class="mono">${L[k].direct ? (L[k].scope || 'enlace') + ' ↗' : 'búsqueda ↗'}</span></a>`).join('')}
+      <div class="chips">${['spotify', 'ytmusic', 'youtube', 'soundcloud'].map((k) => `<a class="chip ${L[k].direct ? 'chip-direct' : ''}" href="${L[k].url}" target="_blank" rel="noopener">${L[k].name} <span class="mono">${L[k].direct ? (L[k].scope || 'enlace') + ' ↗' : 'búsqueda ↗'}</span></a>`).join('')}
         ${more.map((l) => `<a class="chip chip-direct" href="${l.url}" target="_blank" rel="noopener">${l.name} <span class="mono">${l.scope || 'enlace'} ↗</span></a>`).join('')}</div>
-      <p class="fine">${anyDirect ? `Los enlaces directos vienen de MusicBrainz${t.dz ? ' y, el de Deezer, del emparejado de su muestra' : ''}; los marcados como «búsqueda» abren el buscador del servicio.` : 'Sin enlaces directos verificados todavía: cada botón abre una búsqueda en el servicio.'}</p>
+      <p class="fine">${anyDirect ? `Los enlaces directos vienen de MusicBrainz${t.DC ? ' y Discogs' : ''}${t.dz ? ' y, el de Deezer, del emparejado de su muestra' : ''}; los marcados como «búsqueda» abren el buscador del servicio.` : 'Sin enlaces directos verificados todavía: cada botón abre una búsqueda en el servicio.'}</p>
     </section>
     <section class="sh-sec">
       <h3 class="mono">Edición física</h3>

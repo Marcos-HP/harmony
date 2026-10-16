@@ -263,11 +263,12 @@ test('emparejado: subtítulos de himno y nombres con apóstrofo', () => {
 test('limpieza de art/: solo se quedan las imágenes que usa algún registro', () => {
   const root = tempProject();
   mkdirSync(join(root, 'art'), { recursive: true });
-  for (const f of ['usada.jpg', 'vieja.jpg', 'vinilo.jpg']) writeFileSync(join(root, 'art', f), JPEG);
+  for (const f of ['usada.jpg', 'vieja.jpg', 'vinilo.jpg', 'dc-123.jpg']) writeFileSync(join(root, 'art', f), JPEG);
   const records = { a: { status: 'matched', apply: true, release: { art: { front: { file: 'art/usada.jpg' } }, vinyl: { art: { label: { file: 'art/vinilo.jpg' } } } } } };
   assert.equal(M.pruneArt(records, { root }), 1);
   assert.ok(existsSync(join(root, 'art', 'usada.jpg')) && existsSync(join(root, 'art', 'vinilo.jpg')));
   assert.ok(!existsSync(join(root, 'art', 'vieja.jpg')));
+  assert.ok(existsSync(join(root, 'art', 'dc-123.jpg')), 'las portadas de Discogs no son suyas');
 });
 
 test('edición original: sin ninguna edición del artista es recopilatorio; a igual año, el sello del archivo', () => {

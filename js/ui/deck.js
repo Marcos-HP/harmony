@@ -687,7 +687,7 @@
     if (!els.source) return;
     let h = '';
     const L = t ? H.Links.listen(t) : null;
-    const outside = t ? `<div class="src-out"><span class="mono">Escuchar fuera · búsquedas</span><div class="chips">${['spotify', 'ytmusic', 'youtube'].map((k) => `<a class="chip" href="${L[k].url}" target="_blank" rel="noopener">${L[k].name} ↗</a>`).join('')}</div></div>` : '';
+    const outside = t ? `<div class="src-out"><span class="mono">Escuchar fuera · búsquedas</span><div class="chips">${['spotify', 'ytmusic', 'youtube', 'soundcloud'].map((k) => `<a class="chip" href="${L[k].url}" target="_blank" rel="noopener">${L[k].name} ↗</a>`).join('')}</div></div>` : '';
     if (S.state === 'error') {
       h = `<p class="src-state src-err"><b>No suena.</b> ${U.esc(S.error || 'Error de audio.')}</p>${outside}`;
     } else if (S.kind === 'pulse') {

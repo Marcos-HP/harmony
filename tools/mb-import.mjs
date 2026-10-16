@@ -706,7 +706,8 @@ export function pruneArt(records, { root = ROOT, log = () => {} } = {}) {
     for (const A of [R.art, R.vinyl && R.vinyl.art]) if (A) for (const k of ['front', 'label']) if (A[k] && A[k].file) keep.add(A[k].file.replace(/^art\//, ''));
   }
   let n = 0;
-  for (const f of readdirSync(dir)) if (/\.jpg$/i.test(f) && !keep.has(f)) { unlinkSync(join(dir, f)); n++; }
+  // las portadas de Discogs (dc-…) son cosa del importador de Discogs: aquí no se tocan
+  for (const f of readdirSync(dir)) if (/\.jpg$/i.test(f) && !/^dc-/.test(f) && !keep.has(f)) { unlinkSync(join(dir, f)); n++; }
   if (n) log(`  ${n} imágenes que ya no se usan, borradas de art/`);
   return n;
 }

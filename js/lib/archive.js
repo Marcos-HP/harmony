@@ -37,6 +37,12 @@
     return 'other';
   };
   A.FORMAT_ES = { vinyl: 'vinilo', cd: 'CD', digital: 'digital', cassette: 'casete', other: 'otro formato' };
+  /* País de la edición: MusicBrainz da el código ISO y Discogs el nombre en inglés */
+  const COUNTRY = { ES: 'España', Spain: 'España', NL: 'Países Bajos', Netherlands: 'Países Bajos', DE: 'Alemania', Germany: 'Alemania',
+    BE: 'Bélgica', Belgium: 'Bélgica', IT: 'Italia', Italy: 'Italia', GB: 'Reino Unido', UK: 'Reino Unido', US: 'EE. UU.',
+    FR: 'Francia', France: 'Francia', AT: 'Austria', Austria: 'Austria', AU: 'Australia', Australia: 'Australia', CA: 'Canadá', Canada: 'Canadá',
+    JP: 'Japón', Japan: 'Japón', PT: 'Portugal', Portugal: 'Portugal', XE: 'Europa', Europe: 'Europa', XW: 'Mundial', Worldwide: 'Mundial' };
+  A.countryES = (c) => (c ? COUNTRY[c] || c : null);
   A.TYPE_ES = { Single: 'Single', EP: 'EP', Album: 'Álbum', Broadcast: 'Emisión', Other: 'Otro' };
 
   A.mergeMB = function (d) {
@@ -46,7 +52,7 @@
       const first = d.sources[t.src[0]];
       const site = first ? first[0].split(' · ')[0].replace(/ \([A-Z]{2}\)$/, '') : 'la fuente citada';
       t.okBy = {}; t.ok.forEach((f) => (t.okBy[f] = site));
-      t.conflicts = []; t.links = t.links || {}; t.MB = null; t.cover = null; t.labelArt = null; t.artFrom = null; t.releaseInfo = null;
+      t.conflicts = []; t.links = t.links || {}; t.MB = null; t.cover = null; t.labelArt = null; t.artFrom = null; t.artBy = null; t.releaseInfo = null;
       t.fmtKind = A.formatKind(t.format); t.vinylEd = null; t.vinylSleeve = null; t.labelFromVinylEd = false; t.noVinyl = false;
       // desacuerdos entre fuentes editoriales: alt: { campo: [valor, clave de fuente] }
       Object.entries(t.alt || {}).forEach(([field, [val, key]]) => {
@@ -91,7 +97,7 @@
       set('release', R.title, loose);
       set('catno', (R.labels.find((l) => l.catno) || {}).catno, loose);
       if (R.formats.length) set('format', R.formats.map(A.fmtES).join(' + '), (a, b) => key(a) === key(b));
-      t.releaseInfo = { type: A.TYPE_ES[R.group.type] || R.group.type, country: R.country, date: R.date, selfReleased: R.selfReleased };
+      t.releaseInfo = { type: A.TYPE_ES[R.group.type] || R.group.type, country: A.countryES(R.country), date: R.date, selfReleased: R.selfReleased };
       // diseño real del disco (Cover Art Archive): primero la copia local que baja el importador.
       // La portada es la de la edición original, sea vinilo, CD o digital.
       // En el plato solo gira vinilo: la galleta sale del original si es vinilo, o de su primera edición en vinilo.
@@ -99,7 +105,7 @@
       t.fmtKind = A.formatKind(R.formats) || t.fmtKind;
       if (R.art) { t.cover = img(R.art.front); t.labelArt = t.fmtKind === 'vinyl' ? img(R.art.label) : null; }
       else t.cover = R.cover ? 'https://coverartarchive.org/release/' + R.id + '/front-250' : null;
-      if (t.cover || t.labelArt) t.artFrom = 'https://musicbrainz.org/release/' + R.id + '/cover-art';
+      if (t.cover || t.labelArt) { t.artFrom = 'https://musicbrainz.org/release/' + R.id + '/cover-art'; t.artBy = 'Cover Art Archive'; }
       const V = R.vinyl;
       if (V) {
         t.vinylEd = { title: V.title, date: V.date, url: 'https://musicbrainz.org/release/' + V.id, artUrl: 'https://musicbrainz.org/release/' + V.id + '/cover-art' };
@@ -113,6 +119,76 @@
       if (r.recording) { d.sources['mb-rec:' + t.id] = ['MusicBrainz · grabación «' + r.recording.title + '»', 'https://musicbrainz.org/recording/' + r.recording.id]; t.src.push('mb-rec:' + t.id); }
       d.sources['mb-rel:' + t.id] = ['MusicBrainz · lanzamiento «' + R.title + '»' + (R.date ? ', ' + R.date : ''), 'https://musicbrainz.org/release/' + R.id];
       t.src.push('mb-rel:' + t.id);
+    });
+    return stats;
+  };
+
+  /* ---------- capa de Discogs (js/data/dc.js, generada por tools/dc-import.mjs) ----------
+     Segunda fuente, misma regla que MusicBrainz: lo editorial se sustituye y lo contrastado que no coincide
+     se marca como desacuerdo. Va después de MusicBrainz, así que donde MusicBrainz ya contrastó un dato manda él.
+     Además aporta lo que MusicBrainz casi nunca tiene para la mákina: portada, caras del disco y vídeos por corte. */
+  A.mergeDC = function (d) {
+    const dc = d.dc;
+    const stats = { applied: 0, review: 0, missing: 0, conflicts: 0, covers: 0, date: dc && dc.generatedAt ? dc.generatedAt.slice(0, 10) : null };
+    d.tracks.forEach((t) => { t.DC = null; t.sides = null; t.videos = null; });
+    if (!dc || !dc.records) return stats;
+    const byKey = new Map(d.labels.map((l) => [key(l.name), l]));
+    const labelName = (id) => (d.labels.find((l) => l.id === id) || {}).name || id;
+    const relId = (u) => { const m = /discogs\.com\/(?:[^/]+\/)?release\/(\d+)/.exec(String(u || '')); return m ? m[1] : null; };
+    d.tracks.forEach((t) => {
+      const r = dc.records[t.id];
+      if (!r) return;
+      if (r.status === 'not-found') stats.missing++;
+      if (r.status === 'matched' && !r.apply) stats.review++;
+      if (r.status !== 'matched' || !r.apply) return;
+      stats.applied++;
+      const R = r.release;
+      t.DC = r;
+      const set = (field, val, same, show = (x) => x) => {
+        if (val == null || val === '') return;
+        const cur = t[field];
+        if (cur != null && t.ok.includes(field)) {
+          if (!same(cur, val)) { t.conflicts.push({ field, ed: show(cur), by: t.okBy[field], other: show(val), otherBy: 'Discogs' }); stats.conflicts++; return; }
+          if (!/Discogs/.test(t.okBy[field] || '')) t.okBy[field] = (t.okBy[field] ? t.okBy[field] + ' y ' : '') + 'Discogs';
+          return;
+        }
+        t[field] = val;
+        if (!t.ok.includes(field)) t.ok.push(field);
+        t.okBy[field] = 'Discogs';
+      };
+      set('year', R.year, (a, b) => a === b);
+      const L0 = R.labels.find((l) => l.name);
+      if (L0) {
+        let lab = byKey.get(key(L0.name)) || d.labels.find((l) => loose(l.name, L0.name));
+        if (!lab) {
+          lab = { id: 'dc-' + slug(L0.name), name: L0.name, country: null, founded: null, note: null, ok: [], src: [], discogs: L0.id || null };
+          d.labels.push(lab); byKey.set(key(L0.name), lab);
+        }
+        set('label', lab.id, (a, b) => a === b || loose(labelName(a), labelName(b)), labelName);
+      }
+      set('release', R.title, loose);
+      set('catno', (R.labels.find((l) => l.catno) || {}).catno, (a, b) => key(a).replace(/ /g, '') === key(b).replace(/ /g, ''));
+      if (R.formats.length) set('format', R.formats.join(' + '), (a, b) => key(a) === key(b));
+      if (!t.releaseInfo) t.releaseInfo = { type: R.type, country: A.countryES(R.country), date: R.released || (R.year ? String(R.year) : null), selfReleased: false };
+      else if (!t.releaseInfo.country && R.country) t.releaseInfo.country = A.countryES(R.country);
+      if (!t.MB) t.fmtKind = A.formatKind(R.formats) || t.fmtKind;
+      // portada: la de Cover Art Archive si la hay; si no, la imagen principal de la edición en Discogs
+      if (!t.cover && R.image && R.image.file) { t.cover = R.image.file; t.artFrom = R.url + '/image/'; t.artBy = 'Discogs'; stats.covers++; }
+      t.sides = R.tracks.length ? R.tracks : null;
+      t.videos = R.videos.length ? R.videos : null;
+      t.links = t.links || {};
+      if (!t.links.discogs) t.links.discogs = { url: R.url, scope: 'release' };
+      // un registro de tipo «tema» enlaza el vídeo de su corte
+      if (!t.links.youtube && t.kind === 'tema') {
+        const k = R.tracks.find((x) => x.video && loose(x.title, t.title));
+        if (k) t.links.youtube = { url: k.video, scope: 'recording' };
+      }
+      // fuente: si el catálogo ya cita esta misma edición, no se repite
+      const cited = t.src.some((s) => d.sources[s] && relId(d.sources[s][1]) === String(R.id));
+      if (!cited) {
+        d.sources['dc-rel:' + t.id] = ['Discogs · ' + R.artist + ', «' + R.title + '»' + (R.labels[0] && R.labels[0].catno ? ' (' + R.labels[0].catno + ')' : ''), R.url, stats.date];
+        t.src.push('dc-rel:' + t.id);
+      }
     });
     return stats;
   };
@@ -141,7 +217,7 @@
 
   A.init = function () {
     const d = H.data;
-    if (!d._merged) { A.mbStats = A.mergeMB(d); A.dzStats = A.mergeDZ(d); d._merged = true; }
+    if (!d._merged) { A.mbStats = A.mergeMB(d); A.dcStats = A.mergeDC(d); A.dzStats = A.mergeDZ(d); d._merged = true; }
     A.families = d.families; A.fam = byId(d.families);
     A.genres = d.genres; A.g = byId(d.genres);
     A.labels = d.labels; A.l = byId(d.labels);
@@ -394,6 +470,7 @@
       bpmMin: Math.min(...A.genres.map((g) => g.bpm[0])), bpmMax: Math.max(...A.genres.map((g) => g.bpm[1])),
       okYear: A.tracks.filter((t) => t.ok.includes('year')).length,
       mb: A.mbStats || { applied: 0, review: 0, missing: 0, conflicts: 0, date: null },
+      dc: A.dcStats || { applied: 0, review: 0, missing: 0, conflicts: 0, covers: 0, date: null },
       dz: A.dzStats || { applied: 0, verified: 0, review: 0, date: null }
     };
   };

@@ -67,7 +67,14 @@
     'w-skudero': ['Wikipedia · DJ Skudero', W + 'DJ_Skudero', '2026-10-13'],
     'w-ex3': ['Wikipedia · EX-3', W + 'EX-3', '2026-10-13'],
     'w-chimo': ['Wikipedia · Chimo Bayo', W + 'Chimo_Bayo', '2026-10-13'],
-    'ara-salas': ['Ara · ¿Cuál es la discoteca de tu vida?', 'https://es.ara.cat/domingo/discoteca-vida_130_5177275.html', '2026-10-13']
+    'ara-salas': ['Ara · ¿Cuál es la discoteca de tu vida?', 'https://es.ara.cat/domingo/discoteca-vida_130_5177275.html', '2026-10-13'],
+    // consultadas el 16-10-2026
+    'dc-anonim': ['Discogs · Anonim (artista)', 'https://www.discogs.com/artist/176855-Anonim', '2026-10-16'],
+    'dc-anonim-1': ['Discogs · Anonim Featuring Cyberia, Anonim (NM5007MX)', 'https://www.discogs.com/release/179811', '2026-10-16'],
+    'dc-anonim-2': ['Discogs · Anonim, Anonim Vol. 2 (NM5023MX)', 'https://www.discogs.com/release/372903', '2026-10-16'],
+    'dc-anonim-3': ['Discogs · Anonim, Anonim Vol. 3 (NM5087MX)', 'https://www.discogs.com/release/597824', '2026-10-16'],
+    'dc-anonim-4': ['Discogs · Anonim, Anonim 4 (71-429)', 'https://www.discogs.com/release/365589', '2026-10-16'],
+    'dc-anonim-5': ['Discogs · Anonim Feat. Paola, Anonim 5 (72769)', 'https://www.discogs.com/release/1030203', '2026-10-16']
   };
 
   // Sellos. `ok`: campos contrastados (country/founded/note).
@@ -113,7 +120,8 @@
     L('newstyle-corps', 'Newstyle Corps', { country: 'España', ok: ['note'], src: ['masia-djs', 'hk-bio'], note: 'Sello de la Masía, impulsado por Dr. Evil; Hermanos Kapiya entran en 2005.' }),
     L('pn-records', 'PN Records', { country: 'España', ok: ['note'], src: ['mkr-drevil'], note: 'De la discográfica Blanco y Negro Music.' }),
     L('bit-music', 'Bit Music', { country: 'España', ok: ['note'], src: ['wes-flying', 'wes-makina'], note: 'Sello de Divucsa. Editó el maxi Pont Aeri Vol. 4 (1999) y Other Side (2005).' }),
-    L('boy-records', 'Boy Records', { country: 'España', ok: ['note'], src: ['w-ex3'], note: 'El sello de EX-3.' })
+    L('boy-records', 'Boy Records', { country: 'España', ok: ['note'], src: ['w-ex3'], note: 'El sello de EX-3.' }),
+    L('djs-at-work', "DJ's At Work", { country: 'España', ok: ['country', 'note'], src: ['dc-anonim-1', 'dc-anonim-2', 'dc-anonim-3'], note: 'Editó los tres primeros Anonim (1996–1998), publicados por Trimusic y prensados por Tecnodisco.' })
   ];
 
   // Artistas. `real`: nombre real o miembros (solo si viene de la fuente).
@@ -182,7 +190,8 @@
     A('skudero', 'DJ Skudero', { origin: 'Terrassa (1976) · residente de Pont Aeri', real: 'Marc Escudero Gonzálvez', ok: ['origin', 'real'], src: ['w-skudero', 'wes-pontaeri'] }),
     A('xavi-metralla', 'Xavi Metralla', { origin: 'Terrassa (1977) · residente de Pont Aeri desde 1996', real: 'Xavier Escudero Gonzálvez, hermano de DJ Skudero', ok: ['origin', 'real'], src: ['wes-metralla'] }),
     A('ruboy', 'DJ Ruboy', { origin: 'España', real: 'Rubén Moreno', ok: ['real'], src: ['wes-flying'] }),
-    A('x-centrik', 'DJ X-Centrik', { real: 'También firma como David Xcentrik', ok: ['real'], src: ['wes-makina'] })
+    A('x-centrik', 'DJ X-Centrik', { real: 'También firma como David Xcentrik', ok: ['real'], src: ['wes-makina'] }),
+    A('anonim', 'Anonim', { origin: 'Montcada i Reixac', real: 'Proyecto de Toni Costa, DJ Konik', ok: ['origin', 'real'], src: ['dc-anonim'] })
   ];
 
   /* Registros. kind: tema | ep | album | recopilatorio
@@ -371,7 +380,19 @@
     T(101, 'other-side', 'Other Side', ['x-centrik'], 2005, 'makina', { dz: { track: 3533691281 }, bpm: 160, label: 'bit-music', ok: ['year', 'label'], src: ['wes-makina'], tags: ['clasico'],
       note: 'Con la voz de Marian Dacal. Fue el tema de mákina más vendido de 2006: más de 5.000 vinilos y presencia en más de 20 recopilatorios. Candidato a mejor tema de mákina en los DJOners 2007 de la revista Dj1.' }),
     T(102, 'extres-a-2', 'Extres-A-2', ['ex-3'], 1996, 'makina', { bpm: 160, label: 'boy-records', ok: ['year'], src: ['w-ex3'],
-      note: 'Número 2 en España: la secuela de Extres.' })
+      note: 'Número 2 en España: la secuela de Extres.' }),
+
+    /* Ampliación del 16-10-2026: la serie Anonim */
+    T(103, 'anonim', 'Anonim', ['anonim'], 1996, 'makina', { dc: { release: 179811 }, kind: 'lanzamiento', bpm: 160, label: 'djs-at-work', release: 'Anonim', catno: 'NM5007MX', format: 'Vinilo 12″', ok: ['year', 'label', 'release', 'catno', 'format'], src: ['dc-anonim-1', 'dc-anonim'], tags: ['joya'],
+      note: 'El primero de la serie, firmado como Anonim Featuring Cyberia: Cyberia es otro alias de Toni Costa. Maxi a 45 rpm con «Anonim (Up Mix)» en la cara A y, en la B, «Infinity» rehecho por DJ Konik y M.C. Redy. Anonim (Espai Inusual) era una sala de Montcada i Reixac abierta entre 1994 y 1998, y la serie lleva su nombre.' }),
+    T(104, 'anonim-vol-2', 'Anonim Vol. 2', ['anonim'], 1997, 'makina', { dc: { release: 372903 }, kind: 'lanzamiento', bpm: 160, label: 'djs-at-work', release: 'Anonim Vol. 2', catno: 'NM5023MX', format: 'Vinilo 12″', ok: ['year', 'label', 'release', 'catno', 'format'], src: ['dc-anonim-2', 'dc-anonim'],
+      note: 'Salió el 17 de noviembre de 1997. Dos mezclas de «Anonim-2» (Up y Cut), «Anonimak» y la primera entrega de «Moskito», que la serie irá arrastrando de disco en disco.' }),
+    T(105, 'anonim-vol-3', 'Anonim Vol. 3', ['anonim'], 1998, 'makina', { dc: { release: 597824 }, kind: 'lanzamiento', bpm: 165, label: 'djs-at-work', release: 'Anonim Vol. 3', catno: 'NM5087MX', format: 'Vinilo 12″', ok: ['year', 'label', 'release', 'catno', 'format'], src: ['dc-anonim-3', 'dc-anonim'], tags: ['clasico'],
+      note: 'El volumen más buscado de la serie. Cuatro versiones de «Anonim 3» —Vocal, Dragon, Double y una «Acapella Anonima»— más «Moskito 2 (Raid Version)». Compuesto y producido por Toni Costa en su estudio, Virthu-all Digital; la funda va dedicada, firmada por DJ Konik, a todos los que bailaban en Anonim.' }),
+    T(106, 'anonim-4', 'Anonim 4', ['anonim'], 1999, 'makina', { dc: { release: 365589 }, kind: 'lanzamiento', bpm: 165, label: 'bit-music', release: 'Anonim 4', catno: '71-429', format: 'Vinilo 12″', ok: ['year', 'label', 'release', 'catno', 'format'], src: ['dc-anonim-4', 'dc-anonim'],
+      note: 'La serie pasa a Bit Music. Además de «Anonim 4 (Up Mix)», recoge remezclas de los tres anteriores: «Anonim 3 (Over Out Mix)», «Anonim 2 (Intrack Remix)» y «Anonim 1 (Remix Hard)».' }),
+    T(107, 'anonim-5', 'Anonim 5', ['anonim'], 2007, 'makina', { dc: { release: 1030203 }, kind: 'lanzamiento', bpm: 160, label: 'bit-music', release: 'Anonim 5', catno: '72769', format: 'Vinilo 12″', ok: ['year', 'label', 'release', 'catno', 'format'], src: ['dc-anonim-5', 'dc-anonim'],
+      note: 'Ocho años después, firmado como Anonim Feat. Paola y coeditado con Chasis Records. El tema central es «Angel», cantado por Paola, con remezclas de Tss Proyect y Jordi Carreras; en la cara A va también «Moskito 7».' })
   ];
 
   // Rutas editoriales: el orden importa (es una secuencia).
@@ -395,12 +416,13 @@
     },
     {
       id: 'ruta-02', title: 'De la Ruta a la Masía', span: '1991–2011',
-      intro: 'Diez discos para seguir la línea española: del bakalao valenciano a la mákina de las salas catalanas y, de vuelta en Castellón, al newstyle de la Masía.',
+      intro: 'Once discos para seguir la línea española: del bakalao valenciano a la mákina de las salas catalanas y, de vuelta en Castellón, al newstyle de la Masía.',
       steps: [
         ['asi-me-gusta', 'Valencia, 1991: un DJ de la Ruta llega al número uno.'],
         ['extres', 'EX-3, desde Barcelona: la mákina encabeza la lista de singles.'],
         ['pildo', 'Pastis & Buenri, el reclamo de Xque, rozan el número uno.'],
         ['pont-aeri-vol-3', 'Pont Aeri pone su nombre a una serie de maxis.'],
+        ['anonim-vol-3', 'Montcada i Reixac: la sala Anonim tiene su propia serie, obra de DJ Konik.'],
         ['elements', 'Skudero, residente de Pont Aeri, número uno con un tema propio.'],
         ['flying-free', 'La mákina cantada sale de las salas y se vende en todas partes.'],
         ['impact', 'Dr. Evil en 2001, antes de que la Masía cambie de sonido.'],
