@@ -96,6 +96,8 @@ node tools/dc-import.mjs --no-art                           # sin bajar portadas
 ```
 En PowerShell: `$env:DISCOGS_TOKEN="xxxx"; node tools/dc-import.mjs`. El token es personal y gratis: discogs.com → Settings → Developers → *Generate new token*. Va en una cabecera, nunca en la URL: no acaba en la caché, ni en `dc.js`, ni en el informe.
 
+**Sin tocar tu ordenador**: el flujo de GitHub Actions *Importar desde Discogs* (`.github/workflows/discogs.yml`) ejecuta el importador en GitHub y sube `dc.js`, el informe y las portadas a la misma rama. Se lanza a mano desde la pestaña Actions o solo, al cambiar el catálogo en una rama que no sea `main`. Para que también busque, guarda el token como secreto `DISCOGS_TOKEN` del repositorio.
+
 Para lo que MusicBrainz casi no tiene: la mákina, el newstyle y lo que solo salió en vinilo en España. Para cada registro elige una edición, por este orden:
 1. **Fijada a mano** en el catálogo: `dc: { release: 597824 }` (o `{ master: … }`, `{ q: '…' }`, `{ skip: true }`).
 2. **La que enlaza MusicBrainz** desde el lanzamiento ya aplicado. No necesita token.
