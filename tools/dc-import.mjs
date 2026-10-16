@@ -109,21 +109,21 @@ const versionOf = (s) => [...String(s || '').matchAll(/\(([^)]*)\)/g)].map((m) =
 export function matchVideos(tracks, videos) {
   const out = tracks.map(() => null);
   const used = new Set();
-  const GENERIC = new Set(['mix', 'version', 'remix', 'rmx', 'original', 'rmx']);
+  const GENERIC = new Set(['mix', 'version', 'remix', 'rmx', 'original', 'dj', 'and', 'feat', 'ft']);
   // «ANONIM VOL.III (Dragon Mix)» es «Anonim 3 (Dragon Mix)»: fuera «vol.» y números romanos a cifras
   const plain = (s) => (' ' + s + ' ').replace(/ vol(ume|umen)? /g, ' ').replace(/ iii /g, ' 3 ').replace(/ ii /g, ' 2 ').replace(/ iv /g, ' 4 ').replace(/\s+/g, ' ').trim();
   const bases = tracks.map((t) => plain(baseTitle(t.title)));
-  const vws = tracks.map((t) => norm(versionOf(t.title)).split(' ').filter((w) => w && !GENERIC.has(w)));
+  const vws = tracks.map((t) => norm(versionOf(t.title)).split(' ').filter((w) => /[a-z]/.test(w) && !GENERIC.has(w)));
   const pairs = [];
   tracks.forEach((t, i) => {
     const b = bases[i], vw = vws[i];
     if (!b) return;
-    const shared = bases.filter((x) => x === b).length > 1;
     videos.forEach((v, j) => {
       const vt = ' ' + plain(norm(v.title)) + ' ';
       if (!vt.includes(' ' + b + ' ')) return;
       const hit = vw.filter((w) => vt.includes(' ' + w + ' ')).length;
-      if (shared && vw.length && !hit) return;
+      // un corte con versión («Remix Hard») necesita un vídeo que la nombre: «Makina Remember» no vale
+      if (vw.length && !hit) return;
       // el vídeo es claramente de otro corte con el mismo título base
       if (!hit && bases.some((x, k) => k !== i && x === b && vws[k].length && vws[k].every((w) => vt.includes(' ' + w + ' ')))) return;
       const dt = secs(t.duration) != null && v.duration ? Math.abs(secs(t.duration) - v.duration) : 60;

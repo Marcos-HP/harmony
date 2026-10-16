@@ -45,6 +45,7 @@ test('lectura: formatos, fechas, créditos y vídeos por corte', () => {
   const vids = [{ title: 'Anonim 3 (Dragon Mix)', duration: 505 }, { title: 'Anonim - Anonim', duration: 2300 }, { title: 'Moskito 2 (Raid Version)', duration: 321 }];
   assert.deepEqual(Z.matchVideos(tracks, vids), [null, 0, 2], 'con varias mezclas del mismo tema, la versión decide; el vídeo de la cara entera no va con ningún corte');
   assert.deepEqual(Z.matchVideos(tracks, [{ title: 'ANONIM VOL.III  (Dragon Mix)', duration: 505 }]), [null, 0, null], 'vol. y números romanos');
+  assert.deepEqual(Z.matchVideos([{ title: 'Anonim 1 (Remix Hard)' }, { title: "Dehlia (Remix '98)" }], [{ title: 'Anonim Vol. 1 - Makina Remember' }, { title: 'Skudero - Elements ( Dehlia )' }]), [null, 1], 'la versión con nombre tiene que aparecer; un año no cuenta');
   const t4 = [{ title: 'Anonim 4 (Up Mix)' }, { title: 'Anonim 3 (Over Out Mix)' }];
   assert.deepEqual(Z.matchVideos(t4, [{ title: 'Anonim 3 (Over Out Mix)' }, { title: 'Anonim - Anonim 4 (Up Mix)' }]), [1, 0]);
 });
