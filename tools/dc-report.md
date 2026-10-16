@@ -1,8 +1,8 @@
 # Discogs
 
-2026-10-16 18:52 UTC · 107 registros · 89 peticiones nuevas · 1 desde caché
+2026-10-16 19:21 UTC · 109 registros · 91 peticiones nuevas · 1 desde caché · 2 portadas descargadas
 
-- **Aplicados:** 87 (18 fijados, 69 vía MusicBrainz)
+- **Aplicados:** 89 (20 fijados, 69 vía MusicBrainz)
 - **Para revisar:** 0
 - **Sin encontrar:** 0 · **Sin buscar (falta token):** 20
 
@@ -97,6 +97,8 @@
 | HMY·105 Anonim Vol. 3 | [Anonim – Anonim Vol. 3](https://www.discogs.com/release/597824) · 1998 · Spain · fijada | DJ's At Work · NM5087MX | Vinilo 12″ | 5 · 3/4 | sin cambios · Edición fijada a mano en el catálogo. |
 | HMY·106 Anonim 4 | [Anonim – Anonim 4](https://www.discogs.com/release/365589) · 1999 · Spain · fijada | Bit Music · 71-429 | Vinilo 12″ | 4 · 3/7 | sin cambios · Edición fijada a mano en el catálogo. |
 | HMY·107 Anonim 5 | [Anonim Feat. Paola – Anonim 5](https://www.discogs.com/release/1030203) · 2007 · Spain · fijada | Chasis Records · 72769 | Vinilo 12″ | 4 · 2/5 | sin cambios · Edición fijada a mano en el catálogo. |
+| HMY·108 Anonim 6 | [Anonim Feat. Yesika – Anonim 6](https://www.discogs.com/release/6194851) · 2014-08-20 · Spain · fijada | DJ's At Work · DJ005 | Digital | 1 · 1/1 | sin cambios · Edición fijada a mano en el catálogo. Esta edición no es en vinilo (Digital). |
+| HMY·109 Anonim Vol. 7 | [Anonim Feat. DJ Konik & Ruben XXL – Anonim Vol.7](https://www.discogs.com/release/29756842) · 2024-02-07 · Spain · fijada | Dj's At Work · DJ2433 | Digital | 3 · 3/3 | sin cambios · Edición fijada a mano en el catálogo. Esta edición no es en vinilo (Digital). |
 
 ## Sin buscar
 

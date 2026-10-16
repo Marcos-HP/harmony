@@ -8,7 +8,7 @@
   H.data.dc = {
  "version": 1,
  "source": "Discogs",
- "generatedAt": "2026-10-16T18:52:50.891Z",
+ "generatedAt": "2026-10-16T19:21:17.932Z",
  "records": {
   "acid-tracks": {
    "kind": "release",
@@ -11075,6 +11075,152 @@
    },
    "notes": [
     "Edición fijada a mano en el catálogo."
+   ],
+   "apply": true,
+   "level": 3,
+   "confidence": "fijada",
+   "pinned": true,
+   "via": "catálogo"
+  },
+  "anonim-6": {
+   "kind": "release",
+   "status": "matched",
+   "release": {
+    "id": 6194851,
+    "title": "Anonim 6",
+    "artist": "Anonim Feat. Yesika",
+    "year": 2014,
+    "released": "2014-08-20",
+    "country": "Spain",
+    "labels": [
+     {
+      "name": "DJ's At Work",
+      "catno": "DJ005",
+      "id": 11734
+     }
+    ],
+    "formats": [
+     "Digital"
+    ],
+    "type": "Single",
+    "vinyl": false,
+    "compilation": false,
+    "styles": [
+     "Makina"
+    ],
+    "master": null,
+    "url": "https://www.discogs.com/release/6194851",
+    "tracks": [
+     {
+      "pos": "1",
+      "title": "Anonim 6",
+      "duration": "6:00",
+      "artist": null,
+      "video": "https://www.youtube.com/watch?v=_8x77soX9VU"
+     }
+    ],
+    "videos": [
+     {
+      "url": "https://www.youtube.com/watch?v=_8x77soX9VU",
+      "title": "Anonim 6 (Original Mix)",
+      "duration": 361
+     }
+    ],
+    "image": {
+     "url": "https://i.discogs.com/7_lmTQRtdvZQg-zRm7mvpTx5Yeh9cxQZZy6eOWxi7q4/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTYxOTQ4/NTEtMTQzMDk0NDI5/Mi0zNzg2LmpwZWc.jpeg",
+     "w": 600,
+     "h": 600,
+     "file": "art/dc-6194851.jpg"
+    }
+   },
+   "notes": [
+    "Edición fijada a mano en el catálogo.",
+    "Esta edición no es en vinilo (Digital)."
+   ],
+   "apply": true,
+   "level": 3,
+   "confidence": "fijada",
+   "pinned": true,
+   "via": "catálogo"
+  },
+  "anonim-vol-7": {
+   "kind": "release",
+   "status": "matched",
+   "release": {
+    "id": 29756842,
+    "title": "Anonim Vol.7",
+    "artist": "Anonim Feat. DJ Konik & Ruben XXL",
+    "year": 2024,
+    "released": "2024-02-07",
+    "country": "Spain",
+    "labels": [
+     {
+      "name": "Dj's At Work",
+      "catno": "DJ2433",
+      "id": 11734
+     }
+    ],
+    "formats": [
+     "Digital"
+    ],
+    "type": null,
+    "vinyl": false,
+    "compilation": false,
+    "styles": [
+     "Makina"
+    ],
+    "master": null,
+    "url": "https://www.discogs.com/release/29756842",
+    "tracks": [
+     {
+      "pos": "1",
+      "title": "Anonim Vol.7 (Original Mix)",
+      "duration": "8:52",
+      "artist": null,
+      "video": "https://www.youtube.com/watch?v=XGFD-xXnSqA"
+     },
+     {
+      "pos": "2",
+      "title": "Anonim Vol.7 (Without Voice)",
+      "duration": "8:52",
+      "artist": null,
+      "video": "https://www.youtube.com/watch?v=IGL7oNZyDtM"
+     },
+     {
+      "pos": "3",
+      "title": "Anonim Vol.7 (Radio Edit)",
+      "duration": "4:32",
+      "artist": null,
+      "video": "https://www.youtube.com/watch?v=yvRziiCpy-g"
+     }
+    ],
+    "videos": [
+     {
+      "url": "https://www.youtube.com/watch?v=XGFD-xXnSqA",
+      "title": "Anonim Vol.7",
+      "duration": 532
+     },
+     {
+      "url": "https://www.youtube.com/watch?v=IGL7oNZyDtM",
+      "title": "Anonim Vol.7 (Without Voice)",
+      "duration": 532
+     },
+     {
+      "url": "https://www.youtube.com/watch?v=yvRziiCpy-g",
+      "title": "Anonim Vol.7 (Radio Edit)",
+      "duration": 273
+     }
+    ],
+    "image": {
+     "url": "https://i.discogs.com/ZEu56KNF1Nzg46Qc76HDHBxYTzuyKVsrwYkQnlyWkx0/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI5NzU2/ODQyLTE3MDc1Njg0/NDMtMzU2MS5qcGVn.jpeg",
+     "w": 600,
+     "h": 600,
+     "file": "art/dc-29756842.jpg"
+    }
+   },
+   "notes": [
+    "Edición fijada a mano en el catálogo.",
+    "Esta edición no es en vinilo (Digital)."
    ],
    "apply": true,
    "level": 3,
