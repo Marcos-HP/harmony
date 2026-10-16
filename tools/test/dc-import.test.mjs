@@ -20,6 +20,7 @@ function project() {
   writeFileSync(join(root, 'js/data/genres.js'), readFileSync(join(ROOT, 'js/data/genres.js'), 'utf8'));
   const cat = readFileSync(join(ROOT, 'js/data/catalog.js'), 'utf8')
     .replace('dc: { release: 597824 }', 'dc: { release: 90003 }')
+    .replace(/dc: \{ release: (?!90003|365589)\d+ \}, /g, '')
     .replace('dc: { release: 365589 }', 'dc: { release: 90004 }');
   writeFileSync(join(root, 'js/data/catalog.js'), cat);
   // MusicBrainz ya enlaza Poing con su edición en Discogs
