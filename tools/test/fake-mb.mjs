@@ -20,7 +20,7 @@ export const CATALOG = `(function () {
     { id: 'rts', name: 'Rotterdam Termination Source' }, { id: 'josh-wink', name: 'Josh Wink' },
     { id: 'blutonium-boy', name: 'Blutonium Boy' }, { id: 'nadie', name: 'Artista Inexistente' },
     { id: 'surgeon', name: 'Surgeon' }, { id: 'headhunterz', name: 'Headhunterz' },
-    { id: 'paul-elstak', name: 'Paul Elstak' }, { id: 'zany', name: 'Zany' }
+    { id: 'paul-elstak', name: 'Paul Elstak' }, { id: 'zany', name: 'Zany' }, { id: 'hr', name: 'Human Resource' }
   ];
   const T = (n, id, title, artists, year, genre, o = {}) => ({ n, id, title, artists, year, genre, g2: null, bpm: null, label: null, release: null, kind: 'tema', format: null, catno: null, ok: [], src: [], note: null, tags: [], ...o });
   H.data.tracks = [
@@ -31,7 +31,9 @@ export const CATALOG = `(function () {
     T(5, 'surgeon-ep', 'Surgeon', ['surgeon'], 1994, 'hard-techno', { kind: 'ep' }),
     T(6, 'scrap', 'Scrap Attack', ['headhunterz'], 2009, 'hardstyle', { ok: ['year'], src: ['w-x'] }),
     T(7, 'rainbow', 'Rainbow in the Sky', ['paul-elstak'], 1995, 'happy-hardcore', { mb: { recording: '${id(700)}' } }),
-    T(8, 'skipme', 'Lo que sea', ['zany'], 2001, 'hardstyle', { mb: { skip: true } })
+    T(8, 'skipme', 'Lo que sea', ['zany'], 2001, 'hardstyle', { mb: { skip: true } }),
+    T(9, 'domi', 'Dominator', ['hr'], 1991, 'early-hardcore'),
+    T(10, 'late', 'Late Track', ['zany'], 1995, 'hardstyle')
   ];
 })();
 `;
@@ -56,6 +58,20 @@ const SEARCH = {
   ] }
 };
 
+/* Dominator: sus dos grabaciones solo salen en recopilatorios; el single está en su propio grupo */
+const VA = [{ name: 'Various Artists', joinphrase: '', artist: { id: '89ad4ac3-39f7-470e-963a-56509c546377', name: 'Various Artists' } }];
+SEARCH['Dominator'] = { recordings: [
+  { id: id(90), score: 100, title: 'Dominator', 'artist-credit': credit('Human Resource'), 'first-release-date': '1991',
+    releases: [{ ...rel(id(901), 'Turn Up the Bass 16', '1991', { type: 'Album', format: 'CD' }), 'artist-credit': VA }] },
+  { id: id(91), score: 98, title: 'Dominator', 'artist-credit': credit('Human Resource'), 'first-release-date': '1991',
+    releases: [rel(id(902), 'Thunderdome', '1992', { type: 'Album', secondary: ['Compilation'], format: 'CD' })] }
+] };
+
+SEARCH['Late Track'] = { recordings: [
+  { id: id(95), score: 100, title: 'Late Track', 'artist-credit': credit('Zany'), 'first-release-date': '1995',
+    releases: [{ ...rel(id(951), 'Late Track', '2002', { format: 'Digital Media' }), 'artist-credit': credit('Zany') }] }
+] };
+
 const RELEASES = {
   [id(101)]: { id: id(101), title: 'Poing', status: 'Official', date: '1992-06', country: 'NL',
     'label-info': [{ 'catalog-number': 'TEST 001', label: { id: id(5001), name: 'Rotterdam Records' } }],
@@ -77,6 +93,12 @@ const RELEASES = {
   [id(601)]: { id: id(601), title: 'Scrap Attack', status: 'Official', date: '2010', country: 'NL',
     'label-info': [{ 'catalog-number': 'TEST 006', label: { id: id(5006), name: '[no label]' } }], media: [{ format: 'Digital Media' }],
     'release-group': { id: id(1601), 'primary-type': 'Single', 'secondary-types': [] }, relations: [], 'cover-art-archive': { front: false } },
+  [id(1911)]: { id: id(1911), title: 'Dominator', status: 'Official', date: '1991', country: 'NL',
+    'label-info': [{ 'catalog-number': 'TEST 019', label: { id: id(5019), name: 'Arcade' } }], media: [{ format: '12" Vinyl', 'track-count': 2 }],
+    'release-group': { id: id(1901), title: 'Dominator / Dominator (Tribal Mix)', 'primary-type': 'Single', 'secondary-types': [], 'first-release-date': '1991', relations: [] },
+    relations: [], 'cover-art-archive': { front: false } },
+  [id(951)]: { id: id(951), title: 'Late Track', status: 'Official', date: '2002', country: 'XW', 'label-info': [], media: [{ format: 'Digital Media' }],
+    'release-group': { id: id(1951), title: 'Late Track', 'primary-type': 'Single', 'secondary-types': [], relations: [] }, relations: [], 'cover-art-archive': { front: false } },
   [id(701)]: { id: id(701), title: 'Rainbow in the Sky', status: 'Official', date: '1995', country: 'NL',
     'label-info': [{ 'catalog-number': 'TEST 007', label: { id: id(5007), name: 'Rotterdam Records' } }], media: [{ format: 'CD' }],
     'release-group': { id: id(1701), 'primary-type': 'Single', 'secondary-types': [] }, relations: [], 'cover-art-archive': { front: false } }
@@ -87,6 +109,12 @@ const LOOKUP_RECORDING = {
     releases: [rel(id(701), 'Rainbow in the Sky', '1995', { format: 'CD' }), rel(id(702), 'Rainbow in the Sky (Remixes)', '1996-03', { secondary: ['Remix'] }), rel(id(703), 'Rainbow in the Sky', '1996-05')] }
 };
 
+const RG_SEARCH_SINGLES = {
+  'Dominator': { 'release-groups': [
+    { id: id(1902), score: 100, title: 'Dominator (remixes)', 'primary-type': 'Single', 'secondary-types': ['Remix'], 'first-release-date': '1992', 'artist-credit': credit('Human Resource') },
+    { id: id(1901), score: 100, title: 'Dominator / Dominator (Tribal Mix)', 'primary-type': 'Single', 'first-release-date': '1991', 'artist-credit': credit('Human Resource') }
+  ] }
+};
 const RG_SEARCH = {
   'Surgeon': { 'release-groups': [
     { id: id(1401), score: 100, title: 'Surgeon', 'primary-type': 'EP', 'first-release-date': '1994', 'artist-credit': credit('Surgeon') },
@@ -95,6 +123,9 @@ const RG_SEARCH = {
 };
 
 const BROWSE = {
+  [id(1901)]: { releases: [
+    { id: id(1911), title: 'Dominator', status: 'Official', date: '1991', media: [{ format: '12" Vinyl' }], 'artist-credit': credit('Human Resource') }
+  ] },
   [id(1401)]: { releases: [
     { id: id(402), title: 'Surgeon', status: 'Official', date: '2004', media: [{ format: '12" Vinyl' }] },
     { id: id(401), title: 'Surgeon', status: 'Official', date: '1994', media: [{ format: '12" Vinyl' }] }
@@ -142,8 +173,10 @@ export function fakeFetch({ flaky = [] } = {}) {
       return ok(m && SEARCH[m[1]] ? SEARCH[m[1]] : { recordings: [] });
     }
     if (path === 'release-group') {
-      const m = q.match(/^releasegroup:"(.+?)" AND artist:"(.+?)"$/);
-      return ok(m && RG_SEARCH[m[1]] ? RG_SEARCH[m[1]] : { 'release-groups': [] });
+      const single = / AND \(primarytype:single OR primarytype:ep\)$/.test(q);
+      const m = q.replace(/ AND \(primarytype:single OR primarytype:ep\)$/, '').match(/^releasegroup:"(.+?)" AND artist:"(.+?)"$/);
+      const table = single ? RG_SEARCH_SINGLES : RG_SEARCH;
+      return ok(m && table[m[1]] ? table[m[1]] : { 'release-groups': [] });
     }
     if (path === 'release' && url.searchParams.get('release-group')) return ok(BROWSE[url.searchParams.get('release-group')] || { releases: [] });
     const lk = path.match(/^(release|recording|release-group)\/(.+)$/);

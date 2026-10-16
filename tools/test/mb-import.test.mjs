@@ -142,17 +142,28 @@ test('importación completa contra el servidor falso', async () => {
   assert.equal(records.rainbow.release.vinyl.art.label.file, 'art/' + id(703) + '-32.jpg');
   assert.equal(records.poing.release.vinyl, null, 'si el original ya es vinilo no se busca otro');
 
+  // 7b. solo en recopilatorios: prueba las dos grabaciones y acaba en su single (título doble «A / B»), no en el de remezclas
+  const d = records.domi;
+  assert.equal(d.release.id, id(1911));
+  assert.equal(d.apply, true);
+  assert.ok(d.notes.some((n) => /single/.test(n)));
+  assert.equal(d.year, 1991);
+
+  // 7c. la única edición propia es una reedición de 2002 de un tema de 1995: a revisar
+  assert.equal(records.late.apply, false);
+  assert.ok(records.late.notes.some((n) => /posterior a la primera aparición/.test(n)));
+
   // 8. omitido
   assert.equal(records.skipme.status, 'skipped');
   assert.equal(fetchImpl.calls.some((c) => c.url.includes('Lo%20que%20sea') || c.url.includes('Lo+que+sea')), false);
 
   // salidas
-  assert.ok(fetchImpl.calls.every((c) => c.ua === 'Harmony/0.3 ( test@example.org )'));
+  assert.ok(fetchImpl.calls.every((c) => c.ua === 'Harmony/0.4 ( test@example.org )'));
   const H = { window: {} }; vm.createContext(H);
   vm.runInContext(readFileSync(join(root, 'js/data/mb.js'), 'utf8'), H);
-  assert.equal(Object.keys(H.window.H.data.mb.records).length, 8);
+  assert.equal(Object.keys(H.window.H.data.mb.records).length, 10);
   const report = readFileSync(join(root, 'tools/mb-report.md'), 'utf8');
-  assert.match(report, /\*\*Aplicados:\*\* 5/);
+  assert.match(report, /\*\*Aplicados:\*\* 6/);
   assert.match(report, /\*\*en desacuerdo\*\*/);
   assert.match(report, /recording: '00000000-0000-4000-8000-000000000020'/);
   assert.match(report, /\[portada · galleta\]\(https:\/\/musicbrainz\.org\/release\/.+\/cover-art\)/);
@@ -166,7 +177,7 @@ test('importación completa contra el servidor falso', async () => {
   await M.run({ root, only: ['poing'], fetchImpl: fakeFetch(), minGap: 0, refresh: true, contact: 'x', log: quiet });
   const H2 = { window: {} }; vm.createContext(H2);
   vm.runInContext(readFileSync(join(root, 'js/data/mb.js'), 'utf8'), H2);
-  assert.equal(Object.keys(H2.window.H.data.mb.records).length, 8);
+  assert.equal(Object.keys(H2.window.H.data.mb.records).length, 10);
 });
 
 test('--offline sin caché no sale a la red', async () => {
@@ -183,8 +194,8 @@ test('respeta un segundo entre peticiones', async () => {
   const f = fakeFetch();
   const t0 = Date.now();
   await M.run({ root, only: ['make-it-loud'], fetchImpl: f, minGap: 150, log: quiet, write: false });
-  assert.equal(f.calls.length, 2);
-  assert.ok(Date.now() - t0 >= 150, 'dos peticiones separadas por minGap');
+  assert.equal(f.calls.length, 3, 'búsqueda, ediciones del tema y lanzamiento');
+  assert.ok(Date.now() - t0 >= 300, 'tres peticiones separadas por minGap');
 });
 
 test('formatos y edición en vinilo', () => {
@@ -220,4 +231,52 @@ test('--no-art: no descarga, pero anota las imágenes que ya están en disco', a
   const again = await M.run({ root, only: ['poing'], art: false, fetchImpl: fakeFetch(), minGap: 0, log: quiet });
   assert.equal(again.records.poing.release.art.front.file, 'art/' + id(101) + '-11.jpg');
   assert.equal(again.records.poing.release.art.label.file, undefined);
+});
+
+test('edición original: fuera recopilatorios sin marcar, emisiones, bandas sonoras y «Various Artists»', () => {
+  const VA = [{ name: 'Various Artists', artist: { id: '89ad4ac3-39f7-470e-963a-56509c546377', name: 'Various Artists' } }];
+  const ME = [{ name: 'Chimo Bayo', artist: { id: 'x', name: 'Chimo Bayo' } }];
+  const r = (id, date, o = {}) => ({ id, date, status: 'Official', 'artist-credit': o.ac || ME, 'release-group': { 'primary-type': o.type || 'Single', 'secondary-types': o.sec || [] }, media: [{ format: o.format || '12" Vinyl' }] });
+  const rels = [
+    r('va', '1990', { ac: VA, type: 'Album' }),
+    r('ost', '1989', { type: 'Album', sec: ['Soundtrack'] }),
+    r('radio', '1988', { type: 'Broadcast' }),
+    r('single', '1991')
+  ];
+  assert.equal(M.pickRelease(rels, { artists: ['Chimo Bayo'] }).id, 'single');
+  assert.equal(M.isCompilation(rels[0]), true);
+  const only = M.pickRelease([rels[0], rels[1]], { artists: ['Chimo Bayo'] });
+  assert.equal(only.fromCompilation, true, 'si solo hay recopilatorios, se marca');
+  // con varias ediciones propias, se prefiere la acreditada al artista
+  const other = r('remixer', '1990', { ac: [{ name: 'Otro', artist: { id: 'y', name: 'Otro' } }] });
+  assert.equal(M.pickRelease([other, r('own', '1991')], { artists: ['Chimo Bayo'] }).id, 'own');
+});
+
+test('emparejado: subtítulos de himno y nombres con apóstrofo', () => {
+  const ctx = { title: 'The World Will Shiver', artists: ['Angerfist'] };
+  const rr = M.rate({ title: 'The World Will Shiver (The Official Masters of Hardcore 2005 Anthem)', 'artist-credit': [{ name: 'Angerfist', artist: { name: 'Angerfist' } }] }, ctx);
+  assert.equal(rr.level, 3);
+  assert.ok(M.artistMatch(['Abel K Kaña'], [{ name: "Abel K'Kaña", artist: { name: "Abel K'Kaña" } }]).primary);
+  assert.ok(!M.artistMatch(['Zany'], [{ name: 'Zanyx', artist: { name: 'Zanyx' } }]).primary, 'una sola palabra no usa el atajo');
+});
+
+test('limpieza de art/: solo se quedan las imágenes que usa algún registro', () => {
+  const root = tempProject();
+  mkdirSync(join(root, 'art'), { recursive: true });
+  for (const f of ['usada.jpg', 'vieja.jpg', 'vinilo.jpg']) writeFileSync(join(root, 'art', f), JPEG);
+  const records = { a: { status: 'matched', apply: true, release: { art: { front: { file: 'art/usada.jpg' } }, vinyl: { art: { label: { file: 'art/vinilo.jpg' } } } } } };
+  assert.equal(M.pruneArt(records, { root }), 1);
+  assert.ok(existsSync(join(root, 'art', 'usada.jpg')) && existsSync(join(root, 'art', 'vinilo.jpg')));
+  assert.ok(!existsSync(join(root, 'art', 'vieja.jpg')));
+});
+
+test('edición original: sin ninguna edición del artista es recopilatorio; a igual año, el sello del archivo', () => {
+  const ac = (n) => [{ name: n, artist: { id: n, name: n } }];
+  const r = (id, date, o = {}) => ({ id, date, status: 'Official', 'artist-credit': o.ac, 'label-info': o.label ? [{ label: { name: o.label } }] : [], 'release-group': { 'primary-type': o.type || 'Album', 'secondary-types': [] }, media: [{ format: 'CD' }] });
+  const foreign = M.pickRelease([r('a', '2005', { ac: ac('Traxtorm Records'), type: 'Other' })], { artists: ['Angerfist'] });
+  assert.equal(foreign.fromCompilation, true);
+  const lic = r('ru', '2007', { ac: ac('Scooter'), label: 'Танцевальный рай' });
+  const orig = r('de', '2007-06-29', { ac: ac('Scooter'), label: 'Sheffield Tunes' });
+  assert.equal(M.pickRelease([lic, orig], { artists: ['Scooter'], labels: ['Sheffield Tunes'] }).id, 'de');
+  assert.equal(M.pickRelease([lic, orig], { artists: ['Scooter'] }).id, 'ru', 'sin sello en el archivo, manda la fecha');
 });
