@@ -127,6 +127,8 @@
      Segunda fuente, misma regla que MusicBrainz: lo editorial se sustituye y lo contrastado que no coincide
      se marca como desacuerdo. Va después de MusicBrainz, así que donde MusicBrainz ya contrastó un dato manda él.
      Además aporta lo que MusicBrainz casi nunca tiene para la mákina: portada, caras del disco y vídeos por corte. */
+  /* «Vinilo» y «Vinilo 12″» dicen lo mismo con distinto detalle */
+  const sameFormat = (a, b) => { const x = key(a), y = key(b); return x === y || x.startsWith(y + ' ') || y.startsWith(x + ' '); };
   A.mergeDC = function (d) {
     const dc = d.dc;
     const stats = { applied: 0, review: 0, missing: 0, conflicts: 0, covers: 0, date: dc && dc.generatedAt ? dc.generatedAt.slice(0, 10) : null };
@@ -148,8 +150,22 @@
         if (val == null || val === '') return;
         const cur = t[field];
         if (cur != null && t.ok.includes(field)) {
-          if (!same(cur, val)) { t.conflicts.push({ field, ed: show(cur), by: t.okBy[field], other: show(val), otherBy: 'Discogs' }); stats.conflicts++; return; }
+          if (!same(cur, val)) {
+            // contrastado solo con MusicBrainz: manda MusicBrainz (la edición enlazada puede ser otra prensa),
+            // salvo que la edición de Discogs se haya fijado a mano: entonces manda esa y se anota el desacuerdo
+            if (t.okBy[field] === 'MusicBrainz') {
+              if (!r.pinned) return;
+              t[field] = val; t.okBy[field] = 'Discogs';
+              t.conflicts.push({ field, ed: show(val), by: 'Discogs (edición fijada)', other: show(cur), otherBy: 'MusicBrainz' }); stats.conflicts++;
+              return;
+            }
+            // si MusicBrainz ya discrepaba con el mismo valor, Discogs se suma a esa discrepancia
+            const prev = t.conflicts.find((c) => c.field === field && same(c.other, show(val)));
+            if (prev) { if (!/Discogs/.test(prev.otherBy)) prev.otherBy += ' y Discogs'; return; }
+            t.conflicts.push({ field, ed: show(cur), by: t.okBy[field], other: show(val), otherBy: 'Discogs' }); stats.conflicts++; return;
+          }
           if (!/Discogs/.test(t.okBy[field] || '')) t.okBy[field] = (t.okBy[field] ? t.okBy[field] + ' y ' : '') + 'Discogs';
+          if (field === 'format' && String(val).length > String(cur).length) t.format = val;   // «Vinilo» → «Vinilo 12″»
           return;
         }
         t[field] = val;
@@ -157,7 +173,9 @@
         t.okBy[field] = 'Discogs';
       };
       set('year', R.year, (a, b) => a === b);
-      const L0 = R.labels.find((l) => l.name);
+      // con varios sellos (coediciones), vale el que ya figure en el archivo
+      const curLab = t.label ? labelName(t.label) : null;
+      const L0 = (curLab && R.labels.find((l) => l.name && loose(curLab, l.name))) || R.labels.find((l) => l.name);
       if (L0) {
         let lab = byKey.get(key(L0.name)) || d.labels.find((l) => loose(l.name, L0.name));
         if (!lab) {
@@ -168,10 +186,13 @@
       }
       set('release', R.title, loose);
       set('catno', (R.labels.find((l) => l.catno) || {}).catno, (a, b) => key(a).replace(/ /g, '') === key(b).replace(/ /g, ''));
-      if (R.formats.length) set('format', R.formats.join(' + '), (a, b) => key(a) === key(b));
+      if (R.formats.length) set('format', R.formats.join(' + '), sameFormat);
       if (!t.releaseInfo) t.releaseInfo = { type: R.type, country: A.countryES(R.country), date: R.released || (R.year ? String(R.year) : null), selfReleased: false };
       else if (!t.releaseInfo.country && R.country) t.releaseInfo.country = A.countryES(R.country);
-      if (!t.MB) t.fmtKind = A.formatKind(R.formats) || t.fmtKind;
+      // una edición fijada a mano en Discogs es la original: su formato y su portada mandan sobre MusicBrainz
+      const own = !t.MB || r.pinned;
+      if (own) t.fmtKind = A.formatKind(R.formats) || t.fmtKind;
+      if (r.pinned && t.MB && R.image && R.image.file) { t.cover = null; t.labelArt = null; t.vinylEd = null; t.vinylSleeve = null; t.labelFromVinylEd = false; t.noVinyl = false; }
       // portada: la de Cover Art Archive si la hay; si no, la imagen principal de la edición en Discogs
       if (!t.cover && R.image && R.image.file) { t.cover = R.image.file; t.artFrom = R.url + '/image/'; t.artBy = 'Discogs'; stats.covers++; }
       t.sides = R.tracks.length ? R.tracks : null;

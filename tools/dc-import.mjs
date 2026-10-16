@@ -110,7 +110,9 @@ export function matchVideos(tracks, videos) {
   const out = tracks.map(() => null);
   const used = new Set();
   const GENERIC = new Set(['mix', 'version', 'remix', 'rmx', 'original', 'rmx']);
-  const bases = tracks.map((t) => baseTitle(t.title));
+  // «ANONIM VOL.III (Dragon Mix)» es «Anonim 3 (Dragon Mix)»: fuera «vol.» y números romanos a cifras
+  const plain = (s) => (' ' + s + ' ').replace(/ vol(ume|umen)? /g, ' ').replace(/ iii /g, ' 3 ').replace(/ ii /g, ' 2 ').replace(/ iv /g, ' 4 ').replace(/\s+/g, ' ').trim();
+  const bases = tracks.map((t) => plain(baseTitle(t.title)));
   const vws = tracks.map((t) => norm(versionOf(t.title)).split(' ').filter((w) => w && !GENERIC.has(w)));
   const pairs = [];
   tracks.forEach((t, i) => {
@@ -118,7 +120,7 @@ export function matchVideos(tracks, videos) {
     if (!b) return;
     const shared = bases.filter((x) => x === b).length > 1;
     videos.forEach((v, j) => {
-      const vt = ' ' + norm(v.title) + ' ';
+      const vt = ' ' + plain(norm(v.title)) + ' ';
       if (!vt.includes(' ' + b + ' ')) return;
       const hit = vw.filter((w) => vt.includes(' ' + w + ' ')).length;
       if (shared && vw.length && !hit) return;
@@ -261,8 +263,11 @@ export async function importRecord(t, artistsById, ctx) {
 /* ------------------------------------------------------------ portadas */
 
 export const artFile = (id) => `art/dc-${id}.jpg`;
-export async function fetchArt(records, { root = ROOT, client, download = true, log = () => {} } = {}) {
-  const jobs = Object.values(records).filter((r) => r.status === 'matched' && r.apply && r.release && r.release.image);
+/* Solo hace falta la portada de Discogs si Cover Art Archive no tiene la del original (o si la edición se fijó a mano) */
+export async function fetchArt(records, { root = ROOT, client, download = true, mb = {}, log = () => {} } = {}) {
+  const caa = (id) => { const m = mb[id]; return !!(m && m.status === 'matched' && m.apply && m.release && m.release.art && m.release.art.front); };
+  const jobs = Object.entries(records).filter(([id, r]) => r.status === 'matched' && r.apply && r.release && r.release.image && (r.pinned || !caa(id))).map(([, r]) => r);
+  for (const r of Object.values(records)) if (r.release && r.release.image && !jobs.includes(r)) delete r.release.image.file;
   if (download && jobs.length) log(`\nPortadas: ${jobs.length} imágenes de Discogs…`);
   let fails = 0;
   for (const r of jobs) {
@@ -302,11 +307,12 @@ export function renderDataFile(records, meta) {
 }
 
 const cell = (s) => String(s ?? '—').replace(/\|/g, '\\|');
+const looseName = (a, b) => { const x = norm(a), y = norm(b); return !!x && !!y && (x === y || x.includes(y) || y.includes(x)); };
 /* Qué cambiaría en la ficha: lo editorial se sustituye, lo contrastado que no coincide se marca */
 export function diffRecord(t, r, data) {
   const R = r.release, out = [];
-  const L0 = R.labels[0];
   const lab = t.label ? (data.labels.find((l) => l.id === t.label) || {}).name : null;
+  const L0 = (lab && R.labels.find((l) => looseName(lab, l.name))) || R.labels[0];
   const cmp = (field, mine, theirs, same) => {
     if (theirs == null || theirs === '') return;
     if (mine == null || mine === '') out.push(`${field}: — → ${theirs}`);
@@ -316,7 +322,7 @@ export function diffRecord(t, r, data) {
   cmp('year', t.year, R.year, (a, b) => a === b);
   cmp('label', lab, L0 && L0.name, loose);
   cmp('catno', t.catno, L0 && L0.catno, (a, b) => norm(a).replace(/ /g, '') === norm(b).replace(/ /g, ''));
-  cmp('format', t.format, R.formats.join(' + '), (a, b) => norm(a) === norm(b));
+  cmp('format', t.format, R.formats.join(' + '), (a, b) => { const x = norm(a), y = norm(b); return x === y || x.startsWith(y + ' ') || y.startsWith(x + ' '); });
   return out;
 }
 
@@ -388,7 +394,7 @@ export async function run({ root = ROOT, only = null, refresh = false, offline =
     records[t.id] = r;
     log(progressLine(i, list.length, t, r));
   }
-  await fetchArt(records, { root, client, download: art && write, log });
+  await fetchArt(records, { root, client, download: art && write, mb, log });
   if (!only && write) pruneArt(records, { root, log });
   const meta = { generatedAt: new Date().toISOString(), ...client.stats() };
   const report = renderReport(records, data, meta);
