@@ -71,6 +71,10 @@ node tools/dz-import.mjs --only poing,mentasm                      # solo esos r
 node tools/dz-import.mjs --no-isrc                                 # sin comprobar ISRC en MusicBrainz
 node build.mjs
 ```
+También en GitHub, sin tu ordenador: Actions → *Importar muestras de Deezer* → Run workflow, con los ids en «only» (vacío = todo). Sube `dz.js` y el informe a la rama; después hay que relanzar *Publicar en GitHub Pages*.
+
+Anonim en Deezer (reediciones digitales de DJ's At Work): suenan *Anonim* (con *Infinity*, el remix de DJ Konik de la cara B), *Vol. 2* y *Vol. 3*, este con el *Over Out Radio Edit* porque el *Vocal Mix* no está disponible en España. *Anonim 4* y *5* no están.
+
 La API pública de Deezer no pide clave. El importador busca cada registro y guarda **solo el identificador** del tema en `js/data/dz.js`; nunca audio ni la URL de la muestra, que caduca a los pocos minutos. Al darle a play, la web pide la URL fresca a Deezer (JSONP, porque su API no admite otra cosa desde el navegador), descarga la muestra (su servidor la sirve con CORS) y la pasa al motor como si fuera un archivo: pitch de vinilo, ecualizador, filtro, BPM medido y forma de onda. Vive solo en la memoria de la pestaña.
 
 **Qué se aplica**
