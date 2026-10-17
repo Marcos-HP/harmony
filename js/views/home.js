@@ -14,7 +14,7 @@
 
     root.innerHTML = `
     <section class="hero wrap">
-      <p class="hero-kicker mono"><span>Archivo n.º 01</span><span>Edición 0.3 · ${date}</span><span class="hide-sm">Lado A</span></p>
+      <p class="hero-kicker mono"><span>Archivo n.º 01</span><span>Edición 0.4 · ${date}</span><span class="hide-sm">Lado A</span></p>
       <h1 class="wordmark" aria-label="Harmony"><svg viewBox="0 0 1000 150" preserveAspectRatio="xMinYMin meet" aria-hidden="true"><text x="0" y="132" class="wm-t">HARMONY</text></svg></h1>
       <p class="hero-credits mono">
         <span>${s.tracks} registros</span><span>${s.genres} géneros</span><span>${s.artists} artistas</span><span>${s.labels} sellos</span><span>${s.yearMin}—${s.yearMax}</span><span>${s.bpmMin}—${s.bpmMax} BPM</span>${s.mb.applied ? `<span>${s.mb.applied} contrastados con MusicBrainz</span>` : ''}${s.dz.applied ? `<span>${s.dz.applied} con muestra de 30 s</span>` : ''}
