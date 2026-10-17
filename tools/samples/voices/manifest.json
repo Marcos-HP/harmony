@@ -395,6 +395,34 @@
    "speed": 236
   },
   {
+   "id": "yahoo-a",
+   "text": "Yahoo!",
+   "voice": "en-us+m3",
+   "pitch": 74,
+   "speed": 170
+  },
+  {
+   "id": "yahoo-b",
+   "text": "Yahoo!",
+   "voice": "en-us+m1",
+   "pitch": 82,
+   "speed": 170
+  },
+  {
+   "id": "yuju-a",
+   "text": "¡Yujuu!",
+   "voice": "es+m3",
+   "pitch": 74,
+   "speed": 170
+  },
+  {
+   "id": "yuju-b",
+   "text": "¡Yujuu!",
+   "voice": "es+m1",
+   "pitch": 82,
+   "speed": 170
+  },
+  {
    "id": "demon-a",
    "text": "Hardcore!",
    "voice": "en-us+m3",

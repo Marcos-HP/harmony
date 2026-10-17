@@ -67,6 +67,11 @@ export const SOURCES = [
   { id: 'ho-a', text: 'Ho!', voice: 'en-us+m3', pitch: 56, speed: 220 },
   { id: 'ho-b', text: 'Ho!', voice: 'en-us+m1', pitch: 64, speed: 240 },
   { id: 'ho-c', text: 'Ho!', voice: 'en-us+m7', pitch: 50, speed: 236 },
+  // gritos de alegría (voz propia de eSpeak: no imitan a ningún personaje)
+  { id: 'yahoo-a', text: 'Yahoo!', voice: 'en-us+m3', pitch: 74, speed: 170 },
+  { id: 'yahoo-b', text: 'Yahoo!', voice: 'en-us+m1', pitch: 82, speed: 170 },
+  { id: 'yuju-a', text: '¡Yujuu!', voice: 'es+m3', pitch: 74, speed: 170 },
+  { id: 'yuju-b', text: '¡Yujuu!', voice: 'es+m1', pitch: 82, speed: 170 },
   // para los efectos
   { id: 'demon-a', text: 'Hardcore!', voice: 'en-us+m3', pitch: 50, speed: 175 },
   { id: 'whisper-a', text: 'Harmony.', voice: 'en-us+whisper', pitch: 50, speed: 130 },

@@ -36,6 +36,9 @@
       "cola larga"
      ],
      "key": "F1",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": [
       170,
       190
@@ -64,6 +67,9 @@
       "moderno"
      ],
      "key": "G#1",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": [
       180,
       200
@@ -92,6 +98,9 @@
       "sala"
      ],
      "key": "D#1",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": [
       140,
       180
@@ -120,6 +129,9 @@
       "lo-fi"
      ],
      "key": "A1",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": [
       170,
       200
@@ -148,6 +160,9 @@
       "golpe"
      ],
      "key": "B1",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": [
       160,
       180
@@ -176,6 +191,9 @@
       "clic"
      ],
      "key": "E1",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": [
       170,
       190
@@ -204,6 +222,9 @@
       "masía"
      ],
      "key": "G#1",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": [
       145,
       155
@@ -231,6 +252,9 @@
       "afinado"
      ],
      "key": "G#1",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": [
       145,
       155
@@ -258,6 +282,9 @@
       "corta la mezcla"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": [
       145,
       155
@@ -285,6 +312,9 @@
       "redondo"
      ],
      "key": "F#1",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": [
       140,
       150
@@ -312,6 +342,9 @@
       "contratiempo"
      ],
      "key": "A1",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": [
       150,
       150
@@ -339,6 +372,9 @@
       "resonante"
      ],
      "key": "C#2",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": [
       200,
       230
@@ -366,6 +402,9 @@
       "corto"
      ],
      "key": "C#2",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": [
       200,
       250
@@ -393,6 +432,9 @@
       "cola alta"
      ],
      "key": "D2",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": [
       200,
       230
@@ -420,6 +462,9 @@
       "zumbido"
      ],
      "key": "D#2",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": [
       200,
       240
@@ -447,6 +492,9 @@
       "distorsión"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": [
       200,
       230
@@ -474,6 +522,9 @@
       "reverb"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": null,
      "duration": 0.549,
      "channels": 2,
@@ -498,6 +549,9 @@
       "reverb cortada"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": null,
      "duration": 0.29,
      "channels": 2,
@@ -522,6 +576,9 @@
       "seca"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": null,
      "duration": 0.4,
      "channels": 1,
@@ -546,6 +603,9 @@
       "saturada"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": null,
      "duration": 0.34,
      "channels": 2,
@@ -570,6 +630,9 @@
       "capas"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": null,
      "duration": 0.503,
      "channels": 1,
@@ -594,6 +657,9 @@
       "seco"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": null,
      "duration": 0.06,
      "channels": 1,
@@ -618,6 +684,9 @@
       "metálico"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": null,
      "duration": 0.124,
      "channels": 1,
@@ -642,6 +711,9 @@
       "offbeat"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": null,
      "duration": 0.675,
      "channels": 2,
@@ -666,6 +738,9 @@
       "ping"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": null,
      "duration": 0.699,
      "channels": 2,
@@ -690,6 +765,9 @@
       "estéreo"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": null,
      "duration": 2.661,
      "channels": 2,
@@ -715,6 +793,9 @@
       "1 compás"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": [
       180,
       180
@@ -742,6 +823,9 @@
       "1 compás"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": [
       200,
       200
@@ -769,6 +853,9 @@
       "bajada"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": [
       180,
       180
@@ -796,6 +883,9 @@
       "reverb"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": null,
      "duration": 3.134,
      "channels": 2,
@@ -820,6 +910,9 @@
       "crash"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": null,
      "duration": 2.9,
      "channels": 2,
@@ -844,6 +937,9 @@
       "grave"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": null,
      "duration": 2.2,
      "channels": 1,
@@ -868,6 +964,9 @@
       "barrido"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": null,
      "duration": 3.305,
      "channels": 2,
@@ -892,6 +991,9 @@
       "entrada"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": null,
      "duration": 2.2,
      "channels": 2,
@@ -916,6 +1018,9 @@
       "transición"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": [
       180,
       180
@@ -943,6 +1048,9 @@
       "2 compases"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": [
       180,
       180
@@ -970,6 +1078,9 @@
       "2 compases"
      ],
      "key": "C3",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": [
       180,
       180
@@ -997,6 +1108,9 @@
       "eco"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": null,
      "duration": 2.864,
      "channels": 2,
@@ -1021,6 +1135,9 @@
       "ping-pong"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": null,
      "duration": 0.597,
      "channels": 2,
@@ -1046,6 +1163,9 @@
       "pwm"
      ],
      "key": "C3",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": null,
      "duration": 1.3,
      "channels": 2,
@@ -1070,6 +1190,9 @@
       "metal"
      ],
      "key": "F#3",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": null,
      "duration": 1.1,
      "channels": 2,
@@ -1095,8 +1218,8 @@
    "origin": "Frases y gritos: voz sintética de eSpeak NG 1.53 (programa libre, GPL-3.0) procesada en tools/samples/ (Harmony). Coros: síntesis por formantes de Harmony. Sin grabaciones de personas ni samples de terceros.",
    "credits": "Harmony · voz de base: eSpeak NG",
    "note": "voz de base: eSpeak NG",
-   "count": 38,
-   "bytes": 9610236,
+   "count": 40,
+   "bytes": 9984912,
    "samples": [
     {
      "id": "harmony-02/mc-hardcore",
@@ -1112,6 +1235,9 @@
       "eco"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": [
       170,
       200
@@ -1140,6 +1266,9 @@
       "eco"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": [
       200,
       230
@@ -1167,6 +1296,9 @@
       "doblada"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": [
       145,
       155
@@ -1195,6 +1327,9 @@
       "eco largo"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": null,
      "duration": 1.811,
      "channels": 2,
@@ -1219,6 +1354,9 @@
       "público"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": null,
      "duration": 1.26,
      "channels": 2,
@@ -1243,6 +1381,9 @@
       "antes del drop"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": null,
      "duration": 1.256,
      "channels": 2,
@@ -1267,6 +1408,9 @@
       "arranque"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": null,
      "duration": 1.289,
      "channels": 2,
@@ -1291,6 +1435,9 @@
       "corta"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": null,
      "duration": 0.977,
      "channels": 2,
@@ -1315,6 +1462,9 @@
       "muy saturada"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": null,
      "duration": 1.113,
      "channels": 2,
@@ -1340,6 +1490,9 @@
       "eco"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": null,
      "duration": 1.094,
      "channels": 2,
@@ -1365,6 +1518,9 @@
       "eco"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": [
       150,
       150
@@ -1393,6 +1549,9 @@
       "eco"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": [
       150,
       150
@@ -1421,6 +1580,9 @@
       "saturada"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": [
       170,
       190
@@ -1449,6 +1611,9 @@
       "a tempo"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": [
       150,
       150
@@ -1477,6 +1642,9 @@
       "a tempo"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": [
       150,
       150
@@ -1505,6 +1673,9 @@
       "eco"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": null,
      "duration": 1.009,
      "channels": 2,
@@ -1529,6 +1700,9 @@
       "doblada"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": null,
      "duration": 1.06,
      "channels": 2,
@@ -1553,6 +1727,9 @@
       "muy saturada"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": null,
      "duration": 1.334,
      "channels": 2,
@@ -1578,6 +1755,9 @@
       "eco"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": null,
      "duration": 1.319,
      "channels": 2,
@@ -1603,6 +1783,9 @@
       "eco"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": [
       165,
       180
@@ -1630,6 +1813,9 @@
       "doblada"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": null,
      "duration": 1.134,
      "channels": 2,
@@ -1654,6 +1840,9 @@
       "estéreo"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": null,
      "duration": 1.066,
      "channels": 2,
@@ -1678,6 +1867,9 @@
       "gabber"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": null,
      "duration": 1.05,
      "channels": 2,
@@ -1701,6 +1893,9 @@
       "grupo"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": null,
      "duration": 1.084,
      "channels": 2,
@@ -1725,6 +1920,9 @@
       "corto"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": null,
      "duration": 1.079,
      "channels": 2,
@@ -1735,6 +1933,61 @@
      "truePeakDb": -1,
      "rmsDb": -17.7,
      "centroid": 1109
+    },
+    {
+     "id": "harmony-02/shout-yahoo",
+     "slug": "shout-yahoo",
+     "name": "Grito «¡Yahoo!»",
+     "style": "general",
+     "type": "grito",
+     "cat": "voz",
+     "tags": [
+      "grito",
+      "alegría",
+      "salto",
+      "inglés"
+     ],
+     "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": null,
+     "duration": 1.043,
+     "channels": 2,
+     "bytes": 183956,
+     "file": "samples/harmony-02/shout-yahoo.wav",
+     "notes": "Grito de alegría con dos voces de eSpeak dobladas, un poco más agudas, con sala y eco. Voz propia: no imita a ningún personaje.",
+     "peakDb": -1.1,
+     "truePeakDb": -1,
+     "rmsDb": -15.6,
+     "centroid": 1706
+    },
+    {
+     "id": "harmony-02/shout-yuju",
+     "slug": "shout-yuju",
+     "name": "Grito «¡Yujuu!»",
+     "style": "general",
+     "type": "grito",
+     "cat": "voz",
+     "tags": [
+      "grito",
+      "alegría",
+      "castellano"
+     ],
+     "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": null,
+     "duration": 1.081,
+     "channels": 2,
+     "bytes": 190720,
+     "file": "samples/harmony-02/shout-yuju.wav",
+     "notes": "El mismo grito de alegría en castellano.",
+     "peakDb": -1.1,
+     "truePeakDb": -1,
+     "rmsDb": -15.1,
+     "centroid": 881
     },
     {
      "id": "harmony-02/shout-hey-x3",
@@ -1750,6 +2003,9 @@
       "tres golpes"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": [
       150,
       150
@@ -1778,6 +2034,9 @@
       "aviso"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": [
       180,
       180
@@ -1806,6 +2065,9 @@
       "lo-fi"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": null,
      "duration": 1.404,
      "channels": 1,
@@ -1831,6 +2093,9 @@
       "oscuro"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": null,
      "duration": 2.25,
      "channels": 2,
@@ -1856,6 +2121,9 @@
       "cortes"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": [
       180,
       180
@@ -1884,6 +2152,9 @@
       "Do menor"
      ],
      "key": "C3",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": null,
      "duration": 1.211,
      "channels": 2,
@@ -1909,6 +2180,9 @@
       "intro"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": null,
      "duration": 1.578,
      "channels": 2,
@@ -1934,6 +2208,9 @@
       "reverb"
      ],
      "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": null,
      "duration": 2.195,
      "channels": 2,
@@ -1959,6 +2236,9 @@
       "formantes"
      ],
      "key": "A3",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": null,
      "duration": 4.027,
      "channels": 2,
@@ -1984,6 +2264,9 @@
       "formantes"
      ],
      "key": "F#3",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": null,
      "duration": 3.803,
      "channels": 2,
@@ -2009,6 +2292,9 @@
       "formantes"
      ],
      "key": "C#4",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": null,
      "duration": 0.676,
      "channels": 2,
@@ -2034,6 +2320,9 @@
       "formantes"
      ],
      "key": "F#4",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": null,
      "duration": 0.65,
      "channels": 2,
@@ -2059,6 +2348,9 @@
       "gated reverb"
      ],
      "key": "G#3",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
      "bpm": null,
      "duration": 0.618,
      "channels": 2,
@@ -2069,6 +2361,2078 @@
      "truePeakDb": -1,
      "rmsDb": -15.2,
      "centroid": 435
+    }
+   ]
+  },
+  {
+   "id": "harmony-03",
+   "name": "Harmony 03",
+   "title": "Melodías y retro",
+   "version": "1.0.0",
+   "date": "2026-10-17",
+   "license": "CC0-1.0",
+   "licenseName": "CC0 1.0 (dominio público)",
+   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/deed.es",
+   "origin": "Melodías compuestas para Harmony y sintetizadas en tools/samples/ (Harmony). Sin grabaciones, sin samples de terceros y sin melodías de nadie.",
+   "credits": "Harmony",
+   "count": 39,
+   "bytes": 20343872,
+   "samples": [
+    {
+     "id": "harmony-03/hs-lead",
+     "slug": "hs-lead",
+     "name": "Lead hardstyle eufórico",
+     "style": "hardstyle",
+     "type": "melodía",
+     "cat": "loop",
+     "tags": [
+      "lead",
+      "supersierra",
+      "eufórico",
+      "kit hardstyle"
+     ],
+     "key": null,
+     "tonality": "Fa menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      150,
+      150
+     ],
+     "duration": 6.4,
+     "channels": 2,
+     "bytes": 1129004,
+     "file": "samples/harmony-03/hs-lead.wav",
+     "notes": "Melodía de 4 compases sobre Fam – Re♭ – La♭ – Mi♭: supersierra ancha con su octava, un poco saturada y empujada por el «sidechain», con sala y eco.",
+     "peakDb": -1.1,
+     "truePeakDb": -1,
+     "rmsDb": -7.5,
+     "centroid": 1422
+    },
+    {
+     "id": "harmony-03/hs-chords",
+     "slug": "hs-chords",
+     "name": "Acordes hardstyle",
+     "style": "hardstyle",
+     "type": "acordes",
+     "cat": "loop",
+     "tags": [
+      "acordes",
+      "supersierra",
+      "sidechain",
+      "kit hardstyle"
+     ],
+     "key": null,
+     "tonality": "Fa menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      150,
+      150
+     ],
+     "duration": 6.4,
+     "channels": 2,
+     "bytes": 1129004,
+     "file": "samples/harmony-03/hs-chords.wav",
+     "notes": "Fam – Re♭ – La♭ – Mi♭ en supersierra, bombeando en cada tiempo.",
+     "peakDb": -1.1,
+     "truePeakDb": -1,
+     "rmsDb": -10.4,
+     "centroid": 878
+    },
+    {
+     "id": "harmony-03/hs-arp",
+     "slug": "hs-arp",
+     "name": "Arpegio hardstyle",
+     "style": "hardstyle",
+     "type": "arpegio",
+     "cat": "loop",
+     "tags": [
+      "arpegio",
+      "pluck",
+      "semicorcheas",
+      "kit hardstyle"
+     ],
+     "key": null,
+     "tonality": "Fa menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      150,
+      150
+     ],
+     "duration": 6.4,
+     "channels": 2,
+     "bytes": 1129004,
+     "file": "samples/harmony-03/hs-arp.wav",
+     "notes": "Pluck en semicorcheas por las notas de cada acorde, con eco a corchea con puntillo.",
+     "peakDb": -1.3,
+     "truePeakDb": -1,
+     "rmsDb": -12,
+     "centroid": 1226
+    },
+    {
+     "id": "harmony-03/hs-reverse-bass",
+     "slug": "hs-reverse-bass",
+     "name": "Bajo inverso hardstyle",
+     "style": "hardstyle",
+     "type": "línea",
+     "cat": "bajo",
+     "tags": [
+      "reverse bass",
+      "contratiempo",
+      "kit hardstyle"
+     ],
+     "key": null,
+     "tonality": "Fa menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      150,
+      150
+     ],
+     "duration": 6.4,
+     "channels": 1,
+     "bytes": 564524,
+     "file": "samples/harmony-03/hs-reverse-bass.wav",
+     "notes": "Un bajo al revés en cada tiempo (Fa – Re♭ – La♭ – Mi♭) que crece y se corta antes del kick siguiente. Ponlo con un kick a negras.",
+     "peakDb": -1,
+     "truePeakDb": -1,
+     "rmsDb": -6.8,
+     "centroid": 80
+    },
+    {
+     "id": "harmony-03/hs-raw-lead",
+     "slug": "hs-raw-lead",
+     "name": "Lead raw hardstyle",
+     "style": "hardstyle",
+     "type": "melodía",
+     "cat": "loop",
+     "tags": [
+      "raw",
+      "saturado",
+      "lead"
+     ],
+     "key": null,
+     "tonality": "Fa menor",
+     "loop": true,
+     "bars": 2,
+     "bpm": [
+      150,
+      150
+     ],
+     "duration": 3.2,
+     "channels": 2,
+     "bytes": 564524,
+     "file": "samples/harmony-03/hs-raw-lead.wav",
+     "notes": "Frases cortas de cuadrada y sierra muy saturadas, un lado algo desafinado respecto al otro.",
+     "peakDb": -1.1,
+     "truePeakDb": -1,
+     "rmsDb": -8.9,
+     "centroid": 1005
+    },
+    {
+     "id": "harmony-03/hc-hoover-riff",
+     "slug": "hc-hoover-riff",
+     "name": "Riff hoover hardcore",
+     "style": "hardcore",
+     "type": "melodía",
+     "cat": "loop",
+     "tags": [
+      "hoover",
+      "riff",
+      "rave",
+      "kit hardcore"
+     ],
+     "key": null,
+     "tonality": "La menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      180,
+      180
+     ],
+     "duration": 5.333,
+     "channels": 2,
+     "bytes": 940844,
+     "file": "samples/harmony-03/hc-hoover-riff.wav",
+     "notes": "Riff de hoover sobre Lam – Fa – Sol – Mim: el mismo ritmo en cada compás, con la caída de tono del hoover en cada nota.",
+     "peakDb": -1,
+     "truePeakDb": -1,
+     "rmsDb": -8.6,
+     "centroid": 523
+    },
+    {
+     "id": "harmony-03/hc-piano",
+     "slug": "hc-piano",
+     "name": "Piano hardcore",
+     "style": "hardcore",
+     "type": "acordes",
+     "cat": "loop",
+     "tags": [
+      "piano",
+      "acordes",
+      "síncopa",
+      "kit hardcore"
+     ],
+     "key": null,
+     "tonality": "La menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      180,
+      180
+     ],
+     "duration": 5.333,
+     "channels": 2,
+     "bytes": 940844,
+     "file": "samples/harmony-03/hc-piano.wav",
+     "notes": "Acordes de piano sincopados (Lam – Fa – Sol – Mim) con sala.",
+     "peakDb": -1.1,
+     "truePeakDb": -1,
+     "rmsDb": -10.5,
+     "centroid": 651
+    },
+    {
+     "id": "harmony-03/hc-lead",
+     "slug": "hc-lead",
+     "name": "Lead hardcore",
+     "style": "hardcore",
+     "type": "melodía",
+     "cat": "loop",
+     "tags": [
+      "lead",
+      "saturado",
+      "kit hardcore"
+     ],
+     "key": null,
+     "tonality": "La menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      180,
+      180
+     ],
+     "duration": 5.333,
+     "channels": 2,
+     "bytes": 940844,
+     "file": "samples/harmony-03/hc-lead.wav",
+     "notes": "Melodía larga de 4 compases con lead saturado y supersierra.",
+     "peakDb": -1.1,
+     "truePeakDb": -1,
+     "rmsDb": -10.5,
+     "centroid": 1277
+    },
+    {
+     "id": "harmony-03/hc-happy-piano",
+     "slug": "hc-happy-piano",
+     "name": "Piano happy hardcore",
+     "style": "hardcore",
+     "type": "melodía",
+     "cat": "loop",
+     "tags": [
+      "happy hardcore",
+      "piano",
+      "mayor"
+     ],
+     "key": null,
+     "tonality": "Sol mayor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      180,
+      180
+     ],
+     "duration": 5.333,
+     "channels": 2,
+     "bytes": 940844,
+     "file": "samples/harmony-03/hc-happy-piano.wav",
+     "notes": "Sol – Re – Mim – Do: acordes a contratiempo y melodía arriba, todo piano.",
+     "peakDb": -1.2,
+     "truePeakDb": -1,
+     "rmsDb": -9.9,
+     "centroid": 1011
+    },
+    {
+     "id": "harmony-03/ut-screech-lead",
+     "slug": "ut-screech-lead",
+     "name": "Melodía screech uptempo",
+     "style": "uptempo",
+     "type": "melodía",
+     "cat": "loop",
+     "tags": [
+      "screech",
+      "lead",
+      "kit uptempo"
+     ],
+     "key": null,
+     "tonality": "Do# menor",
+     "loop": true,
+     "bars": 2,
+     "bpm": [
+      200,
+      200
+     ],
+     "duration": 2.4,
+     "channels": 2,
+     "bytes": 423404,
+     "file": "samples/harmony-03/ut-screech-lead.wav",
+     "notes": "Melodía con el chillido del uptempo (sierra por un paso banda resonante que barre). En Do#, como los kicks uptempo de Harmony 01.",
+     "peakDb": -1.2,
+     "truePeakDb": -1,
+     "rmsDb": -6.8,
+     "centroid": 986
+    },
+    {
+     "id": "harmony-03/ut-raw-stabs",
+     "slug": "ut-raw-stabs",
+     "name": "Golpes raw uptempo",
+     "style": "uptempo",
+     "type": "melodía",
+     "cat": "loop",
+     "tags": [
+      "raw",
+      "stabs",
+      "contratiempo",
+      "kit uptempo"
+     ],
+     "key": null,
+     "tonality": "Do# menor",
+     "loop": true,
+     "bars": 2,
+     "bpm": [
+      200,
+      200
+     ],
+     "duration": 2.4,
+     "channels": 2,
+     "bytes": 423404,
+     "file": "samples/harmony-03/ut-raw-stabs.wav",
+     "notes": "Golpes muy saturados entre kick y kick: Do#m y luego La / Si.",
+     "peakDb": -1.1,
+     "truePeakDb": -1,
+     "rmsDb": -12.8,
+     "centroid": 1008
+    },
+    {
+     "id": "harmony-03/ut-gated-chords",
+     "slug": "ut-gated-chords",
+     "name": "Acordes cortados uptempo",
+     "style": "uptempo",
+     "type": "acordes",
+     "cat": "loop",
+     "tags": [
+      "gated",
+      "acordes",
+      "kit uptempo"
+     ],
+     "key": null,
+     "tonality": "Do# menor",
+     "loop": true,
+     "bars": 2,
+     "bpm": [
+      200,
+      200
+     ],
+     "duration": 2.4,
+     "channels": 2,
+     "bytes": 423404,
+     "file": "samples/harmony-03/ut-gated-chords.wav",
+     "notes": "Do#m – La / Si en supersierra cortada a semicorcheas.",
+     "peakDb": -1.1,
+     "truePeakDb": -1,
+     "rmsDb": -13.2,
+     "centroid": 766
+    },
+    {
+     "id": "harmony-03/mk-lead",
+     "slug": "mk-lead",
+     "name": "Melodía mákina",
+     "style": "makina",
+     "type": "melodía",
+     "cat": "loop",
+     "tags": [
+      "lead",
+      "cuadrada",
+      "kit mákina"
+     ],
+     "key": null,
+     "tonality": "Re menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      175,
+      175
+     ],
+     "duration": 5.486,
+     "channels": 2,
+     "bytes": 967724,
+     "file": "samples/harmony-03/mk-lead.wav",
+     "notes": "Melodía sobre Rem – Si♭ – Do – La, con la séptima alzada (Do#) al final: cuadrada y sierras desafinadas con la octava de abajo.",
+     "peakDb": -1.2,
+     "truePeakDb": -1,
+     "rmsDb": -9.9,
+     "centroid": 1095
+    },
+    {
+     "id": "harmony-03/mk-arp",
+     "slug": "mk-arp",
+     "name": "Arpegio mákina",
+     "style": "makina",
+     "type": "arpegio",
+     "cat": "loop",
+     "tags": [
+      "arpegio",
+      "pluck",
+      "kit mákina"
+     ],
+     "key": null,
+     "tonality": "Re menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      175,
+      175
+     ],
+     "duration": 5.486,
+     "channels": 2,
+     "bytes": 967724,
+     "file": "samples/harmony-03/mk-arp.wav",
+     "notes": "Arpegio en semicorcheas por los acordes del kit, con eco a corchea.",
+     "peakDb": -1.3,
+     "truePeakDb": -1,
+     "rmsDb": -12.9,
+     "centroid": 1395
+    },
+    {
+     "id": "harmony-03/mk-bass",
+     "slug": "mk-bass",
+     "name": "Bajo mákina",
+     "style": "makina",
+     "type": "línea",
+     "cat": "bajo",
+     "tags": [
+      "bajo",
+      "contratiempo",
+      "kit mákina"
+     ],
+     "key": null,
+     "tonality": "Re menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      175,
+      175
+     ],
+     "duration": 5.486,
+     "channels": 1,
+     "bytes": 483884,
+     "file": "samples/harmony-03/mk-bass.wav",
+     "notes": "Bajo a contratiempo (Re – Si♭ – Do – La) con cuerpo de sub.",
+     "peakDb": -1,
+     "truePeakDb": -1,
+     "rmsDb": -8.4,
+     "centroid": 79
+    },
+    {
+     "id": "harmony-03/ns-lead",
+     "slug": "ns-lead",
+     "name": "Melodía newstyle",
+     "style": "newstyle",
+     "type": "melodía",
+     "cat": "loop",
+     "tags": [
+      "pluck",
+      "contratiempo",
+      "kit newstyle"
+     ],
+     "key": null,
+     "tonality": "Sol# menor",
+     "loop": true,
+     "bars": 2,
+     "bpm": [
+      150,
+      150
+     ],
+     "duration": 3.2,
+     "channels": 2,
+     "bytes": 564524,
+     "file": "samples/harmony-03/ns-lead.wav",
+     "notes": "Pluck brillante entre los kicks, sobre Sol#m – Mi / Fa#. En Sol#, como los kicks newstyle de Harmony 01.",
+     "peakDb": -1.3,
+     "truePeakDb": -1,
+     "rmsDb": -13.3,
+     "centroid": 1210
+    },
+    {
+     "id": "harmony-03/ns-stabs",
+     "slug": "ns-stabs",
+     "name": "Acordes newstyle",
+     "style": "newstyle",
+     "type": "acordes",
+     "cat": "loop",
+     "tags": [
+      "stabs",
+      "órgano",
+      "contratiempo",
+      "kit newstyle"
+     ],
+     "key": null,
+     "tonality": "Sol# menor",
+     "loop": true,
+     "bars": 2,
+     "bpm": [
+      150,
+      150
+     ],
+     "duration": 3.2,
+     "channels": 2,
+     "bytes": 564524,
+     "file": "samples/harmony-03/ns-stabs.wav",
+     "notes": "Órgano y supersierra a contratiempo.",
+     "peakDb": -1,
+     "truePeakDb": -1,
+     "rmsDb": -13.1,
+     "centroid": 459
+    },
+    {
+     "id": "harmony-03/tk-acid",
+     "slug": "tk-acid",
+     "name": "Línea acid",
+     "style": "techno",
+     "type": "línea",
+     "cat": "bajo",
+     "tags": [
+      "acid",
+      "303",
+      "ligados",
+      "kit techno"
+     ],
+     "key": null,
+     "tonality": "Mi menor",
+     "loop": true,
+     "bars": 2,
+     "bpm": [
+      144,
+      144
+     ],
+     "duration": 3.333,
+     "channels": 2,
+     "bytes": 588044,
+     "file": "samples/harmony-03/tk-acid.wav",
+     "notes": "Una sola voz de sierra con paso bajo resonante: acentos que abren el filtro y notas ligadas que deslizan el tono.",
+     "peakDb": -1.3,
+     "truePeakDb": -1,
+     "rmsDb": -8.5,
+     "centroid": 602
+    },
+    {
+     "id": "harmony-03/tk-dub-stab",
+     "slug": "tk-dub-stab",
+     "name": "Acorde dub techno",
+     "style": "techno",
+     "type": "acordes",
+     "cat": "loop",
+     "tags": [
+      "dub",
+      "stab",
+      "eco",
+      "kit techno"
+     ],
+     "key": null,
+     "tonality": "Mi menor",
+     "loop": true,
+     "bars": 2,
+     "bpm": [
+      144,
+      144
+     ],
+     "duration": 3.333,
+     "channels": 2,
+     "bytes": 588044,
+     "file": "samples/harmony-03/tk-dub-stab.wav",
+     "notes": "Mim7 corto y oscuro, con eco largo a corchea con puntillo y sala.",
+     "peakDb": -1,
+     "truePeakDb": -1,
+     "rmsDb": -15.6,
+     "centroid": 566
+    },
+    {
+     "id": "harmony-03/tk-rolling-bass",
+     "slug": "tk-rolling-bass",
+     "name": "Bajo rodante techno",
+     "style": "techno",
+     "type": "línea",
+     "cat": "bajo",
+     "tags": [
+      "rolling",
+      "bajo",
+      "kit techno"
+     ],
+     "key": null,
+     "tonality": "Mi menor",
+     "loop": true,
+     "bars": 2,
+     "bpm": [
+      144,
+      144
+     ],
+     "duration": 3.333,
+     "channels": 1,
+     "bytes": 294044,
+     "file": "samples/harmony-03/tk-rolling-bass.wav",
+     "notes": "Las tres semicorcheas entre kick y kick, en Mi 2.",
+     "peakDb": -1,
+     "truePeakDb": -1,
+     "rmsDb": -5.9,
+     "centroid": 97
+    },
+    {
+     "id": "harmony-03/tr-pad",
+     "slug": "tr-pad",
+     "name": "Pad hard trance",
+     "style": "trance",
+     "type": "acordes",
+     "cat": "loop",
+     "tags": [
+      "pad",
+      "supersierra",
+      "kit trance"
+     ],
+     "key": null,
+     "tonality": "La menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      140,
+      140
+     ],
+     "duration": 6.857,
+     "channels": 2,
+     "bytes": 1209644,
+     "file": "samples/harmony-03/tr-pad.wav",
+     "notes": "Lam – Fa – Do – Sol con entrada lenta y el filtro abriéndose, sala grande.",
+     "peakDb": -1,
+     "truePeakDb": -1,
+     "rmsDb": -9.8,
+     "centroid": 588
+    },
+    {
+     "id": "harmony-03/tr-gated",
+     "slug": "tr-gated",
+     "name": "Acordes cortados trance",
+     "style": "trance",
+     "type": "acordes",
+     "cat": "loop",
+     "tags": [
+      "gated",
+      "trance",
+      "kit trance"
+     ],
+     "key": null,
+     "tonality": "La menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      140,
+      140
+     ],
+     "duration": 6.857,
+     "channels": 2,
+     "bytes": 1209644,
+     "file": "samples/harmony-03/tr-gated.wav",
+     "notes": "Los mismos acordes cortados en semicorcheas.",
+     "peakDb": -1.1,
+     "truePeakDb": -1,
+     "rmsDb": -14.2,
+     "centroid": 683
+    },
+    {
+     "id": "harmony-03/music-box",
+     "slug": "music-box",
+     "name": "Caja de música",
+     "style": "general",
+     "type": "melodía",
+     "cat": "loop",
+     "tags": [
+      "campana",
+      "fm",
+      "intro"
+     ],
+     "key": null,
+     "tonality": "La menor",
+     "loop": true,
+     "bars": 2,
+     "bpm": [
+      150,
+      150
+     ],
+     "duration": 3.2,
+     "channels": 2,
+     "bytes": 564524,
+     "file": "samples/harmony-03/music-box.wav",
+     "notes": "Campanas FM con eco y sala: para intros y partes tranquilas.",
+     "peakDb": -1.4,
+     "truePeakDb": -1,
+     "rmsDb": -10.3,
+     "centroid": 1648
+    },
+    {
+     "id": "harmony-03/stab-minor",
+     "slug": "stab-minor",
+     "name": "Stab menor (Do m)",
+     "style": "general",
+     "type": "stab",
+     "cat": "fx",
+     "tags": [
+      "stab",
+      "acorde",
+      "rave"
+     ],
+     "key": "C4",
+     "tonality": "Do menor",
+     "loop": false,
+     "bars": null,
+     "bpm": null,
+     "duration": 1.169,
+     "channels": 2,
+     "bytes": 206312,
+     "file": "samples/harmony-03/stab-minor.wav",
+     "notes": "Órgano y supersierra en Do menor, corto, con sala.",
+     "peakDb": -1,
+     "truePeakDb": -1,
+     "rmsDb": -14.1,
+     "centroid": 787
+    },
+    {
+     "id": "harmony-03/stab-major",
+     "slug": "stab-major",
+     "name": "Stab mayor (Do)",
+     "style": "general",
+     "type": "stab",
+     "cat": "fx",
+     "tags": [
+      "stab",
+      "acorde",
+      "rave"
+     ],
+     "key": "C4",
+     "tonality": "Do mayor",
+     "loop": false,
+     "bars": null,
+     "bpm": null,
+     "duration": 1.162,
+     "channels": 2,
+     "bytes": 204956,
+     "file": "samples/harmony-03/stab-major.wav",
+     "notes": "El mismo stab en Do mayor.",
+     "peakDb": -1,
+     "truePeakDb": -1,
+     "rmsDb": -14.1,
+     "centroid": 790
+    },
+    {
+     "id": "harmony-03/note-organ",
+     "slug": "note-organ",
+     "name": "Órgano de rave (Do 4)",
+     "style": "general",
+     "type": "nota",
+     "cat": "fx",
+     "tags": [
+      "órgano",
+      "nota",
+      "rave"
+     ],
+     "key": "C4",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": null,
+     "duration": 1.143,
+     "channels": 2,
+     "bytes": 201608,
+     "file": "samples/harmony-03/note-organ.wav",
+     "notes": "Seis armónicos con caída corta y clic de tecla: el órgano percusivo de las raves. Súbelo o bájalo con el tono del pad.",
+     "peakDb": -1,
+     "truePeakDb": -1,
+     "rmsDb": -15.4,
+     "centroid": 708
+    },
+    {
+     "id": "harmony-03/note-pluck",
+     "slug": "note-pluck",
+     "name": "Pluck (Do 4)",
+     "style": "general",
+     "type": "nota",
+     "cat": "fx",
+     "tags": [
+      "pluck",
+      "nota"
+     ],
+     "key": "C4",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": null,
+     "duration": 1.269,
+     "channels": 2,
+     "bytes": 223876,
+     "file": "samples/harmony-03/note-pluck.wav",
+     "notes": "Pluck con eco: cambia de nota con el tono del pad.",
+     "peakDb": -1.3,
+     "truePeakDb": -1,
+     "rmsDb": -19.3,
+     "centroid": 749
+    },
+    {
+     "id": "harmony-03/note-piano",
+     "slug": "note-piano",
+     "name": "Piano (Do 4)",
+     "style": "general",
+     "type": "nota",
+     "cat": "fx",
+     "tags": [
+      "piano",
+      "nota"
+     ],
+     "key": "C4",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": null,
+     "duration": 2.34,
+     "channels": 2,
+     "bytes": 412852,
+     "file": "samples/harmony-03/note-piano.wav",
+     "notes": "Nota de piano sintetizado.",
+     "peakDb": -1,
+     "truePeakDb": -1,
+     "rmsDb": -16,
+     "centroid": 477
+    },
+    {
+     "id": "harmony-03/note-bell",
+     "slug": "note-bell",
+     "name": "Campana (Do 5)",
+     "style": "general",
+     "type": "nota",
+     "cat": "fx",
+     "tags": [
+      "campana",
+      "fm",
+      "nota"
+     ],
+     "key": "C5",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": null,
+     "duration": 4.254,
+     "channels": 2,
+     "bytes": 750448,
+     "file": "samples/harmony-03/note-bell.wav",
+     "notes": "Campana FM con sala.",
+     "peakDb": -1.1,
+     "truePeakDb": -1,
+     "rmsDb": -14,
+     "centroid": 1161
+    },
+    {
+     "id": "harmony-03/note-sub",
+     "slug": "note-sub",
+     "name": "Sub (Do 2)",
+     "style": "general",
+     "type": "bajo",
+     "cat": "bajo",
+     "tags": [
+      "sub",
+      "nota",
+      "grave"
+     ],
+     "key": "C2",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": null,
+     "duration": 0.962,
+     "channels": 1,
+     "bytes": 84892,
+     "file": "samples/harmony-03/note-sub.wav",
+     "notes": "Seno en Do 2 con un poco de saturación.",
+     "peakDb": -1,
+     "truePeakDb": -1,
+     "rmsDb": -4.2,
+     "centroid": 68
+    },
+    {
+     "id": "harmony-03/note-lead",
+     "slug": "note-lead",
+     "name": "Lead supersierra (Do 4)",
+     "style": "hardstyle",
+     "type": "nota",
+     "cat": "fx",
+     "tags": [
+      "lead",
+      "supersierra",
+      "nota"
+     ],
+     "key": "C4",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": null,
+     "duration": 2.047,
+     "channels": 2,
+     "bytes": 361056,
+     "file": "samples/harmony-03/note-lead.wav",
+     "notes": "Una nota larga de supersierra con sala: con el tono del pad, para tocar melodías con las teclas.",
+     "peakDb": -1,
+     "truePeakDb": -1,
+     "rmsDb": -9.4,
+     "centroid": 628
+    },
+    {
+     "id": "harmony-03/retro-jump",
+     "slug": "retro-jump",
+     "name": "Salto 8 bits",
+     "style": "general",
+     "type": "retro",
+     "cat": "fx",
+     "tags": [
+      "8 bits",
+      "videojuego",
+      "salto"
+     ],
+     "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": null,
+     "duration": 0.232,
+     "channels": 1,
+     "bytes": 20506,
+     "file": "samples/harmony-03/retro-jump.wav",
+     "notes": "Pulso al 25 % que sube de 180 a 900 Hz.",
+     "peakDb": -1.3,
+     "truePeakDb": -1,
+     "rmsDb": -7.9,
+     "centroid": 1051
+    },
+    {
+     "id": "harmony-03/retro-pickup",
+     "slug": "retro-pickup",
+     "name": "Recoger 8 bits",
+     "style": "general",
+     "type": "retro",
+     "cat": "fx",
+     "tags": [
+      "8 bits",
+      "videojuego",
+      "objeto"
+     ],
+     "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": null,
+     "duration": 0.187,
+     "channels": 1,
+     "bytes": 16518,
+     "file": "samples/harmony-03/retro-pickup.wav",
+     "notes": "Tres notas rápidas hacia arriba con pulso al 12,5 %.",
+     "peakDb": -1.7,
+     "truePeakDb": -1,
+     "rmsDb": -15,
+     "centroid": 5032
+    },
+    {
+     "id": "harmony-03/retro-power",
+     "slug": "retro-power",
+     "name": "Mejora 8 bits",
+     "style": "general",
+     "type": "retro",
+     "cat": "fx",
+     "tags": [
+      "8 bits",
+      "videojuego",
+      "subida"
+     ],
+     "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": null,
+     "duration": 0.812,
+     "channels": 1,
+     "bytes": 71662,
+     "file": "samples/harmony-03/retro-power.wav",
+     "notes": "Pulso que sube de 300 a 1500 Hz con un trémolo rápido de tono.",
+     "peakDb": -1.8,
+     "truePeakDb": -1,
+     "rmsDb": -3.6,
+     "centroid": 1811
+    },
+    {
+     "id": "harmony-03/retro-shot",
+     "slug": "retro-shot",
+     "name": "Disparo 8 bits",
+     "style": "general",
+     "type": "retro",
+     "cat": "fx",
+     "tags": [
+      "8 bits",
+      "videojuego",
+      "disparo"
+     ],
+     "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": null,
+     "duration": 0.142,
+     "channels": 1,
+     "bytes": 12568,
+     "file": "samples/harmony-03/retro-shot.wav",
+     "notes": "Pulso que cae de golpe y un chasquido de ruido de registro.",
+     "peakDb": -1.6,
+     "truePeakDb": -1,
+     "rmsDb": -6.4,
+     "centroid": 497
+    },
+    {
+     "id": "harmony-03/retro-boom",
+     "slug": "retro-boom",
+     "name": "Explosión 8 bits",
+     "style": "general",
+     "type": "retro",
+     "cat": "fx",
+     "tags": [
+      "8 bits",
+      "videojuego",
+      "explosión"
+     ],
+     "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": null,
+     "duration": 0.952,
+     "channels": 1,
+     "bytes": 84010,
+     "file": "samples/harmony-03/retro-boom.wav",
+     "notes": "Ruido de registro de 15 bits que se va haciendo más grave.",
+     "peakDb": -2.2,
+     "truePeakDb": -1,
+     "rmsDb": -10.5,
+     "centroid": 424
+    },
+    {
+     "id": "harmony-03/retro-game-over",
+     "slug": "retro-game-over",
+     "name": "Fin de partida 8 bits",
+     "style": "general",
+     "type": "retro",
+     "cat": "fx",
+     "tags": [
+      "8 bits",
+      "videojuego",
+      "perder"
+     ],
+     "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": null,
+     "duration": 0.964,
+     "channels": 1,
+     "bytes": 85102,
+     "file": "samples/harmony-03/retro-game-over.wav",
+     "notes": "Bajada cromática con pulso y triángulo.",
+     "peakDb": -1.5,
+     "truePeakDb": -1,
+     "rmsDb": -7.8,
+     "centroid": 502
+    },
+    {
+     "id": "harmony-03/retro-blip",
+     "slug": "retro-blip",
+     "name": "Menú 8 bits",
+     "style": "general",
+     "type": "retro",
+     "cat": "fx",
+     "tags": [
+      "8 bits",
+      "videojuego",
+      "interfaz"
+     ],
+     "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": null,
+     "duration": 0.123,
+     "channels": 1,
+     "bytes": 10902,
+     "file": "samples/harmony-03/retro-blip.wav",
+     "notes": "Dos notas muy cortas: el «bip» de un menú.",
+     "peakDb": -1.8,
+     "truePeakDb": -1,
+     "rmsDb": -17.3,
+     "centroid": 1375
+    },
+    {
+     "id": "harmony-03/retro-win",
+     "slug": "retro-win",
+     "name": "Victoria 8 bits",
+     "style": "general",
+     "type": "retro",
+     "cat": "fx",
+     "tags": [
+      "8 bits",
+      "videojuego",
+      "fanfarria"
+     ],
+     "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": null,
+     "duration": 0.506,
+     "channels": 1,
+     "bytes": 44632,
+     "file": "samples/harmony-03/retro-win.wav",
+     "notes": "Fanfarria corta en Sol mayor con pulso y triángulo.",
+     "peakDb": -1.5,
+     "truePeakDb": -1,
+     "rmsDb": -11,
+     "centroid": 1957
+    }
+   ]
+  },
+  {
+   "id": "harmony-04",
+   "name": "Harmony 04",
+   "title": "Más melodías",
+   "version": "1.0.0",
+   "date": "2026-10-17",
+   "license": "CC0-1.0",
+   "licenseName": "CC0 1.0 (dominio público)",
+   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/deed.es",
+   "origin": "Melodías compuestas para Harmony y sintetizadas en tools/samples/ (Harmony). Sin grabaciones, sin samples de terceros y sin melodías de nadie.",
+   "credits": "Harmony",
+   "count": 30,
+   "bytes": 26332950,
+   "samples": [
+    {
+     "id": "harmony-04/mk2-lead",
+     "slug": "mk2-lead",
+     "name": "Melodía mákina II",
+     "style": "makina",
+     "type": "melodía",
+     "cat": "loop",
+     "tags": [
+      "lead",
+      "cuadrada",
+      "kit mákina II"
+     ],
+     "key": null,
+     "tonality": "La menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      178,
+      178
+     ],
+     "duration": 5.393,
+     "channels": 2,
+     "bytes": 951416,
+     "file": "samples/harmony-04/mk2-lead.wav",
+     "notes": "Melodía en frases de 3 + 3 + 2 sobre Lam – Fa – Sol – Mi (con el Sol# de la menor armónica al final): cuadrada y sierras desafinadas.",
+     "peakDb": -1.3,
+     "truePeakDb": -1,
+     "rmsDb": -10.4,
+     "centroid": 1462
+    },
+    {
+     "id": "harmony-04/mk2-piano",
+     "slug": "mk2-piano",
+     "name": "Piano mákina II",
+     "style": "makina",
+     "type": "acordes",
+     "cat": "loop",
+     "tags": [
+      "piano",
+      "acordes",
+      "kit mákina II"
+     ],
+     "key": null,
+     "tonality": "La menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      178,
+      178
+     ],
+     "duration": 5.393,
+     "channels": 2,
+     "bytes": 951416,
+     "file": "samples/harmony-04/mk2-piano.wav",
+     "notes": "Acordes de piano en el ritmo 3 + 3 + 4 + 2 de cada compás.",
+     "peakDb": -1.1,
+     "truePeakDb": -1,
+     "rmsDb": -10.3,
+     "centroid": 945
+    },
+    {
+     "id": "harmony-04/mk2-bass",
+     "slug": "mk2-bass",
+     "name": "Bajo galopante mákina II",
+     "style": "makina",
+     "type": "línea",
+     "cat": "loop",
+     "tags": [
+      "bajo",
+      "galope",
+      "contratiempo",
+      "kit mákina II"
+     ],
+     "key": null,
+     "tonality": "La menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      178,
+      178
+     ],
+     "duration": 5.393,
+     "channels": 1,
+     "bytes": 475730,
+     "file": "samples/harmony-04/mk2-bass.wav",
+     "notes": "Dos semicorcheas tras cada contratiempo (la segunda más suave): La – Fa – Sol – Mi, pluck oscuro con sub.",
+     "peakDb": -1,
+     "truePeakDb": -1,
+     "rmsDb": -9.5,
+     "centroid": 74
+    },
+    {
+     "id": "harmony-04/mk2-bell",
+     "slug": "mk2-bell",
+     "name": "Campanas mákina II",
+     "style": "makina",
+     "type": "arpegio",
+     "cat": "loop",
+     "tags": [
+      "campana",
+      "fm",
+      "arpegio",
+      "kit mákina II"
+     ],
+     "key": null,
+     "tonality": "La menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      178,
+      178
+     ],
+     "duration": 5.393,
+     "channels": 2,
+     "bytes": 951416,
+     "file": "samples/harmony-04/mk2-bell.wav",
+     "notes": "Arpegio de campana FM en semicorcheas por las notas de cada acorde, con sala y eco.",
+     "peakDb": -1.6,
+     "truePeakDb": -1,
+     "rmsDb": -10.9,
+     "centroid": 1977
+    },
+    {
+     "id": "harmony-04/mk2-organ",
+     "slug": "mk2-organ",
+     "name": "Órgano mákina II",
+     "style": "makina",
+     "type": "acordes",
+     "cat": "loop",
+     "tags": [
+      "órgano",
+      "stab",
+      "contratiempo",
+      "kit mákina II"
+     ],
+     "key": null,
+     "tonality": "La menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      178,
+      178
+     ],
+     "duration": 5.393,
+     "channels": 2,
+     "bytes": 951416,
+     "file": "samples/harmony-04/mk2-organ.wav",
+     "notes": "Golpes de órgano de rave a contratiempo con los acordes del kit.",
+     "peakDb": -1.2,
+     "truePeakDb": -1,
+     "rmsDb": -13.4,
+     "centroid": 1330
+    },
+    {
+     "id": "harmony-04/mk3-hoover",
+     "slug": "mk3-hoover",
+     "name": "Hoover mákina III",
+     "style": "makina",
+     "type": "melodía",
+     "cat": "loop",
+     "tags": [
+      "hoover",
+      "lead",
+      "remember",
+      "kit mákina III"
+     ],
+     "key": null,
+     "tonality": "Mi menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      172,
+      172
+     ],
+     "duration": 5.581,
+     "channels": 2,
+     "bytes": 984604,
+     "file": "samples/harmony-04/mk3-hoover.wav",
+     "notes": "Melodía de hoover sobre Mim – Do – Re – Si, que acaba en la dominante (Re#): pulsos con ancho modulado y su caída de tono.",
+     "peakDb": -1.1,
+     "truePeakDb": -1,
+     "rmsDb": -8,
+     "centroid": 1006
+    },
+    {
+     "id": "harmony-04/mk3-arp",
+     "slug": "mk3-arp",
+     "name": "Arpegio mákina III",
+     "style": "makina",
+     "type": "arpegio",
+     "cat": "loop",
+     "tags": [
+      "arpegio",
+      "pluck",
+      "kit mákina III"
+     ],
+     "key": null,
+     "tonality": "Mi menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      172,
+      172
+     ],
+     "duration": 5.581,
+     "channels": 2,
+     "bytes": 984604,
+     "file": "samples/harmony-04/mk3-arp.wav",
+     "notes": "Pluck en semicorcheas por las notas de cada acorde, con eco a corchea con puntillo.",
+     "peakDb": -1.3,
+     "truePeakDb": -1,
+     "rmsDb": -12.9,
+     "centroid": 1506
+    },
+    {
+     "id": "harmony-04/mk3-bass",
+     "slug": "mk3-bass",
+     "name": "Bajo mákina III",
+     "style": "makina",
+     "type": "línea",
+     "cat": "loop",
+     "tags": [
+      "bajo",
+      "contratiempo",
+      "kit mákina III"
+     ],
+     "key": null,
+     "tonality": "Mi menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      172,
+      172
+     ],
+     "duration": 5.581,
+     "channels": 1,
+     "bytes": 492324,
+     "file": "samples/harmony-04/mk3-bass.wav",
+     "notes": "Bajo a contratiempo: Mi – Do – Re – Si.",
+     "peakDb": -1,
+     "truePeakDb": -1,
+     "rmsDb": -8.3,
+     "centroid": 87
+    },
+    {
+     "id": "harmony-04/mk3-stabs",
+     "slug": "mk3-stabs",
+     "name": "Golpes de órgano mákina III",
+     "style": "makina",
+     "type": "acordes",
+     "cat": "loop",
+     "tags": [
+      "órgano",
+      "stab",
+      "kit mákina III"
+     ],
+     "key": null,
+     "tonality": "Mi menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      172,
+      172
+     ],
+     "duration": 5.581,
+     "channels": 2,
+     "bytes": 984604,
+     "file": "samples/harmony-04/mk3-stabs.wav",
+     "notes": "Órgano a contratiempo con un golpe de más antes del último tiempo.",
+     "peakDb": -1.1,
+     "truePeakDb": -1,
+     "rmsDb": -13,
+     "centroid": 1070
+    },
+    {
+     "id": "harmony-04/hc2-lead",
+     "slug": "hc2-lead",
+     "name": "Himno hardcore II",
+     "style": "hardcore",
+     "type": "melodía",
+     "cat": "loop",
+     "tags": [
+      "lead",
+      "supersierra",
+      "himno",
+      "kit hardcore II"
+     ],
+     "key": null,
+     "tonality": "Fa# menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      190,
+      190
+     ],
+     "duration": 5.053,
+     "channels": 2,
+     "bytes": 891328,
+     "file": "samples/harmony-04/hc2-lead.wav",
+     "notes": "Melodía de himno sobre Fa#m – Re – La – Do#: supersierra saturada con su octava, sala y eco.",
+     "peakDb": -1.1,
+     "truePeakDb": -1,
+     "rmsDb": -7,
+     "centroid": 1652
+    },
+    {
+     "id": "harmony-04/hc2-piano",
+     "slug": "hc2-piano",
+     "name": "Piano hardcore II",
+     "style": "hardcore",
+     "type": "acordes",
+     "cat": "loop",
+     "tags": [
+      "piano",
+      "break",
+      "kit hardcore II"
+     ],
+     "key": null,
+     "tonality": "Fa# menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      190,
+      190
+     ],
+     "duration": 5.053,
+     "channels": 2,
+     "bytes": 891328,
+     "file": "samples/harmony-04/hc2-piano.wav",
+     "notes": "Acordes de piano sincopados para el break.",
+     "peakDb": -1.2,
+     "truePeakDb": -1,
+     "rmsDb": -10.2,
+     "centroid": 880
+    },
+    {
+     "id": "harmony-04/hc2-chords",
+     "slug": "hc2-chords",
+     "name": "Acordes cortados hardcore II",
+     "style": "hardcore",
+     "type": "acordes",
+     "cat": "loop",
+     "tags": [
+      "supersierra",
+      "gate",
+      "kit hardcore II"
+     ],
+     "key": null,
+     "tonality": "Fa# menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      190,
+      190
+     ],
+     "duration": 5.053,
+     "channels": 2,
+     "bytes": 891328,
+     "file": "samples/harmony-04/hc2-chords.wav",
+     "notes": "Acordes de supersierra cortados en semicorcheas.",
+     "peakDb": -1.1,
+     "truePeakDb": -1,
+     "rmsDb": -12.6,
+     "centroid": 905
+    },
+    {
+     "id": "harmony-04/hc2-arp",
+     "slug": "hc2-arp",
+     "name": "Arpegio hardcore II",
+     "style": "hardcore",
+     "type": "arpegio",
+     "cat": "loop",
+     "tags": [
+      "arpegio",
+      "pluck",
+      "kit hardcore II"
+     ],
+     "key": null,
+     "tonality": "Fa# menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      190,
+      190
+     ],
+     "duration": 5.053,
+     "channels": 2,
+     "bytes": 891328,
+     "file": "samples/harmony-04/hc2-arp.wav",
+     "notes": "Pluck corto en semicorcheas.",
+     "peakDb": -1.3,
+     "truePeakDb": -1,
+     "rmsDb": -13.2,
+     "centroid": 1382
+    },
+    {
+     "id": "harmony-04/ns2-lead",
+     "slug": "ns2-lead",
+     "name": "Melodía newstyle II",
+     "style": "newstyle",
+     "type": "melodía",
+     "cat": "loop",
+     "tags": [
+      "lead",
+      "contratiempo",
+      "kit newstyle II"
+     ],
+     "key": null,
+     "tonality": "Fa menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      150,
+      150
+     ],
+     "duration": 6.4,
+     "channels": 2,
+     "bytes": 1129004,
+     "file": "samples/harmony-04/ns2-lead.wav",
+     "notes": "Melodía que entra a contratiempo sobre Fam – Re♭ – Mi♭ – Do: cuadrada estrecha y sierras.",
+     "peakDb": -1.2,
+     "truePeakDb": -1,
+     "rmsDb": -11.7,
+     "centroid": 1240
+    },
+    {
+     "id": "harmony-04/ns2-bass",
+     "slug": "ns2-bass",
+     "name": "Bajo newstyle II",
+     "style": "newstyle",
+     "type": "línea",
+     "cat": "loop",
+     "tags": [
+      "bajo",
+      "contratiempo",
+      "kit newstyle II"
+     ],
+     "key": null,
+     "tonality": "Fa menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      150,
+      150
+     ],
+     "duration": 6.4,
+     "channels": 1,
+     "bytes": 564524,
+     "file": "samples/harmony-04/ns2-bass.wav",
+     "notes": "Bajo a contratiempo: Fa – Re♭ – Mi♭ – Do.",
+     "peakDb": -1,
+     "truePeakDb": -1,
+     "rmsDb": -8.4,
+     "centroid": 90
+    },
+    {
+     "id": "harmony-04/ns2-stabs",
+     "slug": "ns2-stabs",
+     "name": "Piano newstyle II",
+     "style": "newstyle",
+     "type": "acordes",
+     "cat": "loop",
+     "tags": [
+      "piano",
+      "stab",
+      "kit newstyle II"
+     ],
+     "key": null,
+     "tonality": "Fa menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      150,
+      150
+     ],
+     "duration": 6.4,
+     "channels": 2,
+     "bytes": 1129004,
+     "file": "samples/harmony-04/ns2-stabs.wav",
+     "notes": "Golpes cortos de piano a contratiempo.",
+     "peakDb": -1.2,
+     "truePeakDb": -1,
+     "rmsDb": -12.6,
+     "centroid": 754
+    },
+    {
+     "id": "harmony-04/ns2-bell",
+     "slug": "ns2-bell",
+     "name": "Campanas newstyle II",
+     "style": "newstyle",
+     "type": "arpegio",
+     "cat": "loop",
+     "tags": [
+      "campana",
+      "arpegio",
+      "kit newstyle II"
+     ],
+     "key": null,
+     "tonality": "Fa menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      150,
+      150
+     ],
+     "duration": 6.4,
+     "channels": 2,
+     "bytes": 1129004,
+     "file": "samples/harmony-04/ns2-bell.wav",
+     "notes": "Campanas en semicorcheas una octava arriba.",
+     "peakDb": -2.1,
+     "truePeakDb": -1,
+     "rmsDb": -11.2,
+     "centroid": 3085
+    },
+    {
+     "id": "harmony-04/ut2-screech",
+     "slug": "ut2-screech",
+     "name": "Screech uptempo II",
+     "style": "uptempo",
+     "type": "melodía",
+     "cat": "loop",
+     "tags": [
+      "screech",
+      "lead",
+      "kit uptempo II"
+     ],
+     "key": null,
+     "tonality": "Re menor",
+     "loop": true,
+     "bars": 2,
+     "bpm": [
+      210,
+      210
+     ],
+     "duration": 2.286,
+     "channels": 2,
+     "bytes": 403244,
+     "file": "samples/harmony-04/ut2-screech.wav",
+     "notes": "Melodía de screech sobre Rem – Si♭: sierra por un paso banda resonante que barre hacia abajo, muy saturada.",
+     "peakDb": -1.1,
+     "truePeakDb": -1,
+     "rmsDb": -6.7,
+     "centroid": 1114
+    },
+    {
+     "id": "harmony-04/ut2-raw",
+     "slug": "ut2-raw",
+     "name": "Riff raw uptempo II",
+     "style": "uptempo",
+     "type": "melodía",
+     "cat": "loop",
+     "tags": [
+      "raw",
+      "riff",
+      "kit uptempo II"
+     ],
+     "key": null,
+     "tonality": "Re menor",
+     "loop": true,
+     "bars": 2,
+     "bpm": [
+      210,
+      210
+     ],
+     "duration": 2.286,
+     "channels": 2,
+     "bytes": 403244,
+     "file": "samples/harmony-04/ut2-raw.wav",
+     "notes": "Riff corto de cuadrada y sierra muy saturadas.",
+     "peakDb": -1.1,
+     "truePeakDb": -1,
+     "rmsDb": -12.8,
+     "centroid": 987
+    },
+    {
+     "id": "harmony-04/ut2-chords",
+     "slug": "ut2-chords",
+     "name": "Acordes cortados uptempo II",
+     "style": "uptempo",
+     "type": "acordes",
+     "cat": "loop",
+     "tags": [
+      "supersierra",
+      "gate",
+      "kit uptempo II"
+     ],
+     "key": null,
+     "tonality": "Re menor",
+     "loop": true,
+     "bars": 2,
+     "bpm": [
+      210,
+      210
+     ],
+     "duration": 2.286,
+     "channels": 2,
+     "bytes": 403244,
+     "file": "samples/harmony-04/ut2-chords.wav",
+     "notes": "Rem y Si♭ en supersierra, cortados en un ritmo de 3 + 3 + 2.",
+     "peakDb": -1.1,
+     "truePeakDb": -1,
+     "rmsDb": -14.8,
+     "centroid": 749
+    },
+    {
+     "id": "harmony-04/hs2-lead",
+     "slug": "hs2-lead",
+     "name": "Lead hardstyle II",
+     "style": "hardstyle",
+     "type": "melodía",
+     "cat": "loop",
+     "tags": [
+      "lead",
+      "supersierra",
+      "eufórico",
+      "kit hardstyle II"
+     ],
+     "key": null,
+     "tonality": "Sol menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      150,
+      150
+     ],
+     "duration": 6.4,
+     "channels": 2,
+     "bytes": 1129004,
+     "file": "samples/harmony-04/hs2-lead.wav",
+     "notes": "Melodía eufórica sobre Solm – Mi♭ – Si♭ – Fa: supersierra ancha con su octava, empujada por el «sidechain».",
+     "peakDb": -1.1,
+     "truePeakDb": -1,
+     "rmsDb": -7.6,
+     "centroid": 1630
+    },
+    {
+     "id": "harmony-04/hs2-arp",
+     "slug": "hs2-arp",
+     "name": "Arpegio hardstyle II",
+     "style": "hardstyle",
+     "type": "arpegio",
+     "cat": "loop",
+     "tags": [
+      "arpegio",
+      "pluck",
+      "kit hardstyle II"
+     ],
+     "key": null,
+     "tonality": "Sol menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      150,
+      150
+     ],
+     "duration": 6.4,
+     "channels": 2,
+     "bytes": 1129004,
+     "file": "samples/harmony-04/hs2-arp.wav",
+     "notes": "Pluck en semicorcheas con eco a corchea con puntillo.",
+     "peakDb": -1.3,
+     "truePeakDb": -1,
+     "rmsDb": -11.6,
+     "centroid": 1429
+    },
+    {
+     "id": "harmony-04/hs2-reverse-bass",
+     "slug": "hs2-reverse-bass",
+     "name": "Bajo inverso hardstyle II",
+     "style": "hardstyle",
+     "type": "línea",
+     "cat": "loop",
+     "tags": [
+      "reverse bass",
+      "bajo",
+      "kit hardstyle II"
+     ],
+     "key": null,
+     "tonality": "Sol menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      150,
+      150
+     ],
+     "duration": 6.4,
+     "channels": 1,
+     "bytes": 564524,
+     "file": "samples/harmony-04/hs2-reverse-bass.wav",
+     "notes": "Bajo inverso en cada tiempo: Sol – Mi♭ – Si♭ – Fa, se corta justo antes del kick.",
+     "peakDb": -1,
+     "truePeakDb": -1,
+     "rmsDb": -7,
+     "centroid": 62
+    },
+    {
+     "id": "harmony-04/hs2-pad",
+     "slug": "hs2-pad",
+     "name": "Pad hardstyle II",
+     "style": "hardstyle",
+     "type": "acordes",
+     "cat": "loop",
+     "tags": [
+      "pad",
+      "supersierra",
+      "sidechain",
+      "kit hardstyle II"
+     ],
+     "key": null,
+     "tonality": "Sol menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      150,
+      150
+     ],
+     "duration": 6.4,
+     "channels": 2,
+     "bytes": 1129004,
+     "file": "samples/harmony-04/hs2-pad.wav",
+     "notes": "Acordes sostenidos de supersierra, bombeando en cada tiempo.",
+     "peakDb": -1.1,
+     "truePeakDb": -1,
+     "rmsDb": -10.5,
+     "centroid": 932
+    },
+    {
+     "id": "harmony-04/hh-lead",
+     "slug": "hh-lead",
+     "name": "Lead happy hardcore",
+     "style": "hardcore",
+     "type": "melodía",
+     "cat": "loop",
+     "tags": [
+      "happy hardcore",
+      "lead",
+      "mayor",
+      "kit happy hardcore"
+     ],
+     "key": null,
+     "tonality": "Re mayor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      175,
+      175
+     ],
+     "duration": 5.486,
+     "channels": 2,
+     "bytes": 967724,
+     "file": "samples/harmony-04/hh-lead.wav",
+     "notes": "Melodía alegre sobre Re – La – Sim – Sol: supersierra brillante con su octava.",
+     "peakDb": -1.1,
+     "truePeakDb": -1,
+     "rmsDb": -8.3,
+     "centroid": 1856
+    },
+    {
+     "id": "harmony-04/hh-piano",
+     "slug": "hh-piano",
+     "name": "Piano happy hardcore",
+     "style": "hardcore",
+     "type": "acordes",
+     "cat": "loop",
+     "tags": [
+      "happy hardcore",
+      "piano",
+      "kit happy hardcore"
+     ],
+     "key": null,
+     "tonality": "Re mayor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      175,
+      175
+     ],
+     "duration": 5.486,
+     "channels": 2,
+     "bytes": 967724,
+     "file": "samples/harmony-04/hh-piano.wav",
+     "notes": "Acordes de piano a contratiempo.",
+     "peakDb": -1.1,
+     "truePeakDb": -1,
+     "rmsDb": -10.9,
+     "centroid": 685
+    },
+    {
+     "id": "harmony-04/hh-bell",
+     "slug": "hh-bell",
+     "name": "Campanas happy hardcore",
+     "style": "hardcore",
+     "type": "arpegio",
+     "cat": "loop",
+     "tags": [
+      "happy hardcore",
+      "campana",
+      "arpegio",
+      "kit happy hardcore"
+     ],
+     "key": null,
+     "tonality": "Re mayor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      175,
+      175
+     ],
+     "duration": 5.486,
+     "channels": 2,
+     "bytes": 967724,
+     "file": "samples/harmony-04/hh-bell.wav",
+     "notes": "Arpegio de campanas en semicorcheas.",
+     "peakDb": -1.8,
+     "truePeakDb": -1,
+     "rmsDb": -11,
+     "centroid": 2711
+    },
+    {
+     "id": "harmony-04/tr2-lead",
+     "slug": "tr2-lead",
+     "name": "Lead hard trance II",
+     "style": "trance",
+     "type": "melodía",
+     "cat": "loop",
+     "tags": [
+      "lead",
+      "supersierra",
+      "notas largas",
+      "kit hard trance II"
+     ],
+     "key": null,
+     "tonality": "Re menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      140,
+      140
+     ],
+     "duration": 6.857,
+     "channels": 2,
+     "bytes": 1209644,
+     "file": "samples/harmony-04/tr2-lead.wav",
+     "notes": "Notas largas sobre Rem – Si♭ – Fa – Do: supersierra suave, con «sidechain», sala y eco.",
+     "peakDb": -1.1,
+     "truePeakDb": -1,
+     "rmsDb": -7.7,
+     "centroid": 1483
+    },
+    {
+     "id": "harmony-04/tr2-arp",
+     "slug": "tr2-arp",
+     "name": "Arpegio hard trance II",
+     "style": "trance",
+     "type": "arpegio",
+     "cat": "loop",
+     "tags": [
+      "arpegio",
+      "pluck",
+      "tresillo",
+      "kit hard trance II"
+     ],
+     "key": null,
+     "tonality": "Re menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      140,
+      140
+     ],
+     "duration": 6.857,
+     "channels": 2,
+     "bytes": 1209644,
+     "file": "samples/harmony-04/tr2-arp.wav",
+     "notes": "Pluck que recorre tres notas en semicorcheas (cruza el compás) y baja al final.",
+     "peakDb": -1.3,
+     "truePeakDb": -1,
+     "rmsDb": -13.3,
+     "centroid": 1253
+    },
+    {
+     "id": "harmony-04/tr2-bass",
+     "slug": "tr2-bass",
+     "name": "Bajo rodante hard trance II",
+     "style": "trance",
+     "type": "línea",
+     "cat": "loop",
+     "tags": [
+      "bajo",
+      "rodante",
+      "kit hard trance II"
+     ],
+     "key": null,
+     "tonality": "Re menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      140,
+      140
+     ],
+     "duration": 6.857,
+     "channels": 1,
+     "bytes": 604844,
+     "file": "samples/harmony-04/tr2-bass.wav",
+     "notes": "Bajo en las tres semicorcheas de después de cada tiempo: Re – Si♭ – Fa – Do.",
+     "peakDb": -1,
+     "truePeakDb": -1,
+     "rmsDb": -8,
+     "centroid": 94
     }
    ]
   }

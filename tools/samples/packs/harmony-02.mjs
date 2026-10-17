@@ -119,6 +119,9 @@ const hey = () => shout(['hey-a', 'hey-b', 'hey-c', 'hey-d'], { seed: 3 });
 const oi = () => shout(['oi-a', 'oi-b', 'oi-c'], { seed: 7 });
 const yeah = () => shout(['yeah-a', 'yeah-b', 'yeah-c'], { seed: 9 });
 const ho = () => shout(['ho-a', 'ho-b', 'ho-c'], { seed: 13 });
+/* gritos de alegría: dos voces dobladas, algo más agudas, con sala y un eco */
+const yahoo = () => mc(['yahoo-a', 'yahoo-b'], { rate: 1.04, drive: 2, presence: 6, rv: 0.18, ech: { bpm: 150, div: 0.75, n: 2, gain: 0.2 } });
+const yuju = () => mc(['yuju-a', 'yuju-b'], { rate: 1.04, drive: 2, presence: 6, rv: 0.18, ech: { bpm: 150, div: 0.75, n: 2, gain: 0.2 } });
 function heyX3() {
   // «¡Hey! ¡Hey! ¡Hey!» a negras, 150 BPM: el grupo de gritos tres veces, con la sala solo en el último
   const c = crowd(['hey-a', 'hey-b', 'hey-c', 'hey-d'], { seed: 21 }), b = beat(150);
@@ -288,6 +291,10 @@ export const SAMPLES = [
     notes: 'Seis voces repartidas en el estéreo, saturadas, con sala.' },
   { id: 'shout-ho', name: 'Grito «¡Ho!»', style: 'general', type: 'grito', cat: 'voz', tags: ['grito', 'grupo', 'corto'], render: ho,
     notes: 'Seis voces repartidas en el estéreo, saturadas, con sala.' },
+  { id: 'shout-yahoo', name: 'Grito «¡Yahoo!»', style: 'general', type: 'grito', cat: 'voz', tags: ['grito', 'alegría', 'salto', 'inglés'], render: yahoo,
+    notes: 'Grito de alegría con dos voces de eSpeak dobladas, un poco más agudas, con sala y eco. Voz propia: no imita a ningún personaje.' },
+  { id: 'shout-yuju', name: 'Grito «¡Yujuu!»', style: 'general', type: 'grito', cat: 'voz', tags: ['grito', 'alegría', 'castellano'], render: yuju,
+    notes: 'El mismo grito de alegría en castellano.' },
   { id: 'shout-hey-x3', name: 'Grito «¡Hey! ¡Hey! ¡Hey!»', style: 'general', type: 'grito', cat: 'voz', bpm: [150, 150], tags: ['grito', 'grupo', 'a tempo', 'tres golpes'], render: heyX3,
     notes: 'El grupo de «¡Hey!» tres veces a negras a 150 BPM, con la sala en el último.' },
 

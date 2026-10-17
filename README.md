@@ -54,7 +54,7 @@ mb: { title: '…', artist: '…' }   // buscar con otros términos
 mb: { skip: true }                 // no buscarlo
 ```
 
-**Tests**: `npm test` (50, incluidos los importadores de Deezer y Discogs contra servidores falsos, el modelo de bancos del Soundpad, el secuenciador con un reloj de audio falso y los packs de sonidos). Prueban normalización, emparejado, elección de edición, resumen, Cover Art Archive (elección de portada y galleta, descargas, `--no-art`), caché, reintentos, `--only`, `--offline`, el ritmo de peticiones, la fusión en la web, la coherencia de la capa importada de verdad (imágenes locales, galleta solo con vinilo), los desacuerdos entre fuentes editoriales y la integridad del catálogo (fuentes, artistas, sellos, rutas). El servidor falso tiene la forma real de las respuestas de la API; todos sus datos son inventados y nunca llegan al catálogo.
+**Tests**: `npm test` (52, incluidos los importadores de Deezer y Discogs contra servidores falsos, el modelo de bancos del Soundpad, el secuenciador con un reloj de audio falso y los packs de sonidos). Prueban normalización, emparejado, elección de edición, resumen, Cover Art Archive (elección de portada y galleta, descargas, `--no-art`), caché, reintentos, `--only`, `--offline`, el ritmo de peticiones, la fusión en la web, la coherencia de la capa importada de verdad (imágenes locales, galleta solo con vinilo), los desacuerdos entre fuentes editoriales y la integridad del catálogo (fuentes, artistas, sellos, rutas). El servidor falso tiene la forma real de las respuestas de la API; todos sus datos son inventados y nunca llegan al catálogo.
 
 ### Primera importación real (13-10-2026)
 - **81 aplicados**, 13 para revisar y 8 sin encontrar, de 102. Formato del original según MusicBrainz: 32 vinilo, 18 CD, 29 digital y 2 otros.
@@ -115,7 +115,9 @@ Escribe `js/data/dc.js` y `tools/dc-report.md`, y baja la imagen principal de ca
 **Primera importación (16-10-2026, en GitHub Actions y sin token)**: 87 aplicados, 18 fijados a mano y 69 por el enlace de MusicBrainz; 39 portadas nuevas, donde Cover Art Archive no tenía. Fijadas tras comprobarlas en Discogs: la serie Anonim (del primero al Vol. 7), Extres, Ex-P-Cial (el vinilo español de 1995, no el CD mexicano que enlazaba MusicBrainz), Impact, Pildo, Pont Aeri Vol. 3, Elements, Other Side, Boom Dem, Time Is Up… Later!!! (en el maxi *Leire*), The Drabel, Oh Break, Look at This (en *Evolution*; la biografía del grupo habla de *Vol. 6* y la ficha muestra el desacuerdo) y Enter the Time Machine. De la mákina y el newstyle, 20 de 22 registros tienen ya portada real y caras del disco. Sin edición propia en Discogs (solo recopilatorios): Reaching Dreams y Sweet Revenge. Quedan 20 sin buscar hasta que haya token.
 
 ## Biblioteca original de sonidos
-79 sonidos hechos para Harmony por **síntesis y procesado digital**, sin grabaciones de personas ni samples de terceros, con licencia **CC0** (dominio público), en dos packs: `samples/harmony-01/` (41, batería y efectos) y `samples/harmony-02/` (38, voces). WAV de 16 bits a 44,1 kHz que la web sirve tal cual.
+150 sonidos hechos para Harmony por **síntesis y procesado digital**, sin grabaciones de personas, sin samples de terceros y sin melodías de nadie, con licencia **CC0** (dominio público), en cuatro packs: `samples/harmony-01/` (41, batería y efectos), `samples/harmony-02/` (40, voces), `samples/harmony-03/` (39, melodías y 8 bits) y `samples/harmony-04/` (30, más melodías). Hay 52 bucles melódicos en 15 kits. WAV de 16 bits a 44,1 kHz que la web sirve tal cual.
+
+Lo que no entra: sonidos sacados de juegos, discos o películas (el «¡Yahoo!» de un personaje, por ejemplo) ni imitaciones de su voz o de su melodía. Son de quien los hizo. Si tienes los tuyos, cárgalos en un pad: se quedan en tu navegador.
 
 ### Harmony 01 · Hardcore, Newstyle y Uptempo
 
@@ -134,13 +136,46 @@ Escribe `js/data/dc.js` y `tools/dc-report.md`, y baja la imagen principal de ca
 |---|---|
 | MC en inglés (15) | «Hardcore!», «Uptempo!», «New style!», «Harmony», «Make some noise!», «Are you ready?», «Let's go!», «Come on!», «Louder!», «Hands up!», «Bass!», «Drop!», «Rotterdam!», cuenta atrás «Three, two, one!» y cuenta «One, two, three, four!» (a negras, 150 BPM) |
 | MC en castellano (6) | «¡Vamos!», «¡Dale caña!», «¡Más fuerte!», «¡Manos arriba!», «¡Makina!», «¡Que suene!» |
-| Gritos de grupo (5) | «¡Hey!», «¡Oi!», «¡Yeah!», «¡Ho!» y «¡Hey! ¡Hey! ¡Hey!» (150 BPM) |
+| Gritos (7) | de grupo: «¡Hey!», «¡Oi!», «¡Yeah!», «¡Ho!» y «¡Hey! ¡Hey! ¡Hey!» (150 BPM); de alegría: «¡Yahoo!» y «¡Yujuu!» (voz propia, sin imitar a nadie) |
 | Efectos de voz (7) | megáfono «Warning!», radio «This is Harmony», demonio, «Ha-ha-ha-hardcore» (180 BPM), robot con vocoder en Do menor, susurro, entrada inversa |
 | Coros (5) | «Aah» en La menor, «Ooh» en Fa# menor, golpes vocales «Ah» (Do# 4) y «Ey» (Fa# 4), acorde «Oh» en Sol# menor con reverb cortada |
 
 - **Frases y gritos**: la voz de base es **eSpeak NG 1.53**, un sintetizador de voz por formantes (software libre, GPL-3.0); no hay ninguna grabación de una persona. `tools/samples/voices/sources.mjs` dice qué frase, voz, tono y velocidad tiene cada toma; `node tools/samples/voices/make.mjs` (o `npm run voices`) las genera con eSpeak en `tools/samples/voices/src/` junto con `manifest.json` (versión del programa y parámetros). Las tomas se guardan en el repositorio, así que el pack se reconstruye igual sin tener eSpeak instalado. Cada frase lleva dos voces distintas con la misma duración (se ajusta la velocidad de la segunda), dobladas en estéreo; después limpieza, presencia, compresión, saturación, sala y ecos a tempo. La licencia del programa no pasa a lo que genera (así lo explica la FAQ de la GPL), y lo que hace Harmony con esas tomas se publica CC0 como el resto. Un matiz: algunas consonantes sordas de eSpeak salen de fragmentos de ruido muy cortos que vienen con el propio programa.
 - **Coros**: síntesis por formantes de Harmony (`tools/samples/voice.mjs`), sin tomas de nadie: fuente glotal aditiva (armónicos sin aliasing, vibrato, pequeñas derivas de tono y algo de aire) por cinco filtros de formante por vocal, con los valores de referencia de soprano, contralto, tenor y bajo; varias voces por nota, cada una con su desafinación y su sitio en el estéreo.
 - **Vocoder** de 24 bandas en `tools/samples/voice.mjs` (las sibilantes pasan aparte para que se entienda la palabra).
+
+### Harmony 03 · Melodías y retro
+Bucles melódicos compuestos para Harmony, agrupados en **kits**: las piezas de un kit comparten tonalidad y tempo y duran compases exactos, así que se apilan (todas en el paso 1 del secuenciador, o en pads en modo bucle) y suenan juntas. Un bucle de la biblioteca entra en el pad en modo bucle.
+
+| Kit | Tempo · tonalidad · acordes | Bucles |
+|---|---|---|
+| Hardstyle | 150 · Fa menor · Fam – Re♭ – La♭ – Mi♭ (4 compases) | lead eufórico (supersierra con su octava), acordes con «sidechain», arpegio pluck, bajo inverso; aparte, lead raw (2 compases) |
+| Hardcore | 180 · La menor · Lam – Fa – Sol – Mim (4) | riff hoover, piano sincopado, lead saturado; aparte, piano happy hardcore en Sol mayor |
+| Uptempo | 200 · Do# menor · Do#m – La / Si (2) | melodía screech, golpes raw, acordes cortados |
+| Mákina | 175 · Re menor · Rem – Si♭ – Do – La (4) | melodía de cuadrada y sierras, arpegio, bajo a contratiempo |
+| Newstyle | 150 · Sol# menor · Sol#m – Mi / Fa# (2) | melodía pluck, acordes de órgano a contratiempo |
+| Techno | 144 · Mi menor (2) | línea acid (acentos y ligados), acorde dub con eco, bajo rodante |
+| Hard trance | 140 · La menor · Lam – Fa – Do – Sol (4) | pad, acordes cortados; aparte, caja de música (150) |
+
+Las tonalidades de uptempo y newstyle son las de sus kicks en Harmony 01 (Do# y Sol#). Además: **8 notas sueltas** para tocar con el tono del pad (stabs menor y mayor, órgano de rave, pluck, piano, campana FM, sub, lead) y **8 efectos de 8 bits** originales (salto, recoger, mejora, disparo, explosión, fin de partida, menú, victoria), con pulsos de ancho fijo, triángulo y ruido de registro de 15 bits como las consolas de entonces.
+- **Instrumentos** en `tools/samples/synth.mjs`: supersierra, pluck, hoover, screech, lead raw, órgano, piano por parciales, campana FM, sub, bajo inverso, acid (una voz con acentos y ligados) y chiptune; las notas se escriben a tempo (paso, duración, altura) y los bucles se tocan dos veces para quedarse con la segunda vuelta, que lleva dentro las colas de la primera: empalman sin hueco.
+- **Comprobado**: duración exacta de cada bucle (validación del build) y, en las melodías, la nota que domina en cada nota de la partitura (así se vio que el hoover se comía las semicorcheas con su caída de tono y que el screech sonaba a la quinta; las dos cosas están corregidas).
+
+### Harmony 04 · Más melodías
+Ocho kits más, con el mismo motor y las mismas reglas que Harmony 03 (y más mákina).
+
+| Kit | Tempo · tonalidad · acordes | Bucles |
+|---|---|---|
+| Mákina II | 178 · La menor · Lam – Fa – Sol – Mi (4 compases) | melodía de cuadrada en frases de 3 + 3 + 2, piano, bajo galopante, campanas, órgano a contratiempo |
+| Mákina III | 172 · Mi menor · Mim – Do – Re – Si (4) | melodía de hoover, arpegio pluck, bajo a contratiempo, golpes de órgano |
+| Hardcore II | 190 · Fa# menor · Fa#m – Re – La – Do# (4) | himno en supersierra, piano para el break, acordes cortados, arpegio |
+| Newstyle II | 150 · Fa menor · Fam – Re♭ – Mi♭ – Do (4) | melodía a contratiempo, bajo, piano a contratiempo, campanas |
+| Uptempo II | 210 · Re menor · Rem – Si♭ (2) | screech, riff raw, acordes cortados |
+| Hardstyle II | 150 · Sol menor · Solm – Mi♭ – Si♭ – Fa (4) | lead eufórico, arpegio, bajo inverso, pad con «sidechain» |
+| Happy hardcore | 175 · Re mayor · Re – La – Sim – Sol (4) | lead, piano a contratiempo, campanas |
+| Hard trance II | 140 · Re menor · Rem – Si♭ – Fa – Do (4) | lead de notas largas, arpegio que cruza el compás, bajo rodante |
+
+- **Comprobado**: duración exacta de cada bucle y, en las 9 melodías, la altura que domina en cada nota de la partitura (el pack exporta sus partituras y un test lo mide): 166 de 177 notas exactas; las demás se leen como su quinta u octava, por los armónicos de la supersierra saturada en notas cortas.
 
 ### Cómo se hacen y se validan
 - **Cómo se hacen**: `tools/samples/dsp.mjs` (osciladores sin aliasing, ruido con semilla, filtros barridos, saturación, limitador, reverb, WAV con dither) y una receta por sonido en `tools/samples/packs/<pack>.mjs`. `node tools/samples/build.mjs` (o `npm run samples`) los construye, los valida y escribe `js/data/samples.js` y `tools/samples/report.md`. Es determinista: la misma receta da el mismo audio, y un test lo comprueba.

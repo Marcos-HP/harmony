@@ -266,6 +266,7 @@
     H.PadAudio.stop(vkey(i));
     p.src = { type: 'harmony', sampleId: id };
     p.name = x.name.slice(0, 40); p.cat = x.cat;
+    p.mode = x.loop ? 'loop' : 'shot';   // un bucle de la biblioteca entra en modo bucle
     B().setTrim(p, 0, 1);
     sel = i;
     save(); renderGrid(); renderEdit(); paintTabs();
@@ -504,11 +505,13 @@
   SP.state = state;
   SP.vkey = (bankId, i) => bankId + ':' + i;
   /* Pone un sonido en el primer pad libre del banco actual. Devuelve { bank, i } o null si está lleno. */
-  SP.addToFreePad = function (src, { name = '', cat = 'otro', bankId = null } = {}) {
+  SP.addToFreePad = function (src, { name = '', cat = 'otro', bankId = null, mode = null } = {}) {
     const b = (bankId && state().banks.find((x) => x.id === bankId)) || bank(), i = b.pads.findIndex((p) => !p.src);
     if (i < 0) return null;
     const p = b.pads[i];
-    p.src = src; p.name = name.slice(0, 40); p.cat = cat; B().setTrim(p, 0, 1);
+    // un bucle de la biblioteca de Harmony entra en modo bucle
+    const smp = src.type === 'harmony' && H.Lib ? H.Lib.get(src.sampleId) : null;
+    p.src = src; p.name = name.slice(0, 40); p.cat = cat; p.mode = mode || (smp && smp.loop ? 'loop' : 'shot'); B().setTrim(p, 0, 1);
     H.PadStore.saveNow(st);
     if (root && b === bank()) { sel = i; render(); }
     H.PadAudio.load(src).catch(() => {});

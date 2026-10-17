@@ -88,11 +88,52 @@ test('tomas de voz: una por cada entrada de sources.mjs, ninguna suelta, y el ma
   assert.match(man.engine, /^eSpeak NG \d/);
 });
 
+test('bucles: compases exactos a su tempo, con tonalidad; los kits de un mismo tempo duran lo mismo por compás', () => {
+  const loops = catalog().packs.flatMap((p) => p.samples).filter((s) => s.loop);
+  assert.ok(loops.length >= 20, 'bucles melódicos');
+  for (const s of loops) {
+    assert.ok(s.bars && s.bpm && s.bpm[0] === s.bpm[1], s.id + ': compases y un tempo fijo');
+    assert.ok(Math.abs(s.duration - (s.bars * 16 * 15) / s.bpm[0]) < 0.0015, `${s.id}: ${s.duration} s no son ${s.bars} compases a ${s.bpm[0]} BPM`);
+    assert.ok(s.tonality, s.id + ': tonalidad');
+  }
+});
+
+/* altura que domina en un tramo: energía por nota (Goertzel entre 98 Hz y 2 kHz) sumada por clase de nota */
+function chroma(x, a, b) {
+  const N = Math.min(b - a, 16384), c = new Array(12).fill(0);
+  for (let m = 43; m <= 95; m++) {
+    const w = 2 * Math.PI * D.hz(m) / D.SR, k = 2 * Math.cos(w); let s1 = 0, s2 = 0;
+    for (let i = 0; i < N; i++) { const s0 = x[a + i] * (0.5 - 0.5 * Math.cos(2 * Math.PI * i / (N - 1))) + k * s1 - s2; s2 = s1; s1 = s0; }
+    c[m % 12] += Math.sqrt(Math.max(0, s1 * s1 + s2 * s2 - k * s1 * s2));
+  }
+  return c.indexOf(Math.max(...c));
+}
+test('melodías de Harmony 04: cada nota suena a la altura escrita (al menos el 80 %; lo demás, su quinta, cuarta u octava)', async () => {
+  const { SCORES } = await import('../samples/packs/harmony-04.mjs');
+  const S = await import('../samples/synth.mjs');
+  for (const [id, [bpm, notes]] of Object.entries(SCORES)) {
+    const w = D.readWav(readFileSync(join(ROOT, 'samples/harmony-04', id + '.wav')));
+    const x = D.mix([w.chans[0], 0.5], [w.chans[1] || w.chans[0], 0.5]), sd = 60 / bpm / 4;
+    let ok = 0;
+    for (const [s, l, p] of notes) {
+      const want = S.midi(p) % 12, got = chroma(x, Math.round((s * sd + 0.02) * D.SR), Math.round(((s + l) * sd - 0.01) * D.SR));
+      if (got === want) ok++;
+      else assert.ok([7, 5, 0].includes((got - want + 12) % 12), `${id}: paso ${s} ${p} suena a otra nota`);
+    }
+    assert.ok(ok / notes.length >= 0.8, `${id}: ${ok}/${notes.length} notas a su altura`);
+  }
+});
+
 test('las recetas siguen dando el mismo audio (reproducible)', async () => {
   const packs = await loadPacks();
-  const want = { 'harmony-01': ['hc-kick-gabber', 'ut-kick-screech', 'clap-room', 'riser-noise'], 'harmony-02': ['mc-hardcore', 'shout-hey', 'fx-robot', 'choir-chop-ah'] };
+  const want = {
+    'harmony-01': ['hc-kick-gabber', 'ut-kick-screech', 'clap-room', 'riser-noise'],
+    'harmony-02': ['mc-hardcore', 'shout-hey', 'fx-robot', 'choir-chop-ah'],
+    'harmony-03': ['ut-screech-lead', 'tk-acid', 'note-bell', 'retro-boom'],
+    'harmony-04': ['mk2-bass', 'ut2-raw']
+  };
   const pick = packs.flatMap((p) => (want[p.pack.id] || []).map((id) => p.pack.id + '/' + id));
-  assert.equal(pick.length, 8);
+  assert.equal(pick.length, 14);
   const r = await build({ only: pick, check: true, log: () => {} });
   assert.equal(r.errors, 0);
   assert.equal(r.mismatches, 0);

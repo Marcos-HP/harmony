@@ -28,6 +28,11 @@ export function validate(s, a) {
   if (a.startAbs > 0.05) err.push(`empieza de golpe (${a.startAbs.toFixed(3)})`);
   if (a.duration < 0.03 || a.duration > 8) err.push(`duración ${a.duration.toFixed(2)} s fuera de 0,03–8 s`);
   if (s.cat === 'kick' && s.type === 'kick' && a.bands.sub + a.bands.low < 0.25) warn.push('kick con pocos graves');
+  // un bucle dura compases exactos a su tempo: si no, se desfasa al repetirse
+  if (s.loop) {
+    const want = (s.bars * 16 * 15) / s.bpm[0];
+    if (Math.abs(a.duration - want) > 0.001) err.push(`bucle de ${a.duration.toFixed(4)} s y debería durar ${want.toFixed(4)} s (${s.bars} compases a ${s.bpm[0]} BPM)`);
+  }
   if (s.key && /kick|bajo/.test(s.type)) {
     const got = D.hzToNote(a.tailHz);
     if (got !== s.key) {
@@ -86,7 +91,8 @@ export async function build({ only = null, check = false, log = console.log } = 
         } else if (!v.err.length) writeFileSync(abs, bytes);
         meta = {
           id: pack.id + '/' + s.id, slug: s.id, name: s.name, style: s.style, type: s.type, cat: s.cat, tags: s.tags,
-          key: s.key || null, bpm: s.bpm || null, duration: r2(a.duration, 3), channels: w.channels, bytes: bytes.length, file,
+          key: s.key || null, tonality: s.tonality || null, loop: !!s.loop, bars: s.bars || null,
+          bpm: s.bpm || null, duration: r2(a.duration, 3), channels: w.channels, bytes: bytes.length, file,
           notes: s.notes, peakDb: r2(a.peakDb, 1), truePeakDb: r2(a.truePeakDb, 1), rmsDb: r2(a.rmsDb, 1), centroid: Math.round(a.centroid)
         };
         report.push(`| ${s.name} \`${s.id}\` | ${s.style} · ${s.type} | ${a.duration.toFixed(2)} s | ${w.channels} | ${a.truePeakDb.toFixed(1)} dBTP | ${a.rmsDb.toFixed(1)} dB | ${Math.round(a.centroid)} Hz | ${a.tailHz && /kick|bajo/.test(s.type) ? D.hzToNote(a.tailHz) + ' (' + a.tailHz.toFixed(0) + ' Hz)' : '—'} | ${[...v.err, ...v.warn].join('; ') || '—'} |`);
@@ -94,7 +100,7 @@ export async function build({ only = null, check = false, log = console.log } = 
         // con --only, los demás se describen a partir del archivo que ya existe
         if (!existsSync(abs)) continue;
         const w = D.readWav(readFileSync(abs)), aud = w.channels === 2 ? D.stereo(w.chans[0], w.chans[1]) : w.chans[0], a = D.analyze(aud);
-        meta = { id: pack.id + '/' + s.id, slug: s.id, name: s.name, style: s.style, type: s.type, cat: s.cat, tags: s.tags, key: s.key || null, bpm: s.bpm || null, duration: r2(a.duration, 3), channels: w.channels, bytes: readFileSync(abs).length, file, notes: s.notes, peakDb: r2(a.peakDb, 1), rmsDb: r2(a.rmsDb, 1), centroid: Math.round(a.centroid) };
+        meta = { id: pack.id + '/' + s.id, slug: s.id, name: s.name, style: s.style, type: s.type, cat: s.cat, tags: s.tags, key: s.key || null, tonality: s.tonality || null, loop: !!s.loop, bars: s.bars || null, bpm: s.bpm || null, duration: r2(a.duration, 3), channels: w.channels, bytes: readFileSync(abs).length, file, notes: s.notes, peakDb: r2(a.peakDb, 1), rmsDb: r2(a.rmsDb, 1), centroid: Math.round(a.centroid) };
       }
       metas.push(meta);
     }
