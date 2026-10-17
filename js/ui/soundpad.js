@@ -10,7 +10,12 @@
   let root, st, sel = 0, capture = null, armDelete = null, renaming = false, catOpen = false, catQ = '', raf = 0;
   const els = {};
 
-  const bank = () => B().current(st);
+  /* El estado se carga la primera vez que alguien lo pide (el Soundpad o la página de sonidos) */
+  function state() {
+    if (!st) { st = H.PadStore.loadState(); H.PadAudio.setVolume(st.master); }
+    return st;
+  }
+  const bank = () => B().current(state());
   const vkey = (i) => bank().id + ':' + i;
   const keyLabel = (k) => (k ? k.toUpperCase() : '—');
   const catName = (id) => (B().CATS.find((c) => c.id === id) || {}).name || 'Otro';
@@ -24,13 +29,14 @@
     const t = H.A.t[p.src.trackId];
     return t ? 'Catálogo · ' + t.title + ' — ' + t.artistLine + ' (muestra de Deezer)' : 'Catálogo · registro desaparecido';
   }
+  const semis = (n) => (n > 0 ? '+' : n < 0 ? '−' : '±') + Math.abs(n) + ' st';
+  const fxShort = (p) => [p.pitch ? semis(p.pitch) : '', p.start > 0 || p.end < 1 ? 'recorte' : '', p.reverse ? 'al revés' : '', p.choke ? 'g' + p.choke : ''].filter(Boolean).map((x) => ' · ' + x).join('');
   const srcShort = (p) => (!p.src ? '' : p.src.type === 'file' ? 'archivo' : 'catálogo');
 
   /* ---------- estructura ---------- */
   SP.build = function (container) {
     root = container;
-    st = H.PadStore.loadState();
-    H.PadAudio.setVolume(st.master);
+    state();
     root.innerHTML = `
       <div class="sp wrap">
         <header class="sp-head">
@@ -49,6 +55,11 @@
             </div>
           </div>
           <div class="sp-master">
+            <div class="sp-file-acts">
+              <button class="btn btn-sm" type="button" data-sp="export" title="Descarga el banco con tus archivos para llevarlo a otro navegador">Exportar</button>
+              <button class="btn btn-sm" type="button" data-sp="export-all" title="Descarga todos tus bancos">Exportar todos</button>
+              <button class="btn btn-sm" type="button" data-sp="import">Importar</button>
+            </div>
             <label class="sp-vol mono"><span>Volumen</span><input type="range" id="sp-vol" min="0" max="1" step="0.01" aria-label="Volumen del Soundpad"></label>
             <button class="btn btn-solid" type="button" data-sp="stop-all">${U.icon('stop')}<span>Detener todo</span></button>
           </div>
@@ -60,6 +71,7 @@
         </div>
         <p class="fine sp-note"></p>
         <input type="file" id="sp-file" accept="audio/*,.mp3,.wav,.ogg,.opus,.flac,.m4a,.aac,.webm" hidden>
+        <input type="file" id="sp-import" accept=".json,application/json" hidden>
       </div>`;
     els.grid = root.querySelector('.sp-grid');
     els.edit = root.querySelector('.sp-edit');
@@ -71,6 +83,8 @@
     els.vol.value = st.master;
     els.vol.oninput = () => { st.master = +els.vol.value; H.PadAudio.setVolume(st.master); save(); };
     els.file.onchange = () => { const f = els.file.files && els.file.files[0]; els.file.value = ''; if (f) assignFile(sel, f); };
+    els.imp = root.querySelector('#sp-import');
+    els.imp.onchange = () => { const f = els.imp.files && els.imp.files[0]; els.imp.value = ''; if (f) importFile(f); };
 
     root.addEventListener('click', onClick);
     root.addEventListener('change', onChange);
@@ -99,7 +113,7 @@
     });
 
     U.on('pads:voice', paintStates);
-    U.on('pads:load', () => { paintStates(); if (SP.visible) renderEditSource(); });
+    U.on('pads:load', () => { paintStates(); if (SP.visible) { renderEditSource(); drawWave(); } });
     H.PadStore.ready().then(renderNote);
     render();
   };
@@ -121,7 +135,7 @@
     if (!p.src) { select(i); return; }
     const el = padEl(i);
     if (el) { el.classList.remove('is-hit'); void el.offsetWidth; el.classList.add('is-hit'); }
-    H.PadAudio.trigger(vkey(i), p).catch((err) => { paintStates(); U.toast(`${p.name || 'Pad ' + (i + 1)}: ${H.PadAudio.message(err)}`); });
+    H.PadAudio.trigger(vkey(i), p, { choke: B().chokeMates(bank(), i).map(vkey) }).catch((err) => { paintStates(); U.toast(`${p.name || 'Pad ' + (i + 1)}: ${H.PadAudio.message(err)}`); });
     tick();
   }
   function tick() {
@@ -165,6 +179,7 @@
     catch (err) { U.toast('No se ha podido guardar el archivo en este navegador.'); return; }
     const old = p.src;
     p.src = { type: 'file', fileId: id, fileName: f.name || 'archivo' };
+    B().setTrim(p, 0, 1);   // el recorte era del sonido anterior
     if (!p.name || (old && autoName(old) === p.name)) p.name = autoName(p.src);
     save(); render();
     H.PadAudio.load(p.src).catch(() => {});
@@ -176,6 +191,7 @@
     const p = bank().pads[i], old = p.src;
     H.PadAudio.stop(vkey(i));
     p.src = { type: 'catalog', trackId: id };
+    B().setTrim(p, 0, 1);
     if (!p.name || (old && autoName(old) === p.name)) p.name = autoName(p.src);
     if (p.cat === 'otro') p.cat = 'tema';
     catOpen = false;
@@ -235,6 +251,12 @@
     else if (a === 'play') fire(sel);
     else if (a === 'stop') H.PadAudio.stop(vkey(sel));
     else if (a === 'clear') { H.PadAudio.stop(vkey(sel)); B().clearPad(bank(), sel); save(); tidy(); render(); }
+    else if (a === 'rev') { p.reverse = !p.reverse; H.PadAudio.stop(vkey(sel)); save(); renderGrid(); renderFx(); }
+    else if (a === 'choke') { p.choke = +b.dataset.g; save(); renderGrid(); renderFx(); }
+    else if (a === 'fx-reset') { B().resetFx(p); H.PadAudio.stop(vkey(sel)); save(); renderGrid(); renderFx(); }
+    else if (a === 'export') exportBanks([bank()]);
+    else if (a === 'export-all') exportBanks(st.banks);
+    else if (a === 'import') els.imp.click();
     else if (a === 'retry') { H.PadAudio.forget(p.src); H.PadAudio.load(p.src).catch(() => {}); }
   }
   function onChange(ev) {
@@ -245,6 +267,12 @@
     if (t.id === 'sp-name') { p.name = t.value.slice(0, 40); save(); renderGrid(); }
     else if (t.id === 'sp-pvol') { p.volume = +t.value; H.PadAudio.setVoiceVolume(vkey(sel), p.volume); els.edit.querySelector('#sp-pvol-o').textContent = Math.round(p.volume * 100) + ' %'; save(); }
     else if (t.id === 'sp-q') { catQ = t.value; renderCatList(); }
+    else if (t.id === 'sp-start' || t.id === 'sp-end') {
+      const a = +els.edit.querySelector('#sp-start').value, z = +els.edit.querySelector('#sp-end').value;
+      if (t.id === 'sp-start') B().setTrim(p, Math.min(a, p.end - 0.01), p.end); else B().setTrim(p, p.start, Math.max(z, p.start + 0.01));
+      save(); paintFx(); renderGrid();
+    }
+    else if (t.id === 'sp-pitch') { p.pitch = +t.value; H.PadAudio.setVoiceRate(vkey(sel), p.pitch); save(); paintFx(); renderGrid(); }
   }
   function onFieldKey(ev) {
     if (ev.target.id === 'sp-bank-name') { if (ev.key === 'Enter') { ev.preventDefault(); finishRename(true); } else if (ev.key === 'Escape') { ev.stopPropagation(); finishRename(false); } }
@@ -284,7 +312,7 @@
         <button class="pad-hit" type="button" aria-label="${e(label)}">
           <span class="pad-top"><kbd class="pad-key">${e(keyLabel(p.key))}</kbd><span class="pad-n mono">${String(i + 1).padStart(2, '0')}</span></span>
           <span class="pad-name">${e(name)}</span>
-          <span class="pad-meta mono">${empty ? 'Toca para asignar' : e(catName(p.cat)) + ' · ' + srcShort(p) + (p.mode === 'loop' ? ' · bucle' : '')}</span>
+          <span class="pad-meta mono">${empty ? 'Toca para asignar' : e(catName(p.cat)) + ' · ' + srcShort(p) + (p.mode === 'loop' ? ' · bucle' : '') + fxShort(p)}</span>
           <span class="pad-bar" aria-hidden="true"></span>
           <span class="pad-spin" aria-hidden="true"></span>
         </button>
@@ -323,6 +351,7 @@
           <button type="button" data-sp="mode" data-mode="loop" aria-pressed="${p.mode === 'loop'}">Bucle</button>
         </div>
         <p class="fine">${p.mode === 'loop' ? 'Pulsa para arrancar el bucle y otra vez para pararlo.' : 'Suena entero; si vuelves a pulsar, empieza de nuevo.'}</p></div>
+      <div class="sp-f sp-fx"></div>
       <div class="sp-f sp-key-f"></div>
       <div class="sp-acts">
         <button class="btn btn-solid" type="button" data-sp="play"${p.src ? '' : ' disabled'}>${U.icon('play')}<span>${p.mode === 'loop' ? 'Bucle' : 'Probar'}</span></button>
@@ -330,8 +359,98 @@
         <button class="btn" type="button" data-sp="clear"${p.src ? '' : ' disabled'}>Vaciar pad</button>
       </div>`;
     renderEditSource();
+    renderFx();
     renderKeyRow();
   }
+  /* ---------- efectos: recorte sobre la forma de onda, tono, al revés y grupo de corte ---------- */
+  function renderFx() {
+    const box = els.edit && els.edit.querySelector('.sp-fx'); if (!box) return;
+    const p = bank().pads[sel], on = !!p.src;
+    box.innerHTML = `<span class="mono">Efectos ${B().hasFx(p) ? '<button class="link-btn" type="button" data-sp="fx-reset">Quitar todos</button>' : ''}</span>
+      <div class="sp-wave${on ? '' : ' is-off'}"><canvas aria-hidden="true"></canvas><span class="sp-wave-msg mono"></span></div>
+      <div class="sp-trimrow">
+        <label><span class="mono">Inicio <output id="sp-start-o"></output></span><input type="range" id="sp-start" min="0" max="0.99" step="0.001" value="${p.start}"${on ? '' : ' disabled'}></label>
+        <label><span class="mono">Fin <output id="sp-end-o"></output></span><input type="range" id="sp-end" min="0.01" max="1" step="0.001" value="${p.end}"${on ? '' : ' disabled'}></label>
+      </div>
+      <label class="sp-pitch"><span class="mono">Tono <output id="sp-pitch-o"></output></span><input type="range" id="sp-pitch" min="-12" max="12" step="1" value="${p.pitch}"${on ? '' : ' disabled'} list="sp-pitch-marks"></label>
+      <datalist id="sp-pitch-marks"><option value="-12"></option><option value="0"></option><option value="12"></option></datalist>
+      <div class="sp-fx-row">
+        <button class="chip chip-sm${p.reverse ? ' chip-on' : ''}" type="button" data-sp="rev" aria-pressed="${p.reverse}"${on ? '' : ' disabled'}>Al revés</button>
+        <span class="mono sp-choke-l">Grupo de corte</span>
+        <div class="seg sp-choke" role="group" aria-label="Grupo de corte">${[0, 1, 2, 3, 4].map((g) => `<button type="button" data-sp="choke" data-g="${g}" aria-pressed="${p.choke === g}" title="${g ? 'Grupo ' + g : 'Sin grupo'}">${g || '—'}</button>`).join('')}</div>
+      </div>
+      <p class="fine">El tono cambia también la velocidad, como en un sampler. Los pads de un mismo grupo de corte se paran entre sí: el clásico charles abierto y cerrado, o dos voces que no deben pisarse.</p>`;
+    paintFx();
+  }
+  function paintFx() {
+    const box = els.edit && els.edit.querySelector('.sp-fx'); if (!box) return;
+    const p = bank().pads[sel], dur = p.src ? H.PadAudio.duration(p.src) : null;
+    const t = (f) => (dur ? (f * dur).toFixed(2).replace('.', ',') + ' s' : Math.round(f * 100) + ' %');
+    box.querySelector('#sp-start-o').textContent = t(p.start);
+    box.querySelector('#sp-end-o').textContent = t(p.end);
+    box.querySelector('#sp-pitch-o').textContent = semis(p.pitch);
+    const w = box.querySelector('.sp-wave');
+    w.style.setProperty('--a', p.start); w.style.setProperty('--z', p.end);
+    drawWave();
+  }
+  function drawWave() {
+    const box = els.edit && els.edit.querySelector('.sp-wave'); if (!box) return;
+    const p = bank().pads[sel], cv = box.querySelector('canvas'), msg = box.querySelector('.sp-wave-msg');
+    const s = p.src ? H.PadAudio.status(p.src) : null;
+    const pk = s === 'ready' ? H.PadAudio.peaks(p.src, 200, p.reverse) : null;
+    msg.textContent = !p.src ? 'Sin sonido' : s === 'loading' ? 'Cargando…' : s === 'error' ? 'No carga' : pk ? '' : '';
+    const dpr = window.devicePixelRatio || 1, W = box.clientWidth || 300, Hh = 64;
+    cv.width = Math.round(W * dpr); cv.height = Math.round(Hh * dpr); cv.style.height = Hh + 'px';
+    const g = cv.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, Hh);
+    if (!pk) return;
+    const css = getComputedStyle(document.documentElement);
+    const ink = css.getPropertyValue('--ink').trim() || '#000', faint = css.getPropertyValue('--ink-3').trim() || '#999';
+    const n = pk.length, bw = W / n;
+    for (let i = 0; i < n; i++) {
+      const f = (i + 0.5) / n, h = Math.max(1, pk[i] * (Hh - 6));
+      g.fillStyle = f >= p.start && f <= p.end ? ink : faint;
+      g.fillRect(i * bw, (Hh - h) / 2, Math.max(1, bw - 1), h);
+    }
+  }
+
+  /* ---------- exportar / importar ---------- */
+  async function exportBanks(banks) {
+    U.toast('Preparando la exportación…');
+    try {
+      const r = await H.PadStore.exportBanks(banks);
+      const name = 'harmony-' + (banks.length === 1 ? U.norm(banks[0].name).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'banco' : 'bancos') + '.json';
+      const url = URL.createObjectURL(r.blob), a = document.createElement('a');
+      a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 4000);
+      U.toast(`${banks.length === 1 ? 'Banco exportado' : banks.length + ' bancos exportados'}: ${r.files} ${r.files === 1 ? 'archivo' : 'archivos'} (${(r.blob.size / 1048576).toFixed(1).replace('.', ',')} MB)${r.missing ? ` · ${r.missing} sin archivo en este navegador` : ''}. Las muestras del catálogo van como referencia.`);
+    } catch (err) { U.toast('No se ha podido exportar: ' + err.message); }
+  }
+  async function importFile(f) {
+    U.toast('Importando…');
+    try {
+      const r = await H.PadStore.importBanks(await f.text());
+      const got = B().adopt(st, r.banks, r.fileMap);
+      if (!got.length) { U.toast('El archivo no trae ningún banco.'); return; }
+      H.PadStore.saveNow(st); sel = 0; preload(); render(); renderNote();
+      U.toast(`${got.length === 1 ? 'Importado: ' + got[0].name : got.length + ' bancos importados'}${r.bad ? ` · ${r.bad} archivos dañados, sus pads quedan vacíos` : ''}`);
+    } catch (err) { U.toast(err.message || 'No se ha podido importar.'); }
+  }
+
+  /* ---------- para la página de sonidos de la biblioteca ---------- */
+  SP.state = state;
+  SP.vkey = (bankId, i) => bankId + ':' + i;
+  /* Pone un sonido en el primer pad libre del banco actual. Devuelve { bank, i } o null si está lleno. */
+  SP.addToFreePad = function (src, { name = '', cat = 'otro' } = {}) {
+    const b = bank(), i = b.pads.findIndex((p) => !p.src);
+    if (i < 0) return null;
+    const p = b.pads[i];
+    p.src = src; p.name = name.slice(0, 40); p.cat = cat; B().setTrim(p, 0, 1);
+    H.PadStore.saveNow(st);
+    if (root) { sel = i; render(); }
+    H.PadAudio.load(src).catch(() => {});
+    return { bank: b, i };
+  };
+  SP.openBank = function (id) { B().select(state(), id); H.PadStore.saveNow(st); sel = 0; if (root) render(); };
   function renderEditSource() {
     const box = els.edit && els.edit.querySelector('.sp-src-f'); if (!box) return;
     const p = bank().pads[sel], s = p.src ? H.PadAudio.status(p.src) : null, dur = p.src ? H.PadAudio.duration(p.src) : null;

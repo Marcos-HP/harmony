@@ -98,7 +98,39 @@ test('guardado tolerante: lo roto se corrige, lo válido se conserva', () => {
   assert.equal(s.master, 1);
   const p = s.banks[0].pads;
   assert.equal(p.length, 16);
-  assert.deepEqual(plain(p[0]), { id: 'p0', name: 'Kick', cat: 'kick', volume: 1, mode: 'shot', key: 'q', src: { type: 'file', fileId: 'f1', fileName: 'k.wav' } });
+  assert.deepEqual(plain(p[0]), { id: 'p0', name: 'Kick', cat: 'kick', volume: 1, mode: 'shot', key: 'q', src: { type: 'file', fileId: 'f1', fileName: 'k.wav' }, pitch: 0, start: 0, end: 1, reverse: false, choke: 0 });
   assert.equal(p[1].key, null, 'tecla repetida: se queda con el primero');
   assert.equal(p[2].src, null, 'fuente desconocida → vacío');
+});
+
+test('efectos: tono, recorte, reverso y grupos de corte, siempre dentro de rango', () => {
+  const B = load();
+  const s = B.normalize({ banks: [{ pads: [{ pitch: 40, start: 0.5, end: 0.2, reverse: 'sí', choke: 9 }, { pitch: -3.6, start: 0.1, end: 0.6, reverse: true, choke: 2 }, { choke: 2 }, { choke: 1 }] }] });
+  const [a, b, c, d] = s.banks[0].pads;
+  assert.deepEqual([a.pitch, a.start, a.end, a.reverse, a.choke], [12, 0, 1, false, 4], 'recorte imposible → entero');
+  assert.deepEqual([b.pitch, b.start, b.end, b.reverse, b.choke], [-4, 0.1, 0.6, true, 2]);
+  assert.ok(B.hasFx(b) && !B.hasFx(s.banks[0].pads[5]));
+  assert.deepEqual(plain(B.chokeMates(s.banks[0], 1)), [2], 'mismo grupo, sin él mismo');
+  assert.deepEqual(plain(B.chokeMates(s.banks[0], 4)), [], 'sin grupo, no corta a nadie');
+  B.setTrim(c, 0.3, 0.305);
+  assert.deepEqual([c.start, c.end], [0, 1], 'menos de un 1 % no vale');
+  B.setTrim(c, 0.25, 0.75);
+  assert.deepEqual([c.start, c.end], [0.25, 0.75]);
+  B.resetFx(b);
+  assert.equal(B.hasFx(b), false);
+  assert.equal(d.choke, 1);
+});
+
+test('importar bancos: ids y nombres nuevos, archivos traducidos y lo que falta, vacío', () => {
+  const B = load(), s = B.defaultState();
+  const ext = [{ id: s.banks[0].id, name: 'Banco A', pads: [{ name: 'K', src: { type: 'file', fileId: 'x1', fileName: 'k.wav' } }, { name: 'Perdido', src: { type: 'file', fileId: 'x2', fileName: 'p.wav' } }, { src: { type: 'catalog', trackId: 'poing' } }] }, 'basura'];
+  const got = B.adopt(s, ext, { x1: 'fNEW' });
+  assert.equal(got.length, 1);
+  assert.equal(s.banks.length, 2);
+  assert.notEqual(got[0].id, s.banks[0].id);
+  assert.equal(got[0].name, 'Banco A 2');
+  assert.equal(s.current, got[0].id);
+  assert.deepEqual(plain(got[0].pads[0].src), { type: 'file', fileId: 'fNEW', fileName: 'k.wav' });
+  assert.equal(got[0].pads[1].src, null);
+  assert.equal(got[0].pads[2].src.trackId, 'poing');
 });

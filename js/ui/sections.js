@@ -54,6 +54,7 @@
     applying = false;
     document.documentElement.dataset.section = sec;
     paint();
+    U.emit('section', sec);
   };
 
   function paint() {

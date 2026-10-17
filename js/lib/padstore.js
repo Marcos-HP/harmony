@@ -33,6 +33,18 @@
     t.onerror = t.onabort = () => reject(t.error || new Error('IndexedDB'));
   });
 
+  const toB64 = (blob) => new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(String(r.result).replace(/^data:[^,]*,/, ''));
+    r.onerror = () => reject(r.error);
+    r.readAsDataURL(blob);
+  });
+  function fromB64(b64, type) {
+    const bin = atob(String(b64 || '')), out = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+    return new Blob([out], { type: type || '' });
+  }
+
   const S = (H.PadStore = {
     /* true · false · null (aún no se sabe) */
     persistent: () => persistent,
@@ -65,6 +77,50 @@
         return rec || null;
       } catch (e) { return null; }
     },
+    /* Metadatos de los archivos guardados (sin el audio), para la página de sonidos */
+    async listFiles() {
+      const db = await open();
+      const recs = new Map([...mem.values()].map((r) => [r.id, r]));
+      if (db) {
+        try { (await tx(db, 'readonly', (st, done) => { const r = st.getAll(); r.onsuccess = () => done(r.result || []); })).forEach((r) => recs.set(r.id, r)); }
+        catch (e) { /* seguimos con lo que haya en memoria */ }
+      }
+      return [...recs.values()].map(({ id, name, type, size, added }) => ({ id, name, type, size, added })).sort((a, b) => (b.added || 0) - (a.added || 0));
+    },
+    async deleteFile(id) {
+      mem.delete(id);
+      const db = await open();
+      if (db) { try { await tx(db, 'readwrite', (st) => { st.delete(id); }); } catch (e) { /* nada */ } }
+    },
+
+    /* ---------- exportar / importar bancos ----------
+       Un JSON con los bancos y el audio de tus archivos en base64: se puede llevar a otro navegador u ordenador.
+       Las muestras del catálogo viajan como referencia (el audio es de Deezer y no se puede copiar). */
+    async exportBanks(banks) {
+      const ids = new Set();
+      banks.forEach((b) => b.pads.forEach((p) => { if (p.src && p.src.type === 'file') ids.add(p.src.fileId); }));
+      const files = {}; let missing = 0, bytes = 0;
+      for (const id of ids) {
+        const rec = await S.getFile(id);
+        if (!rec || !rec.blob) { missing++; continue; }
+        files[id] = { name: rec.name, type: rec.type, size: rec.size, data: await toB64(rec.blob) };
+        bytes += rec.size || 0;
+      }
+      const doc = { format: 'harmony-pads', version: 1, exportedAt: new Date().toISOString(), banks, files };
+      return { blob: new Blob([JSON.stringify(doc)], { type: 'application/json' }), files: Object.keys(files).length, missing, bytes };
+    },
+    async importBanks(text) {
+      let d;
+      try { d = JSON.parse(text); } catch (e) { throw new Error('Ese archivo no es un banco de Harmony.'); }
+      if (!d || d.format !== 'harmony-pads' || !Array.isArray(d.banks)) throw new Error('Ese archivo no es un banco de Harmony.');
+      const fileMap = {}; let bad = 0;
+      for (const [id, f] of Object.entries(d.files || {})) {
+        try { fileMap[id] = await S.putFile(new File([fromB64(f.data, f.type)], String(f.name || 'archivo'), { type: f.type || '' })); }
+        catch (e) { bad++; }
+      }
+      return { banks: d.banks, fileMap, bad };
+    },
+
     /* Borra del navegador los archivos que ya no usa ningún pad */
     async prune(keep) {
       [...mem.keys()].forEach((id) => { if (!keep.has(id)) mem.delete(id); });

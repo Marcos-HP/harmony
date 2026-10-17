@@ -1,5 +1,10 @@
 /* HARMONY · bancos del Soundpad: el modelo de datos, sin DOM ni audio.
    Un banco es un juego de 16 pads, cada uno con su sonido, nombre, categoría (color), volumen, modo y tecla.
+   Efectos por pad (no tocan el archivo, se aplican al disparar):
+     pitch  semitonos −12…+12 (como en un sampler: cambia tono y velocidad a la vez)
+     start · end  recorte, en fracción de la duración (0…1), para quedarse con un trozo
+     reverse  al revés
+     choke  grupo de corte 0…4: disparar un pad para los demás de su grupo (el clásico charles abierto/cerrado)
    El sonido de un pad (src) es una referencia, nunca el audio:
      { type: 'file', fileId, fileName }   archivo del usuario, guardado en este navegador (js/lib/padstore.js)
      { type: 'catalog', trackId }          muestra de 30 s de Deezer de un registro del catálogo (no se guarda)
@@ -22,7 +27,9 @@
   const uid = () => 'b' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
   const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 
-  const emptyPad = (i) => ({ id: 'p' + i, name: '', cat: 'otro', volume: 0.9, mode: 'shot', key: KEYS[i] || null, src: null });
+  const FX = { pitch: 0, start: 0, end: 1, reverse: false, choke: 0 };
+  const CHOKES = 4;
+  const emptyPad = (i) => ({ id: 'p' + i, name: '', cat: 'otro', volume: 0.9, mode: 'shot', key: KEYS[i] || null, src: null, ...FX });
   const newBank = (name) => ({ id: uid(), name: String(name || 'Banco').slice(0, 40), pads: Array.from({ length: PADS }, (_, i) => emptyPad(i)) });
 
   /* Normaliza una tecla de teclado: una sola tecla imprimible, en minúscula. null si no se puede asignar. */
@@ -39,6 +46,12 @@
     if (s.type === 'catalog' && s.trackId) return { type: 'catalog', trackId: String(s.trackId) };
     return null;
   }
+  function normFx(p) {
+    const num = (v, d) => (Number.isFinite(+v) && v !== null && v !== '' ? +v : d);
+    let start = clamp(num(p.start, 0), 0, 0.99), end = clamp(num(p.end, 1), 0.01, 1);
+    if (end - start < 0.01) { start = 0; end = 1; }
+    return { pitch: clamp(Math.round(num(p.pitch, 0)), -12, 12), start, end, reverse: p.reverse === true, choke: clamp(Math.round(num(p.choke, 0)), 0, CHOKES) };
+  }
   function normPad(p, i) {
     const d = emptyPad(i);
     if (!p || typeof p !== 'object') return d;
@@ -49,7 +62,8 @@
       volume: Number.isFinite(+p.volume) ? clamp(+p.volume, 0, 1) : d.volume,
       mode: MODES.includes(p.mode) ? p.mode : 'shot',
       key: p.key === null ? null : keyOf(p.key) || d.key,
-      src: normSrc(p.src)
+      src: normSrc(p.src),
+      ...normFx(p)
     };
   }
   function normBank(b) {
@@ -62,7 +76,13 @@
   }
 
   const B = (H.Banks = {
-    PADS, KEYS, CATS, MODES,
+    PADS, KEYS, CATS, MODES, CHOKES,
+    /* Recorte con un mínimo de 1 % entre inicio y fin */
+    setTrim(pad, start, end) { const f = normFx({ start, end }); pad.start = f.start; pad.end = f.end; return pad; },
+    resetFx(pad) { Object.assign(pad, FX); return pad; },
+    hasFx: (p) => p.pitch !== 0 || p.start > 0 || p.end < 1 || p.reverse || p.choke > 0,
+    /* Pads del mismo grupo de corte (menos él mismo) */
+    chokeMates: (bank, i) => { const g = bank.pads[i].choke; return g ? bank.pads.map((p, j) => (j !== i && p.choke === g ? j : -1)).filter((j) => j >= 0) : []; },
     keyOf,
     defaultState() { const b = newBank('Banco A'); return { version: 1, current: b.id, master: 0.85, banks: [b] }; },
     /* Estado leído del almacenamiento: lo que no cuadre se corrige, nunca se rompe */
@@ -112,6 +132,19 @@
       return { ok: true, from };
     },
     padByKey: (bank, key) => { const k = keyOf(key); return k ? bank.pads.findIndex((p) => p.key === k) : -1; },
+    /* Bancos de otro sitio (importados): ids y nombres nuevos para no pisar nada; fileMap traduce los archivos */
+    adopt(s, banks, fileMap = {}) {
+      const out = [];
+      (Array.isArray(banks) ? banks : []).forEach((raw) => {
+        const b = normBank(raw); if (!b) return;
+        b.id = uid();
+        b.name = B.freeName(s, b.name);
+        b.pads.forEach((p) => { if (p.src && p.src.type === 'file') { const id = fileMap[p.src.fileId]; if (id) p.src.fileId = id; else p.src = null; } });
+        s.banks.push(b); out.push(b);
+      });
+      if (out.length) s.current = out[0].id;
+      return out;
+    },
     clearPad(bank, i) { const keep = bank.pads[i].key; bank.pads[i] = emptyPad(i); bank.pads[i].key = keep; return bank.pads[i]; },
     /* Archivos que sigue usando algún pad de algún banco (lo demás se puede borrar del navegador) */
     fileIds(s) { const ids = new Set(); s.banks.forEach((b) => b.pads.forEach((p) => { if (p.src && p.src.type === 'file') ids.add(p.src.fileId); })); return ids; },

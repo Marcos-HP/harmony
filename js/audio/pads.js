@@ -3,6 +3,8 @@
    arranca al instante, varios pads suenan a la vez y uno no corta a otro.
      pad → ganancia del pad → bus «pads» (volumen del Soundpad) → máster de Harmony (mismo compresor que la mesa)
    Modos: «shot» (disparo: volver a pulsar lo relanza desde el principio) y «loop» (bucle: pulsar arranca o para).
+   Efectos por pad: tono (playbackRate, como un sampler), recorte (offset y duración, o loopStart/loopEnd), reverso
+   (copia al revés del buffer) y grupos de corte (disparar un pad para los de su grupo).
    Fuentes: archivos del usuario (H.PadStore) y muestras de 30 s del catálogo (H.Dz, se piden a Deezer y no se guardan). */
 (function () {
   const H = (window.H = window.H || {});
@@ -11,6 +13,15 @@
   const buf = new Map();     // clave de fuente → { state: 'loading'|'ready'|'error', buffer, error, promise }
   const voices = new Map();  // clave de voz (banco:pad) → { node, gain, t0, dur, loop }
   let bus = null, busVol = 0.85;
+  const revCache = new Map(), peakCache = new Map();
+  /* Copia al revés de un buffer (una vez por sonido) */
+  function reversed(k, b) {
+    if (revCache.has(k) && revCache.get(k).src === b) return revCache.get(k).buf;
+    const ctx = H.Audio.ctx(), r = ctx.createBuffer(b.numberOfChannels, b.length, b.sampleRate);
+    for (let c = 0; c < b.numberOfChannels; c++) { const d = b.getChannelData(c), o = r.getChannelData(c); for (let i = 0, n = d.length; i < n; i++) o[i] = d[n - 1 - i]; }
+    revCache.set(k, { src: b, buf: r });
+    return r;
+  }
 
   const err = (code, message) => Object.assign(new Error(message), { code });
   const MESSAGES = {
@@ -59,10 +70,11 @@
     status(src) { const e = buf.get(H.Banks.srcKey(src)); return e ? e.state : null; },
     error(src) { const e = buf.get(H.Banks.srcKey(src)); return e && e.error ? message(e.error) : null; },
     duration(src) { const e = buf.get(H.Banks.srcKey(src)); return e && e.buffer ? e.buffer.duration : null; },
-    forget(src) { const k = H.Banks.srcKey(src); if (k) buf.delete(k); },
+    forget(src) { const k = H.Banks.srcKey(src); if (k) { buf.delete(k); revCache.delete(k); [...peakCache.keys()].forEach((x) => { if (x.startsWith(k + '|')) peakCache.delete(x); }); } },
 
-    /* Dispara un pad. vkey identifica la voz (banco:pad) para pararla o relanzarla sin tocar las demás. */
-    async trigger(vkey, pad) {
+    /* Dispara un pad. vkey identifica la voz (banco:pad) para pararla o relanzarla sin tocar las demás.
+       choke: voces de su grupo de corte, que se paran al disparar este. */
+    async trigger(vkey, pad, { choke = [] } = {}) {
       if (!pad || !pad.src) return;
       const ctx = H.Audio.ensure();   // el gesto del usuario despierta el contexto
       if (!ctx || !out()) throw err('noaudio', 'sin web audio');
@@ -72,17 +84,43 @@
       const e = buf.get(H.Banks.srcKey(pad.src));
       if (e && e.state === 'ready') b = e.buffer;
       else b = await P.load(pad.src);
+      if (pad.reverse) b = reversed(H.Banks.srcKey(pad.src), b);
+      choke.forEach((k) => P.stop(k, 0.004));
       if (playing) P.stop(vkey, 0.004);
+      const rate = Math.pow(2, (pad.pitch || 0) / 12);
+      // el recorte se mide sobre el sonido tal y como suena (al revés, si va al revés)
+      const a = (pad.start || 0) * b.duration, z = (pad.end == null ? 1 : pad.end) * b.duration;
+      const len = Math.max(0.005, z - a);
       const g = ctx.createGain();
       g.gain.value = pad.volume;
       const n = ctx.createBufferSource();
-      n.buffer = b; n.loop = pad.mode === 'loop';
+      n.buffer = b; n.loop = pad.mode === 'loop'; n.playbackRate.value = rate;
+      if (n.loop) { n.loopStart = a; n.loopEnd = z; }
       n.connect(g); g.connect(out());
-      const v = { node: n, gain: g, t0: ctx.currentTime, dur: b.duration, loop: n.loop };
+      const v = { node: n, gain: g, t0: ctx.currentTime, dur: len / rate, loop: n.loop };
       n.onended = () => { if (voices.get(vkey) === v) { voices.delete(vkey); U.emit('pads:voice', vkey); } };
       voices.set(vkey, v);
-      n.start();
+      if (n.loop) n.start(0, a); else n.start(0, a, len);
       U.emit('pads:voice', vkey);
+    },
+    /* Picos para dibujar la forma de onda (n columnas, 0…1), calculados una vez por sonido */
+    peaks(src, n = 240, reverse = false) {
+      const k = H.Banks.srcKey(src), e = buf.get(k);
+      if (!e || !e.buffer) return null;
+      const ck = k + '|' + n + (reverse ? '|r' : '');
+      if (peakCache.has(ck)) return peakCache.get(ck);
+      const b = e.buffer, out = new Float32Array(n), step = b.length / n;
+      for (let c = 0; c < b.numberOfChannels; c++) {
+        const d = b.getChannelData(c);
+        for (let i = 0; i < n; i++) {
+          let m = 0; const s0 = Math.floor(i * step), s1 = Math.min(d.length, Math.floor((i + 1) * step));
+          for (let j = s0; j < s1; j += 4) { const v = Math.abs(d[j]); if (v > m) m = v; }
+          if (m > out[i]) out[i] = m;
+        }
+      }
+      if (reverse) out.reverse();
+      peakCache.set(ck, out);
+      return out;
     },
     /* Para una voz con un fundido muy corto (sin chasquido) */
     stop(vkey, fade = 0.012) {
@@ -106,6 +144,7 @@
       const t = ctx.currentTime - v.t0;
       return v.loop ? (t % v.dur) / v.dur : Math.min(1, t / v.dur);
     },
+    setVoiceRate(vkey, semis) { const v = voices.get(vkey), ctx = H.Audio.ctx(); if (v && ctx) v.node.playbackRate.setTargetAtTime(Math.pow(2, semis / 12), ctx.currentTime, 0.01); },
     setVoiceVolume(vkey, vol) { const v = voices.get(vkey), ctx = H.Audio.ctx(); if (v && ctx) v.gain.gain.setTargetAtTime(vol, ctx.currentTime, 0.01); },
     setVolume(v) { busVol = v; if (bus) bus.gain.setTargetAtTime(v, H.Audio.ctx().currentTime, 0.02); },
     volume: () => busVol
