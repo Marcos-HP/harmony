@@ -236,7 +236,7 @@
             <button type="button" data-view="mesa" aria-pressed="false">${U.icon('grid')}<span>Mesa</span></button>
           </div>
           <span class="deck-legend mono">El disco solo gira si suena audio real</span>
-          <button class="ibtn deck-close" type="button" aria-label="Cerrar el plato">${U.icon('close')}</button>
+          <button class="ibtn deck-close" type="button" aria-label="Cerrar el mixer y volver a la biblioteca">${U.icon('close')}</button>
         </header>
         <div class="deck-grid">
           <div class="slot-single"></div>
@@ -577,6 +577,7 @@
     requestAnimationFrame(() => { els.deck.classList.add('in'); Object.values(P).forEach((o) => drawRecord(o)); if (H.Mesa) H.Mesa.render(); });
     els.deck.querySelector(D.view === 'mesa' ? '.deck-views [data-view="mesa"]' : '.t-play').focus({ preventScroll: true });
     kick();
+    U.emit('deck', true);
   };
   D.close = function () {
     if (!D.open) return;
@@ -584,7 +585,8 @@
     els.deck.classList.remove('in');
     document.documentElement.classList.remove('deck-open');
     setTimeout(() => { if (!D.open) els.deck.hidden = true; }, 260);
-    if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
+    if (lastFocus && lastFocus.focus && lastFocus.isConnected && !lastFocus.closest('[hidden]')) lastFocus.focus({ preventScroll: true });
+    U.emit('deck', false);
   };
   D.toggleOpen = () => (D.open ? D.close() : D.openDeck());
 

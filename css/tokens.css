@@ -27,6 +27,8 @@
   --top-h: 56px;
   --ease: cubic-bezier(.2, .7, .1, 1);
   --kick: 0;
+  /* categorías del Soundpad: el único color de la interfaz, solo en los pads */
+  --c-kick: #d4432a; --c-bajo: #6a4bd6; --c-perc: #b98000; --c-voz: #17865f; --c-fx: #1d68c9; --c-loop: #c0367a; --c-tema: #1b8ea3; --c-otro: #85857e;
   color-scheme: light;
 }
 
@@ -46,6 +48,7 @@
     --plinth-edge: #2e2e2b;
     --metal: #6c6c67;
     --lamp: #ffffff;
+    --c-kick: #ff6b4f; --c-bajo: #9d86ff; --c-perc: #f2b632; --c-voz: #3ccb98; --c-fx: #5ea6ff; --c-loop: #f26aa9; --c-tema: #4cc6da; --c-otro: #8a8a83;
     color-scheme: dark;
   }
 }
@@ -64,5 +67,6 @@
   --plinth-edge: #2e2e2b;
   --metal: #6c6c67;
   --lamp: #ffffff;
+  --c-kick: #ff6b4f; --c-bajo: #9d86ff; --c-perc: #f2b632; --c-voz: #3ccb98; --c-fx: #5ea6ff; --c-loop: #f26aa9; --c-tema: #4cc6da; --c-otro: #8a8a83;
   color-scheme: dark;
 }

@@ -31,7 +31,7 @@ img, svg { max-width: 100%; }
 @media (max-width: 640px) { .hide-sm { display: none !important; } }
 
 /* ---------- cabecera ---------- */
-.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 30; background: var(--paper); border-bottom: 1px solid var(--ink); }
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 55; background: var(--paper); border-bottom: 1px solid var(--ink); }
 .top-in { display: flex; align-items: center; gap: 24px; min-height: var(--top-h); }
 .brand { display: flex; align-items: baseline; gap: 12px; text-decoration: none; flex: none; }
 .brand-w { font-family: var(--f-display); font-weight: 900; font-stretch: 125%; font-size: 19px; letter-spacing: .01em; line-height: 1; }
@@ -41,6 +41,15 @@ img, svg { max-width: 100%; }
 .nav a:hover { border-color: var(--ink); }
 .nav a[aria-current="page"] { background: var(--ink); color: var(--paper); }
 .nav-n:not(:empty)::before { content: '· '; }
+/* secciones: Biblioteca · Mixer · Soundpad */
+.sections { display: flex; border: 1px solid var(--ink); flex: none; }
+.sections a { display: inline-flex; align-items: center; gap: 7px; min-height: 36px; padding: 0 12px; text-decoration: none; border-left: 1px solid var(--ink); }
+.sections a:first-child { border-left: 0; }
+.sections a:hover { background: var(--paper-2); }
+.sections a[aria-current="page"] { background: var(--ink); color: var(--paper); }
+.sections .ic { width: 16px; height: 16px; }
+html[data-section="mixer"] .nav, html[data-section="soundpad"] .nav { display: none; }
+html[data-section="mixer"] .top-tools, html[data-section="soundpad"] .top-tools { margin-left: auto; }
 .top-tools { display: flex; align-items: center; gap: 8px; }
 /* tema */
 .theme-pick { position: relative; }
@@ -52,10 +61,14 @@ img, svg { max-width: 100%; }
 .theme-menu span { display: grid; gap: 2px; }
 .theme-menu small { font-size: 10px; letter-spacing: .04em; opacity: .7; }
 .theme-fade, .theme-fade *, .theme-fade *::before, .theme-fade *::after { transition: background-color .35s ease, color .35s ease, border-color .35s ease, fill .35s ease, stroke .35s ease, box-shadow .35s ease !important; }
-@media (max-width: 900px) { .brand-s { display: none; } }
+@media (max-width: 1240px) { .brand-s { display: none; } }
+@media (max-width: 1000px) and (min-width: 721px) { .sections .ic { display: none; } .top-in { gap: 16px; } }
 @media (max-width: 720px) {
   .top-in { flex-wrap: wrap; gap: 0 12px; padding-top: 10px; }
   .top-tools { margin-left: auto; }
+  .sections { order: 2; width: 100%; margin-top: 8px; }
+  .sections a { flex: 1; justify-content: center; padding: 0 6px; }
+  html[data-section="mixer"] .sections, html[data-section="soundpad"] .sections { margin-bottom: 8px; }
   .nav { order: 3; width: 100%; margin: 6px 0 8px; overflow-x: auto; scrollbar-width: none; margin-left: calc(var(--gutter) * -1); padding-left: var(--gutter); width: calc(100% + var(--gutter) * 2); margin-right: calc(var(--gutter) * -1); }
   .nav a { flex: none; }
   .top-tools .btn span { display: none; }

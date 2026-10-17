@@ -45,6 +45,15 @@
       return;
     }
     closeSheet(true);
+    // Mixer y Soundpad: la biblioteca se queda como estaba, debajo
+    if (r.kind === 'page' && (r.id === 'mixer' || r.id === 'soundpad')) {
+      if (App.viewKey == null) render({ kind: 'page', id: '' }, '');
+      App.lastView = r.raw;
+      H.Sections.apply(r.id);
+      return;
+    }
+    H.Sections.lastLib = r.raw;
+    H.Sections.apply('biblioteca');
     const key = r.kind + ':' + (r.kind === 'page' && (r.id === 'inicio' || r.id === 'espectro') ? '' : r.id);
     const scrollToSpec = r.id === 'espectro';
     if (key !== App.viewKey) render(r, key);
@@ -166,6 +175,9 @@
   function onKey(ev) {
     if (ev.metaKey || ev.ctrlKey || ev.altKey) return;
     const a = document.activeElement;
+    // Soundpad a la vista: sus teclas mandan (y Esc cancela el cambio de tecla de un pad)
+    const pads = H.Sections.current === 'soundpad' && !sheetOpenId && help.hidden;
+    if (pads && H.Soundpad.capturing() && H.Soundpad.key(ev)) { ev.preventDefault(); return; }
     if (ev.key === 'Escape') {
       if (!help.hidden) { toggleHelp(false); return; }
       if (sheetOpenId) { closeSheet(false); return; }
@@ -173,6 +185,7 @@
       return;
     }
     if (typing(a)) return;
+    if (pads && H.Soundpad.key(ev)) { ev.preventDefault(); return; }
     const k = ev.key.toLowerCase();
     // en la mesa: arrancar platos, empujar/frenar y crossfader
     if (H.Deck.open && H.Deck.view === 'mesa' && H.Mesa && H.Mesa.key(ev, true)) { ev.preventDefault(); return; }
@@ -246,7 +259,10 @@
       <header class="top">
         <div class="top-in wrap">
           <a class="brand" href="#inicio" aria-label="Harmony, inicio"><span class="brand-w">HARMONY</span><span class="brand-s mono">Archivo de música dura</span></a>
-          <nav class="nav mono" aria-label="Secciones">
+          <nav class="sections mono" aria-label="Secciones de Harmony">
+            <a href="#inicio" data-section="biblioteca">${U.icon('library')}<span>Biblioteca</span></a><a href="#mixer" data-section="mixer">${U.icon('mixer')}<span>Mixer</span></a><a href="#soundpad" data-section="soundpad">${U.icon('pads')}<span>Soundpad</span></a>
+          </nav>
+          <nav class="nav mono" aria-label="Biblioteca">
             <a href="#espectro" data-nav="espectro">Espectro</a><a href="#generos" data-nav="generos">Géneros</a><a href="#catalogo" data-nav="catalogo">Catálogo</a><a href="#caja" data-nav="caja">Caja <span class="nav-n"></span></a>
           </nav>
           <div class="top-tools">
@@ -264,9 +280,10 @@
         </div>
       </header>
       <main id="view" tabindex="-1"></main>
+      <section id="sp-root" class="soundpad" aria-label="Soundpad" hidden></section>
       <footer class="foot wrap">
         <div class="foot-grid">
-          <div><p class="foot-w">HARMONY</p><p class="fine">Edición 0.3 · prototipo. ${H.A.tracks.length} registros; cada ficha cita sus fuentes y la fecha de consulta${H.A.mbStats.applied ? ` y ${H.A.mbStats.applied} con MusicBrainz el ${H.A.mbStats.date.split('-').reverse().join('/')}. Datos de MusicBrainz bajo licencia CC0; portadas y galletas del Cover Art Archive, con los derechos de sus autores.` : '. Importación de MusicBrainz pendiente.'}${H.A.dcStats && H.A.dcStats.applied ? ` ${H.A.dcStats.applied} contrastados también con Discogs el ${H.A.dcStats.date.split('-').reverse().join('/')}: datos proporcionados por Discogs; sus imágenes, con los derechos de sus autores.` : ''}</p></div>
+          <div><p class="foot-w">HARMONY</p><p class="fine">Edición 0.4 · prototipo. ${H.A.tracks.length} registros; cada ficha cita sus fuentes y la fecha de consulta${H.A.mbStats.applied ? ` y ${H.A.mbStats.applied} con MusicBrainz el ${H.A.mbStats.date.split('-').reverse().join('/')}. Datos de MusicBrainz bajo licencia CC0; portadas y galletas del Cover Art Archive, con los derechos de sus autores.` : '. Importación de MusicBrainz pendiente.'}${H.A.dcStats && H.A.dcStats.applied ? ` ${H.A.dcStats.applied} contrastados también con Discogs el ${H.A.dcStats.date.split('-').reverse().join('/')}: datos proporcionados por Discogs; sus imágenes, con los derechos de sus autores.` : ''}</p></div>
           <div><p class="mono">Cómo leer los datos</p>${H.C.legend()}<p class="fine">Las portadas y galletas reales salen tal cual del Cover Art Archive; cuando no hay imagen, la funda es generativa y no imita la original. El número HMY es el registro del archivo, no el número de catálogo del sello.</p></div>
           <div><p class="mono">Atajos</p><button class="link-btn" type="button" data-shortcuts>Ver atajos de teclado (?)</button><p class="fine">Harmony no muestra precios ni disponibilidad, y no inventa enlaces: lo que no está verificado abre una búsqueda.${H.A.dzStats && H.A.dzStats.applied ? ' Las muestras de 30 s son de Deezer, para uso privado y no comercial; no se guardan.' : ''}</p></div>
         </div>
@@ -274,7 +291,7 @@
       <div id="sheet" class="sheet" hidden role="dialog" aria-modal="true" aria-labelledby="sheet-title"><div class="sheet-scrim"></div><div class="sheet-panel"></div></div>
       <div id="help" class="help" hidden role="dialog" aria-modal="true" aria-label="Atajos de teclado"><div class="help-box">
         <p class="mono">Atajos de teclado</p>
-        <dl>${[['/', 'Buscar en el catálogo'], ['Espacio', 'Reproducir o pausar el plato'], ['S', 'Sorpréndeme'], ['N · P', 'Siguiente · anterior de la cola'], ['D', 'Abrir o cerrar el plato'], ['M', 'Plato o mesa (con el plato abierto)'], ['1 · 2', 'Mesa: arrancar o parar A · B'], ['Z · X', 'Mesa: frenar · empujar A (mantén)'], [', · .', 'Mesa: frenar · empujar B (mantén)'], ['[ · ]', 'Mesa: crossfader hacia A · B'], ['F', 'Guardar en tu caja lo que está abierto'], ['T', 'Cambiar entre tema claro y oscuro'], ['Esc', 'Cerrar ficha, plato o esta ayuda']].map(([k, v]) => `<div><dt><kbd>${k}</kbd></dt><dd>${v}</dd></div>`).join('')}</dl>
+        <dl>${[['/', 'Buscar en el catálogo'], ['Espacio', 'Reproducir o pausar el plato'], ['S', 'Sorpréndeme'], ['N · P', 'Siguiente · anterior de la cola'], ['D', 'Abrir o cerrar el mixer'], ['M', 'Plato o mesa (en el mixer)'], ['1 · 2', 'Mesa: arrancar o parar A · B'], ['Z · X', 'Mesa: frenar · empujar A (mantén)'], [', · .', 'Mesa: frenar · empujar B (mantén)'], ['[ · ]', 'Mesa: crossfader hacia A · B'], ['F', 'Guardar en tu caja lo que está abierto'], ['T', 'Cambiar entre tema claro y oscuro'], ['1–4 · Q–R · A–F · Z–V', 'Soundpad: disparar los pads (configurables; mandan sobre los demás atajos)'], ['Esc', 'Cerrar ficha, mixer o esta ayuda']].map(([k, v]) => `<div><dt><kbd>${k}</kbd></dt><dd>${v}</dd></div>`).join('')}</dl>
         <button class="btn" type="button">Cerrar</button></div></div>
       <div id="toasts" class="toasts" aria-live="polite"></div>`);
     sheetEl = document.getElementById('sheet');
@@ -297,6 +314,7 @@
     App.cat.view = U.store.get('view', 'list');
     shell();
     H.Deck.init();
+    H.Sections.init();
     document.addEventListener('click', onClick);
     // portadas reales: se muestran al cargar; si fallan (sin portada, sin red, bloqueadas) queda la funda generativa
     document.addEventListener('load', (ev) => { const i = ev.target; if (i && i.classList && i.classList.contains('cv-img')) { i.classList.add('is-loaded'); const f = i.closest('figure'); if (f) f.classList.add('has-cover'); } }, true);

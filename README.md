@@ -2,7 +2,7 @@
 
 Archivo interactivo de música electrónica dura: hardcore, hardstyle, hard house, hard trance, techno, mákina y newstyle. HTML + CSS + JS sin backend ni dependencias (solo tipografías de Google Fonts: Archivo, Newsreader e IBM Plex Mono). Node 18+ solo para el build, el importador y los tests.
 
-Edición 0.3 · 16-10-2026 · fases 1 y 2 funcionando; fase 3 con MusicBrainz (diseño real de 57 discos), muestras de Deezer y Discogs como segunda fuente.
+Edición 0.4 · 17-10-2026 · Biblioteca, Mixer y Soundpad; fases 1 y 2 funcionando; fase 3 con MusicBrainz (diseño real de 57 discos), muestras de Deezer y Discogs como segunda fuente.
 
 ## Cómo abrirlo
 - `dist/index.html`: todo en un único archivo. Doble clic y listo. Si existe `dist/art/`, debe ir junto a él.
@@ -54,7 +54,7 @@ mb: { title: '…', artist: '…' }   // buscar con otros términos
 mb: { skip: true }                 // no buscarlo
 ```
 
-**Tests**: `npm test` (27, incluidos los importadores de Deezer y Discogs contra servidores falsos). Prueban normalización, emparejado, elección de edición, resumen, Cover Art Archive (elección de portada y galleta, descargas, `--no-art`), caché, reintentos, `--only`, `--offline`, el ritmo de peticiones, la fusión en la web, la coherencia de la capa importada de verdad (imágenes locales, galleta solo con vinilo), los desacuerdos entre fuentes editoriales y la integridad del catálogo (fuentes, artistas, sellos, rutas). El servidor falso tiene la forma real de las respuestas de la API; todos sus datos son inventados y nunca llegan al catálogo.
+**Tests**: `npm test` (32, incluidos los importadores de Deezer y Discogs contra servidores falsos y el modelo de bancos del Soundpad). Prueban normalización, emparejado, elección de edición, resumen, Cover Art Archive (elección de portada y galleta, descargas, `--no-art`), caché, reintentos, `--only`, `--offline`, el ritmo de peticiones, la fusión en la web, la coherencia de la capa importada de verdad (imágenes locales, galleta solo con vinilo), los desacuerdos entre fuentes editoriales y la integridad del catálogo (fuentes, artistas, sellos, rutas). El servidor falso tiene la forma real de las respuestas de la API; todos sus datos son inventados y nunca llegan al catálogo.
 
 ### Primera importación real (13-10-2026)
 - **81 aplicados**, 13 para revisar y 8 sin encontrar, de 102. Formato del original según MusicBrainz: 32 vinilo, 18 CD, 29 digital y 2 otros.
@@ -114,6 +114,21 @@ Escribe `js/data/dc.js` y `tools/dc-report.md`, y baja la imagen principal de ca
 
 **Primera importación (16-10-2026, en GitHub Actions y sin token)**: 87 aplicados, 18 fijados a mano y 69 por el enlace de MusicBrainz; 39 portadas nuevas, donde Cover Art Archive no tenía. Fijadas tras comprobarlas en Discogs: la serie Anonim (del primero al Vol. 7), Extres, Ex-P-Cial (el vinilo español de 1995, no el CD mexicano que enlazaba MusicBrainz), Impact, Pildo, Pont Aeri Vol. 3, Elements, Other Side, Boom Dem, Time Is Up… Later!!! (en el maxi *Leire*), The Drabel, Oh Break, Look at This (en *Evolution*; la biografía del grupo habla de *Vol. 6* y la ficha muestra el desacuerdo) y Enter the Time Machine. De la mákina y el newstyle, 20 de 22 registros tienen ya portada real y caras del disco. Sin edición propia en Discogs (solo recopilatorios): Reaching Dreams y Sweet Revenge. Quedan 20 sin buscar hasta que haya token.
 
+## Secciones: Biblioteca · Mixer · Soundpad
+La cabecera tiene tres secciones. Cambiar de una a otra no recarga la página ni vuelve a pintar nada, y nunca arranca audio: lo que suena sigue sonando (la mesa, el plato y los pads a la vez).
+- **Biblioteca** (`#inicio`, `#catalogo`, `#g-…`…): todo el archivo, con su submenú (Espectro, Géneros, Catálogo, Caja). Al volver de otra sección conserva la vista, los filtros y el scroll.
+- **Mixer** (`#mixer`): el plato y la mesa de siempre, ahora debajo de la cabecera. También se abre desde la barra inferior, con la tecla `D` o con «Poner en el plato». Esc o la X vuelven a la biblioteca.
+- **Soundpad** (`#soundpad`): pads para disparar sonidos.
+
+## Soundpad
+- **16 pads por banco** (4×4 en el ordenador y en el móvil). Cada pad muestra su nombre, su tecla, la categoría (el único color de la interfaz: kick, bajo, percusión, voz, FX, loop, tema, otro), si está cargando, si no carga y si está sonando (se invierte y una barra marca el avance).
+- **Sonidos**: archivos de tu equipo (botón o arrastrándolos al pad; MP3, WAV, OGG, FLAC, M4A… lo que lea el navegador) o **muestras del catálogo** (las de 30 s de Deezer de los registros que la tienen).
+- **Por pad**: nombre, categoría, volumen, modo (*disparo*: suena entero y al repetir vuelve a empezar; *bucle*: pulsar arranca y para), tecla, probar, detener y vaciar.
+- **Audio**: cada sonido se decodifica una vez (precarga al abrir el Soundpad y al cambiar de banco) y se dispara al apretar, no al soltar. Varios pads suenan a la vez; un pad no corta a otro. «Detener todo» para los pads (no la mesa). Los pads van a un bus propio que entra en el máster de Harmony, con el mismo volumen general y el mismo compresor que la mesa.
+- **Teclas**: por defecto 1–4, Q–R, A–F y Z–V; se cambian desde las opciones del pad («Cambiar tecla» y pulsar). Una tecla solo puede tener un pad: si ya era de otro, ese se queda sin tecla y se avisa. No se pueden usar espacio, Esc, Tab, Intro, flechas, `/` ni `?`. Con el Soundpad a la vista las teclas de los pads mandan sobre los atajos de Harmony; escribiendo en un campo no se dispara nada.
+- **Bancos**: nuevo, duplicar, renombrar, eliminar (pide confirmación con un segundo clic; siempre queda uno) y cambiar con el selector.
+- **Qué se guarda**: los bancos y sus ajustes, en `localStorage`; tus archivos, en **IndexedDB**, en este navegador y sin subirse a ningún sitio. Cuando un archivo deja de usarlo cualquier pad, se borra. Si el navegador no deja usar IndexedDB (algunos modos privados), la cabecera dice «solo en esta sesión» y tus archivos duran hasta cerrar la pestaña. Las muestras del catálogo **no se guardan nunca** (condiciones de Deezer): solo la referencia, y se vuelven a pedir en cada sesión; necesitan conexión y no suenan dentro del artefacto de Claude.
+
 ## Qué hay en la web
 - **Inicio**: cabecera, **espectro** en dos vistas (ver abajo), dos rutas editoriales («De Chicago a Ámsterdam» y «De la Ruta a la Masía»), décadas e índice de géneros.
 - **Espectro**: *Carriles* (por defecto en el móvil): una fila por género sobre una escala común, por tempo o por época; toca la escala para marcar un tempo o un año y toca una fila para ver sus temas. *Mapa* (por defecto en el ordenador): BPM × año, cada género una zona y cada registro un punto.
@@ -136,16 +151,17 @@ Escribe `js/data/dc.js` y `tools/dc-report.md`, y baja la imagen principal de ca
 ```
 js/data/      genres.js (6 familias, 24 géneros, relaciones) · catalog.js (capa editorial: 109 registros, sellos, artistas, fuentes, rutas)
               mb.js (MusicBrainz) · dc.js (Discogs) · dz.js (muestras de Deezer); las generan los importadores: no editar
-js/lib/       util.js · theme.js (tema claro/oscuro) · archive.js (índice, fusión con MusicBrainz, búsqueda, filtros, orden, relacionados, sorpréndeme) · links.js
+js/lib/       util.js · theme.js (tema claro/oscuro) · archive.js (índice, fusión con MusicBrainz y Discogs, búsqueda, filtros, orden, relacionados, sorpréndeme) · links.js
+              banks.js (modelo de bancos y pads del Soundpad) · padstore.js (guardado: localStorage + IndexedDB)
 js/art/       art.js → fundas generativas, etiqueta del disco, reglas de BPM y época
-js/audio/     engine.js (mezclador Web Audio de dos canales) · analysis.js (BPM, fase y forma de onda) · deezer.js (muestras de 30 s)
-js/ui/        components.js · controls.js (potenciómetros y faders) · deck.js (plato + barra mínima) · mesa.js
+js/audio/     engine.js (mezclador Web Audio de dos canales; bus y decodificación para otros instrumentos) · analysis.js (BPM, fase y forma de onda) · deezer.js (muestras de 30 s) · pads.js (disparo de los pads)
+js/ui/        components.js · controls.js (potenciómetros y faders) · deck.js (plato + barra mínima) · mesa.js · soundpad.js · sections.js (Biblioteca · Mixer · Soundpad)
 js/views/     spectrum.js · lanes.js · home.js · lineage.js (explorador de linajes) · genres.js · catalog.js · pages.js (artista, sello, caja) · js/app.js (rutas, ficha, atajos)
-css/          tokens.css (claro/oscuro) · base.css · views.css · deck.css
+css/          tokens.css (claro/oscuro) · base.css · views.css · deck.css · soundpad.css
 art/          diseño real de los discos (generado por el importador)
 tools/        mb-import.mjs · dc-import.mjs · dz-import.mjs · sus informes *-report.md (generados) · cache/ (generada) · test/
 ```
-Rutas con hash: `#espectro`, `#generos`, `#catalogo`, `#caja`, `#g-makina`, `#a-skudero`, `#l-bit-music`, `#t-flying-free`.
+Rutas con hash: `#mixer`, `#soundpad`, `#espectro`, `#generos`, `#catalogo`, `#caja`, `#g-makina`, `#a-skudero`, `#l-bit-music`, `#t-flying-free`.
 
 ## Taxonomía
 6 familias y 24 géneros: raíces, hardcore, hardstyle y jump, techno duro, hard house y trance, y **mákina y newstyle**.

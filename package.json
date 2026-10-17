@@ -8,7 +8,7 @@
     "import": "node tools/mb-import.mjs",
     "import:deezer": "node tools/dz-import.mjs",
     "import:discogs": "node tools/dc-import.mjs",
-    "test": "node --test tools/test/mb-import.test.mjs tools/test/merge.test.mjs tools/test/dz-import.test.mjs tools/test/dc-import.test.mjs"
+    "test": "node --test tools/test/mb-import.test.mjs tools/test/merge.test.mjs tools/test/dz-import.test.mjs tools/test/dc-import.test.mjs tools/test/banks.test.mjs"
   },
   "engines": { "node": ">=18" }
 }

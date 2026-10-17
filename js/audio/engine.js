@@ -309,6 +309,7 @@
     CH.B.n && CH.B.n.xf.gain.setTargetAtTime(b, ctx.currentTime, 0.008);
   }
 
+  const BUS = {};
   const CH = { A: new Channel('A'), B: new Channel('B') };
   const A = CH.A;
 
@@ -347,6 +348,21 @@
     },
     ctx: () => ctx,
     ensure: ensureCtx,
+    /* Para otros instrumentos de Harmony (el Soundpad): crea el contexto si hace falta (puede nacer suspendido:
+       el navegador solo deja sonar tras un gesto, y ensure() lo reanuda), una salida propia que entra en el máster
+       (mismo volumen general y mismo compresor que la mesa) y decodificación a AudioBuffer para disparar sin espera. */
+    context: makeCtx,
+    bus(name) {
+      if (!makeCtx()) return null;
+      BUS[name] = BUS[name] || (() => { const g = ctx.createGain(); g.connect(master); return g; })();
+      return BUS[name];
+    },
+    decode(arrayBuffer) {
+      const c = makeCtx();
+      if (!c) return Promise.reject(new Error('Sin Web Audio'));
+      // Safari antiguo solo admite la versión con callbacks
+      return new Promise((res, rej) => { const p = c.decodeAudioData(arrayBuffer, res, rej); if (p && p.then) p.then(res, rej); });
+    },
     styleFor,
     hasWebAudio: () => !!(window.AudioContext || window.webkitAudioContext)
   };

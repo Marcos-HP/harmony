@@ -38,7 +38,7 @@
 }
 
 /* ---------- plato abierto ---------- */
-.deck { position: fixed; inset: 0; z-index: 50; background: var(--paper); overflow-y: auto; overscroll-behavior: contain; opacity: 0; transform: translateY(16px); transition: opacity .22s, transform .3s var(--ease); }
+.deck { position: fixed; inset: 0; top: var(--top-off, 0px); z-index: 50; background: var(--paper); overflow-y: auto; overscroll-behavior: contain; opacity: 0; transform: translateY(16px); transition: opacity .22s, transform .3s var(--ease); }
 .deck.in { opacity: 1; transform: none; }
 .deck-inner { max-width: var(--max); margin-inline: auto; padding: calc(10px + env(safe-area-inset-top, 0px)) var(--gutter) calc(28px + env(safe-area-inset-bottom, 0px)); }
 .deck-head { display: flex; align-items: center; gap: 16px; border-bottom: 1px solid var(--ink); padding-bottom: 8px; }
