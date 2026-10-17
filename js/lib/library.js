@@ -5,7 +5,7 @@
   const U = H.U;
 
   const STYLES = { hardcore: 'Hardcore', newstyle: 'Newstyle', uptempo: 'Uptempo', general: 'General' };
-  const TYPES = { kick: 'Kick', bajo: 'Bajo', palma: 'Palma', caja: 'Caja', charles: 'Charles', 'percusión': 'Percusión', plato: 'Plato', redoble: 'Redoble', impacto: 'Impacto', 'transición': 'Transición', subida: 'Subida', efecto: 'Efecto', sintetizador: 'Sintetizador' };
+  const TYPES = { kick: 'Kick', bajo: 'Bajo', palma: 'Palma', caja: 'Caja', charles: 'Charles', 'percusión': 'Percusión', plato: 'Plato', redoble: 'Redoble', impacto: 'Impacto', 'transición': 'Transición', subida: 'Subida', efecto: 'Efecto', sintetizador: 'Sintetizador', voz: 'Voz', grito: 'Grito', coro: 'Coro' };
   const NOTE_ES = { C: 'Do', 'C#': 'Do#', D: 'Re', 'D#': 'Re#', E: 'Mi', F: 'Fa', 'F#': 'Fa#', G: 'Sol', 'G#': 'Sol#', A: 'La', 'A#': 'La#', B: 'Si' };
 
   let all = null, byId = null;

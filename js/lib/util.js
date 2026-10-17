@@ -6,6 +6,8 @@
   U.$ = (s, r = document) => r.querySelector(s);
   U.$$ = (s, r = document) => Array.from(r.querySelectorAll(s));
   U.esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  /* entre comillas latinas, salvo que el texto ya las lleve («¡Vamos!») */
+  U.q = (s) => (/^[«"“]/.test(String(s)) ? String(s) : '«' + s + '»');
   U.norm = (s) => String(s == null ? '' : s).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
   U.clamp = (v, a, b) => Math.max(a, Math.min(b, v));
   U.pad = (n, w = 3) => String(n).padStart(w, '0');

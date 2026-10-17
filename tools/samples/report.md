@@ -50,3 +50,48 @@ Licencia: CC0 1.0 (dominio público). Síntesis y procesado digital en tools/sam
 | Stab estilo hoover `hoover-stab` | hardcore · sintetizador | 1.30 s | 2 | -1.0 dBTP | -10.6 dB | 276 Hz | — | — |
 | Trompeta de rave `horn` | hardcore · sintetizador | 1.10 s | 2 | -1.0 dBTP | -8.8 dB | 350 Hz | — | — |
 
+## Harmony 02 · Voces
+
+Licencia: CC0 1.0 (dominio público). Frases y gritos: voz sintética de eSpeak NG 1.53 (programa libre, GPL-3.0) procesada en tools/samples/ (Harmony). Coros: síntesis por formantes de Harmony. Sin grabaciones de personas ni samples de terceros.
+
+| Sonido | Estilo · tipo | Dur. | Canales | Pico real | RMS | Centroide | Nota medida | Avisos |
+|---|---|---|---|---|---|---|---|---|
+| «Hardcore!» `mc-hardcore` | hardcore · voz | 1.11 s | 2 | -1.0 dBTP | -15.5 dB | 1256 Hz | — | — |
+| «Uptempo!» `mc-uptempo` | uptempo · voz | 1.13 s | 2 | -1.0 dBTP | -16.7 dB | 1546 Hz | — | — |
+| «New style!» `mc-newstyle` | newstyle · voz | 1.56 s | 2 | -1.0 dBTP | -16.7 dB | 1107 Hz | — | — |
+| «Harmony» `mc-harmony` | general · voz | 1.81 s | 2 | -1.0 dBTP | -18.3 dB | 818 Hz | — | — |
+| «Make some noise!» `mc-make-some-noise` | general · voz | 1.26 s | 2 | -1.0 dBTP | -15.2 dB | 1768 Hz | — | — |
+| «Are you ready?» `mc-are-you-ready` | general · voz | 1.26 s | 2 | -1.0 dBTP | -16.4 dB | 1289 Hz | — | — |
+| «Let's go!» `mc-lets-go` | general · voz | 1.29 s | 2 | -1.0 dBTP | -14.8 dB | 1269 Hz | — | — |
+| «Come on!» `mc-come-on` | general · voz | 0.98 s | 2 | -1.0 dBTP | -14.7 dB | 1048 Hz | — | — |
+| «Louder!» `mc-louder` | hardcore · voz | 1.11 s | 2 | -1.0 dBTP | -15.0 dB | 822 Hz | — | — |
+| «Hands up!» `mc-hands-up` | general · voz | 1.09 s | 2 | -1.0 dBTP | -15.3 dB | 1316 Hz | — | — |
+| «Bass!» `mc-bass` | general · voz | 1.25 s | 2 | -1.0 dBTP | -17.8 dB | 1483 Hz | — | — |
+| «Drop!» `mc-drop` | general · voz | 1.30 s | 2 | -1.0 dBTP | -17.3 dB | 967 Hz | — | — |
+| «Rotterdam!» `mc-rotterdam` | hardcore · voz | 1.42 s | 2 | -1.0 dBTP | -15.2 dB | 734 Hz | — | — |
+| «Three, two, one!» `mc-countdown` | general · voz | 1.75 s | 2 | -1.0 dBTP | -17.1 dB | 1800 Hz | — | — |
+| «One, two, three, four!» `mc-count-in` | general · voz | 2.15 s | 2 | -1.0 dBTP | -16.4 dB | 1727 Hz | — | — |
+| «¡Vamos!» `mc-vamos` | general · voz | 1.01 s | 2 | -1.0 dBTP | -17.0 dB | 1534 Hz | — | — |
+| «¡Dale caña!» `mc-dale-cana` | general · voz | 1.06 s | 2 | -1.0 dBTP | -14.8 dB | 1394 Hz | — | — |
+| «¡Más fuerte!» `mc-mas-fuerte` | hardcore · voz | 1.33 s | 2 | -1.0 dBTP | -14.8 dB | 1523 Hz | — | — |
+| «¡Manos arriba!» `mc-manos-arriba` | general · voz | 1.32 s | 2 | -1.0 dBTP | -15.4 dB | 1487 Hz | — | — |
+| «¡Makina!» `mc-makina` | newstyle · voz | 1.29 s | 2 | -1.0 dBTP | -16.7 dB | 1594 Hz | — | — |
+| «¡Que suene!» `mc-que-suene` | general · voz | 1.13 s | 2 | -1.0 dBTP | -15.6 dB | 1455 Hz | — | — |
+| Grito «¡Hey!» `shout-hey` | general · grito | 1.07 s | 2 | -1.0 dBTP | -18.2 dB | 1779 Hz | — | — |
+| Grito «¡Oi!» `shout-oi` | hardcore · grito | 1.05 s | 2 | -1.0 dBTP | -18.1 dB | 1181 Hz | — | — |
+| Grito «¡Yeah!» `shout-yeah` | general · grito | 1.08 s | 2 | -1.0 dBTP | -17.7 dB | 1134 Hz | — | — |
+| Grito «¡Ho!» `shout-ho` | general · grito | 1.08 s | 2 | -1.0 dBTP | -17.7 dB | 1109 Hz | — | — |
+| Grito «¡Hey! ¡Hey! ¡Hey!» `shout-hey-x3` | general · grito | 1.89 s | 2 | -1.0 dBTP | -15.3 dB | 2094 Hz | — | — |
+| Megáfono «Warning!» `fx-warning` | hardcore · voz | 1.53 s | 2 | -1.0 dBTP | -16.2 dB | 873 Hz | — | — |
+| Radio «This is Harmony» `fx-radio` | general · voz | 1.40 s | 1 | -1.0 dBTP | -18.5 dB | 908 Hz | — | — |
+| Demonio «Hardcore» `fx-demon` | hardcore · voz | 2.25 s | 2 | -1.0 dBTP | -16.3 dB | 876 Hz | — | — |
+| «Ha-ha-ha-hardcore» `fx-stutter` | hardcore · voz | 1.45 s | 2 | -1.0 dBTP | -16.2 dB | 1871 Hz | — | — |
+| Robot «Harmony» `fx-robot` | uptempo · voz | 1.21 s | 2 | -1.0 dBTP | -16.7 dB | 1206 Hz | — | — |
+| Susurro «Harmony» `fx-whisper` | general · voz | 1.58 s | 2 | -1.0 dBTP | -20.9 dB | 2340 Hz | — | — |
+| Entrada inversa «Hardcore!» `fx-reverse` | hardcore · voz | 2.20 s | 2 | -1.0 dBTP | -19.1 dB | 761 Hz | — | — |
+| Coro «Aah» `choir-aah` | general · coro | 4.03 s | 2 | -1.0 dBTP | -15.2 dB | 758 Hz | — | — |
+| Coro «Ooh» `choir-ooh` | general · coro | 3.80 s | 2 | -1.0 dBTP | -13.3 dB | 303 Hz | — | — |
+| Golpe vocal «Ah» `choir-chop-ah` | uptempo · coro | 0.68 s | 2 | -1.0 dBTP | -14.3 dB | 798 Hz | — | — |
+| Golpe vocal «Ey» `choir-chop-ey` | newstyle · coro | 0.65 s | 2 | -1.0 dBTP | -12.1 dB | 380 Hz | — | — |
+| Acorde vocal «Oh» `choir-oh-stab` | hardcore · coro | 0.62 s | 2 | -1.0 dBTP | -15.2 dB | 435 Hz | — | — |
+

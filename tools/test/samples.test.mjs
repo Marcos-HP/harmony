@@ -62,9 +62,37 @@ test('archivos: existen, son WAV de 16 bits a 44,1 kHz, cuadran con el catálogo
   for (const p of c.packs) for (const f of readdirSync(join(ROOT, 'samples', p.id))) assert.ok(listed.has(`samples/${p.id}/${f}`), 'archivo sin catalogar: ' + f);
 });
 
+test('la web conoce el estilo y el tipo de cada sonido', () => {
+  const ctx = { window: { H: { U: { norm: (x) => x } } } };
+  vm.createContext(ctx);
+  vm.runInContext(readFileSync(join(ROOT, 'js/lib/library.js'), 'utf8'), ctx);
+  const { STYLES, TYPES } = ctx.window.H.Lib;
+  for (const p of catalog().packs) for (const s of p.samples) {
+    assert.ok(STYLES[s.style], `${s.id}: estilo ${s.style} sin nombre en H.Lib`);
+    assert.ok(TYPES[s.type], `${s.id}: tipo ${s.type} sin nombre en H.Lib`);
+  }
+});
+
+test('tomas de voz: una por cada entrada de sources.mjs, ninguna suelta, y el manifiesto al día', async () => {
+  const { SOURCES } = await import('../samples/voices/sources.mjs');
+  const dir = join(ROOT, 'tools/samples/voices/src');
+  const files = new Set(readdirSync(dir).filter((f) => f.endsWith('.wav')).map((f) => f.slice(0, -4)));
+  for (const s of SOURCES) {
+    assert.ok(files.has(s.id), 'falta la toma ' + s.id);
+    const w = D.readWav(readFileSync(join(dir, s.id + '.wav')));
+    assert.equal(w.channels, 1); assert.ok(w.duration > 0.1, s.id + ' vacía');
+  }
+  assert.equal(files.size, SOURCES.length, 'tomas sin entrada en sources.mjs');
+  const man = JSON.parse(readFileSync(join(ROOT, 'tools/samples/voices/manifest.json'), 'utf8'));
+  assert.deepEqual(man.sources, JSON.parse(JSON.stringify(SOURCES)));
+  assert.match(man.engine, /^eSpeak NG \d/);
+});
+
 test('las recetas siguen dando el mismo audio (reproducible)', async () => {
   const packs = await loadPacks();
-  const pick = packs[0].all.filter((s) => ['hc-kick-gabber', 'ut-kick-screech', 'clap-room', 'riser-noise'].includes(s.id)).map((s) => packs[0].pack.id + '/' + s.id);
+  const want = { 'harmony-01': ['hc-kick-gabber', 'ut-kick-screech', 'clap-room', 'riser-noise'], 'harmony-02': ['mc-hardcore', 'shout-hey', 'fx-robot', 'choir-chop-ah'] };
+  const pick = packs.flatMap((p) => (want[p.pack.id] || []).map((id) => p.pack.id + '/' + id));
+  assert.equal(pick.length, 8);
   const r = await build({ only: pick, check: true, log: () => {} });
   assert.equal(r.errors, 0);
   assert.equal(r.mismatches, 0);

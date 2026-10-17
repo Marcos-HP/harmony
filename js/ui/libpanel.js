@@ -9,6 +9,13 @@
   const src = (id) => ({ type: 'harmony', sampleId: id });
   const key = (id) => 'hmy:' + id;
 
+  /* «Harmony 01 · …; Harmony 02 · Voces (voz de base: eSpeak NG). Sonidos originales…»: una frase por licencia */
+  function licence(packs) {
+    const by = new Map();
+    packs.forEach((p) => { if (!by.has(p.license)) by.set(p.license, []); by.get(p.license).push(p); });
+    return [...by.values()].map((ps) => `${ps.map((p) => `<b>${e(p.name)}</b> · ${e(p.title)}${p.note ? ` (${e(p.note)})` : ''}`).join('; ')}: sonidos originales de Harmony, hechos por síntesis con licencia <a href="${e(ps[0].licenseUrl)}" target="_blank" rel="noopener">${e(ps[0].licenseName)}</a>.${ps[0].license === 'CC0-1.0' ? ' Se pueden usar y redistribuir sin pedir permiso.' : ''}`).join(' ');
+  }
+
   /* opts: { onAdd(sample), addLabel(sample) → texto del botón, empty → texto si no hay nada, idPrefix } */
   H.LibPanel = function (el, opts = {}) {
     const st = { q: '', style: 'all', type: 'all' };
@@ -22,7 +29,7 @@
       </div>
       <p class="mono lib-n" aria-live="polite"></p>
       <ul class="lib-list"></ul>
-      <p class="fine lib-lic">${packs.map((p) => `<b>${e(p.name)}</b> · ${e(p.title)}: sonidos originales de Harmony, hechos por síntesis (<a href="${e(p.licenseUrl)}" target="_blank" rel="noopener">${e(p.licenseName)}</a>). Se pueden usar y redistribuir sin pedir permiso.`).join(' ')}</p>
+      <p class="fine lib-lic">${licence(packs)}</p>
     </div>`;
     const $ = (s) => el.querySelector(s);
 

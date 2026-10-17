@@ -54,7 +54,7 @@ mb: { title: '…', artist: '…' }   // buscar con otros términos
 mb: { skip: true }                 // no buscarlo
 ```
 
-**Tests**: `npm test` (38, incluidos los importadores de Deezer y Discogs contra servidores falsos y el modelo de bancos del Soundpad). Prueban normalización, emparejado, elección de edición, resumen, Cover Art Archive (elección de portada y galleta, descargas, `--no-art`), caché, reintentos, `--only`, `--offline`, el ritmo de peticiones, la fusión en la web, la coherencia de la capa importada de verdad (imágenes locales, galleta solo con vinilo), los desacuerdos entre fuentes editoriales y la integridad del catálogo (fuentes, artistas, sellos, rutas). El servidor falso tiene la forma real de las respuestas de la API; todos sus datos son inventados y nunca llegan al catálogo.
+**Tests**: `npm test` (40, incluidos los importadores de Deezer y Discogs contra servidores falsos, el modelo de bancos del Soundpad y los packs de sonidos). Prueban normalización, emparejado, elección de edición, resumen, Cover Art Archive (elección de portada y galleta, descargas, `--no-art`), caché, reintentos, `--only`, `--offline`, el ritmo de peticiones, la fusión en la web, la coherencia de la capa importada de verdad (imágenes locales, galleta solo con vinilo), los desacuerdos entre fuentes editoriales y la integridad del catálogo (fuentes, artistas, sellos, rutas). El servidor falso tiene la forma real de las respuestas de la API; todos sus datos son inventados y nunca llegan al catálogo.
 
 ### Primera importación real (13-10-2026)
 - **81 aplicados**, 13 para revisar y 8 sin encontrar, de 102. Formato del original según MusicBrainz: 32 vinilo, 18 CD, 29 digital y 2 otros.
@@ -114,8 +114,10 @@ Escribe `js/data/dc.js` y `tools/dc-report.md`, y baja la imagen principal de ca
 
 **Primera importación (16-10-2026, en GitHub Actions y sin token)**: 87 aplicados, 18 fijados a mano y 69 por el enlace de MusicBrainz; 39 portadas nuevas, donde Cover Art Archive no tenía. Fijadas tras comprobarlas en Discogs: la serie Anonim (del primero al Vol. 7), Extres, Ex-P-Cial (el vinilo español de 1995, no el CD mexicano que enlazaba MusicBrainz), Impact, Pildo, Pont Aeri Vol. 3, Elements, Other Side, Boom Dem, Time Is Up… Later!!! (en el maxi *Leire*), The Drabel, Oh Break, Look at This (en *Evolution*; la biografía del grupo habla de *Vol. 6* y la ficha muestra el desacuerdo) y Enter the Time Machine. De la mákina y el newstyle, 20 de 22 registros tienen ya portada real y caras del disco. Sin edición propia en Discogs (solo recopilatorios): Reaching Dreams y Sweet Revenge. Quedan 20 sin buscar hasta que haya token.
 
-## Biblioteca original de sonidos (Harmony 01)
-41 sonidos hechos para Harmony por **síntesis y procesado digital**, sin grabaciones ni samples de terceros, con licencia **CC0** (dominio público). Están en `samples/harmony-01/` como WAV de 16 bits a 44,1 kHz y la web los sirve tal cual.
+## Biblioteca original de sonidos
+79 sonidos hechos para Harmony por **síntesis y procesado digital**, sin grabaciones de personas ni samples de terceros, con licencia **CC0** (dominio público), en dos packs: `samples/harmony-01/` (41, batería y efectos) y `samples/harmony-02/` (38, voces). WAV de 16 bits a 44,1 kHz que la web sirve tal cual.
+
+### Harmony 01 · Hardcore, Newstyle y Uptempo
 
 | Grupo | Sonidos |
 |---|---|
@@ -127,8 +129,22 @@ Escribe `js/data/dc.js` y `tools/dc-report.md`, y baja la imagen principal de ca
 | Impactos y transiciones (6) | impacto grave, impacto hardcore, sub drop, bajada, crash al revés, parada de cinta |
 | Subidas y efectos (6) | subida de ruido y de superserra (2 compases a 180), sirena, láser, stab estilo hoover, trompeta de rave |
 
-- **Cómo se hacen**: `tools/samples/dsp.mjs` (osciladores sin aliasing, ruido con semilla, filtros barridos, saturación, limitador, reverb, WAV con dither) y una receta por sonido en `tools/samples/packs/harmony-01.mjs`. `node tools/samples/build.mjs` (o `npm run samples`) los construye, los valida y escribe `js/data/samples.js` y `tools/samples/report.md`. Es determinista: la misma receta da el mismo audio, y un test lo comprueba.
-- **Validación** (lo que no la pasa no se escribe): sin muestras recortadas, pico real ≤ −0,8 dBTP (normalizados a −1 dBTP con sobremuestreo ×4), sin continua ni infrasonidos, principio y final sin clic, duración razonable, y en los kicks y bajos, la nota medida en la cola (FFT de 65 536 puntos) igual a la anunciada. Además se revisaron forma de onda y espectrograma de los 41 (así se encontraron y corrigieron capas cortadas en seco y colas de kick que acababan de golpe) y se comparó su parecido espectral para no meter variantes casi iguales. **No se han escuchado**: este entorno no tiene salida de audio; la validación es técnica y visual.
+### Harmony 02 · Voces
+| Grupo | Sonidos |
+|---|---|
+| MC en inglés (15) | «Hardcore!», «Uptempo!», «New style!», «Harmony», «Make some noise!», «Are you ready?», «Let's go!», «Come on!», «Louder!», «Hands up!», «Bass!», «Drop!», «Rotterdam!», cuenta atrás «Three, two, one!» y cuenta «One, two, three, four!» (a negras, 150 BPM) |
+| MC en castellano (6) | «¡Vamos!», «¡Dale caña!», «¡Más fuerte!», «¡Manos arriba!», «¡Makina!», «¡Que suene!» |
+| Gritos de grupo (5) | «¡Hey!», «¡Oi!», «¡Yeah!», «¡Ho!» y «¡Hey! ¡Hey! ¡Hey!» (150 BPM) |
+| Efectos de voz (7) | megáfono «Warning!», radio «This is Harmony», demonio, «Ha-ha-ha-hardcore» (180 BPM), robot con vocoder en Do menor, susurro, entrada inversa |
+| Coros (5) | «Aah» en La menor, «Ooh» en Fa# menor, golpes vocales «Ah» (Do# 4) y «Ey» (Fa# 4), acorde «Oh» en Sol# menor con reverb cortada |
+
+- **Frases y gritos**: la voz de base es **eSpeak NG 1.53**, un sintetizador de voz por formantes (software libre, GPL-3.0); no hay ninguna grabación de una persona. `tools/samples/voices/sources.mjs` dice qué frase, voz, tono y velocidad tiene cada toma; `node tools/samples/voices/make.mjs` (o `npm run voices`) las genera con eSpeak en `tools/samples/voices/src/` junto con `manifest.json` (versión del programa y parámetros). Las tomas se guardan en el repositorio, así que el pack se reconstruye igual sin tener eSpeak instalado. Cada frase lleva dos voces distintas con la misma duración (se ajusta la velocidad de la segunda), dobladas en estéreo; después limpieza, presencia, compresión, saturación, sala y ecos a tempo. La licencia del programa no pasa a lo que genera (así lo explica la FAQ de la GPL), y lo que hace Harmony con esas tomas se publica CC0 como el resto. Un matiz: algunas consonantes sordas de eSpeak salen de fragmentos de ruido muy cortos que vienen con el propio programa.
+- **Coros**: síntesis por formantes de Harmony (`tools/samples/voice.mjs`), sin tomas de nadie: fuente glotal aditiva (armónicos sin aliasing, vibrato, pequeñas derivas de tono y algo de aire) por cinco filtros de formante por vocal, con los valores de referencia de soprano, contralto, tenor y bajo; varias voces por nota, cada una con su desafinación y su sitio en el estéreo.
+- **Vocoder** de 24 bandas en `tools/samples/voice.mjs` (las sibilantes pasan aparte para que se entienda la palabra).
+
+### Cómo se hacen y se validan
+- **Cómo se hacen**: `tools/samples/dsp.mjs` (osciladores sin aliasing, ruido con semilla, filtros barridos, saturación, limitador, reverb, WAV con dither) y una receta por sonido en `tools/samples/packs/<pack>.mjs`. `node tools/samples/build.mjs` (o `npm run samples`) los construye, los valida y escribe `js/data/samples.js` y `tools/samples/report.md`. Es determinista: la misma receta da el mismo audio, y un test lo comprueba.
+- **Validación** (lo que no la pasa no se escribe): sin muestras recortadas, pico real ≤ −0,8 dBTP (normalizados a −1 dBTP con sobremuestreo ×4), sin continua ni infrasonidos, principio y final sin clic, duración razonable, y en los kicks y bajos, la nota medida en la cola (FFT de 65 536 puntos) igual a la anunciada. Además se revisaron forma de onda y espectrograma de todos (así se encontraron y corrigieron capas cortadas en seco, colas de kick que acababan de golpe y, en los coros, aliasing de la primera fuente glotal y falta de agudos) y se comparó su parecido espectral para no meter variantes casi iguales. **No se han escuchado**: este entorno no tiene salida de audio; la validación es técnica y visual. Con las voces es donde más falta hace escucharlas: lo que no se puede medir es si cada frase se entiende bien.
 - **Metadatos** de cada sonido: id estable (`harmony-01/hc-kick-gabber`), nombre, categoría del Soundpad, estilo, tipo, etiquetas, nota, tempo, duración, canales, ruta, cómo se hizo y el pico y RMS medidos; el pack lleva la licencia y la procedencia.
 - **Más packs**: un archivo más en `tools/samples/packs/` y volver a construir. La web los lista sola.
 
@@ -182,7 +198,7 @@ js/ui/        libpanel.js (panel de la biblioteca, en Soundpad y Sonidos) · com
 js/views/     spectrum.js · lanes.js · home.js · lineage.js (explorador de linajes) · genres.js · catalog.js · pages.js (artista, sello, caja) · sounds.js (sonidos) · js/app.js (rutas, ficha, atajos)
 css/          tokens.css (claro/oscuro) · base.css · views.css · deck.css · soundpad.css
 art/          diseño real de los discos (generado por el importador)
-tools/        samples/ (dsp.mjs, packs/, build.mjs, report.md) · mb-import.mjs · dc-import.mjs · dz-import.mjs · sus informes *-report.md (generados) · cache/ (generada) · test/
+tools/        samples/ (dsp.mjs, voice.mjs, voices/, packs/, build.mjs, report.md) · mb-import.mjs · dc-import.mjs · dz-import.mjs · sus informes *-report.md (generados) · cache/ (generada) · test/
 ```
 Rutas con hash: `#mixer`, `#soundpad`, `#sonidos`, `#espectro`, `#generos`, `#catalogo`, `#caja`, `#g-makina`, `#a-skudero`, `#l-bit-music`, `#t-flying-free`.
 

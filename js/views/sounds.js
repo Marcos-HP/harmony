@@ -53,7 +53,7 @@
       onAdd: (x) => {
         const r = H.Soundpad.addToFreePad({ type: 'harmony', sampleId: x.id }, { name: x.name, cat: x.cat, bankId: target });
         const bk = H.Soundpad.state().banks.find((b) => b.id === target) || H.Banks.current(H.Soundpad.state());
-        U.toast(r ? `«${x.name}» en el pad ${r.i + 1} de «${r.bank.name}»` : `«${bk.name}» está lleno: elige otro banco o vacía un pad`);
+        U.toast(r ? `${U.q(x.name)} en el pad ${r.i + 1} de «${r.bank.name}»` : `«${bk.name}» está lleno: elige otro banco o vacía un pad`);
         if (r) renderBanks();
       }
     });

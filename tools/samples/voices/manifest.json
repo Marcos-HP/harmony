@@ -1,0 +1,419 @@
+{
+ "engine": "eSpeak NG 1.53.0",
+ "license": "eSpeak NG es software GPL-3.0-or-later; las tomas son lo que genera el programa",
+ "sources": [
+  {
+   "id": "hardcore-a",
+   "text": "Hardcore!",
+   "voice": "en-us+m3",
+   "pitch": 38,
+   "speed": 165
+  },
+  {
+   "id": "hardcore-b",
+   "text": "Hardcore!",
+   "voice": "en-us+announcer",
+   "pitch": 52,
+   "speed": 239
+  },
+  {
+   "id": "uptempo-a",
+   "text": "Uptempo!",
+   "voice": "en-us+m3",
+   "pitch": 42,
+   "speed": 175
+  },
+  {
+   "id": "uptempo-b",
+   "text": "Uptempo!",
+   "voice": "en-us+klatt4",
+   "pitch": 56,
+   "speed": 169
+  },
+  {
+   "id": "newstyle-a",
+   "text": "New style!",
+   "voice": "en-us+announcer",
+   "pitch": 44,
+   "speed": 165
+  },
+  {
+   "id": "newstyle-b",
+   "text": "New style!",
+   "voice": "en-us+m3",
+   "pitch": 36,
+   "speed": 112
+  },
+  {
+   "id": "harmony-a",
+   "text": "Harmony.",
+   "voice": "en-us+m7",
+   "pitch": 40,
+   "speed": 140
+  },
+  {
+   "id": "harmony-b",
+   "text": "Harmony.",
+   "voice": "en-us+m3",
+   "pitch": 46,
+   "speed": 140
+  },
+  {
+   "id": "noise-a",
+   "text": "Make some noise!",
+   "voice": "en-us+m3",
+   "pitch": 46,
+   "speed": 175
+  },
+  {
+   "id": "noise-b",
+   "text": "Make some noise!",
+   "voice": "en-us+announcer",
+   "pitch": 56,
+   "speed": 235
+  },
+  {
+   "id": "ready-a",
+   "text": "Are you ready?",
+   "voice": "en-us+m3",
+   "pitch": 42,
+   "speed": 160
+  },
+  {
+   "id": "ready-b",
+   "text": "Are you ready?",
+   "voice": "en-us+announcer",
+   "pitch": 50,
+   "speed": 212
+  },
+  {
+   "id": "letsgo-a",
+   "text": "Let's go!",
+   "voice": "en-us+announcer",
+   "pitch": 50,
+   "speed": 170
+  },
+  {
+   "id": "letsgo-b",
+   "text": "Let's go!",
+   "voice": "en-us+m3",
+   "pitch": 42,
+   "speed": 115
+  },
+  {
+   "id": "comeon-a",
+   "text": "Come on!",
+   "voice": "en-us+m3",
+   "pitch": 46,
+   "speed": 160
+  },
+  {
+   "id": "comeon-b",
+   "text": "Come on!",
+   "voice": "en-us+klatt4",
+   "pitch": 54,
+   "speed": 176
+  },
+  {
+   "id": "louder-a",
+   "text": "Louder!",
+   "voice": "en-us+announcer",
+   "pitch": 56,
+   "speed": 160
+  },
+  {
+   "id": "louder-b",
+   "text": "Louder!",
+   "voice": "en-us+m3",
+   "pitch": 46,
+   "speed": 98
+  },
+  {
+   "id": "handsup-a",
+   "text": "Hands up!",
+   "voice": "en-us+m3",
+   "pitch": 46,
+   "speed": 165
+  },
+  {
+   "id": "handsup-b",
+   "text": "Hands up!",
+   "voice": "en-us+announcer",
+   "pitch": 54,
+   "speed": 234
+  },
+  {
+   "id": "bass-a",
+   "text": "Bass!",
+   "voice": "en-us+m7",
+   "pitch": 34,
+   "speed": 160
+  },
+  {
+   "id": "drop-a",
+   "text": "Drop!",
+   "voice": "en-us+m3",
+   "pitch": 34,
+   "speed": 160
+  },
+  {
+   "id": "drop-b",
+   "text": "Drop!",
+   "voice": "en-us+announcer",
+   "pitch": 44,
+   "speed": 234
+  },
+  {
+   "id": "rotterdam-a",
+   "text": "Rotterdam!",
+   "voice": "en-us+announcer",
+   "pitch": 42,
+   "speed": 165
+  },
+  {
+   "id": "rotterdam-b",
+   "text": "Rotterdam!",
+   "voice": "en-us+m3",
+   "pitch": 36,
+   "speed": 113
+  },
+  {
+   "id": "warning-a",
+   "text": "Warning!",
+   "voice": "en-us+announcer",
+   "pitch": 50,
+   "speed": 150
+  },
+  {
+   "id": "thisis-a",
+   "text": "This is Harmony.",
+   "voice": "en-us+announcer",
+   "pitch": 40,
+   "speed": 160
+  },
+  {
+   "id": "one-a",
+   "text": "One!",
+   "voice": "en-us+m3",
+   "pitch": 44,
+   "speed": 180
+  },
+  {
+   "id": "two-a",
+   "text": "Two!",
+   "voice": "en-us+m3",
+   "pitch": 44,
+   "speed": 180
+  },
+  {
+   "id": "three-a",
+   "text": "Three!",
+   "voice": "en-us+m3",
+   "pitch": 44,
+   "speed": 180
+  },
+  {
+   "id": "four-a",
+   "text": "Four!",
+   "voice": "en-us+m3",
+   "pitch": 44,
+   "speed": 180
+  },
+  {
+   "id": "vamos-a",
+   "text": "¡Vamos!",
+   "voice": "es+m3",
+   "pitch": 46,
+   "speed": 165
+  },
+  {
+   "id": "vamos-b",
+   "text": "¡Vamos!",
+   "voice": "es+announcer",
+   "pitch": 56,
+   "speed": 245
+  },
+  {
+   "id": "dale-a",
+   "text": "¡Dale caña!",
+   "voice": "es+m3",
+   "pitch": 46,
+   "speed": 165
+  },
+  {
+   "id": "dale-b",
+   "text": "¡Dale caña!",
+   "voice": "es+announcer",
+   "pitch": 54,
+   "speed": 239
+  },
+  {
+   "id": "fuerte-a",
+   "text": "¡Más fuerte!",
+   "voice": "es+announcer",
+   "pitch": 52,
+   "speed": 160
+  },
+  {
+   "id": "fuerte-b",
+   "text": "¡Más fuerte!",
+   "voice": "es+m3",
+   "pitch": 44,
+   "speed": 106
+  },
+  {
+   "id": "manos-a",
+   "text": "¡Manos arriba!",
+   "voice": "es+m3",
+   "pitch": 46,
+   "speed": 170
+  },
+  {
+   "id": "manos-b",
+   "text": "¡Manos arriba!",
+   "voice": "es+announcer",
+   "pitch": 54,
+   "speed": 246
+  },
+  {
+   "id": "makina-a",
+   "text": "¡Makina!",
+   "voice": "es+m3",
+   "pitch": 42,
+   "speed": 160
+  },
+  {
+   "id": "makina-b",
+   "text": "¡Makina!",
+   "voice": "es+announcer",
+   "pitch": 50,
+   "speed": 258
+  },
+  {
+   "id": "suene-a",
+   "text": "¡Que suene!",
+   "voice": "es+announcer",
+   "pitch": 52,
+   "speed": 165
+  },
+  {
+   "id": "suene-b",
+   "text": "¡Que suene!",
+   "voice": "es+m3",
+   "pitch": 44,
+   "speed": 101
+  },
+  {
+   "id": "hey-a",
+   "text": "Hey!",
+   "voice": "en-us+m3",
+   "pitch": 62,
+   "speed": 220
+  },
+  {
+   "id": "hey-b",
+   "text": "Hey!",
+   "voice": "en-us+m1",
+   "pitch": 70,
+   "speed": 228
+  },
+  {
+   "id": "hey-c",
+   "text": "Hey!",
+   "voice": "en-us+klatt4",
+   "pitch": 66,
+   "speed": 229
+  },
+  {
+   "id": "hey-d",
+   "text": "Hey!",
+   "voice": "en-us+m7",
+   "pitch": 58,
+   "speed": 233
+  },
+  {
+   "id": "oi-a",
+   "text": "Oi!",
+   "voice": "en-gb+m3",
+   "pitch": 60,
+   "speed": 220
+  },
+  {
+   "id": "oi-b",
+   "text": "Oi!",
+   "voice": "en-gb+announcer",
+   "pitch": 68,
+   "speed": 220
+  },
+  {
+   "id": "oi-c",
+   "text": "Oi!",
+   "voice": "en-gb+m7",
+   "pitch": 56,
+   "speed": 220
+  },
+  {
+   "id": "yeah-a",
+   "text": "Yeah!",
+   "voice": "en-us+m3",
+   "pitch": 58,
+   "speed": 200
+  },
+  {
+   "id": "yeah-b",
+   "text": "Yeah!",
+   "voice": "en-us+announcer",
+   "pitch": 66,
+   "speed": 283
+  },
+  {
+   "id": "yeah-c",
+   "text": "Yeah!",
+   "voice": "en-us+m7",
+   "pitch": 52,
+   "speed": 211
+  },
+  {
+   "id": "ho-a",
+   "text": "Ho!",
+   "voice": "en-us+m3",
+   "pitch": 56,
+   "speed": 220
+  },
+  {
+   "id": "ho-b",
+   "text": "Ho!",
+   "voice": "en-us+m1",
+   "pitch": 64,
+   "speed": 240
+  },
+  {
+   "id": "ho-c",
+   "text": "Ho!",
+   "voice": "en-us+m7",
+   "pitch": 50,
+   "speed": 236
+  },
+  {
+   "id": "demon-a",
+   "text": "Hardcore!",
+   "voice": "en-us+m3",
+   "pitch": 50,
+   "speed": 175
+  },
+  {
+   "id": "whisper-a",
+   "text": "Harmony.",
+   "voice": "en-us+whisper",
+   "pitch": 50,
+   "speed": 130
+  },
+  {
+   "id": "robot-a",
+   "text": "Harmony.",
+   "voice": "en-us+m3",
+   "pitch": 40,
+   "speed": 120
+  }
+ ]
+}

@@ -26,7 +26,7 @@
   function srcText(p) {
     if (!p.src) return 'Sin sonido';
     if (p.src.type === 'file') return 'Archivo tuyo · ' + p.src.fileName;
-    if (p.src.type === 'harmony') { const x = H.Lib.get(p.src.sampleId); return x ? `Harmony · ${x.name} (${x.pack.name}, ${x.pack.licenseName})` : 'Harmony · sonido desaparecido'; }
+    if (p.src.type === 'harmony') { const x = H.Lib.get(p.src.sampleId); return x ? `Harmony · ${x.name} · ${x.pack.name}, ${x.pack.license === 'CC0-1.0' ? 'CC0' : x.pack.licenseName}` : 'Harmony · sonido desaparecido'; }
     const t = H.A.t[p.src.trackId];
     return t ? 'Catálogo · ' + t.title + ' — ' + t.artistLine + ' (muestra de Deezer)' : 'Catálogo · registro desaparecido';
   }
@@ -256,7 +256,7 @@
     if (libPanel) libPanel.refresh();
     H.PadAudio.load(p.src).catch(() => {});
     tidy();
-    U.toast(`«${x.name}» en el pad ${i + 1}${p.key ? ' (tecla ' + keyLabel(p.key) + ')' : ''}`);
+    U.toast(`${U.q(x.name)} en el pad ${i + 1}${p.key ? ' (tecla ' + keyLabel(p.key) + ')' : ''}`);
   }
 
   function onClick(ev) {

@@ -9,6 +9,7 @@
     "import:deezer": "node tools/dz-import.mjs",
     "import:discogs": "node tools/dc-import.mjs",
     "samples": "node tools/samples/build.mjs",
+    "voices": "node tools/samples/voices/make.mjs",
     "test": "node --test tools/test/mb-import.test.mjs tools/test/merge.test.mjs tools/test/dz-import.test.mjs tools/test/dc-import.test.mjs tools/test/banks.test.mjs tools/test/samples.test.mjs"
   },
   "engines": { "node": ">=18" }
