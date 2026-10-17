@@ -130,7 +130,16 @@
     seqPanel = H.SeqPanel(root.querySelector('.sq'), {
       bank, save: () => save(), fire, flash,
       addToFreePad: (src, o) => SP.addToFreePad(src, o),
-      refreshPads: () => render()
+      refreshPads: () => render(),
+      assignSample: (i, id) => assignSample(i, id),
+      assignFile: (i, f) => { sel = i; assignFile(i, f); },
+      // abre la biblioteca de Harmony apuntando a ese pad (lo que se añada desde ahí va a él)
+      openLibrary: (i) => {
+        select(i, { toPad: false }); setTab('lib');
+        els.side.scrollIntoView({ behavior: U.reducedMotion() ? 'auto' : 'smooth', block: 'start' });
+        if (libPanel) setTimeout(() => libPanel.focus(), 350);
+        U.toast(`Elige un sonido: irá al pad ${i + 1}`);
+      }
     });
 
     U.on('pads:voice', paintStates);

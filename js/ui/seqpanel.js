@@ -28,7 +28,8 @@
     return null;
   }
 
-  /* api: { bank(), save(), fire(i), flash(i), addToFreePad(src, opts), refreshPads() } */
+  /* api: { bank(), save(), fire(i), flash(i), addToFreePad(src, opts), refreshPads(),
+            assignSample(i, id), assignFile(i, file), openLibrary(i) } */
   H.SeqPanel = function (el, api) {
     let painting = null, press = null, raf = 0, shownNow = -1, lastMark = 0, tapT = [], bar = 0, liveBar = -1;
     const seq = () => api.bank().seq;
@@ -61,7 +62,7 @@
       </div>
       <div class="seg sq-bars" role="group" aria-label="Compás a la vista" hidden></div>
       <div class="sq-scroll"><div class="sq-grid" role="grid" aria-label="Pasos del patrón"></div></div>
-      <p class="fine sq-help">Clic: poner o quitar un golpe. Clic derecho, Alt+clic o mantener pulsado: golpe suave (a medio volumen). Con el ratón, arrastra para pintar varios. Los patrones duran 4, 8 o 16 tiempos y se ven de compás en compás (tiempos 1–4, 5–8…); al alargar, los compases nuevos repiten lo que ya había. Cada fila es un pad: el nombre lo escucha; M lo silencia y S lo deja solo. Un golpe corta el anterior del mismo pad y los de su grupo de corte. Los cambios de patrón entran al acabar la vuelta.</p>`;
+      <p class="fine sq-help">Para meter un sonido: «Añadir sonido» al final de la rejilla, o arrástralo encima desde la biblioteca o desde tu equipo. Clic: poner o quitar un golpe. Clic derecho, Alt+clic o mantener pulsado: golpe suave (a medio volumen). Con el ratón, arrastra para pintar varios. Los patrones duran 4, 8 o 16 tiempos y se ven de compás en compás (tiempos 1–4, 5–8…); al alargar, los compases nuevos repiten lo que ya había. Cada fila es un pad: el nombre lo escucha; M lo silencia y S lo deja solo. Un golpe corta el anterior del mismo pad y los de su grupo de corte. Los cambios de patrón entran al acabar la vuelta.</p>`;
     const $ = (s) => el.querySelector(s);
     const grid = $('.sq-grid');
 
@@ -141,6 +142,11 @@
           <div class="sq-steps">${ks.map((k) => cell(name, k, +row[k])).join('')}</div>
         </div>`;
       }).join('');
+      const free = pads().findIndex((x) => !x.src);
+      grid.insertAdjacentHTML('beforeend', `<div class="sq-row sq-add" role="row">
+        <div class="sq-rh">${free >= 0 ? `<button class="sq-addbtn" type="button" data-sq="add">${U.icon('plus')}<span>Añadir sonido</span></button>` : '<span class="fine sq-full">16 pads ocupados</span>'}</div>
+        <div class="sq-drop fine">${free >= 0 ? `Arrastra aquí un sonido de la biblioteca o un archivo de audio: entra en el pad ${free + 1}.` : 'Para otra fila, vacía un pad.'} Encima de una fila, cambia el sonido de ese pad.</div>
+      </div>`);
       shownNow = -1; paintNow(true);
     }
     const VAL = ['', 'golpe', 'golpe suave'];
@@ -203,7 +209,7 @@
       const soft = ev.button === 2 || ev.altKey;
       if (ev.pointerType === 'touch') {
         // dedo: tocar pone o quita; mantener, golpe suave. Sin arrastre, para que la rejilla se pueda desplazar
-        press = { i, k, timer: setTimeout(() => { press.done = true; edit(i, k, cur === 2 ? 0 : 2); save(); if (navigator.vibrate) navigator.vibrate(12); }, 450) };
+        press = { i, k, x: ev.clientX, y: ev.clientY, timer: setTimeout(() => { press.done = true; edit(i, k, cur === 2 ? 0 : 2); save(); if (navigator.vibrate) navigator.vibrate(12); }, 450) };
         return;
       }
       ev.preventDefault();
@@ -212,7 +218,8 @@
       edit(i, k, value);
     });
     grid.addEventListener('pointermove', (ev) => {
-      if (press && ev.pointerType === 'touch') { clearTimeout(press.timer); press = null; return; }
+      // un dedo siempre tiembla un poco: solo es desplazar (y no tocar) si se mueve de verdad
+      if (press && ev.pointerType === 'touch') { if (Math.hypot(ev.clientX - press.x, ev.clientY - press.y) > 10) { clearTimeout(press.timer); press = null; } return; }
       if (!painting) return;
       const t = document.elementFromPoint(ev.clientX, ev.clientY), b = t && t.closest && t.closest('.sq-st');
       if (!b || !grid.contains(b)) return;
@@ -256,6 +263,30 @@
       else if (a === 'hear') api.fire(i);
       else if (a === 'mute' || a === 'solo') { PT().flag(s, a, i); save(); renderGrid(); }
       else if (a === 'kit') kit(b.dataset.kit);
+      else if (a === 'add') { const f = pads().findIndex((x) => !x.src); if (f >= 0) api.openLibrary(f); }
+    });
+
+    /* soltar un sonido de la biblioteca (o un archivo) encima: en una fila cambia su pad; fuera, va a un pad libre */
+    const AUDIO = /\.(mp3|wav|wave|ogg|oga|opus|flac|m4a|aac|webm|aif|aiff)$/i;
+    const dropKind = (dt) => (dt && [...dt.types].includes('text/x-harmony-sample') ? 'sample' : dt && [...dt.types].includes('Files') ? 'file' : null);
+    let dropEl = null;
+    const mark = (x) => { if (dropEl !== x) { if (dropEl) dropEl.classList.remove('is-drop'); dropEl = x; if (x) x.classList.add('is-drop'); } };
+    el.addEventListener('dragover', (ev) => {
+      if (!dropKind(ev.dataTransfer) || !ev.target.closest('.sq-scroll')) return;
+      ev.preventDefault(); ev.dataTransfer.dropEffect = 'copy';
+      mark(ev.target.closest('.sq-row[data-i]') || ev.target.closest('.sq-add') || grid);
+    });
+    el.addEventListener('dragleave', (ev) => { if (!el.contains(ev.relatedTarget)) mark(null); });
+    el.addEventListener('drop', (ev) => {
+      const kind = dropKind(ev.dataTransfer);
+      if (!kind || !ev.target.closest('.sq-scroll')) return;
+      ev.preventDefault(); mark(null);
+      const row = ev.target.closest('.sq-row[data-i]');
+      const i = row ? +row.dataset.i : pads().findIndex((x) => !x.src);
+      if (i < 0) { U.toast('Los 16 pads están ocupados: suéltalo encima de una fila para cambiar su sonido'); return; }
+      if (kind === 'sample') { api.assignSample(i, ev.dataTransfer.getData('text/x-harmony-sample')); return; }
+      const f = [...ev.dataTransfer.files].find((x) => (x.type && x.type.startsWith('audio/')) || AUDIO.test(x.name || ''));
+      if (f) api.assignFile(i, f); else U.toast('Eso no parece un archivo de audio');
     });
     el.addEventListener('change', (ev) => {
       const t = ev.target, s = seq();
