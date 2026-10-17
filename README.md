@@ -54,7 +54,7 @@ mb: { title: '…', artist: '…' }   // buscar con otros términos
 mb: { skip: true }                 // no buscarlo
 ```
 
-**Tests**: `npm test` (34, incluidos los importadores de Deezer y Discogs contra servidores falsos y el modelo de bancos del Soundpad). Prueban normalización, emparejado, elección de edición, resumen, Cover Art Archive (elección de portada y galleta, descargas, `--no-art`), caché, reintentos, `--only`, `--offline`, el ritmo de peticiones, la fusión en la web, la coherencia de la capa importada de verdad (imágenes locales, galleta solo con vinilo), los desacuerdos entre fuentes editoriales y la integridad del catálogo (fuentes, artistas, sellos, rutas). El servidor falso tiene la forma real de las respuestas de la API; todos sus datos son inventados y nunca llegan al catálogo.
+**Tests**: `npm test` (38, incluidos los importadores de Deezer y Discogs contra servidores falsos y el modelo de bancos del Soundpad). Prueban normalización, emparejado, elección de edición, resumen, Cover Art Archive (elección de portada y galleta, descargas, `--no-art`), caché, reintentos, `--only`, `--offline`, el ritmo de peticiones, la fusión en la web, la coherencia de la capa importada de verdad (imágenes locales, galleta solo con vinilo), los desacuerdos entre fuentes editoriales y la integridad del catálogo (fuentes, artistas, sellos, rutas). El servidor falso tiene la forma real de las respuestas de la API; todos sus datos son inventados y nunca llegan al catálogo.
 
 ### Primera importación real (13-10-2026)
 - **81 aplicados**, 13 para revisar y 8 sin encontrar, de 102. Formato del original según MusicBrainz: 32 vinilo, 18 CD, 29 digital y 2 otros.
@@ -114,22 +114,41 @@ Escribe `js/data/dc.js` y `tools/dc-report.md`, y baja la imagen principal de ca
 
 **Primera importación (16-10-2026, en GitHub Actions y sin token)**: 87 aplicados, 18 fijados a mano y 69 por el enlace de MusicBrainz; 39 portadas nuevas, donde Cover Art Archive no tenía. Fijadas tras comprobarlas en Discogs: la serie Anonim (del primero al Vol. 7), Extres, Ex-P-Cial (el vinilo español de 1995, no el CD mexicano que enlazaba MusicBrainz), Impact, Pildo, Pont Aeri Vol. 3, Elements, Other Side, Boom Dem, Time Is Up… Later!!! (en el maxi *Leire*), The Drabel, Oh Break, Look at This (en *Evolution*; la biografía del grupo habla de *Vol. 6* y la ficha muestra el desacuerdo) y Enter the Time Machine. De la mákina y el newstyle, 20 de 22 registros tienen ya portada real y caras del disco. Sin edición propia en Discogs (solo recopilatorios): Reaching Dreams y Sweet Revenge. Quedan 20 sin buscar hasta que haya token.
 
+## Biblioteca original de sonidos (Harmony 01)
+41 sonidos hechos para Harmony por **síntesis y procesado digital**, sin grabaciones ni samples de terceros, con licencia **CC0** (dominio público). Están en `samples/harmony-01/` como WAV de 16 bits a 44,1 kHz y la web los sirve tal cual.
+
+| Grupo | Sonidos |
+|---|---|
+| Kicks hardcore (6) | gabber (Fa 1), mainstream (Sol# 1), industrial (Re# 1), crunch, early hardcore, millennium (Mi 1) |
+| Kicks newstyle (4) + bajo | punch, con cola, duro, jump; bajo de contratiempo (La 1, 150 BPM) |
+| Kicks uptempo (5) | screech, raw, tok, zaag, drop |
+| Palmas y cajas (6) | palma con sala, palma hardcore, caja seca, caja hardcore, caja y palma, aro |
+| Percusión y redobles (7) | charles cerrado y abierto, golpe metálico, crash, redoble de caja (180), de kick (200) y de toms (180) |
+| Impactos y transiciones (6) | impacto grave, impacto hardcore, sub drop, bajada, crash al revés, parada de cinta |
+| Subidas y efectos (6) | subida de ruido y de superserra (2 compases a 180), sirena, láser, stab estilo hoover, trompeta de rave |
+
+- **Cómo se hacen**: `tools/samples/dsp.mjs` (osciladores sin aliasing, ruido con semilla, filtros barridos, saturación, limitador, reverb, WAV con dither) y una receta por sonido en `tools/samples/packs/harmony-01.mjs`. `node tools/samples/build.mjs` (o `npm run samples`) los construye, los valida y escribe `js/data/samples.js` y `tools/samples/report.md`. Es determinista: la misma receta da el mismo audio, y un test lo comprueba.
+- **Validación** (lo que no la pasa no se escribe): sin muestras recortadas, pico real ≤ −0,8 dBTP (normalizados a −1 dBTP con sobremuestreo ×4), sin continua ni infrasonidos, principio y final sin clic, duración razonable, y en los kicks y bajos, la nota medida en la cola (FFT de 65 536 puntos) igual a la anunciada. Además se revisaron forma de onda y espectrograma de los 41 (así se encontraron y corrigieron capas cortadas en seco y colas de kick que acababan de golpe) y se comparó su parecido espectral para no meter variantes casi iguales. **No se han escuchado**: este entorno no tiene salida de audio; la validación es técnica y visual.
+- **Metadatos** de cada sonido: id estable (`harmony-01/hc-kick-gabber`), nombre, categoría del Soundpad, estilo, tipo, etiquetas, nota, tempo, duración, canales, ruta, cómo se hizo y el pico y RMS medidos; el pack lleva la licencia y la procedencia.
+- **Más packs**: un archivo más en `tools/samples/packs/` y volver a construir. La web los lista sola.
+
 ## Secciones: Biblioteca · Mixer · Soundpad
 La cabecera tiene tres secciones. Cambiar de una a otra no recarga la página ni vuelve a pintar nada, y nunca arranca audio: lo que suena sigue sonando (la mesa, el plato y los pads a la vez).
 - **Biblioteca** (`#inicio`, `#catalogo`, `#g-…`…): todo el archivo, con su submenú (Espectro, Géneros, Catálogo, Sonidos, Caja). Al volver de otra sección conserva la vista, los filtros y el scroll.
-  - **Sonidos** (`#sonidos`): tus bancos del Soundpad (con un mapa de sus pads por color), tus archivos (dónde se usa cada uno) y las muestras del catálogo (búsqueda y familias). Todo se escucha ahí mismo y se manda al primer pad libre del banco abierto.
+  - **Sonidos** (`#sonidos`): los sonidos de Harmony (con el banco de destino a elegir), tus bancos del Soundpad (con un mapa de sus pads por color), tus archivos privados (dónde se usa cada uno) y las muestras del catálogo. Todo se escucha ahí mismo, con una sola voz de escucha para toda la web, y se manda al primer pad libre.
 - **Mixer** (`#mixer`): el plato y la mesa de siempre, ahora debajo de la cabecera. También se abre desde la barra inferior, con la tecla `D` o con «Poner en el plato». Esc o la X vuelven a la biblioteca.
 - **Soundpad** (`#soundpad`): pads para disparar sonidos.
 
 ## Soundpad
 - **16 pads por banco** (4×4 en el ordenador y en el móvil). Cada pad muestra su nombre, su tecla, la categoría (el único color de la interfaz: kick, bajo, percusión, voz, FX, loop, tema, otro), si está cargando, si no carga y si está sonando (se invierte y una barra marca el avance).
-- **Sonidos**: archivos de tu equipo (botón o arrastrándolos al pad; MP3, WAV, OGG, FLAC, M4A… lo que lea el navegador) o **muestras del catálogo** (las de 30 s de Deezer de los registros que la tienen).
+- **Sonidos**: los **originales de Harmony** (pestaña «Biblioteca de Harmony» junto a los pads: buscar por nombre, etiqueta o nota, filtrar por estilo y tipo, escuchar y mandar al pad elegido, o arrastrar al pad que quieras), archivos de tu equipo (botón o arrastrándolos al pad; MP3, WAV, OGG, FLAC, M4A… lo que lea el navegador) o **muestras del catálogo** (las de 30 s de Deezer de los registros que la tienen). Cada pad dice de dónde sale su sonido: **Harmony**, **Tuyo** (privado, en tu navegador) o **Deezer**.
 - **Por pad**: nombre, categoría, volumen, modo (*disparo*: suena entero y al repetir vuelve a empezar; *bucle*: pulsar arranca y para), tecla, probar, detener y vaciar.
 - **Efectos por pad** (no tocan el archivo, se aplican al disparar): **recorte** de inicio y fin sobre la forma de onda (en bucle, el bucle es el trozo), **tono** de −12 a +12 semitonos (cambia también la velocidad, como en un sampler; en un bucle sonando se oye al momento), **al revés** y **grupo de corte** 1–4: disparar un pad para los de su grupo (charles abierto/cerrado, dos voces que no deben pisarse). «Quitar todos» los deja como estaban.
 - **Exportar e importar**: «Exportar» descarga el banco abierto y «Exportar todos», todos, en un `.json` con el audio de tus archivos dentro (base64), para llevarlo a otro navegador u ordenador. «Importar» los añade como bancos nuevos, sin pisar nada. Las muestras del catálogo viajan como referencia.
 - **Audio**: cada sonido se decodifica una vez (precarga al abrir el Soundpad y al cambiar de banco) y se dispara al apretar, no al soltar. Varios pads suenan a la vez; un pad no corta a otro. «Detener todo» para los pads (no la mesa). Los pads van a un bus propio que entra en el máster de Harmony, con el mismo volumen general y el mismo compresor que la mesa.
 - **Teclas**: por defecto 1–4, Q–R, A–F y Z–V; se cambian desde las opciones del pad («Cambiar tecla» y pulsar). Una tecla solo puede tener un pad: si ya era de otro, ese se queda sin tecla y se avisa. No se pueden usar espacio, Esc, Tab, Intro, flechas, `/` ni `?`. Con el Soundpad a la vista las teclas de los pads mandan sobre los atajos de Harmony; escribiendo en un campo no se dispara nada.
 - **Bancos**: nuevo, duplicar, renombrar, eliminar (pide confirmación con un segundo clic; siempre queda uno) y cambiar con el selector.
+- **Los sonidos de Harmony necesitan servirse por web** (GitHub Pages o un servidor local): con `dist/index.html` abierto desde el disco el navegador no deja leerlos, y la interfaz lo dice. Cada uno se descarga y se decodifica una sola vez por sesión, se use en uno o en varios pads o en la escucha previa.
 - **Qué se guarda**: los bancos y sus ajustes, en `localStorage`; tus archivos, en **IndexedDB**, en este navegador y sin subirse a ningún sitio. Cuando un archivo deja de usarlo cualquier pad, se borra. Si el navegador no deja usar IndexedDB (algunos modos privados), la cabecera dice «solo en esta sesión» y tus archivos duran hasta cerrar la pestaña. Las muestras del catálogo **no se guardan nunca** (condiciones de Deezer): solo la referencia, y se vuelven a pedir en cada sesión; necesitan conexión y no suenan dentro del artefacto de Claude.
 
 ## Qué hay en la web
@@ -152,17 +171,18 @@ La cabecera tiene tres secciones. Cambiar de una a otra no recarga la página ni
 
 ## Estructura
 ```
-js/data/      genres.js (6 familias, 24 géneros, relaciones) · catalog.js (capa editorial: 109 registros, sellos, artistas, fuentes, rutas)
+samples/      sonidos originales de Harmony, un directorio por pack (WAV); los genera tools/samples/build.mjs
+js/data/      samples.js (catálogo de samples, generado) · genres.js (6 familias, 24 géneros, relaciones) · catalog.js (capa editorial: 109 registros, sellos, artistas, fuentes, rutas)
               mb.js (MusicBrainz) · dc.js (Discogs) · dz.js (muestras de Deezer); las generan los importadores: no editar
-js/lib/       util.js · theme.js (tema claro/oscuro) · archive.js (índice, fusión con MusicBrainz y Discogs, búsqueda, filtros, orden, relacionados, sorpréndeme) · links.js
+js/lib/       library.js (biblioteca de samples: búsqueda y filtros) · util.js · theme.js (tema claro/oscuro) · archive.js (índice, fusión con MusicBrainz y Discogs, búsqueda, filtros, orden, relacionados, sorpréndeme) · links.js
               banks.js (modelo de bancos, pads y efectos del Soundpad) · padstore.js (guardado en localStorage + IndexedDB, exportar e importar)
 js/art/       art.js → fundas generativas, etiqueta del disco, reglas de BPM y época
 js/audio/     engine.js (mezclador Web Audio de dos canales; bus y decodificación para otros instrumentos) · analysis.js (BPM, fase y forma de onda) · deezer.js (muestras de 30 s) · pads.js (disparo de los pads)
-js/ui/        components.js · controls.js (potenciómetros y faders) · deck.js (plato + barra mínima) · mesa.js · soundpad.js · sections.js (Biblioteca · Mixer · Soundpad)
+js/ui/        libpanel.js (panel de la biblioteca, en Soundpad y Sonidos) · components.js · controls.js (potenciómetros y faders) · deck.js (plato + barra mínima) · mesa.js · soundpad.js · sections.js (Biblioteca · Mixer · Soundpad)
 js/views/     spectrum.js · lanes.js · home.js · lineage.js (explorador de linajes) · genres.js · catalog.js · pages.js (artista, sello, caja) · sounds.js (sonidos) · js/app.js (rutas, ficha, atajos)
 css/          tokens.css (claro/oscuro) · base.css · views.css · deck.css · soundpad.css
 art/          diseño real de los discos (generado por el importador)
-tools/        mb-import.mjs · dc-import.mjs · dz-import.mjs · sus informes *-report.md (generados) · cache/ (generada) · test/
+tools/        samples/ (dsp.mjs, packs/, build.mjs, report.md) · mb-import.mjs · dc-import.mjs · dz-import.mjs · sus informes *-report.md (generados) · cache/ (generada) · test/
 ```
 Rutas con hash: `#mixer`, `#soundpad`, `#sonidos`, `#espectro`, `#generos`, `#catalogo`, `#caja`, `#g-makina`, `#a-skudero`, `#l-bit-music`, `#t-flying-free`.
 

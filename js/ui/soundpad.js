@@ -7,7 +7,7 @@
   const B = () => H.Banks;
 
   const SP = (H.Soundpad = { visible: false });
-  let root, st, sel = 0, capture = null, armDelete = null, renaming = false, catOpen = false, catQ = '', raf = 0;
+  let root, st, sel = 0, capture = null, armDelete = null, renaming = false, catOpen = false, catQ = '', raf = 0, tab = 'pad', libPanel = null;
   const els = {};
 
   /* El estado se carga la primera vez que alguien lo pide (el Soundpad o la página de sonidos) */
@@ -26,12 +26,14 @@
   function srcText(p) {
     if (!p.src) return 'Sin sonido';
     if (p.src.type === 'file') return 'Archivo tuyo · ' + p.src.fileName;
+    if (p.src.type === 'harmony') { const x = H.Lib.get(p.src.sampleId); return x ? `Harmony · ${x.name} (${x.pack.name}, ${x.pack.licenseName})` : 'Harmony · sonido desaparecido'; }
     const t = H.A.t[p.src.trackId];
     return t ? 'Catálogo · ' + t.title + ' — ' + t.artistLine + ' (muestra de Deezer)' : 'Catálogo · registro desaparecido';
   }
   const semis = (n) => (n > 0 ? '+' : n < 0 ? '−' : '±') + Math.abs(n) + ' st';
   const fxShort = (p) => [p.pitch ? semis(p.pitch) : '', p.start > 0 || p.end < 1 ? 'recorte' : '', p.reverse ? 'al revés' : '', p.choke ? 'g' + p.choke : ''].filter(Boolean).map((x) => ' · ' + x).join('');
-  const srcShort = (p) => (!p.src ? '' : p.src.type === 'file' ? 'archivo' : 'catálogo');
+  const srcShort = (p) => (!p.src ? '' : p.src.type === 'file' ? 'tuyo' : p.src.type === 'harmony' ? 'harmony' : 'catálogo');
+  const SRC_BADGE = { file: 'Tuyo', harmony: 'Harmony', catalog: 'Deezer' };
 
   /* ---------- estructura ---------- */
   SP.build = function (container) {
@@ -67,7 +69,14 @@
         </header>
         <div class="sp-body">
           <div class="sp-grid" role="group"></div>
-          <aside class="sp-edit" aria-label="Opciones del pad"></aside>
+          <aside class="sp-side">
+            <div class="seg sp-tabs" role="tablist" aria-label="Panel">
+              <button type="button" role="tab" data-sp="tab" data-tab="pad" aria-selected="true">Pad</button>
+              <button type="button" role="tab" data-sp="tab" data-tab="lib" aria-selected="false">Biblioteca de Harmony</button>
+            </div>
+            <div class="sp-edit" role="tabpanel" aria-label="Opciones del pad"></div>
+            <div class="sp-lib" role="tabpanel" aria-label="Biblioteca de Harmony" hidden></div>
+          </aside>
         </div>
         <p class="fine sp-note"></p>
         <input type="file" id="sp-file" accept="audio/*,.mp3,.wav,.ogg,.opus,.flac,.m4a,.aac,.webm" hidden>
@@ -75,6 +84,8 @@
       </div>`;
     els.grid = root.querySelector('.sp-grid');
     els.edit = root.querySelector('.sp-edit');
+    els.lib = root.querySelector('.sp-lib');
+    els.side = root.querySelector('.sp-side');
     els.pick = root.querySelector('.sp-bank-pick');
     els.pers = root.querySelector('.sp-pers');
     els.note = root.querySelector('.sp-note');
@@ -108,6 +119,8 @@
     els.grid.addEventListener('drop', (ev) => {
       const p = ev.target.closest('.pad'); if (!p) return;
       ev.preventDefault(); p.classList.remove('is-drop');
+      const sid = ev.dataTransfer.getData('text/x-harmony-sample');
+      if (sid) { assignSample(+p.dataset.i, sid); return; }
       const f = [...(ev.dataTransfer.files || [])].find(isAudio);
       if (f) { sel = +p.dataset.i; assignFile(sel, f); } else U.toast('Eso no parece un archivo de audio');
     });
@@ -202,16 +215,48 @@
   function autoName(src) {
     if (!src) return '';
     if (src.type === 'file') return src.fileName.replace(/\.[a-z0-9]{2,5}$/i, '').slice(0, 40);
+    if (src.type === 'harmony') { const x = H.Lib.get(src.sampleId); return x ? x.name.slice(0, 40) : ''; }
     const t = H.A.t[src.trackId]; return t ? t.title.slice(0, 40) : '';
   }
   /* Borra del navegador los archivos que ya no usa ningún pad de ningún banco */
   const tidy = U.debounce(() => { H.PadStore.saveNow(st); H.PadStore.prune(B().fileIds(st)); }, 600);
 
   /* ---------- acciones ---------- */
-  function select(i) {
+  /* Elegir un pad. Desde la biblioteca (pestaña abierta), elegir un pad vacío lo hace destino sin cambiar de pestaña */
+  function select(i, { toPad = true } = {}) {
     sel = i; capture = null; catOpen = false; catQ = '';
     renderGrid(); renderEdit();
-    if (window.matchMedia('(max-width: 900px)').matches) els.edit.scrollIntoView({ behavior: U.reducedMotion() ? 'auto' : 'smooth', block: 'start' });
+    if (toPad) setTab('pad'); else paintTabs();
+    if (libPanel) libPanel.refresh();
+    if (window.matchMedia('(max-width: 900px)').matches) els.side.scrollIntoView({ behavior: U.reducedMotion() ? 'auto' : 'smooth', block: 'start' });
+  }
+  function setTab(t) {
+    tab = t === 'lib' ? 'lib' : 'pad';
+    if (tab === 'lib' && !libPanel) {
+      libPanel = H.LibPanel(els.lib, { idPrefix: 'splib', addLabel: () => 'Al pad ' + (sel + 1), onAdd: (x) => assignSample(sel, x.id), empty: 'Nada coincide con la búsqueda.' });
+    }
+    els.edit.hidden = tab !== 'pad'; els.lib.hidden = tab !== 'lib';
+    paintTabs();
+  }
+  function paintTabs() {
+    els.side.querySelectorAll('[data-sp="tab"][role="tab"]').forEach((b) => {
+      b.setAttribute('aria-selected', b.dataset.tab === tab);
+      if (b.dataset.tab === 'pad') b.textContent = 'Pad ' + (sel + 1);
+    });
+  }
+  function assignSample(i, id) {
+    const x = H.Lib.get(id); if (!x) return;
+    const p = bank().pads[i];
+    H.PadAudio.stop(vkey(i));
+    p.src = { type: 'harmony', sampleId: id };
+    p.name = x.name.slice(0, 40); p.cat = x.cat;
+    B().setTrim(p, 0, 1);
+    sel = i;
+    save(); renderGrid(); renderEdit(); paintTabs();
+    if (libPanel) libPanel.refresh();
+    H.PadAudio.load(p.src).catch(() => {});
+    tidy();
+    U.toast(`«${x.name}» en el pad ${i + 1}${p.key ? ' (tecla ' + keyLabel(p.key) + ')' : ''}`);
   }
 
   function onClick(ev) {
@@ -220,7 +265,7 @@
     const hit = ev.target.closest('.pad-hit');
     if (hit) {
       const i = +hit.closest('.pad').dataset.i;
-      if (!bank().pads[i].src) select(i);
+      if (!bank().pads[i].src) select(i, { toPad: tab !== 'lib' });
       else if (ev.detail === 0) fire(i);   // Intro o espacio con el foco en el pad (el ratón ya disparó al apretar)
       return;
     }
@@ -251,6 +296,7 @@
     else if (a === 'play') fire(sel);
     else if (a === 'stop') H.PadAudio.stop(vkey(sel));
     else if (a === 'clear') { H.PadAudio.stop(vkey(sel)); B().clearPad(bank(), sel); save(); tidy(); render(); }
+    else if (a === 'tab') setTab(b.dataset.tab);
     else if (a === 'rev') { p.reverse = !p.reverse; H.PadAudio.stop(vkey(sel)); save(); renderGrid(); renderFx(); }
     else if (a === 'choke') { p.choke = +b.dataset.g; save(); renderGrid(); renderFx(); }
     else if (a === 'fx-reset') { B().resetFx(p); H.PadAudio.stop(vkey(sel)); save(); renderGrid(); renderFx(); }
@@ -284,7 +330,7 @@
   }
 
   /* ---------- pintado ---------- */
-  function render() { if (!root) return; renderBank(); renderGrid(); renderEdit(); }
+  function render() { if (!root) return; renderBank(); renderGrid(); renderEdit(); paintTabs(); }
 
   function renderBank() {
     const bk = bank();
@@ -308,9 +354,9 @@
     els.grid.innerHTML = bank().pads.map((p, i) => {
       const empty = !p.src, name = p.name || (empty ? 'Vacío' : autoName(p.src) || 'Pad ' + (i + 1));
       const label = empty ? `Pad ${i + 1} vacío: asignar un sonido` : `Disparar ${name}${p.key ? ', tecla ' + keyLabel(p.key) : ''}${p.mode === 'loop' ? ', en bucle' : ''}`;
-      return `<div class="pad cat-${p.cat}${empty ? ' is-empty' : ''}${i === sel ? ' is-sel' : ''}" data-i="${i}">
+      return `<div class="pad cat-${p.cat}${empty ? ' is-empty' : ' src-' + p.src.type}${i === sel ? ' is-sel' : ''}" data-i="${i}">
         <button class="pad-hit" type="button" aria-label="${e(label)}">
-          <span class="pad-top"><kbd class="pad-key">${e(keyLabel(p.key))}</kbd><span class="pad-n mono">${String(i + 1).padStart(2, '0')}</span></span>
+          <span class="pad-top"><kbd class="pad-key">${e(keyLabel(p.key))}</kbd><span class="pad-n mono">${String(i + 1).padStart(2, '0')}</span>${p.src ? `<span class="pad-src mono src-${p.src.type}">${SRC_BADGE[p.src.type]}</span>` : ''}</span>
           <span class="pad-name">${e(name)}</span>
           <span class="pad-meta mono">${empty ? 'Toca para asignar' : e(catName(p.cat)) + ' · ' + srcShort(p) + (p.mode === 'loop' ? ' · bucle' : '') + fxShort(p)}</span>
           <span class="pad-bar" aria-hidden="true"></span>
@@ -440,13 +486,13 @@
   SP.state = state;
   SP.vkey = (bankId, i) => bankId + ':' + i;
   /* Pone un sonido en el primer pad libre del banco actual. Devuelve { bank, i } o null si está lleno. */
-  SP.addToFreePad = function (src, { name = '', cat = 'otro' } = {}) {
-    const b = bank(), i = b.pads.findIndex((p) => !p.src);
+  SP.addToFreePad = function (src, { name = '', cat = 'otro', bankId = null } = {}) {
+    const b = (bankId && state().banks.find((x) => x.id === bankId)) || bank(), i = b.pads.findIndex((p) => !p.src);
     if (i < 0) return null;
     const p = b.pads[i];
     p.src = src; p.name = name.slice(0, 40); p.cat = cat; B().setTrim(p, 0, 1);
     H.PadStore.saveNow(st);
-    if (root) { sel = i; render(); }
+    if (root && b === bank()) { sel = i; render(); }
     H.PadAudio.load(src).catch(() => {});
     return { bank: b, i };
   };
@@ -455,14 +501,15 @@
     const box = els.edit && els.edit.querySelector('.sp-src-f'); if (!box) return;
     const p = bank().pads[sel], s = p.src ? H.PadAudio.status(p.src) : null, dur = p.src ? H.PadAudio.duration(p.src) : null;
     const state = !p.src ? '' : s === 'loading' ? ' · cargando…' : s === 'error' ? '' : dur ? ' · ' + (dur < 60 ? dur.toFixed(1).replace('.', ',') + ' s' : U.fmtTime(dur)) : '';
-    const keep = !p.src ? '' : p.src.type === 'catalog' ? 'No se guarda: se vuelve a pedir a Deezer en cada sesión.' : H.PadStore.persistent() === false ? 'Solo en esta sesión: este navegador no deja guardar archivos.' : 'Guardado en este navegador; no se sube a ningún sitio.';
+    const keep = !p.src ? '' : p.src.type === 'harmony' ? 'Sonido original de Harmony: viene con la web, no ocupa espacio en tu navegador.' : p.src.type === 'catalog' ? 'No se guarda: se vuelve a pedir a Deezer en cada sesión.' : H.PadStore.persistent() === false ? 'Solo en esta sesión: este navegador no deja guardar archivos.' : 'Guardado en este navegador; no se sube a ningún sitio.';
     const hadQ = box.querySelector('#sp-q') === document.activeElement;
     box.innerHTML = `<span class="mono">Sonido</span>
       <p class="sp-src">${e(srcText(p))}${state}</p>
       ${s === 'error' ? `<p class="fine sp-err">${e(H.PadAudio.error(p.src))} <button class="link-btn" type="button" data-sp="retry">Reintentar</button></p>` : p.src ? `<p class="fine">${keep}</p>` : ''}
       <div class="chips">
         <button class="chip" type="button" data-sp="file">${U.icon('file')} Archivo de tu equipo</button>
-        <button class="chip${catOpen ? ' chip-on' : ''}" type="button" data-sp="cat-toggle" aria-expanded="${catOpen}">${U.icon('search')} Del catálogo</button>
+        <button class="chip" type="button" data-sp="tab" data-tab="lib">${U.icon('pads')} Biblioteca de Harmony</button>
+        <button class="chip${catOpen ? ' chip-on' : ''}" type="button" data-sp="cat-toggle" aria-expanded="${catOpen}">${U.icon('search')} Muestras del catálogo</button>
       </div>
       ${catOpen ? `<div class="sp-catpick">
         <input type="search" id="sp-q" value="${e(catQ)}" placeholder="Buscar registros con muestra" aria-label="Buscar en el catálogo" autocomplete="off">

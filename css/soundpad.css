@@ -82,8 +82,12 @@
 }
 
 /* ---------- opciones del pad ---------- */
-.sp-edit { border: 1px solid var(--ink); padding: 18px; display: grid; gap: 16px; position: sticky; top: calc(var(--top-off, 56px) + 16px); max-height: calc(100vh - var(--top-off, 56px) - var(--bar-h) - 32px); overflow-y: auto; overscroll-behavior: contain; scroll-margin-top: calc(var(--top-off, 56px) + 12px); }
-@media (max-width: 900px) { .sp-edit { position: static; max-height: none; } }
+.sp-side { display: grid; gap: 8px; align-content: start; position: sticky; top: calc(var(--top-off, 56px) + 16px); max-height: calc(100vh - var(--top-off, 56px) - var(--bar-h) - 32px); overflow-y: auto; overscroll-behavior: contain; scroll-margin-top: calc(var(--top-off, 56px) + 12px); }
+@media (max-width: 900px) { .sp-side { position: static; max-height: none; } }
+.sp-tabs button { flex: 1; justify-content: center; min-height: 40px; }
+.sp-tabs button[aria-selected="true"] { background: var(--ink); color: var(--paper); }
+.sp-edit, .sp-lib { border: 1px solid var(--ink); padding: 18px; display: grid; gap: 16px; }
+.sp-lib { padding: 14px; }
 .sp-edit .eyebrow { margin: 0; color: var(--ink); }
 .sp-f { display: grid; gap: 7px; margin: 0; }
 .sp-f > .mono { color: var(--ink-2); display: flex; justify-content: space-between; }
@@ -168,3 +172,42 @@
 .snd-play.is-loading { border-style: dashed; animation: sp-pulse 1s ease-in-out infinite; }
 @keyframes sp-pulse { 50% { opacity: .45; } }
 @media (max-width: 560px) { .snd-list .btn span { display: none; } .snd-list .btn { padding: 0 10px; } }
+
+/* ---------- origen del sonido de cada pad ---------- */
+.pad-src { margin-left: auto; font-size: 8.5px; letter-spacing: .08em; padding: 1px 4px; border: 1px solid currentColor; }
+.pad-src.src-harmony { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.pad.is-playing .pad-src.src-harmony { background: var(--paper); color: var(--ink); }
+.pad-src.src-file { border-style: dashed; }
+@media (max-width: 640px) { .pad-src { display: none; } }
+
+/* ---------- biblioteca de Harmony (Soundpad y Sonidos) ---------- */
+.lib { display: grid; gap: 10px; }
+.lib-filter { display: grid; gap: 8px; }
+.lib-q { max-width: none; min-height: 42px; }
+.lib-type { min-height: 40px; border-color: var(--line); }
+.lib-type select { max-width: none; flex: 1; }
+.lib-n { margin: 0; color: var(--ink-2); font-size: 10px; }
+.lib-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--ink); }
+.lib-item { --c: var(--c-otro); display: grid; grid-template-columns: 36px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 8px 0 8px 8px; border-bottom: 1px solid var(--line); border-left: 4px solid var(--c); cursor: grab; }
+.lib-item:active { cursor: grabbing; }
+.lib-item.cat-kick { --c: var(--c-kick); } .lib-item.cat-bajo { --c: var(--c-bajo); } .lib-item.cat-perc { --c: var(--c-perc); } .lib-item.cat-fx { --c: var(--c-fx); }
+.lib-item.cat-voz { --c: var(--c-voz); } .lib-item.cat-loop { --c: var(--c-loop); } .lib-item.cat-tema { --c: var(--c-tema); }
+.lib-item.is-playing { background: var(--paper-2); }
+.lib-item > .fine, .lib-list > li.fine { padding: 12px 0; display: block; border-left: 0; }
+.lib-main { display: grid; gap: 1px; min-width: 0; }
+.lib-main b { font-family: var(--f-display); font-size: 16px; line-height: 1.2; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.lib-badge { font-style: normal; font-size: 8.5px; padding: 1px 4px; background: var(--ink); color: var(--paper); letter-spacing: .08em; }
+.lib-meta { font-size: 13px; color: var(--ink-2); }
+.lib-tags { font-size: 9px; color: var(--ink-3); text-transform: none; letter-spacing: .02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lib-play { border-color: var(--ink); }
+.lib-play.is-on { background: var(--ink); color: var(--paper); }
+.lib-play.is-loading { border-style: dashed; animation: sp-pulse 1s ease-in-out infinite; }
+.lib-add { padding: 0 10px; }
+.sp-lib .lib-list { max-height: 52vh; overflow-y: auto; }
+.lib-lic { margin: 0; font-size: 12.5px !important; }
+@media (max-width: 560px) { .lib-add span { display: none; } .lib-tags { display: none; } }
+.snd-target { min-height: 42px; border-color: var(--ink); }
+.snd-target select { max-width: 240px; }
+.snd-lead { margin: 0 0 14px; }
+.snd-priv { font-style: normal; font-size: 9px; border: 1px dashed currentColor; padding: 1px 5px; vertical-align: middle; color: var(--ink-2); }
+.snd-lib .lib-list { max-height: none; }

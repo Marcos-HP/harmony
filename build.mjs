@@ -2,6 +2,7 @@
 //   node build.mjs  →  dist/index.html (documento completo, ábrelo con doble clic)
 //                      dist/artifact.html (fragmento para publicar como artefacto de Claude)
 //                      dist/art/          (diseño real de los discos que bajó el importador, si lo hay)
+//                      dist/samples/      (samples originales de Harmony, de tools/samples/build.mjs)
 import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync, cpSync, rmSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -37,4 +38,11 @@ rmSync(join(root, 'dist/art'), { recursive: true, force: true });
 if (existsSync(join(root, 'art'))) {
   cpSync(join(root, 'art'), join(root, 'dist/art'), { recursive: true });
   console.log('dist/art', readdirSync(join(root, 'dist/art')).length + ' imágenes');
+}
+// los samples originales de Harmony (samples/<pack>/*.wav) también se sirven tal cual
+rmSync(join(root, 'dist/samples'), { recursive: true, force: true });
+if (existsSync(join(root, 'samples'))) {
+  cpSync(join(root, 'samples'), join(root, 'dist/samples'), { recursive: true });
+  const n = readdirSync(join(root, 'dist/samples'), { recursive: true }).filter((f) => String(f).endsWith('.wav')).length;
+  console.log('dist/samples', n + ' sonidos');
 }

@@ -4,8 +4,7 @@
 (function () {
   const H = (window.H = window.H || {});
   const U = H.U, e = U.esc;
-  const PREV = 'lib:prev';
-  let root = null, prevKey = null, q = '', fam = 'all';
+  let root = null, q = '', fam = 'all', target = null;
 
   const kb = (n) => (n >= 1048576 ? (n / 1048576).toFixed(1).replace('.', ',') + ' MB' : Math.max(1, Math.round(n / 1024)) + ' KB');
   const sampled = () => H.A.tracks.filter((t) => t.dz);
@@ -18,7 +17,13 @@
     <section class="page-head wrap snd">
       <p class="mono eyebrow">Biblioteca</p>
       <h1 class="page-title">Sonidos</h1>
-      <p class="sec-intro">Todo lo que puede sonar en Harmony: tus bancos del Soundpad, los archivos que has cargado en él y las muestras de 30 s del catálogo. Escucha cualquiera aquí y mándalo al primer pad libre del banco que tengas abierto.</p>
+      <p class="sec-intro">Todo lo que puede sonar en el Soundpad: los sonidos originales de Harmony, tus bancos, los archivos que has cargado (privados, en tu navegador) y las muestras del catálogo. Escucha cualquiera aquí y mándalo al primer pad libre del banco que elijas.</p>
+    </section>
+    <section class="sec wrap">
+      <header class="sec-head sec-head-row"><h2 class="sec-title sec-title-sm">Sonidos de Harmony <span class="mono">${H.Lib.all().length}</span></h2>
+        <div class="sec-actions"><label class="sel mono snd-target"><span>Añadir a</span><select id="snd-bank"></select></label></div></header>
+      <p class="fine snd-lead">Kicks, cajas, percusión, impactos, subidas y efectos hechos por síntesis para Harmony. Suenan sin importar nada y se pueden usar y redistribuir libremente. Arrástralos a un pad en el Soundpad o añádelos desde aquí.</p>
+      <div class="snd-lib"></div>
     </section>
     <section class="sec wrap">
       <header class="sec-head sec-head-row"><h2 class="sec-title sec-title-sm">Tus bancos <span class="mono snd-nb"></span></h2>
@@ -26,7 +31,7 @@
       <div class="snd-banks"></div>
     </section>
     <section class="sec wrap">
-      <header class="sec-head"><h2 class="sec-title sec-title-sm">Tus archivos <span class="mono snd-nf"></span></h2>
+      <header class="sec-head"><h2 class="sec-title sec-title-sm">Tus archivos <span class="mono snd-nf"></span> <i class="mono snd-priv">Privados</i></h2>
         <p class="fine">Guardados en este navegador (IndexedDB), no en ningún servidor. Un archivo se borra cuando ningún pad lo usa.</p></header>
       <div class="snd-files"><p class="fine">Cargando…</p></div>
     </section>
@@ -41,6 +46,17 @@
     </section>`;
     root.querySelector('#snd-q').addEventListener('input', (ev) => { q = ev.target.value; renderCatalog(); });
     root.addEventListener('click', onClick);
+    target = H.Banks.current(H.Soundpad.state()).id;
+    root.querySelector('#snd-bank').addEventListener('change', (ev) => { target = ev.target.value; });
+    H.LibPanel(root.querySelector('.snd-lib'), {
+      idPrefix: 'sndlib', addLabel: () => 'A un pad',
+      onAdd: (x) => {
+        const r = H.Soundpad.addToFreePad({ type: 'harmony', sampleId: x.id }, { name: x.name, cat: x.cat, bankId: target });
+        const bk = H.Soundpad.state().banks.find((b) => b.id === target) || H.Banks.current(H.Soundpad.state());
+        U.toast(r ? `«${x.name}» en el pad ${r.i + 1} de «${r.bank.name}»` : `«${bk.name}» está lleno: elige otro banco o vacía un pad`);
+        if (r) renderBanks();
+      }
+    });
     renderBanks(); renderFiles(); renderCatalog();
   };
 
@@ -49,6 +65,8 @@
   function renderBanks() {
     const st = H.Soundpad.state(), cur = st.current;
     root.querySelector('.snd-nb').textContent = st.banks.length;
+    if (!st.banks.some((b) => b.id === target)) target = cur;
+    root.querySelector('#snd-bank').innerHTML = st.banks.map((b) => `<option value="${e(b.id)}"${b.id === target ? ' selected' : ''}>${e(b.name)} (${16 - b.pads.filter((p) => p.src).length} libres)</option>`).join('');
     root.querySelector('.snd-banks').innerHTML = st.banks.map((b) => {
       const n = b.pads.filter((p) => p.src).length;
       return `<article class="snd-bank${b.id === cur ? ' is-cur' : ''}">
@@ -98,10 +116,7 @@
     const a = b.dataset.snd;
     if (a === 'prev') {
       const key = b.dataset.key;
-      if (prevKey === key && (H.PadAudio.isPlaying(PREV) || H.PadAudio.status(srcOf(key)) === 'loading')) { H.PadAudio.stop(PREV); prevKey = null; paintPrev(); return; }
-      prevKey = key; paintPrev();
-      H.PadAudio.trigger(PREV, { src: srcOf(key), volume: 0.9, mode: 'shot', pitch: 0, start: 0, end: 1 })
-        .catch((err) => { if (prevKey === key) prevKey = null; paintPrev(); U.toast(H.PadAudio.message(err)); });
+      H.PadAudio.preview(key, srcOf(key)).catch((err) => U.toast(H.PadAudio.message(err)));
     } else if (a === 'add') {
       const key = b.dataset.key, src = srcOf(key);
       if (src.type === 'file') src.fileName = b.dataset.name;
@@ -115,18 +130,16 @@
 
   function paintPrev() {
     if (!mounted()) return;
-    const playing = H.PadAudio.isPlaying(PREV);
     root.querySelectorAll('.snd-play').forEach((btn) => {
-      const mine = btn.dataset.key === prevKey;
-      const loading = mine && !playing && H.PadAudio.status(srcOf(btn.dataset.key)) === 'loading';
-      const on = mine && playing;
-      btn.innerHTML = U.icon(on ? 'stop' : 'play');
-      btn.classList.toggle('is-on', on); btn.classList.toggle('is-loading', loading);
-      btn.closest('li').classList.toggle('is-playing', on);
+      const p = H.PadAudio.previewState(btn.dataset.key);
+      btn.innerHTML = U.icon(p.playing ? 'stop' : 'play');
+      btn.classList.toggle('is-on', p.playing); btn.classList.toggle('is-loading', p.loading);
+      btn.closest('li').classList.toggle('is-playing', p.playing);
     });
   }
-  U.on('pads:voice', (k) => { if (k === PREV) paintPrev(); });
+  U.on('pads:preview', () => paintPrev());
+  U.on('pads:voice', (k) => { if (k === 'preview') paintPrev(); });
   U.on('pads:load', () => paintPrev());
   // al volver del Soundpad, los bancos pueden haber cambiado
-  U.on('section', (sec) => { if (sec === 'biblioteca' && mounted()) { renderBanks(); renderFiles(); } else if (sec !== 'biblioteca' && prevKey) { H.PadAudio.stop(PREV); prevKey = null; } });
+  U.on('section', (sec) => { if (sec === 'biblioteca' && mounted()) { renderBanks(); renderFiles(); } else if (sec !== 'biblioteca') H.PadAudio.stopPreview(); });
 })();

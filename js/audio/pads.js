@@ -12,7 +12,10 @@
 
   const buf = new Map();     // clave de fuente → { state: 'loading'|'ready'|'error', buffer, error, promise }
   const voices = new Map();  // clave de voz (banco:pad) → { node, gain, t0, dur, loop }
-  let bus = null, busVol = 0.85;
+  let bus = null, busVol = 0.85, prevKey = null, prevSrc = null;
+  const PREV = 'preview';
+  // cuando la escucha previa acaba sola, deja de estar «puesta»
+  U.on('pads:voice', (k) => { if (k === PREV && !voices.has(PREV) && prevKey && P.status(prevSrc) !== 'loading') { prevKey = null; U.emit('pads:preview', null); } });
   const revCache = new Map(), peakCache = new Map();
   /* Copia al revés de un buffer (una vez por sonido) */
   function reversed(k, b) {
@@ -26,6 +29,9 @@
   const err = (code, message) => Object.assign(new Error(message), { code });
   const MESSAGES = {
     nofile: 'El archivo ya no está guardado en este navegador. Vuelve a cargarlo en el pad.',
+    nosample: 'Ese sonido ya no está en la biblioteca de Harmony.',
+    local: 'Los sonidos de Harmony se cargan desde la web: abre la versión publicada (o sírvela con un servidor local). Con el archivo abierto desde el disco, el navegador no deja leerlos.',
+    fetch: 'No se ha podido descargar el sonido de Harmony. Comprueba la conexión y vuelve a intentarlo.',
     notrack: 'Ese registro ya no está en el catálogo.',
     decode: 'Este navegador no puede leer ese archivo de audio.',
     noaudio: 'Este navegador no tiene Web Audio: el Soundpad no puede sonar aquí.'
@@ -42,6 +48,15 @@
       const rec = await H.PadStore.getFile(src.fileId);
       if (!rec || !rec.blob) throw err('nofile', 'sin archivo');
       return rec.blob.arrayBuffer();
+    }
+    if (src.type === 'harmony') {
+      const s = H.Lib && H.Lib.get(src.sampleId);
+      if (!s) throw err('nosample', 'sin sample');
+      let res;
+      try { res = await fetch(H.Lib.url(s)); }
+      catch (e) { throw err(location.protocol === 'file:' ? 'local' : 'fetch', e.message); }
+      if (!res.ok) throw err('fetch', 'HTTP ' + res.status);
+      return res.arrayBuffer();
     }
     const t = H.A.t[src.trackId];
     if (!t || !t.dz) throw err('notrack', 'sin registro');
@@ -86,7 +101,7 @@
       else b = await P.load(pad.src);
       if (pad.reverse) b = reversed(H.Banks.srcKey(pad.src), b);
       choke.forEach((k) => P.stop(k, 0.004));
-      if (playing) P.stop(vkey, 0.004);
+      if (playing) P.stop(vkey, 0.004, true);   // se relanza: sin avisar de que «ha parado»
       const rate = Math.pow(2, (pad.pitch || 0) / 12);
       // el recorte se mide sobre el sonido tal y como suena (al revés, si va al revés)
       const a = (pad.start || 0) * b.duration, z = (pad.end == null ? 1 : pad.end) * b.duration;
@@ -123,7 +138,7 @@
       return out;
     },
     /* Para una voz con un fundido muy corto (sin chasquido) */
-    stop(vkey, fade = 0.012) {
+    stop(vkey, fade = 0.012, quiet = false) {
       const v = voices.get(vkey);
       if (!v) return;
       voices.delete(vkey);
@@ -132,9 +147,19 @@
         v.gain.gain.setTargetAtTime(0, ctx.currentTime, fade / 3);
         v.node.stop(ctx.currentTime + fade);
       } catch (e) { try { v.node.stop(); } catch (e2) { /* ya parada */ } }
-      U.emit('pads:voice', vkey);
+      if (!quiet) U.emit('pads:voice', vkey);
     },
     stopAll() { [...voices.keys()].forEach((k) => P.stop(k)); },
+    /* Escucha previa compartida por toda la web (biblioteca, sonidos): una sola voz, así nunca se acumulan.
+       Volver a pedir la misma la para. */
+    preview(key, src) {
+      if (prevKey === key && (voices.has(PREV) || P.status(src) === 'loading')) { P.stop(PREV); prevKey = null; U.emit('pads:preview', null); return Promise.resolve(); }
+      prevKey = key; prevSrc = src; U.emit('pads:preview', key);
+      return P.trigger(PREV, { src, volume: 0.9, mode: 'shot', pitch: 0, start: 0, end: 1 }).catch((e) => { if (prevKey === key) { prevKey = null; U.emit('pads:preview', null); } throw e; });
+    },
+    stopPreview() { if (prevKey) { P.stop(PREV); prevKey = null; U.emit('pads:preview', null); } },
+    /* qué se está escuchando ahora: { key, playing, loading } */
+    previewState(key) { const mine = key === prevKey; return { mine, playing: mine && voices.has(PREV), loading: mine && !voices.has(PREV) }; },
     isPlaying: (vkey) => voices.has(vkey),
     anyPlaying: () => voices.size > 0,
     /* 0…1 de lo que lleva sonando (en bucle, vuelve a empezar) */

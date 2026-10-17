@@ -8,6 +8,7 @@
    El sonido de un pad (src) es una referencia, nunca el audio:
      { type: 'file', fileId, fileName }   archivo del usuario, guardado en este navegador (js/lib/padstore.js)
      { type: 'catalog', trackId }          muestra de 30 s de Deezer de un registro del catálogo (no se guarda)
+     { type: 'harmony', sampleId }         sample original de Harmony (js/data/samples.js; el audio se sirve con la web)
    Todo lo que cambia el estado pasa por aquí, así el resto solo pinta y suena. */
 (function () {
   const H = (window.H = window.H || {});
@@ -44,6 +45,7 @@
     if (!s || typeof s !== 'object') return null;
     if (s.type === 'file' && s.fileId) return { type: 'file', fileId: String(s.fileId), fileName: String(s.fileName || 'archivo') };
     if (s.type === 'catalog' && s.trackId) return { type: 'catalog', trackId: String(s.trackId) };
+    if (s.type === 'harmony' && s.sampleId) return { type: 'harmony', sampleId: String(s.sampleId) };
     return null;
   }
   function normFx(p) {
@@ -148,6 +150,6 @@
     clearPad(bank, i) { const keep = bank.pads[i].key; bank.pads[i] = emptyPad(i); bank.pads[i].key = keep; return bank.pads[i]; },
     /* Archivos que sigue usando algún pad de algún banco (lo demás se puede borrar del navegador) */
     fileIds(s) { const ids = new Set(); s.banks.forEach((b) => b.pads.forEach((p) => { if (p.src && p.src.type === 'file') ids.add(p.src.fileId); })); return ids; },
-    srcKey: (src) => (!src ? null : src.type === 'file' ? 'file:' + src.fileId : 'dz:' + src.trackId)
+    srcKey: (src) => (!src ? null : src.type === 'file' ? 'file:' + src.fileId : src.type === 'harmony' ? 'hmy:' + src.sampleId : 'dz:' + src.trackId)
   });
 })();
