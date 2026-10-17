@@ -1,9 +1,9 @@
 /* HARMONY · secuenciador del Soundpad: el modelo de patrones, sin DOM ni audio.
    Cada banco lleva su secuencia (bank.seq):
      bpm 60–260 · swing 0–100 (retrasa las semicorcheas pares hasta medio paso, como el swing de una MPC al 75 %)
-     patterns  cuatro patrones (A–D) de 16 o 32 pasos de semicorchea
-       rows  { [n.º de pad]: '1000100010001000…' } — 32 caracteres siempre: 0 nada · 1 golpe · 2 golpe suave
-             (al pasar a 16 pasos, la segunda mitad se guarda; al volver a 32, se recupera)
+     patterns  cuatro patrones (A–D) de 4, 8 o 16 tiempos: 16, 32 o 64 pasos de semicorchea (uno, dos o cuatro compases)
+       rows  { [n.º de pad]: '1000100010001000…' } — 64 caracteres siempre: 0 nada · 1 golpe · 2 golpe suave
+             (al acortar, lo de más se guarda; al volver a alargar, se recupera)
      pattern  el patrón que se edita (y el que suena: un cambio entra al acabar la vuelta)
      chain · chainOn  la cadena de patrones («AABA»), si se toca encadenado
      mute · solo  pads silenciados o en solo (para todo el banco, no por patrón)
@@ -11,14 +11,14 @@
 (function () {
   const H = (window.H = window.H || {});
 
-  const N = 4, MAX = 32, LENS = [16, 32], NAMES = 'ABCD', PADS = 16;
+  const N = 4, MAX = 64, LENS = [16, 32, 64], NAMES = 'ABCD', PADS = 16, BAR = 16;
   const BPM_MIN = 60, BPM_MAX = 260;
   const VEL = [0, 1, 0.45];   // nada · golpe · golpe suave
   const ZERO = '0'.repeat(MAX);
   const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
   const num = (v, d) => (v !== null && v !== '' && Number.isFinite(+v) ? +v : d);
 
-  const emptyPattern = () => ({ len: 16, rows: {} });
+  const emptyPattern = () => ({ len: 64, rows: {} });   // 16 tiempos (4 compases) de entrada
   function normRow(s) {
     const r = String(s || '').replace(/[^012]/g, '0').slice(0, MAX);
     return r + ZERO.slice(r.length);
@@ -39,7 +39,7 @@
   }
   const idxList = (a) => [...new Set((Array.isArray(a) ? a : []).map(Number).filter((i) => Number.isInteger(i) && i >= 0 && i < PADS))].sort((x, y) => x - y);
 
-  /* rellenos rápidos de una fila (sobre el patrón entero: en 32 pasos se repiten por compás) */
+  /* rellenos rápidos de una fila (sobre el patrón entero: en patrones de varios compases se repiten en cada uno) */
   const FILLS = {
     negras: { name: 'Cada negra (1, 2, 3, 4)', at: (s) => s % 4 === 0 },
     contra: { name: 'A contratiempo', at: (s) => s % 4 === 2 },
@@ -47,11 +47,12 @@
     corcheas: { name: 'Corcheas', at: (s) => s % 2 === 0 },
     semis: { name: 'Semicorcheas', at: () => true },
     galope: { name: 'Galope (1 · 3 · 4 de cada tiempo)', at: (s) => s % 4 !== 1 },
-    redoble: { name: 'Redoble al final', at: (s, len) => s >= len - 4 || (s >= len - 8 && s % 2 === 0) }
+    redoble: { name: 'Añadir redoble al final', add: true, at: (s, len) => s >= len - 4 || (s >= len - 8 && s % 2 === 0) }
   };
 
   const P = (H.Patterns = {
-    N, MAX, LENS, NAMES, VEL, BPM_MIN, BPM_MAX, FILLS,
+    N, MAX, LENS, BAR, NAMES, VEL, BPM_MIN, BPM_MAX, FILLS,
+    beats: (len) => len / 4,
     create: () => ({ bpm: 170, swing: 0, pattern: 0, chain: [], chainOn: false, patterns: Array.from({ length: N }, emptyPattern), mute: [], solo: [] }),
     /* Lo guardado (o importado): lo que no cuadre se corrige, nunca se rompe */
     normalize(s) {
@@ -90,7 +91,11 @@
       else if (kind === 'right' || kind === 'left') {
         const part = r.slice(0, len), moved = kind === 'right' ? [part[len - 1], ...part.slice(0, len - 1)] : [...part.slice(1), part[0]];
         moved.forEach((c, s) => (r[s] = c));
-      } else if (FILLS[kind]) for (let s = 0; s < len; s++) r[s] = FILLS[kind].at(s, len) ? (r[s] === '2' ? '2' : '1') : '0';
+      } else if (FILLS[kind]) {
+        // los rellenos sustituyen la fila; los que añaden (el redoble) se suman a lo que ya hay
+        const F = FILLS[kind];
+        for (let s = 0; s < len; s++) r[s] = F.at(s, len) ? (r[s] === '2' ? '2' : '1') : F.add ? r[s] : '0';
+      }
       else return false;
       const n = r.join('');
       if (n === ZERO) delete pat.rows[i]; else pat.rows[i] = n;
@@ -98,12 +103,18 @@
     },
     clearPattern(seq, p) { seq.patterns[p].rows = {}; },
     copy(seq, from, to) { if (from === to) return; seq.patterns[to] = JSON.parse(JSON.stringify(seq.patterns[from])); },
-    /* 16 → 32: si la segunda mitad está vacía, repite la primera (un compás más igual que el primero) */
+    /* Alargar (4 → 8 → 16 tiempos): si lo nuevo está vacío, repite lo que ya había (los compases siguientes iguales).
+       Acortar no borra nada: los pasos de más se guardan y vuelven al alargar */
     setLen(seq, p, len) {
       if (!LENS.includes(len)) return;
-      const pat = seq.patterns[p];
-      if (len === 32 && pat.len === 16) {
-        for (const [i, r] of Object.entries(pat.rows)) if (r.slice(16) === ZERO.slice(16)) pat.rows[i] = r.slice(0, 16) + r.slice(0, 16);
+      const pat = seq.patterns[p], from = pat.len;
+      if (len > from) {
+        for (const [i, r] of Object.entries(pat.rows)) {
+          if (r.slice(from, len) !== ZERO.slice(from, len)) continue;
+          let n = r.slice(0, from);
+          while (n.length < len) n += r.slice(0, from);
+          pat.rows[i] = n.slice(0, len) + r.slice(len);
+        }
       }
       pat.len = len;
     },

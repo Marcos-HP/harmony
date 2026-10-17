@@ -235,7 +235,14 @@
 .sq-pats button i { position: absolute; left: 50%; bottom: 7px; width: 5px; height: 5px; margin-left: -2.5px; border-radius: 50%; background: currentColor; opacity: 0; }
 .sq-pats button.has-notes i { opacity: .55; }
 .sq-pats button.is-live { box-shadow: inset 0 -4px 0 var(--c-kick); }
-.sq-len button { justify-content: center; }
+.sq-lenbox { display: flex; align-items: center; gap: 8px; }
+.sq-len button { justify-content: center; min-width: 46px; font-size: 13px; }
+.sq-bars { width: fit-content; margin: 0 0 8px; }
+.sq-bars button { position: relative; justify-content: center; min-height: 40px; font-size: 13px; letter-spacing: .02em; }
+.sq-bars button .mono { font-size: 10px; letter-spacing: .06em; }
+.sq-bars button i { position: absolute; left: 50%; bottom: 5px; width: 4px; height: 4px; margin-left: -2px; border-radius: 50%; background: currentColor; opacity: 0; }
+.sq-bars button.has-notes i { opacity: .55; }
+.sq-bars button.is-live { box-shadow: inset 0 -4px 0 var(--c-kick); }
 .sq-act select { max-width: 260px; }
 .sq-chain { display: flex; align-items: center; border: 1px solid var(--line); min-height: 48px; }
 .sq-chain.is-on { border-color: var(--ink); }
@@ -276,7 +283,6 @@
 .sq-st.v2 { background: linear-gradient(to top, var(--c) 45%, var(--paper) 45%); border-color: var(--c); }
 .sq-st.is-now { box-shadow: 0 0 0 2px var(--ink); z-index: 1; }
 .sq-st.is-now.v1, .sq-st.is-now.v2 { filter: brightness(1.18); }
-.sq-grid.is-32 .sq-st { height: 30px; }
 .sq-empty { padding: 22px 18px; display: grid; gap: 12px; }
 .sq-empty p { margin: 0; }
 .sq-help { margin: 10px 0 0; max-width: 90ch; }
@@ -290,6 +296,8 @@
   .sq-name { flex: 1 1 100%; font-size: 13px; padding: 2px 4px 4px 10px; }
   .sq-name + .sq-ms { margin-left: 10px; }
   .sq-act, .sq-chain { flex: 1 1 100%; }
+  .sq-lenbox { flex: 1 1 100%; } .sq-lenbox .seg { flex: 1; }
+  .sq-bars { width: 100%; } .sq-bars button .mono { display: none; }
   .sq-act select { max-width: none; width: 100%; }
   .sq-chain input[type="text"] { flex: 1; }
 }

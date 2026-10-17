@@ -1,5 +1,6 @@
 /* HARMONY · secuenciador del Soundpad: el panel
-   Una fila por pad con sonido y 16 o 32 pasos de semicorchea. Clic: golpe sí o no; clic derecho, Alt+clic o mantener
+   Una fila por pad con sonido. Patrones de 4, 8 o 16 tiempos (uno, dos o cuatro compases de 16 semicorcheas): se ve un
+   compás cada vez, con el selector de tiempos 1–4 · 5–8 · 9–12 · 13–16. Clic: golpe sí o no; clic derecho, Alt+clic o mantener
    pulsado (en pantallas táctiles): golpe suave. Con el ratón se puede arrastrar para pintar varios pasos.
    Modelo en js/lib/patterns.js (guardado dentro del banco) y reloj en js/audio/sequencer.js. */
 (function () {
@@ -29,7 +30,7 @@
 
   /* api: { bank(), save(), fire(i), flash(i), addToFreePad(src, opts), refreshPads() } */
   H.SeqPanel = function (el, api) {
-    let painting = null, press = null, raf = 0, shownNow = -1, lastMark = 0, tapT = [];
+    let painting = null, press = null, raf = 0, shownNow = -1, lastMark = 0, tapT = [], bar = 0, liveBar = -1;
     const seq = () => api.bank().seq;
     const pads = () => api.bank().pads;
     H.Seq.source(api.bank);
@@ -47,8 +48,10 @@
       </div>
       <div class="sq-bar">
         <div class="seg sq-pats" role="group" aria-label="Patrón que se edita"></div>
-        <div class="seg sq-len" role="group" aria-label="Pasos del patrón">
-          <button type="button" data-sq="len" data-len="16">16 pasos</button><button type="button" data-sq="len" data-len="32">32</button>
+        <div class="sq-lenbox"><span class="mono">Tiempos</span>
+          <div class="seg sq-len" role="group" aria-label="Largo del patrón en tiempos">
+            <button type="button" data-sq="len" data-len="16" title="Un compás">4</button><button type="button" data-sq="len" data-len="32" title="Dos compases">8</button><button type="button" data-sq="len" data-len="64" title="Cuatro compases">16</button>
+          </div>
         </div>
         <label class="sel mono sq-act"><span>Patrón</span><select id="sq-act"></select></label>
         <div class="sq-chain">
@@ -56,8 +59,9 @@
           <input type="text" id="sq-chain" maxlength="16" placeholder="AABA" autocomplete="off" spellcheck="false" aria-label="Orden de los patrones (letras A–D)">
         </div>
       </div>
+      <div class="seg sq-bars" role="group" aria-label="Compás a la vista" hidden></div>
       <div class="sq-scroll"><div class="sq-grid" role="grid" aria-label="Pasos del patrón"></div></div>
-      <p class="fine sq-help">Clic: poner o quitar un golpe. Clic derecho, Alt+clic o mantener pulsado: golpe suave (a medio volumen). Con el ratón, arrastra para pintar varios. Cada fila es un pad: el nombre lo escucha; M lo silencia y S lo deja solo. Un golpe corta el anterior del mismo pad y los de su grupo de corte. Los cambios de patrón entran al acabar la vuelta.</p>`;
+      <p class="fine sq-help">Clic: poner o quitar un golpe. Clic derecho, Alt+clic o mantener pulsado: golpe suave (a medio volumen). Con el ratón, arrastra para pintar varios. Los patrones duran 4, 8 o 16 tiempos y se ven de compás en compás (tiempos 1–4, 5–8…); al alargar, los compases nuevos repiten lo que ya había. Cada fila es un pad: el nombre lo escucha; M lo silencia y S lo deja solo. Un golpe corta el anterior del mismo pad y los de su grupo de corte. Los cambios de patrón entran al acabar la vuelta.</p>`;
     const $ = (s) => el.querySelector(s);
     const grid = $('.sq-grid');
 
@@ -91,15 +95,26 @@
         <optgroup label="Kits de Harmony en los pads libres">
           ${Object.entries(KITS).map(([k, x]) => `<option value="kit:${k}">${x.name} · ${x.bpm} BPM, con su base</option>`).join('')}
         </optgroup>`;
+      renderBars();
       $('#sq-chain-on').checked = s.chainOn;
       if (document.activeElement !== $('#sq-chain')) $('#sq-chain').value = PT().chainText(s.chain);
       $('.sq-chain').classList.toggle('is-on', s.chainOn && s.chain.length > 0);
     }
+    /* compases del patrón: «Tiempos 1–4», «5–8»… con un punto si tienen golpes */
+    function renderBars() {
+      const s = seq(), pat = s.patterns[s.pattern], n = pat.len / PT().BAR, box = $('.sq-bars');
+      bar = Math.min(bar, n - 1);
+      box.hidden = n < 2;
+      box.innerHTML = n < 2 ? '' : Array.from({ length: n }, (_, b) => {
+        const a = b * PT().BAR, has = Object.values(pat.rows).some((r) => /[12]/.test(r.slice(a, a + PT().BAR)));
+        return `<button type="button" data-sq="bar" data-b="${b}" aria-pressed="${b === bar}" class="${has ? 'has-notes' : ''}${b === liveBar ? ' is-live' : ''}"><span class="mono">Tiempos</span> ${b * 4 + 1}–${b * 4 + 4}<i aria-hidden="true"></i></button>`;
+      }).join('');
+    }
     function rowIdx() { return pads().map((p, i) => (p.src ? i : -1)).filter((i) => i >= 0); }
     function renderGrid() {
       const s = seq(), p = s.pattern, len = s.patterns[p].len, rows = rowIdx();
-      grid.style.setProperty('--steps', len);
-      grid.classList.toggle('is-32', len === 32);
+      bar = Math.min(bar, len / PT().BAR - 1);
+      const a = bar * PT().BAR, ks = Array.from({ length: PT().BAR }, (_, j) => a + j);
       if (!rows.length) {
         grid.innerHTML = `<div class="sq-empty"><p>Pon sonidos en los pads y cada uno será una fila del secuenciador.</p>
           <div class="chips">${Object.entries(KITS).map(([k, x]) => `<button class="chip" type="button" data-sq="kit" data-kit="${k}">${U.icon('plus')} Kit ${x.name} (${x.bpm} BPM)</button>`).join('')}</div>
@@ -107,7 +122,7 @@
         shownNow = -1;
         return;
       }
-      const head = `<div class="sq-row sq-ruler" role="row" aria-hidden="true"><div class="sq-rh"></div><div class="sq-steps">${Array.from({ length: len }, (_, k) => `<span class="sq-n${k % 4 === 0 ? ' is-beat' : ''}">${k % 4 === 0 ? k / 4 + 1 : '·'}</span>`).join('')}</div></div>`;
+      const head = `<div class="sq-row sq-ruler" role="row" aria-hidden="true"><div class="sq-rh"></div><div class="sq-steps">${ks.map((k) => `<span class="sq-n${k % 4 === 0 ? ' is-beat' : ''}">${k % 4 === 0 ? k / 4 + 1 : '·'}</span>`).join('')}</div></div>`;
       grid.innerHTML = head + rows.map((i) => {
         const pad = pads()[i], name = pad.name || 'Pad ' + (i + 1), row = PT().row(s, p, i);
         const mute = s.mute.includes(i), solo = s.solo.includes(i), heard = PT().audible(s, i);
@@ -123,7 +138,7 @@
               <option value="clear">Vaciar la fila</option>
             </select>
           </div>
-          <div class="sq-steps">${Array.from({ length: len }, (_, k) => cell(name, k, +row[k])).join('')}</div>
+          <div class="sq-steps">${ks.map((k) => cell(name, k, +row[k])).join('')}</div>
         </div>`;
       }).join('');
       shownNow = -1; paintNow(true);
@@ -147,8 +162,12 @@
       const k = pos && pos.pat === s.pattern ? pos.step : -1;
       if (k !== shownNow || force) {
         grid.querySelectorAll('.sq-st.is-now, .sq-n.is-now').forEach((x) => x.classList.remove('is-now'));
-        if (k >= 0) grid.querySelectorAll(`.sq-st[data-s="${k}"], .sq-ruler .sq-n:nth-child(${k + 1})`).forEach((x) => x.classList.add('is-now'));
+        const j = k - bar * PT().BAR;   // la columna, si ese paso está en el compás a la vista
+        if (k >= 0 && j >= 0 && j < PT().BAR) grid.querySelectorAll(`.sq-st[data-s="${k}"], .sq-ruler .sq-n:nth-child(${j + 1})`).forEach((x) => x.classList.add('is-now'));
         shownNow = k;
+        // qué compás está sonando
+        const lb = k >= 0 ? Math.floor(k / PT().BAR) : -1;
+        if (lb !== liveBar) { liveBar = lb; el.querySelectorAll('.sq-bars button').forEach((b) => b.classList.toggle('is-live', +b.dataset.b === lb)); }
       }
     }
     function loop() {
@@ -231,8 +250,9 @@
       }
       else if (a === 'bpm-' || a === 'bpm+') { setBpm(s.bpm + (a === 'bpm+' ? 1 : -1)); }
       else if (a === 'tap') tap();
-      else if (a === 'pat') { s.pattern = +b.dataset.p; save(); renderBar(); renderGrid(); }
+      else if (a === 'pat') { s.pattern = +b.dataset.p; bar = 0; save(); renderBar(); renderGrid(); }
       else if (a === 'len') { PT().setLen(s, s.pattern, +b.dataset.len); save(); renderBar(); renderGrid(); }
+      else if (a === 'bar') { bar = +b.dataset.b; renderBars(); renderGrid(); }
       else if (a === 'hear') api.fire(i);
       else if (a === 'mute' || a === 'solo') { PT().flag(s, a, i); save(); renderGrid(); }
       else if (a === 'kit') kit(b.dataset.kit);

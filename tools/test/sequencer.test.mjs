@@ -24,7 +24,8 @@ test('patrones: lo guardado se corrige sin romperse', () => {
   assert.deepEqual(plain(s.chain), [0, 2]); assert.equal(s.chainOn, false, 'solo true activa la cadena');
   assert.equal(s.patterns.length, 4); assert.equal(s.patterns[0].len, 16);
   assert.deepEqual(Object.keys(s.patterns[0].rows), ['0'], 'filas vacías, pads inexistentes y claves raras fuera');
-  assert.equal(s.patterns[0].rows[0], '1001' + '0'.repeat(28), 'siempre 32 pasos; lo que no es 0/1/2 es 0');
+  assert.equal(s.patterns[0].rows[0], '1001' + '0'.repeat(60), 'siempre 64 pasos; lo que no es 0/1/2 es 0');
+  assert.equal(P.create().patterns[0].len, 64, 'los patrones nuevos duran 16 tiempos');
   assert.deepEqual(plain(s.mute), [2]); assert.deepEqual(plain(s.solo), []);
   assert.deepEqual(plain(P.normalize(null)), plain(P.create()));
 });
@@ -53,12 +54,22 @@ test('rellenos: negras, contratiempo, 2 y 4, galope, mover y en 32 pasos', () =>
   P.fill(s, 1, 1, 'right'); assert.equal(s.patterns[1].rows[1], undefined);
 });
 
-test('largo: 16 → 32 repite el compás; 32 → 16 → 32 conserva la segunda mitad', () => {
+test('largo: 4 → 8 → 16 tiempos repite los compases; acortar guarda lo de más', () => {
   const P = PT(), s = P.create();
-  P.fill(s, 0, 0, 'negras');
+  s.patterns[0].len = 16;
+  P.fill(s, 0, 0, 'negras'); P.set(s, 0, 1, 15, 1);
   P.setLen(s, 0, 32); assert.deepEqual(hits(P.row(s, 0, 0), 32), [0, 4, 8, 12, 16, 20, 24, 28]);
-  P.set(s, 0, 0, 30, 1); P.setLen(s, 0, 16); assert.equal(s.patterns[0].len, 16);
-  P.setLen(s, 0, 32); assert.equal(P.get(s, 0, 0, 30), 1);
+  assert.deepEqual(hits(P.row(s, 0, 1), 32), [15, 31]);
+  P.set(s, 0, 1, 31, 0);
+  P.setLen(s, 0, 64); assert.deepEqual(hits(P.row(s, 0, 1), 64), [15, 47], 'repite los dos compases que había');
+  assert.equal(hits(P.row(s, 0, 0), 64).length, 16, '16 negras en 16 tiempos');
+  P.set(s, 0, 0, 62, 2); P.setLen(s, 0, 16); assert.equal(s.patterns[0].len, 16);
+  P.setLen(s, 0, 64); assert.equal(P.get(s, 0, 0, 62), 2, 'al volver a alargar, lo guardado sigue ahí');
+  s.patterns[2].len = 16; P.fill(s, 2, 3, 'dosycuatro'); P.setLen(s, 2, 64);
+  assert.deepEqual(hits(P.row(s, 2, 3), 64), [4, 12, 20, 28, 36, 44, 52, 60], 'de un compás a cuatro, de golpe');
+  P.fill(s, 2, 4, 'redoble'); assert.ok(hits(P.row(s, 2, 4), 64).every((k) => k >= 56), 'el redoble va al final de los 16 tiempos');
+  P.fill(s, 2, 3, 'redoble');
+  assert.deepEqual(hits(P.row(s, 2, 3), 64), [4, 12, 20, 28, 36, 44, 52, 56, 58, 60, 61, 62, 63], 'y se suma a lo que ya había');
 });
 
 test('cadena, mute y solo, copia de patrones, base 4×4 y swing', () => {
@@ -81,7 +92,7 @@ test('cadena, mute y solo, copia de patrones, base 4×4 y swing', () => {
   assert.deepEqual(hits(P.row(s, 1, 4)), [4, 12]);
   assert.deepEqual(hits(P.row(s, 1, 8)), [2, 6, 10, 14]);
   assert.deepEqual(hits(P.row(s, 1, 7)), [0, 4, 8, 12], 'con charles abierto, el cerrado va a los tiempos');
-  assert.equal(P.row(s, 1, 6), '0'.repeat(32));
+  assert.equal(P.row(s, 1, 6), '0'.repeat(64));
   s.bpm = 150; s.swing = 100;
   assert.equal(P.swingDelay(s, 0), 0);
   assert.ok(Math.abs(P.swingDelay(s, 1) - 0.05) < 1e-12, 'swing al 100 %: medio paso (a 150 BPM, 50 ms)');
@@ -115,6 +126,7 @@ function clockRig() {
   H.PadAudio = { load: () => Promise.resolve(), at: (k, pad, when, o) => calls.push({ k, when, vel: o.vel, choke: o.choke }), seqStop() {} };
   const st = H.Banks.defaultState(), b = H.Banks.current(st);
   for (const i of [0, 1, 2]) b.pads[i].src = { type: 'harmony', sampleId: 'x/' + i };
+  b.seq.patterns.forEach((pt) => { pt.len = 16; });   // un compás: las cuentas de abajo son por compás
   H.Seq.source(() => b);
   const run = (until) => { while (ctx.currentTime < until) { ctx.currentTime = +(ctx.currentTime + 0.025).toFixed(6); if (fn) fn(); } };
   return { H, ctx, calls, b, run };
@@ -162,6 +174,17 @@ test('reloj: swing, tempo que cambia en marcha, mute y cadena de patrones', () =
   H.Seq.start(); run(ctx.currentTime + 1); b.seq.bpm = 240; run(ctx.currentTime + 1); H.Seq.stop();
   const gaps = calls.map((c, n) => (n ? c.when - calls[n - 1].when : 0)).slice(1).map((g) => +g.toFixed(6));
   assert.ok(gaps.includes(0.5) && gaps.includes(0.25), 'el tempo nuevo entra al momento: ' + gaps.join(' '));
+});
+
+test('reloj: un patrón de 16 tiempos dura 64 pasos antes de pasar al siguiente de la cadena', () => {
+  const { H, ctx, calls, b, run } = clockRig(), P = H.Patterns;
+  b.seq.bpm = 240; b.seq.patterns[0].len = 64; b.seq.patterns[1].len = 16;
+  P.fill(b.seq, 0, 0, 'negras'); P.fill(b.seq, 1, 1, 'negras');
+  b.seq.chain = [0, 1]; b.seq.chainOn = true;
+  H.Seq.start(); run(ctx.currentTime + 5.2); H.Seq.stop();   // 16 tiempos a 240 BPM = 4 s; luego 1 s de B
+  const order = calls.map((c) => c.k.slice(-1));
+  assert.equal(order.slice(0, 16).join(''), '0'.repeat(16));
+  assert.equal(order.slice(16, 20).join(''), '1111');
 });
 
 test('reloj: grabar en directo pone el golpe en el paso más cercano', () => {
