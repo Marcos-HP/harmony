@@ -7,7 +7,7 @@
   const B = () => H.Banks;
 
   const SP = (H.Soundpad = { visible: false });
-  let root, st, sel = 0, capture = null, armDelete = null, renaming = false, catOpen = false, catQ = '', raf = 0, tab = 'pad', libPanel = null;
+  let root, st, sel = 0, capture = null, armDelete = null, renaming = false, catOpen = false, catQ = '', raf = 0, tab = 'pad', libPanel = null, seqPanel = null;
   const els = {};
 
   /* El estado se carga la primera vez que alguien lo pide (el Soundpad o la página de sonidos) */
@@ -78,6 +78,7 @@
             <div class="sp-lib" role="tabpanel" aria-label="Biblioteca de Harmony" hidden></div>
           </aside>
         </div>
+        <section class="sq" aria-label="Secuenciador"></section>
         <p class="fine sp-note"></p>
         <input type="file" id="sp-file" accept="audio/*,.mp3,.wav,.ogg,.opus,.flac,.m4a,.aac,.webm" hidden>
         <input type="file" id="sp-import" accept=".json,application/json" hidden>
@@ -125,6 +126,13 @@
       if (f) { sel = +p.dataset.i; assignFile(sel, f); } else U.toast('Eso no parece un archivo de audio');
     });
 
+    // secuenciador: una fila por pad con sonido (js/ui/seqpanel.js)
+    seqPanel = H.SeqPanel(root.querySelector('.sq'), {
+      bank, save: () => save(), fire, flash,
+      addToFreePad: (src, o) => SP.addToFreePad(src, o),
+      refreshPads: () => render()
+    });
+
     U.on('pads:voice', paintStates);
     U.on('pads:load', () => { paintStates(); if (SP.visible) { renderEditSource(); drawWave(); } });
     H.PadStore.ready().then(renderNote);
@@ -150,6 +158,14 @@
     if (el) { el.classList.remove('is-hit'); void el.offsetWidth; el.classList.add('is-hit'); }
     H.PadAudio.trigger(vkey(i), p, { choke: B().chokeMates(bank(), i).map(vkey) }).catch((err) => { paintStates(); U.toast(`${p.name || 'Pad ' + (i + 1)}: ${H.PadAudio.message(err)}`); });
     tick();
+    // grabando con el secuenciador en marcha: el golpe entra en el paso más cercano
+    if (H.Seq.recording()) { const n = H.Seq.record(i); if (n) { save(); seqPanel.recorded(n, i); } }
+  }
+  /* el secuenciador ilumina el pad cuando suena su golpe */
+  function flash(i) {
+    if (!SP.visible) return;
+    const el = padEl(i); if (!el) return;
+    el.classList.remove('is-hit'); void el.offsetWidth; el.classList.add('is-hit');
   }
   function tick() {
     if (raf) return;
@@ -272,9 +288,9 @@
     const b = ev.target.closest('[data-sp]');
     if (!b) return;
     const a = b.dataset.sp, p = bank().pads[sel];
-    if (a === 'stop-all') { H.PadAudio.stopAll(); U.toast('Soundpad en silencio'); }
-    else if (a === 'bank-new') { const nb = B().add(st); save(); preload(); sel = 0; render(); U.toast('Banco nuevo: ' + nb.name); }
-    else if (a === 'bank-dup') { const nb = B().duplicate(st, st.current); save(); sel = 0; render(); U.toast('Copia: ' + nb.name); }
+    if (a === 'stop-all') { H.Seq.stop(); H.PadAudio.stopAll(); U.toast('Soundpad en silencio'); }
+    else if (a === 'bank-new') { H.Seq.stop(); const nb = B().add(st); save(); preload(); sel = 0; render(); U.toast('Banco nuevo: ' + nb.name); }
+    else if (a === 'bank-dup') { H.Seq.stop(); const nb = B().duplicate(st, st.current); save(); sel = 0; render(); U.toast('Copia: ' + nb.name); }
     else if (a === 'bank-ren') { renaming = true; renderBank(); const i = els.pick.querySelector('input'); i.focus(); i.select(); }
     else if (a === 'bank-ren-ok') finishRename(true);
     else if (a === 'bank-ren-cancel') finishRename(false);
@@ -282,6 +298,7 @@
       if (st.banks.length < 2) { U.toast('Tiene que quedar al menos un banco'); return; }
       if (armDelete !== st.current) { armDelete = st.current; renderBank(); setTimeout(() => { if (armDelete) { armDelete = null; renderBank(); } }, 4000); return; }
       const gone = bank();
+      H.Seq.stop();
       gone.pads.forEach((_, i) => H.PadAudio.stop(gone.id + ':' + i));
       B().remove(st, gone.id); armDelete = null;
       save(); tidy(); preload(); sel = 0; render(); U.toast('Banco eliminado: ' + gone.name);
@@ -306,7 +323,7 @@
     else if (a === 'retry') { H.PadAudio.forget(p.src); H.PadAudio.load(p.src).catch(() => {}); }
   }
   function onChange(ev) {
-    if (ev.target.id === 'sp-bank') { capture = null; armDelete = null; B().select(st, ev.target.value); save(); preload(); sel = 0; render(); }
+    if (ev.target.id === 'sp-bank') { H.Seq.stop(); capture = null; armDelete = null; B().select(st, ev.target.value); save(); preload(); sel = 0; render(); }
   }
   function onInput(ev) {
     const t = ev.target, p = bank().pads[sel];
@@ -351,6 +368,7 @@
   function padEl(i) { return els.grid.children[i]; }
   function renderGrid() {
     renderGridLabel();
+    if (seqPanel) seqPanel.render();
     els.grid.innerHTML = bank().pads.map((p, i) => {
       const empty = !p.src, name = p.name || (empty ? 'Vacío' : autoName(p.src) || 'Pad ' + (i + 1));
       const label = empty ? `Pad ${i + 1} vacío: asignar un sonido` : `Disparar ${name}${p.key ? ', tecla ' + keyLabel(p.key) : ''}${p.mode === 'loop' ? ', en bucle' : ''}`;
@@ -477,7 +495,7 @@
       const r = await H.PadStore.importBanks(await f.text());
       const got = B().adopt(st, r.banks, r.fileMap);
       if (!got.length) { U.toast('El archivo no trae ningún banco.'); return; }
-      H.PadStore.saveNow(st); sel = 0; preload(); render(); renderNote();
+      H.Seq.stop(); H.PadStore.saveNow(st); sel = 0; preload(); render(); renderNote();
       U.toast(`${got.length === 1 ? 'Importado: ' + got[0].name : got.length + ' bancos importados'}${r.bad ? ` · ${r.bad} archivos dañados, sus pads quedan vacíos` : ''}`);
     } catch (err) { U.toast(err.message || 'No se ha podido importar.'); }
   }

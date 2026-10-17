@@ -2,7 +2,7 @@
 
 Archivo interactivo de música electrónica dura: hardcore, hardstyle, hard house, hard trance, techno, mákina y newstyle. HTML + CSS + JS sin backend ni dependencias (solo tipografías de Google Fonts: Archivo, Newsreader e IBM Plex Mono). Node 18+ solo para el build, el importador y los tests.
 
-Edición 0.4 · 17-10-2026 · Biblioteca, Mixer y Soundpad; fases 1 y 2 funcionando; fase 3 con MusicBrainz (diseño real de 57 discos), muestras de Deezer y Discogs como segunda fuente.
+Edición 0.4 · 17-10-2026 · Biblioteca, Mixer y Soundpad con secuenciador; fases 1 y 2 funcionando; fase 3 con MusicBrainz (diseño real de 57 discos), muestras de Deezer y Discogs como segunda fuente.
 
 ## Cómo abrirlo
 - `dist/index.html`: todo en un único archivo. Doble clic y listo. Si existe `dist/art/`, debe ir junto a él.
@@ -54,7 +54,7 @@ mb: { title: '…', artist: '…' }   // buscar con otros términos
 mb: { skip: true }                 // no buscarlo
 ```
 
-**Tests**: `npm test` (40, incluidos los importadores de Deezer y Discogs contra servidores falsos, el modelo de bancos del Soundpad y los packs de sonidos). Prueban normalización, emparejado, elección de edición, resumen, Cover Art Archive (elección de portada y galleta, descargas, `--no-art`), caché, reintentos, `--only`, `--offline`, el ritmo de peticiones, la fusión en la web, la coherencia de la capa importada de verdad (imágenes locales, galleta solo con vinilo), los desacuerdos entre fuentes editoriales y la integridad del catálogo (fuentes, artistas, sellos, rutas). El servidor falso tiene la forma real de las respuestas de la API; todos sus datos son inventados y nunca llegan al catálogo.
+**Tests**: `npm test` (49, incluidos los importadores de Deezer y Discogs contra servidores falsos, el modelo de bancos del Soundpad, el secuenciador con un reloj de audio falso y los packs de sonidos). Prueban normalización, emparejado, elección de edición, resumen, Cover Art Archive (elección de portada y galleta, descargas, `--no-art`), caché, reintentos, `--only`, `--offline`, el ritmo de peticiones, la fusión en la web, la coherencia de la capa importada de verdad (imágenes locales, galleta solo con vinilo), los desacuerdos entre fuentes editoriales y la integridad del catálogo (fuentes, artistas, sellos, rutas). El servidor falso tiene la forma real de las respuestas de la API; todos sus datos son inventados y nunca llegan al catálogo.
 
 ### Primera importación real (13-10-2026)
 - **81 aplicados**, 13 para revisar y 8 sin encontrar, de 102. Formato del original según MusicBrainz: 32 vinilo, 18 CD, 29 digital y 2 otros.
@@ -163,6 +163,13 @@ La cabecera tiene tres secciones. Cambiar de una a otra no recarga la página ni
 - **Exportar e importar**: «Exportar» descarga el banco abierto y «Exportar todos», todos, en un `.json` con el audio de tus archivos dentro (base64), para llevarlo a otro navegador u ordenador. «Importar» los añade como bancos nuevos, sin pisar nada. Las muestras del catálogo viajan como referencia.
 - **Audio**: cada sonido se decodifica una vez (precarga al abrir el Soundpad y al cambiar de banco) y se dispara al apretar, no al soltar. Varios pads suenan a la vez; un pad no corta a otro. «Detener todo» para los pads (no la mesa). Los pads van a un bus propio que entra en el máster de Harmony, con el mismo volumen general y el mismo compresor que la mesa.
 - **Teclas**: por defecto 1–4, Q–R, A–F y Z–V; se cambian desde las opciones del pad («Cambiar tecla» y pulsar). Una tecla solo puede tener un pad: si ya era de otro, ese se queda sin tecla y se avisa. No se pueden usar espacio, Esc, Tab, Intro, flechas, `/` ni `?`. Con el Soundpad a la vista las teclas de los pads mandan sobre los atajos de Harmony; escribiendo en un campo no se dispara nada.
+- **Secuenciador** (debajo de los pads): una fila por pad con sonido y 16 o 32 pasos de semicorchea, para encajar kicks, palmas, cajas o lo que haya en el banco en un ritmo en bucle.
+  - **Pasos**: clic pone o quita un golpe; clic derecho, Alt+clic o mantener pulsado en el móvil, golpe suave (a medio volumen); con el ratón se arrastra para pintar varios. Cada fila: escuchar (el nombre), M (silenciar), S (solo) y *Rellenar…*: cada negra, a contratiempo, en el 2 y el 4, corcheas, semicorcheas, galope, redoble al final, mover un paso a cada lado y vaciar.
+  - **Tempo**: 60–260 BPM (con − y +, escribiéndolo o con *Tap*) y swing de 0 a 100 % (retrasa la segunda semicorchea de cada corchea hasta medio paso).
+  - **Patrones A–D** por banco; el cambio entra al acabar la vuelta. *Cadena* (p. ej. `AABA`) los toca en ese orden. Acciones: base 4×4 con los sonidos de los pads (kick a negras, palma o caja en el 2 y el 4, charles y bajo a contratiempo), vaciar y copiar a otro patrón, y tres **kits de Harmony** (hardcore 180, newstyle 150, uptempo 200) que llenan pads libres, ponen el tempo y dejan la base.
+  - **Grabar**: con el secuenciador en marcha, lo que se toca con los pads (o sus teclas) entra en el paso más cercano.
+  - **Audio**: cada golpe se programa con antelación contra el reloj de audio (120 ms por delante, tic cada 25 ms desde un worker para que no se frene con la pestaña en segundo plano), así que el ritmo va cuadrado aunque la página esté ocupada. En el secuenciador cada pad es monofónico: un golpe corta el anterior del mismo pad y los de su grupo de corte. Lo que se edita mientras suena se oye en la vuelta siguiente; el tempo, al momento.
+  - **Se guarda con el banco** (en el navegador, al duplicarlo y al exportarlo). Vaciar un pad borra su fila; cambiarle el sonido la conserva.
 - **Bancos**: nuevo, duplicar, renombrar, eliminar (pide confirmación con un segundo clic; siempre queda uno) y cambiar con el selector.
 - **Los sonidos de Harmony necesitan servirse por web** (GitHub Pages o un servidor local): con `dist/index.html` abierto desde el disco el navegador no deja leerlos, y la interfaz lo dice. Cada uno se descarga y se decodifica una sola vez por sesión, se use en uno o en varios pads o en la escucha previa.
 - **Qué se guarda**: los bancos y sus ajustes, en `localStorage`; tus archivos, en **IndexedDB**, en este navegador y sin subirse a ningún sitio. Cuando un archivo deja de usarlo cualquier pad, se borra. Si el navegador no deja usar IndexedDB (algunos modos privados), la cabecera dice «solo en esta sesión» y tus archivos duran hasta cerrar la pestaña. Las muestras del catálogo **no se guardan nunca** (condiciones de Deezer): solo la referencia, y se vuelven a pedir en cada sesión; necesitan conexión y no suenan dentro del artefacto de Claude.
@@ -191,10 +198,10 @@ samples/      sonidos originales de Harmony, un directorio por pack (WAV); los g
 js/data/      samples.js (catálogo de samples, generado) · genres.js (6 familias, 24 géneros, relaciones) · catalog.js (capa editorial: 109 registros, sellos, artistas, fuentes, rutas)
               mb.js (MusicBrainz) · dc.js (Discogs) · dz.js (muestras de Deezer); las generan los importadores: no editar
 js/lib/       library.js (biblioteca de samples: búsqueda y filtros) · util.js · theme.js (tema claro/oscuro) · archive.js (índice, fusión con MusicBrainz y Discogs, búsqueda, filtros, orden, relacionados, sorpréndeme) · links.js
-              banks.js (modelo de bancos, pads y efectos del Soundpad) · padstore.js (guardado en localStorage + IndexedDB, exportar e importar)
+              banks.js (modelo de bancos, pads y efectos del Soundpad) · patterns.js (patrones del secuenciador) · padstore.js (guardado en localStorage + IndexedDB, exportar e importar)
 js/art/       art.js → fundas generativas, etiqueta del disco, reglas de BPM y época
-js/audio/     engine.js (mezclador Web Audio de dos canales; bus y decodificación para otros instrumentos) · analysis.js (BPM, fase y forma de onda) · deezer.js (muestras de 30 s) · pads.js (disparo de los pads)
-js/ui/        libpanel.js (panel de la biblioteca, en Soundpad y Sonidos) · components.js · controls.js (potenciómetros y faders) · deck.js (plato + barra mínima) · mesa.js · soundpad.js · sections.js (Biblioteca · Mixer · Soundpad)
+js/audio/     engine.js (mezclador Web Audio de dos canales; bus y decodificación para otros instrumentos) · analysis.js (BPM, fase y forma de onda) · deezer.js (muestras de 30 s) · pads.js (disparo de los pads) · sequencer.js (reloj del secuenciador)
+js/ui/        libpanel.js (panel de la biblioteca, en Soundpad y Sonidos) · components.js · controls.js (potenciómetros y faders) · deck.js (plato + barra mínima) · mesa.js · soundpad.js · seqpanel.js (secuenciador) · sections.js (Biblioteca · Mixer · Soundpad)
 js/views/     spectrum.js · lanes.js · home.js · lineage.js (explorador de linajes) · genres.js · catalog.js · pages.js (artista, sello, caja) · sounds.js (sonidos) · js/app.js (rutas, ficha, atajos)
 css/          tokens.css (claro/oscuro) · base.css · views.css · deck.css · soundpad.css
 art/          diseño real de los discos (generado por el importador)

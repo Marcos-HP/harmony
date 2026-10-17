@@ -5,7 +5,8 @@
    Modos: «shot» (disparo: volver a pulsar lo relanza desde el principio) y «loop» (bucle: pulsar arranca o para).
    Efectos por pad: tono (playbackRate, como un sampler), recorte (offset y duración, o loopStart/loopEnd), reverso
    (copia al revés del buffer) y grupos de corte (disparar un pad para los de su grupo).
-   Fuentes: archivos del usuario (H.PadStore) y muestras de 30 s del catálogo (H.Dz, se piden a Deezer y no se guardan). */
+   Fuentes: archivos del usuario (H.PadStore) y muestras de 30 s del catálogo (H.Dz, se piden a Deezer y no se guardan).
+   El secuenciador (js/audio/sequencer.js) programa golpes con antelación con P.at(…, when): suenan en el instante exacto. */
 (function () {
   const H = (window.H = window.H || {});
   const U = H.U;
@@ -17,6 +18,13 @@
   // cuando la escucha previa acaba sola, deja de estar «puesta»
   U.on('pads:voice', (k) => { if (k === PREV && !voices.has(PREV) && prevKey && P.status(prevSrc) !== 'loading') { prevKey = null; U.emit('pads:preview', null); } });
   const revCache = new Map(), peakCache = new Map();
+  const seqV = new Map();    // voces del secuenciador (banco:pad) → { node, gain, t0, dur }: van aparte de las de los pads
+  /* corta una voz del secuenciador en un instante del reloj de audio, con un fundido de ~3 ms (sin chasquido) */
+  function cutAt(k, when) {
+    const v = seqV.get(k); if (!v) return;
+    seqV.delete(k);
+    try { v.gain.gain.setTargetAtTime(0, when, 0.001); v.node.stop(when + 0.012); } catch (e) { /* ya parada */ }
+  }
   /* Copia al revés de un buffer (una vez por sonido) */
   function reversed(k, b) {
     if (revCache.has(k) && revCache.get(k).src === b) return revCache.get(k).buf;
@@ -117,6 +125,37 @@
       voices.set(vkey, v);
       if (n.loop) n.start(0, a); else n.start(0, a, len);
       U.emit('pads:voice', vkey);
+    },
+    /* Disparo programado (secuenciador): suena exactamente en `when` (reloj de audio). Solo si el sonido ya está
+       decodificado: si no, lo pide y devuelve false (ese golpe se pierde; el siguiente ya suena).
+       Cada pad del secuenciador es monofónico: un golpe corta el anterior del mismo pad y los de su grupo de corte,
+       justo en `when`. El modo bucle no aplica: cada paso suena una vez (con su recorte). vel: 0…1 */
+    at(vkey, pad, when, { vel = 1, choke = [] } = {}) {
+      if (!pad || !pad.src) return false;
+      const ctx = H.Audio.ctx();
+      if (!ctx || !out()) return false;
+      const k = H.Banks.srcKey(pad.src), e = buf.get(k);
+      if (!e || e.state !== 'ready') { if (!e) P.load(pad.src).catch(() => {}); return false; }
+      let b = e.buffer;
+      if (pad.reverse) b = reversed(k, b);
+      [vkey, ...choke].forEach((c) => cutAt(c, when));
+      const rate = Math.pow(2, (pad.pitch || 0) / 12);
+      const a = (pad.start || 0) * b.duration, z = (pad.end == null ? 1 : pad.end) * b.duration, len = Math.max(0.005, z - a);
+      const g = ctx.createGain(), n = ctx.createBufferSource();
+      g.gain.value = pad.volume * vel;
+      n.buffer = b; n.playbackRate.value = rate;
+      n.connect(g); g.connect(out());
+      const v = { node: n, gain: g, t0: when, dur: len / rate };
+      n.onended = () => { if (seqV.get(vkey) === v) seqV.delete(vkey); };
+      seqV.set(vkey, v);
+      n.start(Math.max(when, ctx.currentTime), a, len);
+      return true;
+    },
+    /* Para todo lo del secuenciador, también lo ya programado */
+    seqStop() {
+      const ctx = H.Audio.ctx(); if (!ctx) return;
+      seqV.forEach((v) => { try { v.gain.gain.cancelScheduledValues(ctx.currentTime); v.gain.gain.setTargetAtTime(0, ctx.currentTime, 0.004); v.node.stop(ctx.currentTime + 0.03); } catch (e) { /* ya parada */ } });
+      seqV.clear();
     },
     /* Picos para dibujar la forma de onda (n columnas, 0…1), calculados una vez por sonido */
     peaks(src, n = 240, reverse = false) {

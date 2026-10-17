@@ -9,6 +9,7 @@
      { type: 'file', fileId, fileName }   archivo del usuario, guardado en este navegador (js/lib/padstore.js)
      { type: 'catalog', trackId }          muestra de 30 s de Deezer de un registro del catálogo (no se guarda)
      { type: 'harmony', sampleId }         sample original de Harmony (js/data/samples.js; el audio se sirve con la web)
+   Cada banco lleva además su secuencia de pasos (bank.seq, ver js/lib/patterns.js).
    Todo lo que cambia el estado pasa por aquí, así el resto solo pinta y suena. */
 (function () {
   const H = (window.H = window.H || {});
@@ -31,7 +32,9 @@
   const FX = { pitch: 0, start: 0, end: 1, reverse: false, choke: 0 };
   const CHOKES = 4;
   const emptyPad = (i) => ({ id: 'p' + i, name: '', cat: 'otro', volume: 0.9, mode: 'shot', key: KEYS[i] || null, src: null, ...FX });
-  const newBank = (name) => ({ id: uid(), name: String(name || 'Banco').slice(0, 40), pads: Array.from({ length: PADS }, (_, i) => emptyPad(i)) });
+  // la secuencia del banco (js/lib/patterns.js); sin ese módulo (tests del modelo de pads), el banco va sin ella
+  const seqOf = (raw) => (H.Patterns ? H.Patterns.normalize(raw) : undefined);
+  const newBank = (name) => ({ id: uid(), name: String(name || 'Banco').slice(0, 40), pads: Array.from({ length: PADS }, (_, i) => emptyPad(i)), seq: seqOf(null) });
 
   /* Normaliza una tecla de teclado: una sola tecla imprimible, en minúscula. null si no se puede asignar. */
   function keyOf(k) {
@@ -74,7 +77,7 @@
     // una tecla, un pad: si el guardado traía repetidas, se queda con la primera
     const seen = new Set();
     pads.forEach((p) => { if (p.key && seen.has(p.key)) p.key = null; else if (p.key) seen.add(p.key); });
-    return { id: typeof b.id === 'string' && b.id ? b.id : uid(), name: String(b.name || 'Banco').slice(0, 40), pads };
+    return { id: typeof b.id === 'string' && b.id ? b.id : uid(), name: String(b.name || 'Banco').slice(0, 40), pads, seq: seqOf(b.seq) };
   }
 
   const B = (H.Banks = {
@@ -147,7 +150,7 @@
       if (out.length) s.current = out[0].id;
       return out;
     },
-    clearPad(bank, i) { const keep = bank.pads[i].key; bank.pads[i] = emptyPad(i); bank.pads[i].key = keep; return bank.pads[i]; },
+    clearPad(bank, i) { const keep = bank.pads[i].key; bank.pads[i] = emptyPad(i); bank.pads[i].key = keep; if (bank.seq && H.Patterns) H.Patterns.clearRow(bank.seq, i); return bank.pads[i]; },
     /* Archivos que sigue usando algún pad de algún banco (lo demás se puede borrar del navegador) */
     fileIds(s) { const ids = new Set(); s.banks.forEach((b) => b.pads.forEach((p) => { if (p.src && p.src.type === 'file') ids.add(p.src.fileId); })); return ids; },
     srcKey: (src) => (!src ? null : src.type === 'file' ? 'file:' + src.fileId : src.type === 'harmony' ? 'hmy:' + src.sampleId : 'dz:' + src.trackId)
