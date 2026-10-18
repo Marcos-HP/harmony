@@ -14,6 +14,23 @@ function load() {
 }
 const plain = (x) => JSON.parse(JSON.stringify(x));
 
+test('vaciar un banco: sin sonidos, con sus teclas, y el secuenciador sin filas', () => {
+  const ctx = { window: {} };
+  vm.createContext(ctx);
+  vm.runInContext(readFileSync(ROOT + 'js/lib/patterns.js', 'utf8'), ctx);
+  vm.runInContext(readFileSync(ROOT + 'js/lib/banks.js', 'utf8'), ctx);
+  const { Banks: B, Patterns: P } = ctx.window.H, st = B.defaultState(), b = B.current(st);
+  b.pads[0].src = { type: 'harmony', sampleId: 'harmony-01/hc-kick-gabber' }; b.pads[0].name = 'Kick';
+  b.pads[3].src = { type: 'harmony', sampleId: 'harmony-01/clap-room' }; b.pads[3].pitch = 4;
+  P.fill(b.seq, 0, 0, 'negras'); P.fill(b.seq, 1, 3, 'dosycuatro'); b.seq.bpm = 190;
+  assert.equal(B.clearBank(b), 2);
+  assert.ok(b.pads.every((p) => p.src === null && p.name === '' && p.pitch === 0));
+  assert.equal(b.pads.map((p) => p.key).join(''), '1234qwerasdfzxcv', 'las teclas se quedan');
+  assert.ok(b.seq.patterns.every((pt) => Object.keys(pt.rows).length === 0), 'sin filas en ningún patrón');
+  assert.equal(b.seq.bpm, 190, 'el tempo se queda');
+  assert.equal(B.clearBank(b), 0);
+});
+
 test('estado inicial: un banco de 16 pads vacíos con las teclas 1–4, Q–R, A–F, Z–V', () => {
   const B = load(), s = B.defaultState(), b = B.current(s);
   assert.equal(s.banks.length, 1);

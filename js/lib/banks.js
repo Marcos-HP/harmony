@@ -150,6 +150,9 @@
       if (out.length) s.current = out[0].id;
       return out;
     },
+    /* Vaciar el banco: los 16 pads sin sonido (y sus filas del secuenciador); se quedan el nombre, las teclas y el tempo.
+       Devuelve cuántos pads tenían sonido */
+    clearBank(bank) { const n = bank.pads.filter((p) => p.src).length; bank.pads.forEach((_, i) => B.clearPad(bank, i)); return n; },
     clearPad(bank, i) { const keep = bank.pads[i].key; bank.pads[i] = emptyPad(i); bank.pads[i].key = keep; if (bank.seq && H.Patterns) H.Patterns.clearRow(bank.seq, i); return bank.pads[i]; },
     /* Archivos que sigue usando algún pad de algún banco (lo demás se puede borrar del navegador) */
     fileIds(s) { const ids = new Set(); s.banks.forEach((b) => b.pads.forEach((p) => { if (p.src && p.src.type === 'file') ids.add(p.src.fileId); })); return ids; },

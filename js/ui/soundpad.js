@@ -7,7 +7,7 @@
   const B = () => H.Banks;
 
   const SP = (H.Soundpad = { visible: false });
-  let backToSeq = -1, root, st, sel = 0, capture = null, armDelete = null, renaming = false, catOpen = false, catQ = '', raf = 0, tab = 'pad', libPanel = null, seqPanel = null;
+  let backToSeq = -1, root, st, sel = 0, capture = null, armDelete = null, armClear = null, renaming = false, catOpen = false, catQ = '', raf = 0, tab = 'pad', libPanel = null, seqPanel = null;
   const els = {};
 
   /* El estado se carga la primera vez que alguien lo pide (el Soundpad o la página de sonidos) */
@@ -53,6 +53,7 @@
               <button class="btn btn-sm" type="button" data-sp="bank-new">${U.icon('plus')}<span>Nuevo</span></button>
               <button class="btn btn-sm" type="button" data-sp="bank-dup">Duplicar</button>
               <button class="btn btn-sm" type="button" data-sp="bank-ren">Renombrar</button>
+              <button class="btn btn-sm" type="button" data-sp="bank-clear" title="Quita el sonido de los 16 pads">${U.icon('grid')}<span>Vaciar</span></button>
               <button class="btn btn-sm" type="button" data-sp="bank-del">${U.icon('trash')}<span>Eliminar</span></button>
             </div>
           </div>
@@ -309,9 +310,21 @@
     else if (a === 'bank-ren') { renaming = true; renderBank(); const i = els.pick.querySelector('input'); i.focus(); i.select(); }
     else if (a === 'bank-ren-ok') finishRename(true);
     else if (a === 'bank-ren-cancel') finishRename(false);
+    else if (a === 'bank-clear') {
+      const bk = bank();
+      if (!bk.pads.some((p) => p.src)) { U.toast('Este banco ya está vacío'); return; }
+      // como al eliminar: el primer toque pregunta y el segundo vacía
+      if (armClear !== bk.id) { armClear = bk.id; armDelete = null; renderBank(); setTimeout(() => { if (armClear) { armClear = null; renderBank(); } }, 4000); return; }
+      armClear = null;
+      H.Seq.stop();
+      bk.pads.forEach((_, i) => H.PadAudio.stop(bk.id + ':' + i));
+      const n = B().clearBank(bk);
+      save(); tidy(); sel = 0; catOpen = false; render(); renderNote();
+      U.toast(`«${bk.name}» vacío: ${n} ${n === 1 ? 'pad' : 'pads'} sin sonido. Las teclas y el tempo se quedan.`);
+    }
     else if (a === 'bank-del') {
       if (st.banks.length < 2) { U.toast('Tiene que quedar al menos un banco'); return; }
-      if (armDelete !== st.current) { armDelete = st.current; renderBank(); setTimeout(() => { if (armDelete) { armDelete = null; renderBank(); } }, 4000); return; }
+      if (armDelete !== st.current) { armDelete = st.current; armClear = null; renderBank(); setTimeout(() => { if (armDelete) { armDelete = null; renderBank(); } }, 4000); return; }
       const gone = bank();
       H.Seq.stop();
       gone.pads.forEach((_, i) => H.PadAudio.stop(gone.id + ':' + i));
@@ -338,7 +351,7 @@
     else if (a === 'retry') { H.PadAudio.forget(p.src); H.PadAudio.load(p.src).catch(() => {}); }
   }
   function onChange(ev) {
-    if (ev.target.id === 'sp-bank') { H.Seq.stop(); capture = null; armDelete = null; B().select(st, ev.target.value); save(); preload(); sel = 0; render(); }
+    if (ev.target.id === 'sp-bank') { H.Seq.stop(); capture = null; armDelete = null; armClear = null; B().select(st, ev.target.value); save(); preload(); sel = 0; render(); }
   }
   function onInput(ev) {
     const t = ev.target, p = bank().pads[sel];
@@ -372,6 +385,11 @@
       : `<label class="sel mono"><span>Banco</span><select id="sp-bank">${st.banks.map((b) => `<option value="${e(b.id)}"${b.id === bk.id ? ' selected' : ''}>${e(b.name)}</option>`).join('')}</select></label>`;
     root.querySelector('.sp-bank-acts').hidden = renaming;
     root.querySelector('.sp-bname').textContent = bk.name + ' · ' + bk.pads.filter((p) => p.src).length + ' de 16 pads con sonido';
+    const clr = root.querySelector('[data-sp="bank-clear"]'), used = bk.pads.some((p) => p.src);
+    clr.innerHTML = armClear === bk.id ? `${U.icon('grid')}<span>¿Vaciar los 16 pads?</span>` : `${U.icon('grid')}<span>Vaciar</span>`;
+    clr.classList.toggle('btn-warn', armClear === bk.id);
+    clr.disabled = !used;
+    clr.title = used ? 'Quita el sonido de los 16 pads (las teclas y el tempo se quedan)' : 'El banco ya está vacío';
     const del = root.querySelector('[data-sp="bank-del"]');
     del.innerHTML = armDelete === bk.id ? `${U.icon('trash')}<span>¿Eliminar «${e(bk.name)}»?</span>` : `${U.icon('trash')}<span>Eliminar</span>`;
     del.classList.toggle('btn-warn', armDelete === bk.id);

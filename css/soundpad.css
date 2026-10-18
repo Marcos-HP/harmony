@@ -28,6 +28,7 @@
   .sp-bank .sel { flex: 1; }
   .sp-bank .sel select { max-width: none; width: 100%; }
   .sp-bank-acts .btn span { display: none; }
+  .sp-bank-acts .btn.btn-warn span { display: inline; }   /* la pregunta de confirmar sí se lee */
   .sp-bank-acts .btn { padding: 0 10px; }
   .sp-master .btn { margin-left: auto; }
   .sp-vol input[type="range"] { width: 110px; }
