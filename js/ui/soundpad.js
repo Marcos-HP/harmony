@@ -7,7 +7,7 @@
   const B = () => H.Banks;
 
   const SP = (H.Soundpad = { visible: false });
-  let root, st, sel = 0, capture = null, armDelete = null, renaming = false, catOpen = false, catQ = '', raf = 0, tab = 'pad', libPanel = null, seqPanel = null;
+  let backToSeq = -1, root, st, sel = 0, capture = null, armDelete = null, renaming = false, catOpen = false, catQ = '', raf = 0, tab = 'pad', libPanel = null, seqPanel = null;
   const els = {};
 
   /* El estado se carga la primera vez que alguien lo pide (el Soundpad o la página de sonidos) */
@@ -136,6 +136,7 @@
       // abre la biblioteca de Harmony apuntando a ese pad (lo que se añada desde ahí va a él)
       openLibrary: (i) => {
         select(i, { toPad: false }); setTab('lib');
+        backToSeq = i;   // al elegir el sonido, de vuelta a su fila del secuenciador
         els.side.scrollIntoView({ behavior: U.reducedMotion() ? 'auto' : 'smooth', block: 'start' });
         if (libPanel) setTimeout(() => libPanel.focus(), 350);
         U.toast(`Elige un sonido: irá al pad ${i + 1}`);
@@ -283,6 +284,10 @@
     H.PadAudio.load(p.src).catch(() => {});
     tidy();
     U.toast(`${U.q(x.name)} en el pad ${i + 1}${p.key ? ' (tecla ' + keyLabel(p.key) + ')' : ''}`);
+    if (backToSeq === i) {
+      backToSeq = -1;
+      requestAnimationFrame(() => { const r = root.querySelector(`.sq-row[data-i="${i}"]`); if (r) r.scrollIntoView({ behavior: U.reducedMotion() ? 'auto' : 'smooth', block: 'center' }); });
+    }
   }
 
   function onClick(ev) {

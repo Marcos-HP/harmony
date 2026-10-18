@@ -34,6 +34,8 @@
     let painting = null, press = null, raf = 0, shownNow = -1, lastMark = 0, tapT = [], bar = 0, liveBar = -1;
     const seq = () => api.bank().seq;
     const pads = () => api.bank().pads;
+    // pantalla táctil sin ratón: ahí no se puede arrastrar desde la biblioteca
+    const touch = () => window.matchMedia && window.matchMedia('(hover: none) and (pointer: coarse)').matches;
     H.Seq.source(api.bank);
 
     el.innerHTML = `
@@ -62,7 +64,7 @@
       </div>
       <div class="seg sq-bars" role="group" aria-label="Compás a la vista" hidden></div>
       <div class="sq-scroll"><div class="sq-grid" role="grid" aria-label="Pasos del patrón"></div></div>
-      <p class="fine sq-help">Para meter un sonido: «Añadir sonido» al final de la rejilla, o arrástralo encima desde la biblioteca o desde tu equipo. Clic: poner o quitar un golpe. Clic derecho, Alt+clic o mantener pulsado: golpe suave (a medio volumen). Con el ratón, arrastra para pintar varios. Los patrones duran 4, 8 o 16 tiempos y se ven de compás en compás (tiempos 1–4, 5–8…); al alargar, los compases nuevos repiten lo que ya había. Cada fila es un pad: el nombre lo escucha; M lo silencia y S lo deja solo. Un golpe corta el anterior del mismo pad y los de su grupo de corte. Los cambios de patrón entran al acabar la vuelta.</p>`;
+      <p class="fine sq-help">Para meter un sonido: «Añadir sonido» al final de la rejilla (en el ordenador también puedes arrastrarlo encima desde la biblioteca o desde tu equipo). Clic: poner o quitar un golpe. Clic derecho, Alt+clic o mantener pulsado: golpe suave (a medio volumen). Con el ratón, arrastra para pintar varios. Los patrones duran 4, 8 o 16 tiempos y se ven de compás en compás (tiempos 1–4, 5–8…); al alargar, los compases nuevos repiten lo que ya había. Cada fila es un pad: el nombre lo escucha; M lo silencia y S lo deja solo. Un golpe corta el anterior del mismo pad y los de su grupo de corte. Los cambios de patrón entran al acabar la vuelta.</p>`;
     const $ = (s) => el.querySelector(s);
     const grid = $('.sq-grid');
 
@@ -145,7 +147,7 @@
       const free = pads().findIndex((x) => !x.src);
       grid.insertAdjacentHTML('beforeend', `<div class="sq-row sq-add" role="row">
         <div class="sq-rh">${free >= 0 ? `<button class="sq-addbtn" type="button" data-sq="add">${U.icon('plus')}<span>Añadir sonido</span></button>` : '<span class="fine sq-full">16 pads ocupados</span>'}</div>
-        <div class="sq-drop fine">${free >= 0 ? `Arrastra aquí un sonido de la biblioteca o un archivo de audio: entra en el pad ${free + 1}.` : 'Para otra fila, vacía un pad.'} Encima de una fila, cambia el sonido de ese pad.</div>
+        <div class="sq-drop fine">${free < 0 ? 'Para otra fila, vacía un pad.' : touch() ? `Pad ${free + 1}: toca «Añadir sonido» y elige con ＋.` : `Arrastra aquí un sonido de la biblioteca o un archivo de audio: entra en el pad ${free + 1}. Encima de una fila, cambia el sonido de ese pad.`}</div>
       </div>`);
       shownNow = -1; paintNow(true);
     }
