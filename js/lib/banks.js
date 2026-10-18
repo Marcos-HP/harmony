@@ -5,6 +5,11 @@
      start · end  recorte, en fracción de la duración (0…1), para quedarse con un trozo
      reverse  al revés
      choke  grupo de corte 0…4: disparar un pad para los demás de su grupo (el clásico charles abierto/cerrado)
+   Y efectos de sonido, en tiempo real (js/audio/pads.js):
+     drive 0…100 · shape soft|hard|fold   distorsión: suave, dura o plegado
+     filter off|lp|hp|bp · cutoff 20…20000 Hz · res 0…100   filtro paso bajo, alto o banda, con resonancia
+     bits 0 (sin efecto) o 2…12   reducción de bits
+     echo 0…100 · echoDiv 0,25|0,5|0,75|1 (de negra, al tempo del banco) · echoFb 0…90   eco
    El sonido de un pad (src) es una referencia, nunca el audio:
      { type: 'file', fileId, fileName }   archivo del usuario, guardado en este navegador (js/lib/padstore.js)
      { type: 'catalog', trackId }          muestra de 30 s de Deezer de un registro del catálogo (no se guarda)
@@ -29,7 +34,8 @@
   const uid = () => 'b' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
   const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 
-  const FX = { pitch: 0, start: 0, end: 1, reverse: false, choke: 0 };
+  const SHAPES = ['soft', 'hard', 'fold'], FILTERS = ['off', 'lp', 'hp', 'bp'], ECHO_DIVS = [0.25, 0.5, 0.75, 1];
+  const FX = { pitch: 0, start: 0, end: 1, reverse: false, choke: 0, drive: 0, shape: 'soft', filter: 'off', cutoff: 1200, res: 20, bits: 0, echo: 0, echoDiv: 0.75, echoFb: 35 };
   const CHOKES = 4;
   const emptyPad = (i) => ({ id: 'p' + i, name: '', cat: 'otro', volume: 0.9, mode: 'shot', key: KEYS[i] || null, src: null, ...FX });
   // la secuencia del banco (js/lib/patterns.js); sin ese módulo (tests del modelo de pads), el banco va sin ella
@@ -55,7 +61,14 @@
     const num = (v, d) => (Number.isFinite(+v) && v !== null && v !== '' ? +v : d);
     let start = clamp(num(p.start, 0), 0, 0.99), end = clamp(num(p.end, 1), 0.01, 1);
     if (end - start < 0.01) { start = 0; end = 1; }
-    return { pitch: clamp(Math.round(num(p.pitch, 0)), -12, 12), start, end, reverse: p.reverse === true, choke: clamp(Math.round(num(p.choke, 0)), 0, CHOKES) };
+    const bits = Math.round(num(p.bits, 0));
+    return {
+      pitch: clamp(Math.round(num(p.pitch, 0)), -12, 12), start, end, reverse: p.reverse === true, choke: clamp(Math.round(num(p.choke, 0)), 0, CHOKES),
+      drive: clamp(Math.round(num(p.drive, 0)), 0, 100), shape: SHAPES.includes(p.shape) ? p.shape : 'soft',
+      filter: FILTERS.includes(p.filter) ? p.filter : 'off', cutoff: clamp(Math.round(num(p.cutoff, 1200)), 20, 20000), res: clamp(Math.round(num(p.res, 20)), 0, 100),
+      bits: bits >= 2 ? Math.min(bits, 12) : 0,
+      echo: clamp(Math.round(num(p.echo, 0)), 0, 100), echoDiv: ECHO_DIVS.includes(+p.echoDiv) ? +p.echoDiv : 0.75, echoFb: clamp(Math.round(num(p.echoFb, 35)), 0, 90)
+    };
   }
   function normPad(p, i) {
     const d = emptyPad(i);
@@ -81,11 +94,16 @@
   }
 
   const B = (H.Banks = {
-    PADS, KEYS, CATS, MODES, CHOKES,
+    PADS, KEYS, CATS, MODES, CHOKES, SHAPES, FILTERS, ECHO_DIVS,
     /* Recorte con un mínimo de 1 % entre inicio y fin */
     setTrim(pad, start, end) { const f = normFx({ start, end }); pad.start = f.start; pad.end = f.end; return pad; },
     resetFx(pad) { Object.assign(pad, FX); return pad; },
-    hasFx: (p) => p.pitch !== 0 || p.start > 0 || p.end < 1 || p.reverse || p.choke > 0,
+    resetSoundFx(pad) { ['drive', 'shape', 'filter', 'cutoff', 'res', 'bits', 'echo', 'echoDiv', 'echoFb'].forEach((k) => (pad[k] = FX[k])); return pad; },
+    hasFx: (p) => p.pitch !== 0 || p.start > 0 || p.end < 1 || p.reverse || p.choke > 0 || B.hasSoundFx(p),
+    /* efectos de sonido puestos (distorsión, filtro, bits, eco) */
+    hasSoundFx: (p) => p.drive > 0 || p.filter !== 'off' || p.bits > 0 || p.echo > 0,
+    /* cambia un efecto de sonido con sus límites (lo que no cuadre se corrige) */
+    setFx(pad, key, value) { if (!(key in FX)) return pad; const f = normFx({ ...pad, [key]: value }); Object.assign(pad, f); return pad; },
     /* Pads del mismo grupo de corte (menos él mismo) */
     chokeMates: (bank, i) => { const g = bank.pads[i].choke; return g ? bank.pads.map((p, j) => (j !== i && p.choke === g ? j : -1)).filter((j) => j >= 0) : []; },
     keyOf,

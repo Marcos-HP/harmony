@@ -66,7 +66,7 @@
       </div>
       <div class="seg sq-bars" role="group" aria-label="Compás a la vista" hidden></div>
       <div class="sq-scroll"><div class="sq-grid" role="grid" aria-label="Pasos del patrón"></div></div>
-      <p class="fine sq-help">Para meter un sonido: «Añadir sonido» al final de la rejilla (en el ordenador también puedes arrastrarlo encima desde la biblioteca o desde tu equipo). Clic: poner o quitar un golpe. Clic derecho, Alt+clic o mantener pulsado: golpe suave (a medio volumen). Con el ratón, arrastra para pintar varios. Los patrones duran 4, 8 o 16 tiempos y se ven de compás en compás (tiempos 1–4, 5–8…); al alargar, los compases nuevos repiten lo que ya había. Cada fila es un pad: el nombre lo escucha; M lo silencia y S lo deja solo. Un golpe corta el anterior del mismo pad y los de su grupo de corte. Los cambios de patrón entran al acabar la vuelta.</p>`;
+      <p class="fine sq-help">Para meter un sonido: «Añadir sonido» al final de la rejilla (en el ordenador también puedes arrastrarlo encima desde la biblioteca o desde tu equipo). Clic: poner o quitar un golpe. Clic derecho, Alt+clic o mantener pulsado: golpe suave (a medio volumen). Con el ratón, arrastra para pintar varios, y arrastra el borde derecho de una nota para alargarla o acortarla (doble clic en el borde: vuelve a sonar entera; en tenue se ve lo que dura el sonido entero). En un pad en modo bucle, una nota larga repite el bucle hasta su final. Los patrones duran 4, 8 o 16 tiempos y se ven de compás en compás (tiempos 1–4, 5–8…); al alargar, los compases nuevos repiten lo que ya había. Cada fila es un pad: el nombre lo escucha; M lo silencia y S lo deja solo. Un golpe corta el anterior del mismo pad y los de su grupo de corte. Los cambios de patrón entran al acabar la vuelta.</p>`;
     const $ = (s) => el.querySelector(s);
     const grid = $('.sq-grid');
 
@@ -146,10 +146,11 @@
               <option value="">Rellenar…</option>
               ${Object.entries(PT().FILLS).map(([k, f]) => `<option value="${k}">${f.name}</option>`).join('')}
               <option value="left">← Mover un paso</option><option value="right">Mover un paso →</option>
+              <option value="whole">Notas enteras (sin duración)</option>
               <option value="clear">Vaciar la fila</option>
             </select>
           </div>
-          <div class="sq-steps">${ks.map((k) => cell(name, k, +row[k])).join('')}</div>
+          <div class="sq-steps">${(() => { const st = rowState(i); return ks.map((k) => cell(name, k, st[k])).join(''); })()}</div>
         </div>`;
       }).join('');
       const free = pads().findIndex((x) => !x.src);
@@ -160,17 +161,47 @@
       shownNow = -1; paintNow(true);
     }
     const VAL = ['', 'golpe', 'golpe suave'];
-    function cell(name, k, v) {
-      return `<button class="sq-st v${v}${k % 4 === 0 ? ' is-beat' : ''}" type="button" role="gridcell" data-s="${k}" aria-pressed="${v > 0}" aria-label="${e(name)}, paso ${k + 1}${v ? ': ' + VAL[v] : ''}"></button>`;
+    /* Cómo se ve cada paso de una fila: el golpe y la cola de la nota.
+       Con duración, la cola es la nota (sólida); sin ella, se ve en tenue lo que dura el sonido entero.
+       El asa (para alargar o acortar con el ratón) va en el último paso de la nota. */
+    function rowState(i) {
+      const s = seq(), p = s.pattern, len = s.patterns[p].len, row = PT().row(s, p, i), pad = pads()[i];
+      const st = Array.from({ length: PT().MAX }, (_, k) => ({ v: +row[k] || 0, tail: 0, of: -1, grip: false }));
+      const d = pad && pad.src ? H.PadAudio.duration(pad.src) : null;
+      const natural = d ? Math.max(1, Math.ceil((d * (pad.end - pad.start)) / Math.pow(2, (pad.pitch || 0) / 12) / PT().stepDur(s.bpm) - 0.15)) : 1;
+      const notes = PT().notes(s, p, i).filter((n) => n.s < len);
+      notes.forEach((n, j) => {
+        const next = j + 1 < notes.length ? notes[j + 1].s : len;
+        const span = Math.max(1, Math.min(n.n || natural, next - n.s, len - n.s));
+        for (let k = n.s + 1; k < n.s + span; k++) { st[k].tail = n.n ? 1 : 2; st[k].of = n.s; st[k].v = st[n.s].v; }
+        st[n.s + span - 1].grip = true; st[n.s + span - 1].of = n.s; st[n.s + span - 1].timed = !!n.n;
+      });
+      return st;
     }
-    function paintCell(i, k) {
-      const b = grid.querySelector(`.sq-row[data-i="${i}"] .sq-st[data-s="${k}"]`); if (!b) return;
-      const v = PT().get(seq(), seq().pattern, i, k);
-      b.className = `sq-st v${v}${k % 4 === 0 ? ' is-beat' : ''}${k === shownNow ? ' is-now' : ''}`;
-      b.setAttribute('aria-pressed', v > 0);
-      const name = b.getAttribute('aria-label').replace(/, paso \d+.*$/, '');
-      b.setAttribute('aria-label', `${name}, paso ${k + 1}${v ? ': ' + VAL[v] : ''}`);
+    function cellCls(k, c) {
+      return `sq-st v${c.v}${k % 4 === 0 ? ' is-beat' : ''}${c.tail === 1 ? ' is-tail' : c.tail === 2 ? ' is-ghost' : ''}${c.grip && c.tail ? ' is-end' : ''}${k === shownNow ? ' is-now' : ''}`;
     }
+    function cellLabel(name, k, c) {
+      return `${name}, paso ${k + 1}${c.tail ? ': sigue la nota del paso ' + (c.of + 1) : c.v ? ': ' + VAL[c.v] : ''}`;
+    }
+    const grip = (c) => (c.grip ? `<i class="sq-grip${c.timed ? ' is-timed' : ''}" data-of="${c.of}" title="Arrastra para alargar o acortar la nota · doble clic: que suene entera"></i>` : '');
+    function cell(name, k, c) {
+      const on = c.v > 0 && !c.tail;
+      return `<button class="${cellCls(k, c)}" type="button" role="gridcell" data-s="${k}" aria-pressed="${on}" aria-label="${e(cellLabel(name, k, c))}">${grip(c)}</button>`;
+    }
+    /* repinta una fila entera (una nota cambia también los pasos de su cola) */
+    function paintRow(i) {
+      const r = grid.querySelector(`.sq-row[data-i="${i}"]`); if (!r) return;
+      const st = rowState(i), pad = pads()[i], name = pad.name || 'Pad ' + (i + 1);
+      r.querySelectorAll('.sq-st').forEach((b) => {
+        const k = +b.dataset.s, c = st[k];
+        b.className = cellCls(k, c);
+        b.setAttribute('aria-pressed', c.v > 0 && !c.tail);
+        b.setAttribute('aria-label', cellLabel(name, k, c));
+        b.innerHTML = grip(c);
+      });
+    }
+    const paintCell = (i) => paintRow(i);
 
     /* ---------- cabezal: la columna que suena y los pads que golpean ---------- */
     function paintNow(force) {
@@ -210,10 +241,34 @@
     function edit(i, k, value) {
       const s = seq();
       PT().set(s, s.pattern, i, k, value);
-      paintCell(i, k);
+      paintRow(i);
     }
+    /* alargar o acortar una nota con el ratón, arrastrando su asa */
+    let sizing = null;
+    function sizeTo(ev) {
+      const t = document.elementFromPoint(ev.clientX, ev.clientY), b = t && t.closest && t.closest('.sq-st');
+      if (!b || !grid.contains(b) || +b.closest('.sq-row').dataset.i !== sizing.i) return;
+      const k = +b.dataset.s, n = Math.max(1, k - sizing.s + 1);
+      if (n === sizing.n) return;
+      sizing.n = PT().setNoteLen(seq(), seq().pattern, sizing.i, sizing.s, n);
+      paintRow(sizing.i);
+      b.closest('.sq-row').classList.add('is-sizing');
+    }
+    grid.addEventListener('dblclick', (ev) => {
+      const g = ev.target.closest('.sq-grip'); if (!g) return;
+      const i = +g.closest('.sq-row').dataset.i, s0 = +g.dataset.of;
+      PT().setNoteLen(seq(), seq().pattern, i, s0, 0); paintRow(i); save();
+      U.toast('Nota entera: suena el sonido completo');
+    });
     grid.addEventListener('contextmenu', (ev) => { if (ev.target.closest('.sq-st')) ev.preventDefault(); });
     grid.addEventListener('pointerdown', (ev) => {
+      const gr = ev.target.closest('.sq-grip');
+      if (gr && ev.pointerType !== 'touch' && ev.button === 0) {
+        ev.preventDefault();
+        const i = +gr.closest('.sq-row').dataset.i;
+        sizing = { i, s: +gr.dataset.of, n: PT().noteLen(seq(), seq().pattern, i, +gr.dataset.of) };
+        return;
+      }
       const b = ev.target.closest('.sq-st'); if (!b || ev.button > 2) return;
       const i = +b.closest('.sq-row').dataset.i, k = +b.dataset.s, cur = PT().get(seq(), seq().pattern, i, k);
       const soft = ev.button === 2 || ev.altKey;
@@ -230,6 +285,7 @@
     grid.addEventListener('pointermove', (ev) => {
       // un dedo siempre tiembla un poco: solo es desplazar (y no tocar) si se mueve de verdad
       if (press && ev.pointerType === 'touch') { if (Math.hypot(ev.clientX - press.x, ev.clientY - press.y) > 10) { clearTimeout(press.timer); press = null; } return; }
+      if (sizing) { sizeTo(ev); return; }
       if (!painting) return;
       const t = document.elementFromPoint(ev.clientX, ev.clientY), b = t && t.closest && t.closest('.sq-st');
       if (!b || !grid.contains(b)) return;
@@ -237,7 +293,10 @@
       if (painting.seen.has(id)) return;
       painting.seen.add(id); edit(i, k, painting.value);
     });
-    const endPaint = () => { if (painting) { painting = null; save(); renderBar(); } };
+    const endPaint = () => {
+      if (sizing) { const r = grid.querySelector(`.sq-row[data-i="${sizing.i}"]`); if (r) r.classList.remove('is-sizing'); sizing = null; save(); }
+      if (painting) { painting = null; save(); renderBar(); }
+    };
     window.addEventListener('pointerup', (ev) => {
       if (press) {
         clearTimeout(press.timer);
@@ -372,6 +431,8 @@
       U.toast(`Kit ${x.name}: ${got.length} sonidos en los pads ${got.map((i) => i + 1).join(', ')} · ${x.bpm} BPM`);
     }
 
+    // al cargar un sonido se sabe cuánto dura: su cola tenue ya se puede dibujar
+    U.on('pads:load', () => { if (el.isConnected && !painting && !sizing) rowIdx().forEach(paintRow); });
     U.on('seq', () => { renderHead(); renderBar(); if (H.Seq.playing()) startLoop(); else paintNow(true); });
     U.on('seq:rec', renderHead);
 

@@ -31,7 +31,17 @@
     return t ? 'Catálogo · ' + t.title + ' — ' + t.artistLine + ' (muestra de Deezer)' : 'Catálogo · registro desaparecido';
   }
   const semis = (n) => (n > 0 ? '+' : n < 0 ? '−' : '±') + Math.abs(n) + ' st';
-  const fxShort = (p) => [p.pitch ? semis(p.pitch) : '', p.start > 0 || p.end < 1 ? 'recorte' : '', p.reverse ? 'al revés' : '', p.choke ? 'g' + p.choke : ''].filter(Boolean).map((x) => ' · ' + x).join('');
+  const fxShort = (p) => [p.pitch ? semis(p.pitch) : '', p.start > 0 || p.end < 1 ? 'recorte' : '', p.reverse ? 'al revés' : '', p.choke ? 'g' + p.choke : '',
+    p.drive ? 'dist' : '', p.filter && p.filter !== 'off' ? 'filtro' : '', p.bits ? p.bits + ' bits' : '', p.echo ? 'eco' : ''].filter(Boolean).map((x) => ' · ' + x).join('');
+  /* efectos de sonido: textos y escalas de los mandos */
+  const SHAPE_N = { soft: 'Suave', hard: 'Dura', fold: 'Plegado' };
+  const FILTER_N = { off: 'No', lp: 'Paso bajo', hp: 'Paso alto', bp: 'Banda' };
+  const DIV_N = [['0.25', '1/16'], ['0.5', '1/8'], ['0.75', '1/8 ·'], ['1', '1/4']];   // en orden (un objeto pondría el 1 delante)
+  const cutToR = (hz) => Math.round((Math.log(hz / 20) / Math.log(1000)) * 1000);   // 20 Hz–20 kHz en escala logarítmica
+  const rToCut = (r) => Math.round(20 * Math.pow(1000, r / 1000));
+  const hzTxt = (hz) => (hz >= 1000 ? (hz / 1000).toFixed(hz >= 10000 ? 0 : 1).replace('.', ',') + ' kHz' : hz + ' Hz');
+  const bitsToR = (b) => (b ? 13 - b : 0), rToBits = (r) => (r ? 13 - r : 0);
+  const bpmNow = () => (bank().seq ? bank().seq.bpm : 170);
   const srcShort = (p) => (!p.src ? '' : p.src.type === 'file' ? 'tuyo' : p.src.type === 'harmony' ? 'harmony' : 'catálogo');
   const SRC_BADGE = { file: 'Tuyo', harmony: 'Harmony', catalog: 'Deezer' };
 
@@ -168,7 +178,7 @@
     if (!p.src) { select(i); return; }
     const el = padEl(i);
     if (el) { el.classList.remove('is-hit'); void el.offsetWidth; el.classList.add('is-hit'); }
-    H.PadAudio.trigger(vkey(i), p, { choke: B().chokeMates(bank(), i).map(vkey) }).catch((err) => { paintStates(); U.toast(`${p.name || 'Pad ' + (i + 1)}: ${H.PadAudio.message(err)}`); });
+    H.PadAudio.trigger(vkey(i), p, { choke: B().chokeMates(bank(), i).map(vkey), bpm: bank().seq ? bank().seq.bpm : 170 }).catch((err) => { paintStates(); U.toast(`${p.name || 'Pad ' + (i + 1)}: ${H.PadAudio.message(err)}`); });
     tick();
     // grabando con el secuenciador en marcha: el golpe entra en el paso más cercano
     if (H.Seq.recording()) { const n = H.Seq.record(i); if (n) { save(); seqPanel.recorded(n, i); } }
@@ -345,13 +355,19 @@
     else if (a === 'tab') setTab(b.dataset.tab);
     else if (a === 'rev') { p.reverse = !p.reverse; H.PadAudio.stop(vkey(sel)); save(); renderGrid(); renderFx(); }
     else if (a === 'choke') { p.choke = +b.dataset.g; save(); renderGrid(); renderFx(); }
-    else if (a === 'fx-reset') { B().resetFx(p); H.PadAudio.stop(vkey(sel)); save(); renderGrid(); renderFx(); }
+    else if (a === 'fx-shape') setSnd('shape', b.dataset.v, true);
+    else if (a === 'fx-filter') setSnd('filter', b.dataset.v, true);
+    else if (a === 'fx-div') setSnd('echoDiv', +b.dataset.v, true);
+    else if (a === 'snd-reset') { B().resetSoundFx(p); H.PadAudio.applyFx(vkey(sel), p, bpmNow()); save(); renderSnd(); renderGrid(); }
+    else if (a === 'fx-reset') { B().resetFx(p); H.PadAudio.stop(vkey(sel)); H.PadAudio.applyFx(vkey(sel), p, bpmNow()); save(); renderGrid(); renderFx(); renderSnd(); }
     else if (a === 'export') exportBanks([bank()]);
     else if (a === 'export-all') exportBanks(st.banks);
     else if (a === 'import') els.imp.click();
     else if (a === 'retry') { H.PadAudio.forget(p.src); H.PadAudio.load(p.src).catch(() => {}); }
   }
   function onChange(ev) {
+    // al soltar un mando de sonido: el «Quitar» y las marcas de los pads, al día (durante el arrastre no se repinta)
+    if (ev.target.closest && ev.target.closest('.sp-snd') && ev.target.type === 'range') { renderSnd(); renderGrid(); return; }
     if (ev.target.id === 'sp-bank') { H.Seq.stop(); capture = null; armDelete = null; armClear = null; B().select(st, ev.target.value); save(); preload(); sel = 0; render(); }
   }
   function onInput(ev) {
@@ -365,6 +381,12 @@
       save(); paintFx(); renderGrid();
     }
     else if (t.id === 'sp-pitch') { p.pitch = +t.value; H.PadAudio.setVoiceRate(vkey(sel), p.pitch); save(); paintFx(); renderGrid(); }
+    else if (t.id === 'sp-drive') setSnd('drive', +t.value);
+    else if (t.id === 'sp-cut') setSnd('cutoff', rToCut(+t.value));
+    else if (t.id === 'sp-res') setSnd('res', +t.value);
+    else if (t.id === 'sp-bits') setSnd('bits', rToBits(+t.value));
+    else if (t.id === 'sp-echo') { setSnd('echo', +t.value); const b = els.edit.querySelector('.sp-echo-2'); if (b) { b.classList.toggle('is-off', !p.echo); b.querySelectorAll('button, input').forEach((x) => (x.disabled = !p.echo)); } }
+    else if (t.id === 'sp-fb') setSnd('echoFb', +t.value);
   }
   function onFieldKey(ev) {
     if (ev.target.id === 'sp-bank-name') { if (ev.key === 'Enter') { ev.preventDefault(); finishRename(true); } else if (ev.key === 'Escape') { ev.stopPropagation(); finishRename(false); } }
@@ -450,6 +472,7 @@
         </div>
         <p class="fine">${p.mode === 'loop' ? 'Pulsa para arrancar el bucle y otra vez para pararlo.' : 'Suena entero; si vuelves a pulsar, empieza de nuevo.'}</p></div>
       <div class="sp-f sp-fx"></div>
+      <div class="sp-f sp-snd"></div>
       <div class="sp-f sp-key-f"></div>
       <div class="sp-acts">
         <button class="btn btn-solid" type="button" data-sp="play"${p.src ? '' : ' disabled'}>${U.icon('play')}<span>${p.mode === 'loop' ? 'Bucle' : 'Probar'}</span></button>
@@ -458,7 +481,57 @@
       </div>`;
     renderEditSource();
     renderFx();
+    renderSnd();
     renderKeyRow();
+  }
+  /* ---------- sonido: distorsión, filtro, bits y eco (en tiempo real, en directo y en el secuenciador) ---------- */
+  function renderSnd() {
+    const box = els.edit && els.edit.querySelector('.sp-snd'); if (!box) return;
+    const p = bank().pads[sel], on = !!p.src, dis = on ? '' : ' disabled';
+    const seg = (act, cur, opts, label) => `<div class="seg sp-snd-seg" role="group" aria-label="${label}">${(Array.isArray(opts) ? opts : Object.entries(opts)).map(([v, n]) => `<button type="button" data-sp="${act}" data-v="${v}" aria-pressed="${String(cur) === v}"${dis}>${n}</button>`).join('')}</div>`;
+    box.innerHTML = `<span class="mono">Sonido ${B().hasSoundFx(p) ? '<button class="link-btn" type="button" data-sp="snd-reset">Quitar</button>' : ''}</span>
+      <div class="sp-snd-b">
+        <label class="sp-knob"><span class="mono">Distorsión <output id="sp-drive-o"></output></span><input type="range" id="sp-drive" min="0" max="100" step="1" value="${p.drive}"${dis}></label>
+        ${seg('fx-shape', p.shape, SHAPE_N, 'Tipo de distorsión')}
+      </div>
+      <div class="sp-snd-b">
+        <span class="mono sp-snd-l">Filtro</span>
+        ${seg('fx-filter', p.filter, FILTER_N, 'Filtro')}
+        <div class="sp-snd-2${p.filter === 'off' ? ' is-off' : ''}">
+          <label class="sp-knob"><span class="mono">Frecuencia <output id="sp-cut-o"></output></span><input type="range" id="sp-cut" min="0" max="1000" step="1" value="${cutToR(p.cutoff)}"${p.filter === 'off' ? ' disabled' : dis}></label>
+          <label class="sp-knob"><span class="mono">Resonancia <output id="sp-res-o"></output></span><input type="range" id="sp-res" min="0" max="100" step="1" value="${p.res}"${p.filter === 'off' ? ' disabled' : dis}></label>
+        </div>
+      </div>
+      <div class="sp-snd-b">
+        <label class="sp-knob"><span class="mono">Bits <output id="sp-bits-o"></output></span><input type="range" id="sp-bits" min="0" max="11" step="1" value="${bitsToR(p.bits)}"${dis}></label>
+      </div>
+      <div class="sp-snd-b">
+        <label class="sp-knob"><span class="mono">Eco <output id="sp-echo-o"></output></span><input type="range" id="sp-echo" min="0" max="100" step="1" value="${p.echo}"${dis}></label>
+        <div class="sp-snd-2 sp-echo-2${p.echo ? '' : ' is-off'}">
+          ${seg('fx-div', p.echoDiv, DIV_N, 'Tiempo del eco')}
+          <label class="sp-knob"><span class="mono">Repeticiones <output id="sp-fb-o"></output></span><input type="range" id="sp-fb" min="0" max="90" step="1" value="${p.echoFb}"${p.echo ? dis : ' disabled'}></label>
+        </div>
+      </div>
+      <p class="fine">Se oye al momento, también en lo que ya suena, y no toca el archivo. La distorsión compensa el volumen; el eco va al tempo del secuenciador (${bpmNow()} BPM).</p>`;
+    paintSnd();
+  }
+  function paintSnd() {
+    const box = els.edit && els.edit.querySelector('.sp-snd'); if (!box) return;
+    const p = bank().pads[sel], o = (id, t) => { const x = box.querySelector(id); if (x) x.textContent = t; };
+    o('#sp-drive-o', p.drive ? p.drive + ' %' : 'no');
+    o('#sp-cut-o', hzTxt(p.cutoff));
+    o('#sp-res-o', p.res + ' %');
+    o('#sp-bits-o', p.bits ? p.bits + ' bits' : 'no');
+    o('#sp-echo-o', p.echo ? p.echo + ' %' : 'no');
+    o('#sp-fb-o', p.echoFb + ' %');
+  }
+  /* un mando se ha movido: al modelo, a lo que suena y a guardar */
+  function setSnd(key, value, rerender) {
+    const p = bank().pads[sel];
+    B().setFx(p, key, value);
+    H.PadAudio.applyFx(vkey(sel), p, bpmNow());
+    save();
+    if (rerender) { renderSnd(); renderGrid(); } else paintSnd();
   }
   /* ---------- efectos: recorte sobre la forma de onda, tono, al revés y grupo de corte ---------- */
   function renderFx() {

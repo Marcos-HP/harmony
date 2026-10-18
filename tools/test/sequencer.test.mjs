@@ -201,3 +201,31 @@ test('reloj: grabar en directo pone el golpe en el paso más cercano', () => {
   H.Seq.stop();
   assert.equal(H.Seq.recording(), false, 'parar deja de grabar');
 });
+
+test('duración de las notas: se pone, se acorta con la siguiente, se mueve y se repite con la fila', () => {
+  const ctx = { window: {} };
+  vm.createContext(ctx);
+  vm.runInContext(readFileSync(ROOT + 'js/lib/patterns.js', 'utf8'), ctx);
+  const P = ctx.window.H.Patterns, s = P.create();
+  P.set(s, 0, 0, 0, 1); P.set(s, 0, 0, 8, 1);
+  assert.equal(P.noteLen(s, 0, 0, 0), 0, 'sin duración: entera');
+  assert.equal(P.setNoteLen(s, 0, 0, 0, 4), 4);
+  assert.equal(P.setNoteLen(s, 0, 0, 0, 20), 8, 'no pasa de la nota siguiente');
+  P.set(s, 0, 0, 5, 2);
+  assert.equal(P.noteLen(s, 0, 0, 0), 5, 'una nota dentro la acorta');
+  P.set(s, 0, 0, 0, 0);
+  assert.equal(P.noteLen(s, 0, 0, 0), 0, 'quitar la nota quita su duración');
+  assert.equal(P.setNoteLen(s, 0, 0, 3, 2), 0, 'sin nota no hay duración');
+  // mover la fila mueve las duraciones
+  P.setNoteLen(s, 0, 0, 5, 2); P.fill(s, 0, 0, 'right');
+  assert.equal(P.noteLen(s, 0, 0, 6), 2);
+  // al alargar el patrón se repiten
+  s.patterns[1].len = 16; P.set(s, 1, 2, 4, 1); P.setNoteLen(s, 1, 2, 4, 3); P.setLen(s, 1, 32);
+  assert.equal(P.noteLen(s, 1, 2, 20), 3);
+  // lo guardado se normaliza: duraciones sin nota o raras fuera, y los patrones viejos (sin lens) valen
+  const n = P.normalize({ patterns: [{ len: 64, rows: { 0: '1000' }, lens: { 0: { 0: 99, 2: 3 }, 5: { 0: 2 } } }, { len: 16, rows: { 1: '1' } }] });
+  assert.deepEqual(JSON.parse(JSON.stringify(n.patterns[0].lens)), { 0: { 0: 64 } });
+  assert.deepEqual(JSON.parse(JSON.stringify(n.patterns[1].lens)), {});
+  P.fill(n, 0, 0, 'whole'); assert.equal(P.noteLen(n, 0, 0, 0), 0, '«notas enteras» quita las duraciones');
+  P.setNoteLen(n, 0, 0, 0, 4); P.clearRow(n, 0); assert.equal(P.noteLen(n, 0, 0, 0), 0);
+});

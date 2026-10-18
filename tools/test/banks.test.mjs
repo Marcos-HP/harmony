@@ -115,7 +115,7 @@ test('guardado tolerante: lo roto se corrige, lo válido se conserva', () => {
   assert.equal(s.master, 1);
   const p = s.banks[0].pads;
   assert.equal(p.length, 16);
-  assert.deepEqual(plain(p[0]), { id: 'p0', name: 'Kick', cat: 'kick', volume: 1, mode: 'shot', key: 'q', src: { type: 'file', fileId: 'f1', fileName: 'k.wav' }, pitch: 0, start: 0, end: 1, reverse: false, choke: 0 });
+  assert.deepEqual(plain(p[0]), { id: 'p0', name: 'Kick', cat: 'kick', volume: 1, mode: 'shot', key: 'q', src: { type: 'file', fileId: 'f1', fileName: 'k.wav' }, pitch: 0, start: 0, end: 1, reverse: false, choke: 0, drive: 0, shape: 'soft', filter: 'off', cutoff: 1200, res: 20, bits: 0, echo: 0, echoDiv: 0.75, echoFb: 35 });
   assert.equal(p[1].key, null, 'tecla repetida: se queda con el primero');
   assert.equal(p[2].src, null, 'fuente desconocida → vacío');
 });
@@ -150,4 +150,25 @@ test('importar bancos: ids y nombres nuevos, archivos traducidos y lo que falta,
   assert.deepEqual(plain(got[0].pads[0].src), { type: 'file', fileId: 'fNEW', fileName: 'k.wav' });
   assert.equal(got[0].pads[1].src, null);
   assert.equal(got[0].pads[2].src.trackId, 'poing');
+});
+
+test('efectos de sonido por pad: valores por defecto, límites y quitar', () => {
+  const B = load(), st = B.defaultState(), p = B.current(st).pads[0];
+  assert.equal(p.drive, 0); assert.equal(p.filter, 'off'); assert.equal(p.bits, 0); assert.equal(p.echo, 0);
+  assert.equal(B.hasSoundFx(p), false);
+  B.setFx(p, 'drive', 250); assert.equal(p.drive, 100);
+  B.setFx(p, 'shape', 'raro'); assert.equal(p.shape, 'soft');
+  B.setFx(p, 'filter', 'lp'); B.setFx(p, 'cutoff', 5); assert.equal(p.cutoff, 20);
+  B.setFx(p, 'bits', 1); assert.equal(p.bits, 0, 'menos de 2 bits = sin efecto');
+  B.setFx(p, 'bits', 30); assert.equal(p.bits, 12);
+  B.setFx(p, 'echoDiv', 0.3); assert.equal(p.echoDiv, 0.75);
+  B.setFx(p, 'echo', 40);
+  assert.ok(B.hasSoundFx(p) && B.hasFx(p));
+  // se guardan y vuelven igual
+  const back = B.normalize(plain(st));
+  assert.equal(back.banks[0].pads[0].drive, 100); assert.equal(back.banks[0].pads[0].filter, 'lp'); assert.equal(back.banks[0].pads[0].echo, 40);
+  // los guardados de antes (sin estos campos) cargan sin efectos
+  const old = B.normalize({ banks: [{ name: 'Viejo', pads: [{ name: 'Kick', src: { type: 'harmony', sampleId: 'x/y' }, pitch: 2 }] }] });
+  assert.equal(old.banks[0].pads[0].drive, 0); assert.equal(old.banks[0].pads[0].pitch, 2);
+  B.resetSoundFx(p); assert.equal(B.hasSoundFx(p), false);
 });

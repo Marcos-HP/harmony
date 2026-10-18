@@ -41,7 +41,8 @@
       if (!v || !PT.audible(seq, i)) continue;
       const pad = b.pads[i];
       if (!pad || !pad.src) continue;
-      H.PadAudio.at(vkey(b, i), pad, when, { vel: PT.VEL[v], choke: H.Banks.chokeMates(b, i).map((j) => vkey(b, j)) });
+      const n = PT.noteLen(seq, pat, i, step);   // pasos de duración (0 = la nota suena entera)
+      H.PadAudio.at(vkey(b, i), pad, when, { vel: PT.VEL[v], choke: H.Banks.chokeMates(b, i).map((j) => vkey(b, j)), dur: n * PT.stepDur(seq.bpm), bpm: seq.bpm });
     }
     marks.push({ t: when, grid: t, step, pat });
     while (marks.length > 128) marks.shift();

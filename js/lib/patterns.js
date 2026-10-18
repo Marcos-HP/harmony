@@ -4,6 +4,9 @@
      patterns  cuatro patrones (A–D) de 4, 8 o 16 tiempos: 16, 32 o 64 pasos de semicorchea (uno, dos o cuatro compases)
        rows  { [n.º de pad]: '1000100010001000…' } — 64 caracteres siempre: 0 nada · 1 golpe · 2 golpe suave
              (al acortar, lo de más se guarda; al volver a alargar, se recupera)
+       lens  { [n.º de pad]: { [paso]: pasos } } — duración de las notas que la tienen (1–64 pasos). Sin duración, la
+             nota suena entera (el sonido completo, hasta el golpe siguiente del pad). Con duración, se corta ahí; en
+             un pad en modo bucle, el bucle se repite hasta el final de la nota.
      pattern  el patrón que se edita (y el que suena: un cambio entra al acabar la vuelta)
      chain · chainOn  la cadena de patrones («AABA»), si se toca encadenado
      mute · solo  pads silenciados o en solo (para todo el banco, no por patrón)
@@ -18,7 +21,7 @@
   const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
   const num = (v, d) => (v !== null && v !== '' && Number.isFinite(+v) ? +v : d);
 
-  const emptyPattern = () => ({ len: 64, rows: {} });   // 16 tiempos (4 compases) de entrada
+  const emptyPattern = () => ({ len: 64, rows: {}, lens: {} });   // 16 tiempos (4 compases) de entrada
   function normRow(s) {
     const r = String(s || '').replace(/[^012]/g, '0').slice(0, MAX);
     return r + ZERO.slice(r.length);
@@ -35,7 +38,32 @@
         if (r !== ZERO) out.rows[i] = r;
       }
     }
+    // duraciones: solo donde hay una nota, de 1 a lo que quede hasta el final
+    if (p.lens && typeof p.lens === 'object') {
+      for (const [k, m] of Object.entries(p.lens)) {
+        const r = out.rows[k];
+        if (!r || !m || typeof m !== 'object') continue;
+        for (const [st, n] of Object.entries(m)) {
+          const s = +st, v = Math.round(+n);
+          if (Number.isInteger(s) && s >= 0 && s < MAX && r[s] !== '0' && v >= 1) (out.lens[k] = out.lens[k] || {})[s] = Math.min(v, MAX - s);
+        }
+      }
+    }
     return out;
+  }
+  const lensOf = (pat, i) => pat.lens[i] || {};
+  function setLenRaw(pat, i, s, n) {
+    if (n > 0) (pat.lens[i] = pat.lens[i] || {})[s] = n;
+    else if (pat.lens[i]) { delete pat.lens[i][s]; if (!Object.keys(pat.lens[i]).length) delete pat.lens[i]; }
+  }
+  /* quita las duraciones que se han quedado sin nota debajo */
+  function pruneLens(pat, i) {
+    const r = pat.rows[i], m = pat.lens[i]; if (!m) return;
+    for (const s of Object.keys(m)) {
+      if (!r || r[s] === '0') { delete m[s]; continue; }
+      for (let t = +s + 1; t < +s + m[s] && t < MAX; t++) if (r[t] !== '0') { m[s] = t - +s; break; }   // hasta la nota siguiente
+    }
+    if (!Object.keys(m).length) delete pat.lens[i];
   }
   const idxList = (a) => [...new Set((Array.isArray(a) ? a : []).map(Number).filter((i) => Number.isInteger(i) && i >= 0 && i < PADS))].sort((x, y) => x - y);
 
@@ -75,8 +103,32 @@
     get: (seq, p, i, step) => +P.row(seq, p, i)[step] || 0,
     set(seq, p, i, step, v) {
       if (step < 0 || step >= MAX) return;
-      const r = P.row(seq, p, i), n = r.slice(0, step) + (VEL[v] != null ? v : 0) + r.slice(step + 1);
-      if (n === ZERO) delete seq.patterns[p].rows[i]; else seq.patterns[p].rows[i] = n;
+      const pat = seq.patterns[p], val = VEL[v] != null ? +v : 0;
+      const r = P.row(seq, p, i), n = r.slice(0, step) + val + r.slice(step + 1);
+      if (n === ZERO) delete pat.rows[i]; else pat.rows[i] = n;
+      if (!val) setLenRaw(pat, i, step, 0);
+      else if (r[step] === '0') {
+        // una nota nueva dentro de otra con duración la acorta hasta aquí
+        for (const [s, len] of Object.entries(lensOf(pat, i))) if (+s < step && +s + len > step) setLenRaw(pat, i, +s, step - +s);
+      }
+    },
+    /* duración de la nota que empieza en `step`, en pasos (0 = entera, o no hay nota) */
+    noteLen: (seq, p, i, step) => lensOf(seq.patterns[p], i)[step] || 0,
+    /* pone la duración (n pasos; 0 = entera). No pasa de la nota siguiente del pad ni del final. Devuelve la que queda */
+    setNoteLen(seq, p, i, step, n) {
+      const pat = seq.patterns[p], r = P.row(seq, p, i);
+      if (r[step] === '0' || r[step] == null) return 0;
+      let max = MAX - step;
+      for (let s = step + 1; s < MAX; s++) if (r[s] !== '0') { max = s - step; break; }
+      const v = n > 0 ? Math.max(1, Math.min(Math.round(n), max)) : 0;
+      setLenRaw(pat, i, step, v);
+      return v;
+    },
+    /* notas de una fila con su tramo: [{ s, n }] (n = pasos con duración; 0 = entera) */
+    notes(seq, p, i) {
+      const r = P.row(seq, p, i), m = lensOf(seq.patterns[p], i), out = [];
+      for (let s = 0; s < MAX; s++) if (r[s] !== '0') out.push({ s, n: m[s] || 0 });
+      return out;
     },
     /* un clic: golpe ↔ nada; con suave, golpe suave ↔ nada (y golpe → suave) */
     toggle(seq, p, i, step, soft = false) {
@@ -98,12 +150,20 @@
         const F = FILLS[kind];
         for (let s = 0; s < len; s++) r[s] = F.at(s, len) ? (r[s] === '2' ? '2' : '1') : F.add ? r[s] : '0';
       }
+      else if (kind === 'whole') { delete pat.lens[i]; return true; }
       else return false;
+      // al mover la fila, sus duraciones se mueven con ella
+      if ((kind === 'right' || kind === 'left') && pat.lens[i]) {
+        const m = {};
+        for (const [s, n] of Object.entries(pat.lens[i])) { if (+s >= len) { m[s] = n; continue; } const t = (+s + (kind === 'right' ? 1 : len - 1)) % len; m[t] = Math.min(n, MAX - t); }
+        pat.lens[i] = m;
+      }
       const n = r.join('');
       if (n === ZERO) delete pat.rows[i]; else pat.rows[i] = n;
+      pruneLens(pat, i);
       return true;
     },
-    clearPattern(seq, p) { seq.patterns[p].rows = {}; },
+    clearPattern(seq, p) { seq.patterns[p].rows = {}; seq.patterns[p].lens = {}; },
     copy(seq, from, to) { if (from === to) return; seq.patterns[to] = JSON.parse(JSON.stringify(seq.patterns[from])); },
     /* Alargar (4 → 8 → 16 tiempos): si lo nuevo está vacío, repite lo que ya había (los compases siguientes iguales).
        Acortar no borra nada: los pasos de más se guardan y vuelven al alargar */
@@ -116,12 +176,15 @@
           let n = r.slice(0, from);
           while (n.length < len) n += r.slice(0, from);
           pat.rows[i] = n.slice(0, len) + r.slice(len);
+          // las duraciones también se repiten en los compases nuevos
+          const m = pat.lens[i];
+          if (m) for (const [s, d] of Object.entries(m)) if (+s < from) for (let o = from; +s + o < len; o += from) m[+s + o] = Math.min(d, MAX - (+s + o));
         }
       }
       pat.len = len;
     },
     /* Al vaciar un pad, su fila desaparece de todos los patrones */
-    clearRow(seq, i) { seq.patterns.forEach((pat) => delete pat.rows[i]); seq.mute = seq.mute.filter((x) => x !== i); seq.solo = seq.solo.filter((x) => x !== i); },
+    clearRow(seq, i) { seq.patterns.forEach((pat) => { delete pat.rows[i]; delete pat.lens[i]; }); seq.mute = seq.mute.filter((x) => x !== i); seq.solo = seq.solo.filter((x) => x !== i); },
     audible: (seq, i) => (seq.solo.length ? seq.solo.includes(i) : !seq.mute.includes(i)),
     flag(seq, which, i) {
       const a = seq[which], k = a.indexOf(i);

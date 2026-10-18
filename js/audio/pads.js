@@ -5,6 +5,9 @@
    Modos: «shot» (disparo: volver a pulsar lo relanza desde el principio) y «loop» (bucle: pulsar arranca o para).
    Efectos por pad: tono (playbackRate, como un sampler), recorte (offset y duración, o loopStart/loopEnd), reverso
    (copia al revés del buffer) y grupos de corte (disparar un pad para los de su grupo).
+   Y una cadena de efectos propia de cada pad, en tiempo real (no tocan el archivo; lo que suena los oye al momento):
+     voz → distorsión (WaveShaper ×4) → filtro (biquad) → bits (cuantización) → salida → bus
+                                                                            └→ eco (retardo a tempo, realimentado)
    Fuentes: archivos del usuario (H.PadStore) y muestras de 30 s del catálogo (H.Dz, se piden a Deezer y no se guardan).
    El secuenciador (js/audio/sequencer.js) programa golpes con antelación con P.at(…, when): suenan en el instante exacto. */
 (function () {
@@ -19,6 +22,81 @@
   U.on('pads:voice', (k) => { if (k === PREV && !voices.has(PREV) && prevKey && P.status(prevSrc) !== 'loading') { prevKey = null; U.emit('pads:preview', null); } });
   const revCache = new Map(), peakCache = new Map();
   const seqV = new Map();    // voces del secuenciador (banco:pad) → { node, gain, t0, dur }: van aparte de las de los pads
+  const chains = new Map();  // cadena de efectos de cada pad (banco:pad), compartida por sus voces en directo y del secuenciador
+
+  /* ---------- cadena de efectos ---------- */
+  const curves = new Map();
+  /* curva de distorsión: suave (tanh), dura (recorte con rodilla corta) o plegado (seno: la onda se dobla sobre sí misma) */
+  function driveCurve(shape, amt) {
+    const key = shape + amt;
+    if (curves.has(key)) return curves.get(key);
+    const n = 4096, c = new Float32Array(n), a = amt / 100;
+    for (let i = 0; i < n; i++) {
+      const x = (i / (n - 1)) * 2 - 1;
+      if (shape === 'fold') c[i] = Math.sin((Math.PI / 2) * x * (1 + a * 6));
+      else if (shape === 'hard') { const y = x * (1 + a * 30); c[i] = y / Math.pow(1 + Math.pow(Math.abs(y), 6), 1 / 6); }
+      else { const k = 1 + a * 24; c[i] = Math.tanh(k * x) / Math.tanh(k); }
+    }
+    curves.set(key, c);
+    return c;
+  }
+  /* curva de bits: la señal en escalones de 2^(bits−1) niveles */
+  function bitsCurve(bits) {
+    const key = 'b' + bits;
+    if (curves.has(key)) return curves.get(key);
+    const n = 65536, c = new Float32Array(n), q = Math.pow(2, bits - 1);
+    for (let i = 0; i < n; i++) { const x = (i / (n - 1)) * 2 - 1; c[i] = Math.round(x * q) / q; }
+    curves.set(key, c);
+    return c;
+  }
+  const num = (v, d) => (Number.isFinite(+v) ? +v : d);
+  const hasAudioFx = (p) => num(p.drive, 0) > 0 || (p.filter && p.filter !== 'off') || num(p.bits, 0) > 0 || num(p.echo, 0) > 0;
+  function configure(c, pad, bpm) {
+    const ctx = H.Audio.ctx(), t = ctx.currentTime;
+    const drive = num(pad.drive, 0), filter = pad.filter || 'off', bits = num(pad.bits, 0), echo = num(pad.echo, 0);
+    // la ruta se rehace solo si cambia qué efectos están puestos (cambiar un mando no corta nada)
+    const route = [drive > 0, filter !== 'off', bits > 0].join();
+    if (route !== c.route) {
+      [c.input, c.shaper, c.filt, c.crush].forEach((x) => x.disconnect());
+      let last = c.input;
+      if (drive > 0) { last.connect(c.shaper); last = c.shaper; }
+      if (filter !== 'off') { last.connect(c.filt); last = c.filt; }
+      if (bits > 0) { last.connect(c.crush); last = c.crush; }
+      last.connect(c.post);
+      c.route = route;
+    }
+    if (drive > 0) c.shaper.curve = driveCurve(pad.shape || 'soft', drive);
+    if (filter !== 'off') {
+      c.filt.type = { lp: 'lowpass', hp: 'highpass', bp: 'bandpass' }[filter] || 'lowpass';
+      c.filt.frequency.setTargetAtTime(num(pad.cutoff, 1200), t, 0.012);
+      // en paso bajo y alto la resonancia va en dB (0–18); en paso banda, Q lineal (0,7–15)
+      c.filt.Q.setTargetAtTime(filter === 'bp' ? 0.7 + (num(pad.res, 0) / 100) * 14 : (num(pad.res, 0) / 100) * 18, t, 0.012);
+    }
+    if (bits > 0) c.crush.curve = bitsCurve(bits);
+    // compensa el volumen que añade la distorsión (suena más fuerte sin que suba el pico)
+    c.post.gain.setTargetAtTime(drive > 0 ? 1 / (1 + (drive / 100) * 0.9) : 1, t, 0.012);
+    c.delay.delayTime.setTargetAtTime(Math.min(1.99, (60 / (bpm || 170)) * num(pad.echoDiv, 0.75)), t, 0.02);
+    c.fb.gain.setTargetAtTime(echo > 0 ? num(pad.echoFb, 35) / 100 : 0, t, 0.02);
+    c.wet.gain.setTargetAtTime((echo / 100) * 0.8, t, 0.02);
+  }
+  /* entrada de la cadena de un pad (se crea la primera vez y se reajusta si cambian sus efectos o el tempo) */
+  function chainFor(vkey, pad, bpm) {
+    const ctx = H.Audio.ctx();
+    if (vkey === PREV || !ctx) return out();
+    let c = chains.get(vkey);
+    if (!c) {
+      c = { input: ctx.createGain(), shaper: ctx.createWaveShaper(), filt: ctx.createBiquadFilter(), crush: ctx.createWaveShaper(), post: ctx.createGain(), delay: ctx.createDelay(2), fb: ctx.createGain(), dlp: ctx.createBiquadFilter(), wet: ctx.createGain(), sig: '', route: '' };
+      c.shaper.oversample = '4x';
+      c.dlp.type = 'lowpass'; c.dlp.frequency.value = 4500;
+      c.fb.gain.value = 0; c.wet.gain.value = 0;
+      c.post.connect(out());
+      c.post.connect(c.delay); c.delay.connect(c.dlp); c.dlp.connect(c.fb); c.fb.connect(c.delay); c.dlp.connect(c.wet); c.wet.connect(out());
+      chains.set(vkey, c);
+    }
+    const sig = [pad.drive, pad.shape, pad.filter, pad.cutoff, pad.res, pad.bits, pad.echo, pad.echoDiv, pad.echoFb, bpm].join('|');
+    if (sig !== c.sig) { configure(c, pad, bpm); c.sig = sig; }
+    return c.input;
+  }
   /* corta una voz del secuenciador en un instante del reloj de audio, con un fundido de ~3 ms (sin chasquido) */
   function cutAt(k, when) {
     const v = seqV.get(k); if (!v) return;
@@ -97,7 +175,7 @@
 
     /* Dispara un pad. vkey identifica la voz (banco:pad) para pararla o relanzarla sin tocar las demás.
        choke: voces de su grupo de corte, que se paran al disparar este. */
-    async trigger(vkey, pad, { choke = [] } = {}) {
+    async trigger(vkey, pad, { choke = [], bpm } = {}) {
       if (!pad || !pad.src) return;
       const ctx = H.Audio.ensure();   // el gesto del usuario despierta el contexto
       if (!ctx || !out()) throw err('noaudio', 'sin web audio');
@@ -119,7 +197,7 @@
       const n = ctx.createBufferSource();
       n.buffer = b; n.loop = pad.mode === 'loop'; n.playbackRate.value = rate;
       if (n.loop) { n.loopStart = a; n.loopEnd = z; }
-      n.connect(g); g.connect(out());
+      n.connect(g); g.connect(chainFor(vkey, pad, bpm));
       const v = { node: n, gain: g, t0: ctx.currentTime, dur: len / rate, loop: n.loop };
       n.onended = () => { if (voices.get(vkey) === v) { voices.delete(vkey); U.emit('pads:voice', vkey); } };
       voices.set(vkey, v);
@@ -129,8 +207,9 @@
     /* Disparo programado (secuenciador): suena exactamente en `when` (reloj de audio). Solo si el sonido ya está
        decodificado: si no, lo pide y devuelve false (ese golpe se pierde; el siguiente ya suena).
        Cada pad del secuenciador es monofónico: un golpe corta el anterior del mismo pad y los de su grupo de corte,
-       justo en `when`. El modo bucle no aplica: cada paso suena una vez (con su recorte). vel: 0…1 */
-    at(vkey, pad, when, { vel = 1, choke = [] } = {}) {
+       justo en `when`. vel: 0…1. dur: duración de la nota en segundos (0 = entera: suena el sonido completo, con su
+       recorte). Con duración se corta ahí con un fundido corto; si el pad está en modo bucle, se repite hasta entonces. */
+    at(vkey, pad, when, { vel = 1, choke = [], dur = 0, bpm } = {}) {
       if (!pad || !pad.src) return false;
       const ctx = H.Audio.ctx();
       if (!ctx || !out()) return false;
@@ -143,12 +222,20 @@
       const a = (pad.start || 0) * b.duration, z = (pad.end == null ? 1 : pad.end) * b.duration, len = Math.max(0.005, z - a);
       const g = ctx.createGain(), n = ctx.createBufferSource();
       g.gain.value = pad.volume * vel;
-      n.buffer = b; n.playbackRate.value = rate;
-      n.connect(g); g.connect(out());
-      const v = { node: n, gain: g, t0: when, dur: len / rate };
+      const loop = dur > 0 && pad.mode === 'loop';
+      n.buffer = b; n.playbackRate.value = rate; n.loop = loop;
+      if (loop) { n.loopStart = a; n.loopEnd = z; }
+      n.connect(g); g.connect(chainFor(vkey, pad, bpm));
+      const v = { node: n, gain: g, t0: when, dur: dur > 0 ? dur : len / rate };
       n.onended = () => { if (seqV.get(vkey) === v) seqV.delete(vkey); };
       seqV.set(vkey, v);
-      n.start(Math.max(when, ctx.currentTime), a, len);
+      const st = Math.max(when, ctx.currentTime);
+      if (loop) n.start(st, a); else n.start(st, a, len);
+      if (dur > 0) {
+        const end = Math.max(st + 0.004, when + dur);
+        g.gain.setTargetAtTime(0, end - 0.003, 0.0015);
+        n.stop(end + 0.02);
+      }
       return true;
     },
     /* Para todo lo del secuenciador, también lo ya programado */
@@ -210,6 +297,10 @@
     },
     setVoiceRate(vkey, semis) { const v = voices.get(vkey), ctx = H.Audio.ctx(); if (v && ctx) v.node.playbackRate.setTargetAtTime(Math.pow(2, semis / 12), ctx.currentTime, 0.01); },
     setVoiceVolume(vkey, vol) { const v = voices.get(vkey), ctx = H.Audio.ctx(); if (v && ctx) v.gain.gain.setTargetAtTime(vol, ctx.currentTime, 0.01); },
+    /* reajusta la cadena de un pad (al mover un mando, para oírlo ya en lo que está sonando) */
+    applyFx(vkey, pad, bpm) { if (chains.has(vkey) || hasAudioFx(pad)) chainFor(vkey, pad, bpm); },
+    /* para comprobar: qué efectos tiene montados la cadena de un pad */
+    fxRoute: (vkey) => { const c = chains.get(vkey); return c ? { route: c.route, sig: c.sig } : null; },
     setVolume(v) { busVol = v; if (bus) bus.gain.setTargetAtTime(v, H.Audio.ctx().currentTime, 0.02); },
     volume: () => busVol
   });
