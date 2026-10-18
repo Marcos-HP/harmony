@@ -49,7 +49,6 @@
      "file": "samples/harmony-01/hc-kick-gabber.wav",
      "notes": "Seno con doble caída de tono (2,4 kHz → 210 Hz → Fa 1) y clic de ruido; saturación asimétrica, medios recortados a 420 Hz, presencia a 2,6 kHz y tanh.",
      "peakDb": -1.3,
-     "truePeakDb": -1,
      "rmsDb": -8.5,
      "centroid": 58
     },
@@ -80,7 +79,6 @@
      "file": "samples/harmony-01/hc-kick-mainstream.wav",
      "notes": "Dos capas: golpe limpio y cola afinada en Sol# 1 que se curva hacia abajo al final, plegada y saturada, con un paso bajo que se cierra de 7 a 1,6 kHz.",
      "peakDb": -1.1,
-     "truePeakDb": -1,
      "rmsDb": -7.8,
      "centroid": 70
     },
@@ -111,7 +109,6 @@
      "file": "samples/harmony-01/hc-kick-industrial.wav",
      "notes": "Cuerpo grave en Re# 1, capa metálica de cuadradas y ruido, filtrado a 4,2 kHz y una sala pequeña.",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -9.7,
      "centroid": 56
     },
@@ -142,7 +139,6 @@
      "file": "samples/harmony-01/hc-kick-crunch.wav",
      "notes": "Kick corto saturado y reducido a 6 bits y un tercio de la frecuencia de muestreo, con recorte final.",
      "peakDb": -1.4,
-     "truePeakDb": -1,
      "rmsDb": -7.8,
      "centroid": 77
     },
@@ -173,7 +169,6 @@
      "file": "samples/harmony-01/hc-kick-early.wav",
      "notes": "Un 909 saturado al estilo de principios de los 90: menos cola y más golpe, realce a 160 Hz.",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -7.7,
      "centroid": 69
     },
@@ -204,7 +199,6 @@
      "file": "samples/harmony-01/hc-kick-millennium.wav",
      "notes": "Cola larga y grave en Mi 1, poco saturada y filtrada a 1,8 kHz con los subgraves realzados, y el clic seco repuesto por encima: más «boom» que «crunch».",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -5.8,
      "centroid": 45
     },
@@ -235,7 +229,6 @@
      "file": "samples/harmony-01/ns-kick-punch.wav",
      "notes": "Corto y apretado, con mucho ataque: saturación suave, graves a 100 Hz y presencia a 3,5 kHz.",
      "peakDb": -1.1,
-     "truePeakDb": -1,
      "rmsDb": -7.8,
      "centroid": 61
     },
@@ -265,7 +258,6 @@
      "file": "samples/harmony-01/ns-kick-tail.wav",
      "notes": "Golpe y cola que arranca en La 1 y cae un tono (se oye en torno a Sol# 1), heredera del hard house americano.",
      "peakDb": -1.1,
-     "truePeakDb": -1,
      "rmsDb": -7.7,
      "centroid": 65
     },
@@ -295,7 +287,6 @@
      "file": "samples/harmony-01/ns-kick-masia.wav",
      "notes": "Cuerpo corto con una capa de ruido agudo y realce a 4,5 kHz: se oye sin subir los graves.",
      "peakDb": -1.9,
-     "truePeakDb": -1,
      "rmsDb": -9.1,
      "centroid": 78
     },
@@ -325,7 +316,6 @@
      "file": "samples/harmony-01/ns-kick-jump.wav",
      "notes": "«Boom» largo y redondo en Fa# 1 con poca distorsión, el kick de jump que el newstyle mezcla con el suyo.",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -7.6,
      "centroid": 52
     },
@@ -355,7 +345,6 @@
      "file": "samples/harmony-01/ns-bass-offbeat.wav",
      "notes": "Bajo inverso de una corchea a 150 BPM en La 1: sube de volumen y de brillo y se corta seco justo antes del siguiente kick.",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -10.1,
      "centroid": 59
     },
@@ -385,7 +374,6 @@
      "file": "samples/harmony-01/ut-kick-screech.wav",
      "notes": "Kick plegado y saturado con un chillido: sierra filtrada por un paso banda resonante (Q 9) que baja de 3,2 a 0,9 kHz.",
      "peakDb": -1.3,
-     "truePeakDb": -1,
      "rmsDb": -7.6,
      "centroid": 209
     },
@@ -415,7 +403,6 @@
      "file": "samples/harmony-01/ut-kick-raw.wav",
      "notes": "Recorte duro (×18) hasta casi una cuadrada, filtrado a 6 kHz y con un hueco a 1,2 kHz.",
      "peakDb": -1.2,
-     "truePeakDb": -1,
      "rmsDb": -7.8,
      "centroid": 137
     },
@@ -445,7 +432,6 @@
      "file": "samples/harmony-01/ut-kick-tok.wav",
      "notes": "«Tok» de seno muy corto y cola alta en Re 2 con saturación de válvula.",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -9.5,
      "centroid": 100
     },
@@ -475,7 +461,6 @@
      "file": "samples/harmony-01/ut-kick-zaag.wav",
      "notes": "Golpe corto y cola de sierra plegada que se va cerrando: el zumbido áspero del uptempo.",
      "peakDb": -2.5,
-     "truePeakDb": -1,
      "rmsDb": -9.9,
      "centroid": 125
     },
@@ -505,7 +490,6 @@
      "file": "samples/harmony-01/ut-kick-pitch.wav",
      "notes": "La cola cae de 90 a 55 Hz en cada golpe, con saturación de válvula y tanh.",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -8.8,
      "centroid": 123
     },
@@ -532,7 +516,6 @@
      "file": "samples/harmony-01/clap-room.wav",
      "notes": "Cuatro ráfagas de ruido a 1,25 kHz separadas unos 10 ms y una sala de 0,9 s.",
      "peakDb": -1.1,
-     "truePeakDb": -1,
      "rmsDb": -19.1,
      "centroid": 2350
     },
@@ -559,7 +542,6 @@
      "file": "samples/harmony-01/clap-hardcore.wav",
      "notes": "Palma saturada con los medios al frente (2,1 kHz) y reverb cortada en seco a 240 ms.",
      "peakDb": -1.5,
-     "truePeakDb": -1,
      "rmsDb": -12.4,
      "centroid": 2386
     },
@@ -586,7 +568,6 @@
      "file": "samples/harmony-01/snare-tight.wav",
      "notes": "Tono de 205 Hz con armónico, ruido por encima de 1,8 kHz y clic de ataque.",
      "peakDb": -3.2,
-     "truePeakDb": -1,
      "rmsDb": -15.6,
      "centroid": 9153
     },
@@ -613,7 +594,6 @@
      "file": "samples/harmony-01/snare-hardcore.wav",
      "notes": "Caja gorda saturada con reverb grande cortada a 300 ms.",
      "peakDb": -5.9,
-     "truePeakDb": -1,
      "rmsDb": -12,
      "centroid": 9863
     },
@@ -640,7 +620,6 @@
      "file": "samples/harmony-01/snare-clap.wav",
      "notes": "Caja y palma superpuestas y pegadas con compresión.",
      "peakDb": -1.6,
-     "truePeakDb": -1,
      "rmsDb": -19.2,
      "centroid": 8760
     },
@@ -667,7 +646,6 @@
      "file": "samples/harmony-01/rim.wav",
      "notes": "Dos senos (1,72 kHz y 510 Hz) y un clic de ruido, muy corto.",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -11.4,
      "centroid": 741
     },
@@ -694,7 +672,6 @@
      "file": "samples/harmony-01/hat-closed.wav",
      "notes": "Seis osciladores cuadrados en proporciones inarmónicas (estilo 808) más ruido, filtrados por encima de 6,5 kHz.",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -20.5,
      "centroid": 10007
     },
@@ -721,7 +698,6 @@
      "file": "samples/harmony-01/hat-open.wav",
      "notes": "El mismo metal con una caída de 170 ms y algo de estéreo. Ponlo en el mismo grupo de corte que el cerrado.",
      "peakDb": -1.4,
-     "truePeakDb": -1,
      "rmsDb": -20.4,
      "centroid": 9868
     },
@@ -748,7 +724,6 @@
      "file": "samples/harmony-01/perc-metal.wav",
      "notes": "FM: portadora de 620 Hz modulada a 1381 Hz con índice que cae, saturada y con sala corta.",
      "peakDb": -1.1,
-     "truePeakDb": -1,
      "rmsDb": -10.6,
      "centroid": 684
     },
@@ -775,7 +750,6 @@
      "file": "samples/harmony-01/crash.wav",
      "notes": "Ruido y dos capas metálicas por encima de 3,5 kHz, caída de 0,75 s, ensanchado y con sala.",
      "peakDb": -2.6,
-     "truePeakDb": -1,
      "rmsDb": -18,
      "centroid": 11665
     },
@@ -806,7 +780,6 @@
      "file": "samples/harmony-01/fill-snare-180.wav",
      "notes": "Un compás a 180 BPM: semicorcheas y fusas en la segunda mitad, subiendo de volumen y de tono.",
      "peakDb": -3.2,
-     "truePeakDb": -1,
      "rmsDb": -16,
      "centroid": 7050
     },
@@ -836,7 +809,6 @@
      "file": "samples/harmony-01/fill-kick-200.wav",
      "notes": "Un compás a 200 BPM con el kick uptempo raw: corcheas, semicorcheas y fusas, cada golpe cortado a su paso.",
      "peakDb": -1.1,
-     "truePeakDb": -1,
      "rmsDb": -9,
      "centroid": 424
     },
@@ -866,7 +838,6 @@
      "file": "samples/harmony-01/fill-toms-180.wav",
      "notes": "Ocho toms en semicorcheas a 180 BPM, de 240 a 115 Hz.",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -7.3,
      "centroid": 190
     },
@@ -893,7 +864,6 @@
      "file": "samples/harmony-01/impact-boom.wav",
      "notes": "Sub que cae de 70 a 32 Hz, ruido que se cierra de 9 kHz a 180 Hz, un golpe de kick y una reverb grande.",
      "peakDb": -1.1,
-     "truePeakDb": -1,
      "rmsDb": -11.3,
      "centroid": 54
     },
@@ -920,7 +890,6 @@
      "file": "samples/harmony-01/impact-hardcore.wav",
      "notes": "El kick gabber con un crash encima, saturado y con reverb larga: para marcar la entrada de un drop.",
      "peakDb": -2.5,
-     "truePeakDb": -1,
      "rmsDb": -14.6,
      "centroid": 4958
     },
@@ -947,7 +916,6 @@
      "file": "samples/harmony-01/subdrop.wav",
      "notes": "Seno que cae de 78 a 27 Hz en 2 s, con armónicos para que se note en altavoces pequeños.",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -8,
      "centroid": 48
     },
@@ -974,7 +942,6 @@
      "file": "samples/harmony-01/downlifter.wav",
      "notes": "Ruido por un paso banda que baja de 7 kHz a 150 Hz y una sierra que cae de 650 a 55 Hz.",
      "peakDb": -1.2,
-     "truePeakDb": -1,
      "rmsDb": -20.1,
      "centroid": 4193
     },
@@ -1001,7 +968,6 @@
      "file": "samples/harmony-01/reverse-crash.wav",
      "notes": "El crash del pack al revés, 2,2 s: para entrar a un compás.",
      "peakDb": -3.1,
-     "truePeakDb": -1,
      "rmsDb": -18,
      "centroid": 12488
     },
@@ -1031,7 +997,6 @@
      "file": "samples/harmony-01/tape-stop.wav",
      "notes": "Cuatro negras de kick gabber con bajo a 180 BPM; en el tercer tiempo la «cinta» se frena hasta pararse.",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -10.1,
      "centroid": 119
     },
@@ -1061,7 +1026,6 @@
      "file": "samples/harmony-01/riser-noise.wav",
      "notes": "Dos compases a 180 BPM: ruido por un paso banda que se abre de 300 Hz a 9 kHz mientras sube de volumen.",
      "peakDb": -1.3,
-     "truePeakDb": -1,
      "rmsDb": -20.3,
      "centroid": 6407
     },
@@ -1091,7 +1055,6 @@
      "file": "samples/harmony-01/riser-supersaw.wav",
      "notes": "Siete sierras desafinadas que suben dos octavas desde Do 3 en dos compases a 180 BPM, con el filtro abriéndose.",
      "peakDb": -1.1,
-     "truePeakDb": -1,
      "rmsDb": -18.2,
      "centroid": 1168
     },
@@ -1118,7 +1081,6 @@
      "file": "samples/harmony-01/siren.wav",
      "notes": "Sierra y cuadrada cuyo tono oscila entre 650 y 1300 Hz, con eco a corchea con puntillo (180 BPM).",
      "peakDb": -1.1,
-     "truePeakDb": -1,
      "rmsDb": -8.3,
      "centroid": 1251
     },
@@ -1145,7 +1107,6 @@
      "file": "samples/harmony-01/laser.wav",
      "notes": "Barrido de 4,2 kHz a 120 Hz en 35 ms con eco ping-pong a semicorchea.",
      "peakDb": -1.1,
-     "truePeakDb": -1,
      "rmsDb": -16.7,
      "centroid": 1761
     },
@@ -1173,7 +1134,6 @@
      "file": "samples/harmony-01/hoover-stab.wav",
      "notes": "Pulsos con ancho modulado y sierras desafinadas en Do 3, con la caída de tono de tres semitonos típica de ese sonido.",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -10.6,
      "centroid": 276
     },
@@ -1200,7 +1160,6 @@
      "file": "samples/harmony-01/horn.wav",
      "notes": "Sierras desafinadas en Fa# 3 con una envolvente de filtro de metal y algo de vibrato.",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -8.8,
      "centroid": 350
     }
@@ -1248,7 +1207,6 @@
      "file": "samples/harmony-02/mc-hardcore.wav",
      "notes": "Dos voces de eSpeak dobladas en estéreo, presencia a 2,7 kHz, saturación y eco a corchea con puntillo (180 BPM).",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -15.5,
      "centroid": 1256
     },
@@ -1279,7 +1237,6 @@
      "file": "samples/harmony-02/mc-uptempo.wav",
      "notes": "Doblada y más saturada, con eco a corchea a 200 BPM.",
      "peakDb": -2.2,
-     "truePeakDb": -1,
      "rmsDb": -16.7,
      "centroid": 1546
     },
@@ -1309,7 +1266,6 @@
      "file": "samples/harmony-02/mc-newstyle.wav",
      "notes": "Doblada en estéreo con eco a corchea con puntillo (150 BPM).",
      "peakDb": -1.2,
-     "truePeakDb": -1,
      "rmsDb": -16.7,
      "centroid": 1107
     },
@@ -1337,7 +1293,6 @@
      "file": "samples/harmony-02/mc-harmony.wav",
      "notes": "El nombre de la casa: voz doblada, sala grande y tres ecos a negra (150 BPM) cada vez más oscuros.",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -18.3,
      "centroid": 818
     },
@@ -1364,7 +1319,6 @@
      "file": "samples/harmony-02/mc-make-some-noise.wav",
      "notes": "Frase de MC doblada, saturada, con sala.",
      "peakDb": -1.1,
-     "truePeakDb": -1,
      "rmsDb": -15.2,
      "centroid": 1768
     },
@@ -1391,7 +1345,6 @@
      "file": "samples/harmony-02/mc-are-you-ready.wav",
      "notes": "Doblada, con eco a corchea con puntillo (150 BPM): para el final de una subida.",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -16.4,
      "centroid": 1289
     },
@@ -1418,7 +1371,6 @@
      "file": "samples/harmony-02/mc-lets-go.wav",
      "notes": "Frase corta doblada y saturada.",
      "peakDb": -1.4,
-     "truePeakDb": -1,
      "rmsDb": -14.8,
      "centroid": 1269
     },
@@ -1445,7 +1397,6 @@
      "file": "samples/harmony-02/mc-come-on.wav",
      "notes": "Frase corta doblada y saturada.",
      "peakDb": -1.2,
-     "truePeakDb": -1,
      "rmsDb": -14.7,
      "centroid": 1048
     },
@@ -1472,7 +1423,6 @@
      "file": "samples/harmony-02/mc-louder.wav",
      "notes": "La más saturada de las frases, con presencia extra a 2,7 kHz.",
      "peakDb": -1.1,
-     "truePeakDb": -1,
      "rmsDb": -15,
      "centroid": 822
     },
@@ -1500,7 +1450,6 @@
      "file": "samples/harmony-02/mc-hands-up.wav",
      "notes": "Doblada, con dos ecos a corchea (150 BPM).",
      "peakDb": -1.2,
-     "truePeakDb": -1,
      "rmsDb": -15.3,
      "centroid": 1316
     },
@@ -1531,7 +1480,6 @@
      "file": "samples/harmony-02/mc-bass.wav",
      "notes": "Toma un 18 % más lenta (más grave y con formantes más bajos), sin recortar graves, con cuatro ecos a corchea que se apagan.",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -17.8,
      "centroid": 1483
     },
@@ -1562,7 +1510,6 @@
      "file": "samples/harmony-02/mc-drop.wav",
      "notes": "Doblada y saturada, con tres ecos a corchea con puntillo (150 BPM) que van cayendo de izquierda a derecha.",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -17.3,
      "centroid": 967
     },
@@ -1593,7 +1540,6 @@
      "file": "samples/harmony-02/mc-rotterdam.wav",
      "notes": "Doblada y muy saturada, con eco a 180 BPM: para el gabber.",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -15.2,
      "centroid": 734
     },
@@ -1624,7 +1570,6 @@
      "file": "samples/harmony-02/mc-countdown.wav",
      "notes": "Cuenta atrás a negras a 150 BPM: «three» en el 1, «two» en el 2, «one» en el 3; el drop entra en el 4.",
      "peakDb": -2,
-     "truePeakDb": -1,
      "rmsDb": -17.1,
      "centroid": 1800
     },
@@ -1655,7 +1600,6 @@
      "file": "samples/harmony-02/mc-count-in.wav",
      "notes": "Un compás de cuenta a negras a 150 BPM.",
      "peakDb": -1.7,
-     "truePeakDb": -1,
      "rmsDb": -16.4,
      "centroid": 1727
     },
@@ -1683,7 +1627,6 @@
      "file": "samples/harmony-02/mc-vamos.wav",
      "notes": "Voz de eSpeak en castellano, doblada y saturada, con eco a corchea con puntillo (150 BPM).",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -17,
      "centroid": 1534
     },
@@ -1710,7 +1653,6 @@
      "file": "samples/harmony-02/mc-dale-cana.wav",
      "notes": "Doblada y saturada.",
      "peakDb": -1.1,
-     "truePeakDb": -1,
      "rmsDb": -14.8,
      "centroid": 1394
     },
@@ -1737,7 +1679,6 @@
      "file": "samples/harmony-02/mc-mas-fuerte.wav",
      "notes": "Doblada, con más presencia y más saturación.",
      "peakDb": -1.1,
-     "truePeakDb": -1,
      "rmsDb": -14.8,
      "centroid": 1523
     },
@@ -1765,7 +1706,6 @@
      "file": "samples/harmony-02/mc-manos-arriba.wav",
      "notes": "Doblada, con eco a corchea con puntillo (150 BPM).",
      "peakDb": -1.1,
-     "truePeakDb": -1,
      "rmsDb": -15.4,
      "centroid": 1487
     },
@@ -1796,7 +1736,6 @@
      "file": "samples/harmony-02/mc-makina.wav",
      "notes": "Doblada, con tres ecos a 170 BPM.",
      "peakDb": -1.1,
-     "truePeakDb": -1,
      "rmsDb": -16.7,
      "centroid": 1594
     },
@@ -1823,7 +1762,6 @@
      "file": "samples/harmony-02/mc-que-suene.wav",
      "notes": "Doblada y saturada.",
      "peakDb": -1.1,
-     "truePeakDb": -1,
      "rmsDb": -15.6,
      "centroid": 1455
     },
@@ -1850,7 +1788,6 @@
      "file": "samples/harmony-02/shout-hey.wav",
      "notes": "Ocho voces: cuatro tomas distintas, cada una algo más grave y algo más aguda, repartidas en el estéreo con pequeños retrasos.",
      "peakDb": -1.4,
-     "truePeakDb": -1,
      "rmsDb": -18.2,
      "centroid": 1779
     },
@@ -1877,7 +1814,6 @@
      "file": "samples/harmony-02/shout-oi.wav",
      "notes": "Seis voces repartidas en el estéreo, saturadas, con sala.",
      "peakDb": -1.1,
-     "truePeakDb": -1,
      "rmsDb": -18.1,
      "centroid": 1181
     },
@@ -1903,7 +1839,6 @@
      "file": "samples/harmony-02/shout-yeah.wav",
      "notes": "Seis voces repartidas en el estéreo, saturadas, con sala.",
      "peakDb": -1.1,
-     "truePeakDb": -1,
      "rmsDb": -17.7,
      "centroid": 1134
     },
@@ -1930,7 +1865,6 @@
      "file": "samples/harmony-02/shout-ho.wav",
      "notes": "Seis voces repartidas en el estéreo, saturadas, con sala.",
      "peakDb": -1.3,
-     "truePeakDb": -1,
      "rmsDb": -17.7,
      "centroid": 1109
     },
@@ -1958,7 +1892,6 @@
      "file": "samples/harmony-02/shout-yahoo.wav",
      "notes": "Grito de alegría con dos voces de eSpeak dobladas, un poco más agudas, con sala y eco. Voz propia: no imita a ningún personaje.",
      "peakDb": -1.1,
-     "truePeakDb": -1,
      "rmsDb": -15.6,
      "centroid": 1706
     },
@@ -1985,7 +1918,6 @@
      "file": "samples/harmony-02/shout-yuju.wav",
      "notes": "El mismo grito de alegría en castellano.",
      "peakDb": -1.1,
-     "truePeakDb": -1,
      "rmsDb": -15.1,
      "centroid": 881
     },
@@ -2016,7 +1948,6 @@
      "file": "samples/harmony-02/shout-hey-x3.wav",
      "notes": "El grupo de «¡Hey!» tres veces a negras a 150 BPM, con la sala en el último.",
      "peakDb": -1.1,
-     "truePeakDb": -1,
      "rmsDb": -15.3,
      "centroid": 2094
     },
@@ -2047,7 +1978,6 @@
      "file": "samples/harmony-02/fx-warning.wav",
      "notes": "Banda de 550 Hz a 3,8 kHz con resonancia a 1,6 kHz, compresión y saturación fuerte; ecos a corchea con puntillo (180 BPM).",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -16.2,
      "centroid": 873
     },
@@ -2075,7 +2005,6 @@
      "file": "samples/harmony-02/fx-radio.wav",
      "notes": "Banda de teléfono (450 Hz–3 kHz), saturación, 10 bits y un chasquido de ruido al abrir y al cerrar.",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -18.5,
      "centroid": 908
     },
@@ -2103,7 +2032,6 @@
      "file": "samples/harmony-02/fx-demon.wav",
      "notes": "La toma un 34 % más lenta (más de siete semitonos abajo, con los formantes), graves realzados, saturación y una sala grande y oscura.",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -16.3,
      "centroid": 876
     },
@@ -2134,7 +2062,6 @@
      "file": "samples/harmony-02/fx-stutter.wav",
      "notes": "Cuatro semicorcheas del principio de la palabra a 180 BPM y luego la palabra entera, con eco.",
      "peakDb": -1.2,
-     "truePeakDb": -1,
      "rmsDb": -16.2,
      "centroid": 1871
     },
@@ -2162,7 +2089,6 @@
      "file": "samples/harmony-02/fx-robot.wav",
      "notes": "Vocoder de 24 bandas: la voz modula un acorde de Do menor de sierras desafinadas; las sibilantes pasan aparte para que se entienda.",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -16.7,
      "centroid": 1206
     },
@@ -2190,7 +2116,6 @@
      "file": "samples/harmony-02/fx-whisper.wav",
      "notes": "Variante susurrada de eSpeak, presencia a 4,5 kHz, sala larga y dos ecos a negra (150 BPM).",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -20.9,
      "centroid": 2340
     },
@@ -2218,7 +2143,6 @@
      "file": "samples/harmony-02/fx-reverse.wav",
      "notes": "La reverb de la palabra al revés crece hasta la palabra, que entra seca: para dar paso a un drop.",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -19.1,
      "centroid": 761
     },
@@ -2246,7 +2170,6 @@
      "file": "samples/harmony-02/choir-aah.wav",
      "notes": "Doce voces sintéticas (fuente glotal y cinco formantes de la «a»): tenores en La 3 y sopranos en Do 4, Mi 4 y La 4, con vibrato y sala.",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -15.2,
      "centroid": 758
     },
@@ -2274,7 +2197,6 @@
      "file": "samples/harmony-02/choir-ooh.wav",
      "notes": "Nueve voces con la «u»: tenores en Fa# 3 y contraltos en La 3 y Do# 4.",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -13.3,
      "centroid": 303
     },
@@ -2302,7 +2224,6 @@
      "file": "samples/harmony-02/choir-chop-ah.wav",
      "notes": "«Ah» corto en Do# 4 doblado a la octava, sin vibrato, algo saturado.",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -14.3,
      "centroid": 798
     },
@@ -2330,7 +2251,6 @@
      "file": "samples/harmony-02/choir-chop-ey.wav",
      "notes": "«Ey» en Fa# 4: los formantes pasan de la «e» a la «i» en 80 ms.",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -12.1,
      "centroid": 380
     },
@@ -2358,7 +2278,6 @@
      "file": "samples/harmony-02/choir-oh-stab.wav",
      "notes": "Acorde de Sol# menor cantado con la «o», con la reverb cortada en seco a 480 ms.",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -15.2,
      "centroid": 435
     }
@@ -2405,7 +2324,6 @@
      "file": "samples/harmony-03/hs-lead.wav",
      "notes": "Melodía de 4 compases sobre Fam – Re♭ – La♭ – Mi♭: supersierra ancha con su octava, un poco saturada y empujada por el «sidechain», con sala y eco.",
      "peakDb": -1.1,
-     "truePeakDb": -1,
      "rmsDb": -7.5,
      "centroid": 1422
     },
@@ -2436,7 +2354,6 @@
      "file": "samples/harmony-03/hs-chords.wav",
      "notes": "Fam – Re♭ – La♭ – Mi♭ en supersierra, bombeando en cada tiempo.",
      "peakDb": -1.1,
-     "truePeakDb": -1,
      "rmsDb": -10.4,
      "centroid": 878
     },
@@ -2467,7 +2384,6 @@
      "file": "samples/harmony-03/hs-arp.wav",
      "notes": "Pluck en semicorcheas por las notas de cada acorde, con eco a corchea con puntillo.",
      "peakDb": -1.3,
-     "truePeakDb": -1,
      "rmsDb": -12,
      "centroid": 1226
     },
@@ -2497,7 +2413,6 @@
      "file": "samples/harmony-03/hs-reverse-bass.wav",
      "notes": "Un bajo al revés en cada tiempo (Fa – Re♭ – La♭ – Mi♭) que crece y se corta antes del kick siguiente. Ponlo con un kick a negras.",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -6.8,
      "centroid": 80
     },
@@ -2527,7 +2442,6 @@
      "file": "samples/harmony-03/hs-raw-lead.wav",
      "notes": "Frases cortas de cuadrada y sierra muy saturadas, un lado algo desafinado respecto al otro.",
      "peakDb": -1.1,
-     "truePeakDb": -1,
      "rmsDb": -8.9,
      "centroid": 1005
     },
@@ -2558,7 +2472,6 @@
      "file": "samples/harmony-03/hc-hoover-riff.wav",
      "notes": "Riff de hoover sobre Lam – Fa – Sol – Mim: el mismo ritmo en cada compás, con la caída de tono del hoover en cada nota.",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -8.6,
      "centroid": 523
     },
@@ -2589,7 +2502,6 @@
      "file": "samples/harmony-03/hc-piano.wav",
      "notes": "Acordes de piano sincopados (Lam – Fa – Sol – Mim) con sala.",
      "peakDb": -1.1,
-     "truePeakDb": -1,
      "rmsDb": -10.5,
      "centroid": 651
     },
@@ -2619,7 +2531,6 @@
      "file": "samples/harmony-03/hc-lead.wav",
      "notes": "Melodía larga de 4 compases con lead saturado y supersierra.",
      "peakDb": -1.1,
-     "truePeakDb": -1,
      "rmsDb": -10.5,
      "centroid": 1277
     },
@@ -2649,7 +2560,6 @@
      "file": "samples/harmony-03/hc-happy-piano.wav",
      "notes": "Sol – Re – Mim – Do: acordes a contratiempo y melodía arriba, todo piano.",
      "peakDb": -1.2,
-     "truePeakDb": -1,
      "rmsDb": -9.9,
      "centroid": 1011
     },
@@ -2679,7 +2589,6 @@
      "file": "samples/harmony-03/ut-screech-lead.wav",
      "notes": "Melodía con el chillido del uptempo (sierra por un paso banda resonante que barre). En Do#, como los kicks uptempo de Harmony 01.",
      "peakDb": -1.2,
-     "truePeakDb": -1,
      "rmsDb": -6.8,
      "centroid": 986
     },
@@ -2710,7 +2619,6 @@
      "file": "samples/harmony-03/ut-raw-stabs.wav",
      "notes": "Golpes muy saturados entre kick y kick: Do#m y luego La / Si.",
      "peakDb": -1.1,
-     "truePeakDb": -1,
      "rmsDb": -12.8,
      "centroid": 1008
     },
@@ -2740,7 +2648,6 @@
      "file": "samples/harmony-03/ut-gated-chords.wav",
      "notes": "Do#m – La / Si en supersierra cortada a semicorcheas.",
      "peakDb": -1.1,
-     "truePeakDb": -1,
      "rmsDb": -13.2,
      "centroid": 766
     },
@@ -2770,7 +2677,6 @@
      "file": "samples/harmony-03/mk-lead.wav",
      "notes": "Melodía sobre Rem – Si♭ – Do – La, con la séptima alzada (Do#) al final: cuadrada y sierras desafinadas con la octava de abajo.",
      "peakDb": -1.2,
-     "truePeakDb": -1,
      "rmsDb": -9.9,
      "centroid": 1095
     },
@@ -2800,7 +2706,6 @@
      "file": "samples/harmony-03/mk-arp.wav",
      "notes": "Arpegio en semicorcheas por los acordes del kit, con eco a corchea.",
      "peakDb": -1.3,
-     "truePeakDb": -1,
      "rmsDb": -12.9,
      "centroid": 1395
     },
@@ -2830,7 +2735,6 @@
      "file": "samples/harmony-03/mk-bass.wav",
      "notes": "Bajo a contratiempo (Re – Si♭ – Do – La) con cuerpo de sub.",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -8.4,
      "centroid": 79
     },
@@ -2860,7 +2764,6 @@
      "file": "samples/harmony-03/ns-lead.wav",
      "notes": "Pluck brillante entre los kicks, sobre Sol#m – Mi / Fa#. En Sol#, como los kicks newstyle de Harmony 01.",
      "peakDb": -1.3,
-     "truePeakDb": -1,
      "rmsDb": -13.3,
      "centroid": 1210
     },
@@ -2891,7 +2794,6 @@
      "file": "samples/harmony-03/ns-stabs.wav",
      "notes": "Órgano y supersierra a contratiempo.",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -13.1,
      "centroid": 459
     },
@@ -2922,7 +2824,6 @@
      "file": "samples/harmony-03/tk-acid.wav",
      "notes": "Una sola voz de sierra con paso bajo resonante: acentos que abren el filtro y notas ligadas que deslizan el tono.",
      "peakDb": -1.3,
-     "truePeakDb": -1,
      "rmsDb": -8.5,
      "centroid": 602
     },
@@ -2953,7 +2854,6 @@
      "file": "samples/harmony-03/tk-dub-stab.wav",
      "notes": "Mim7 corto y oscuro, con eco largo a corchea con puntillo y sala.",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -15.6,
      "centroid": 566
     },
@@ -2983,7 +2883,6 @@
      "file": "samples/harmony-03/tk-rolling-bass.wav",
      "notes": "Las tres semicorcheas entre kick y kick, en Mi 2.",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -5.9,
      "centroid": 97
     },
@@ -3013,7 +2912,6 @@
      "file": "samples/harmony-03/tr-pad.wav",
      "notes": "Lam – Fa – Do – Sol con entrada lenta y el filtro abriéndose, sala grande.",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -9.8,
      "centroid": 588
     },
@@ -3043,7 +2941,6 @@
      "file": "samples/harmony-03/tr-gated.wav",
      "notes": "Los mismos acordes cortados en semicorcheas.",
      "peakDb": -1.1,
-     "truePeakDb": -1,
      "rmsDb": -14.2,
      "centroid": 683
     },
@@ -3073,7 +2970,6 @@
      "file": "samples/harmony-03/music-box.wav",
      "notes": "Campanas FM con eco y sala: para intros y partes tranquilas.",
      "peakDb": -1.4,
-     "truePeakDb": -1,
      "rmsDb": -10.3,
      "centroid": 1648
     },
@@ -3100,7 +2996,6 @@
      "file": "samples/harmony-03/stab-minor.wav",
      "notes": "Órgano y supersierra en Do menor, corto, con sala.",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -14.1,
      "centroid": 787
     },
@@ -3127,7 +3022,6 @@
      "file": "samples/harmony-03/stab-major.wav",
      "notes": "El mismo stab en Do mayor.",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -14.1,
      "centroid": 790
     },
@@ -3154,7 +3048,6 @@
      "file": "samples/harmony-03/note-organ.wav",
      "notes": "Seis armónicos con caída corta y clic de tecla: el órgano percusivo de las raves. Súbelo o bájalo con el tono del pad.",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -15.4,
      "centroid": 708
     },
@@ -3180,7 +3073,6 @@
      "file": "samples/harmony-03/note-pluck.wav",
      "notes": "Pluck con eco: cambia de nota con el tono del pad.",
      "peakDb": -1.3,
-     "truePeakDb": -1,
      "rmsDb": -19.3,
      "centroid": 749
     },
@@ -3206,7 +3098,6 @@
      "file": "samples/harmony-03/note-piano.wav",
      "notes": "Nota de piano sintetizado.",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -16,
      "centroid": 477
     },
@@ -3233,7 +3124,6 @@
      "file": "samples/harmony-03/note-bell.wav",
      "notes": "Campana FM con sala.",
      "peakDb": -1.1,
-     "truePeakDb": -1,
      "rmsDb": -14,
      "centroid": 1161
     },
@@ -3260,7 +3150,6 @@
      "file": "samples/harmony-03/note-sub.wav",
      "notes": "Seno en Do 2 con un poco de saturación.",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -4.2,
      "centroid": 68
     },
@@ -3287,7 +3176,6 @@
      "file": "samples/harmony-03/note-lead.wav",
      "notes": "Una nota larga de supersierra con sala: con el tono del pad, para tocar melodías con las teclas.",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -9.4,
      "centroid": 628
     },
@@ -3314,7 +3202,6 @@
      "file": "samples/harmony-03/retro-jump.wav",
      "notes": "Pulso al 25 % que sube de 180 a 900 Hz.",
      "peakDb": -1.3,
-     "truePeakDb": -1,
      "rmsDb": -7.9,
      "centroid": 1051
     },
@@ -3341,7 +3228,6 @@
      "file": "samples/harmony-03/retro-pickup.wav",
      "notes": "Tres notas rápidas hacia arriba con pulso al 12,5 %.",
      "peakDb": -1.7,
-     "truePeakDb": -1,
      "rmsDb": -15,
      "centroid": 5032
     },
@@ -3368,7 +3254,6 @@
      "file": "samples/harmony-03/retro-power.wav",
      "notes": "Pulso que sube de 300 a 1500 Hz con un trémolo rápido de tono.",
      "peakDb": -1.8,
-     "truePeakDb": -1,
      "rmsDb": -3.6,
      "centroid": 1811
     },
@@ -3395,7 +3280,6 @@
      "file": "samples/harmony-03/retro-shot.wav",
      "notes": "Pulso que cae de golpe y un chasquido de ruido de registro.",
      "peakDb": -1.6,
-     "truePeakDb": -1,
      "rmsDb": -6.4,
      "centroid": 497
     },
@@ -3422,7 +3306,6 @@
      "file": "samples/harmony-03/retro-boom.wav",
      "notes": "Ruido de registro de 15 bits que se va haciendo más grave.",
      "peakDb": -2.2,
-     "truePeakDb": -1,
      "rmsDb": -10.5,
      "centroid": 424
     },
@@ -3449,7 +3332,6 @@
      "file": "samples/harmony-03/retro-game-over.wav",
      "notes": "Bajada cromática con pulso y triángulo.",
      "peakDb": -1.5,
-     "truePeakDb": -1,
      "rmsDb": -7.8,
      "centroid": 502
     },
@@ -3476,7 +3358,6 @@
      "file": "samples/harmony-03/retro-blip.wav",
      "notes": "Dos notas muy cortas: el «bip» de un menú.",
      "peakDb": -1.8,
-     "truePeakDb": -1,
      "rmsDb": -17.3,
      "centroid": 1375
     },
@@ -3503,7 +3384,6 @@
      "file": "samples/harmony-03/retro-win.wav",
      "notes": "Fanfarria corta en Sol mayor con pulso y triángulo.",
      "peakDb": -1.5,
-     "truePeakDb": -1,
      "rmsDb": -11,
      "centroid": 1957
     }
@@ -3549,7 +3429,6 @@
      "file": "samples/harmony-04/mk2-lead.wav",
      "notes": "Melodía en frases de 3 + 3 + 2 sobre Lam – Fa – Sol – Mi (con el Sol# de la menor armónica al final): cuadrada y sierras desafinadas.",
      "peakDb": -1.3,
-     "truePeakDb": -1,
      "rmsDb": -10.4,
      "centroid": 1462
     },
@@ -3579,7 +3458,6 @@
      "file": "samples/harmony-04/mk2-piano.wav",
      "notes": "Acordes de piano en el ritmo 3 + 3 + 4 + 2 de cada compás.",
      "peakDb": -1.1,
-     "truePeakDb": -1,
      "rmsDb": -10.3,
      "centroid": 945
     },
@@ -3610,7 +3488,6 @@
      "file": "samples/harmony-04/mk2-bass.wav",
      "notes": "Dos semicorcheas tras cada contratiempo (la segunda más suave): La – Fa – Sol – Mi, pluck oscuro con sub.",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -9.5,
      "centroid": 74
     },
@@ -3641,7 +3518,6 @@
      "file": "samples/harmony-04/mk2-bell.wav",
      "notes": "Arpegio de campana FM en semicorcheas por las notas de cada acorde, con sala y eco.",
      "peakDb": -1.6,
-     "truePeakDb": -1,
      "rmsDb": -10.9,
      "centroid": 1977
     },
@@ -3672,7 +3548,6 @@
      "file": "samples/harmony-04/mk2-organ.wav",
      "notes": "Golpes de órgano de rave a contratiempo con los acordes del kit.",
      "peakDb": -1.2,
-     "truePeakDb": -1,
      "rmsDb": -13.4,
      "centroid": 1330
     },
@@ -3703,7 +3578,6 @@
      "file": "samples/harmony-04/mk3-hoover.wav",
      "notes": "Melodía de hoover sobre Mim – Do – Re – Si, que acaba en la dominante (Re#): pulsos con ancho modulado y su caída de tono.",
      "peakDb": -1.1,
-     "truePeakDb": -1,
      "rmsDb": -8,
      "centroid": 1006
     },
@@ -3733,7 +3607,6 @@
      "file": "samples/harmony-04/mk3-arp.wav",
      "notes": "Pluck en semicorcheas por las notas de cada acorde, con eco a corchea con puntillo.",
      "peakDb": -1.3,
-     "truePeakDb": -1,
      "rmsDb": -12.9,
      "centroid": 1506
     },
@@ -3763,7 +3636,6 @@
      "file": "samples/harmony-04/mk3-bass.wav",
      "notes": "Bajo a contratiempo: Mi – Do – Re – Si.",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -8.3,
      "centroid": 87
     },
@@ -3793,7 +3665,6 @@
      "file": "samples/harmony-04/mk3-stabs.wav",
      "notes": "Órgano a contratiempo con un golpe de más antes del último tiempo.",
      "peakDb": -1.1,
-     "truePeakDb": -1,
      "rmsDb": -13,
      "centroid": 1070
     },
@@ -3824,7 +3695,6 @@
      "file": "samples/harmony-04/hc2-lead.wav",
      "notes": "Melodía de himno sobre Fa#m – Re – La – Do#: supersierra saturada con su octava, sala y eco.",
      "peakDb": -1.1,
-     "truePeakDb": -1,
      "rmsDb": -7,
      "centroid": 1652
     },
@@ -3854,7 +3724,6 @@
      "file": "samples/harmony-04/hc2-piano.wav",
      "notes": "Acordes de piano sincopados para el break.",
      "peakDb": -1.2,
-     "truePeakDb": -1,
      "rmsDb": -10.2,
      "centroid": 880
     },
@@ -3884,7 +3753,6 @@
      "file": "samples/harmony-04/hc2-chords.wav",
      "notes": "Acordes de supersierra cortados en semicorcheas.",
      "peakDb": -1.1,
-     "truePeakDb": -1,
      "rmsDb": -12.6,
      "centroid": 905
     },
@@ -3914,7 +3782,6 @@
      "file": "samples/harmony-04/hc2-arp.wav",
      "notes": "Pluck corto en semicorcheas.",
      "peakDb": -1.3,
-     "truePeakDb": -1,
      "rmsDb": -13.2,
      "centroid": 1382
     },
@@ -3944,7 +3811,6 @@
      "file": "samples/harmony-04/ns2-lead.wav",
      "notes": "Melodía que entra a contratiempo sobre Fam – Re♭ – Mi♭ – Do: cuadrada estrecha y sierras.",
      "peakDb": -1.2,
-     "truePeakDb": -1,
      "rmsDb": -11.7,
      "centroid": 1240
     },
@@ -3974,7 +3840,6 @@
      "file": "samples/harmony-04/ns2-bass.wav",
      "notes": "Bajo a contratiempo: Fa – Re♭ – Mi♭ – Do.",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -8.4,
      "centroid": 90
     },
@@ -4004,7 +3869,6 @@
      "file": "samples/harmony-04/ns2-stabs.wav",
      "notes": "Golpes cortos de piano a contratiempo.",
      "peakDb": -1.2,
-     "truePeakDb": -1,
      "rmsDb": -12.6,
      "centroid": 754
     },
@@ -4034,7 +3898,6 @@
      "file": "samples/harmony-04/ns2-bell.wav",
      "notes": "Campanas en semicorcheas una octava arriba.",
      "peakDb": -2.1,
-     "truePeakDb": -1,
      "rmsDb": -11.2,
      "centroid": 3085
     },
@@ -4064,7 +3927,6 @@
      "file": "samples/harmony-04/ut2-screech.wav",
      "notes": "Melodía de screech sobre Rem – Si♭: sierra por un paso banda resonante que barre hacia abajo, muy saturada.",
      "peakDb": -1.1,
-     "truePeakDb": -1,
      "rmsDb": -6.7,
      "centroid": 1114
     },
@@ -4094,7 +3956,6 @@
      "file": "samples/harmony-04/ut2-raw.wav",
      "notes": "Riff corto de cuadrada y sierra muy saturadas.",
      "peakDb": -1.1,
-     "truePeakDb": -1,
      "rmsDb": -12.8,
      "centroid": 987
     },
@@ -4124,7 +3985,6 @@
      "file": "samples/harmony-04/ut2-chords.wav",
      "notes": "Rem y Si♭ en supersierra, cortados en un ritmo de 3 + 3 + 2.",
      "peakDb": -1.1,
-     "truePeakDb": -1,
      "rmsDb": -14.8,
      "centroid": 749
     },
@@ -4155,7 +4015,6 @@
      "file": "samples/harmony-04/hs2-lead.wav",
      "notes": "Melodía eufórica sobre Solm – Mi♭ – Si♭ – Fa: supersierra ancha con su octava, empujada por el «sidechain».",
      "peakDb": -1.1,
-     "truePeakDb": -1,
      "rmsDb": -7.6,
      "centroid": 1630
     },
@@ -4185,7 +4044,6 @@
      "file": "samples/harmony-04/hs2-arp.wav",
      "notes": "Pluck en semicorcheas con eco a corchea con puntillo.",
      "peakDb": -1.3,
-     "truePeakDb": -1,
      "rmsDb": -11.6,
      "centroid": 1429
     },
@@ -4215,7 +4073,6 @@
      "file": "samples/harmony-04/hs2-reverse-bass.wav",
      "notes": "Bajo inverso en cada tiempo: Sol – Mi♭ – Si♭ – Fa, se corta justo antes del kick.",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -7,
      "centroid": 62
     },
@@ -4246,7 +4103,6 @@
      "file": "samples/harmony-04/hs2-pad.wav",
      "notes": "Acordes sostenidos de supersierra, bombeando en cada tiempo.",
      "peakDb": -1.1,
-     "truePeakDb": -1,
      "rmsDb": -10.5,
      "centroid": 932
     },
@@ -4277,7 +4133,6 @@
      "file": "samples/harmony-04/hh-lead.wav",
      "notes": "Melodía alegre sobre Re – La – Sim – Sol: supersierra brillante con su octava.",
      "peakDb": -1.1,
-     "truePeakDb": -1,
      "rmsDb": -8.3,
      "centroid": 1856
     },
@@ -4307,7 +4162,6 @@
      "file": "samples/harmony-04/hh-piano.wav",
      "notes": "Acordes de piano a contratiempo.",
      "peakDb": -1.1,
-     "truePeakDb": -1,
      "rmsDb": -10.9,
      "centroid": 685
     },
@@ -4338,7 +4192,6 @@
      "file": "samples/harmony-04/hh-bell.wav",
      "notes": "Arpegio de campanas en semicorcheas.",
      "peakDb": -1.8,
-     "truePeakDb": -1,
      "rmsDb": -11,
      "centroid": 2711
     },
@@ -4369,7 +4222,6 @@
      "file": "samples/harmony-04/tr2-lead.wav",
      "notes": "Notas largas sobre Rem – Si♭ – Fa – Do: supersierra suave, con «sidechain», sala y eco.",
      "peakDb": -1.1,
-     "truePeakDb": -1,
      "rmsDb": -7.7,
      "centroid": 1483
     },
@@ -4400,7 +4252,6 @@
      "file": "samples/harmony-04/tr2-arp.wav",
      "notes": "Pluck que recorre tres notas en semicorcheas (cruza el compás) y baja al final.",
      "peakDb": -1.3,
-     "truePeakDb": -1,
      "rmsDb": -13.3,
      "centroid": 1253
     },
@@ -4430,9 +4281,1216 @@
      "file": "samples/harmony-04/tr2-bass.wav",
      "notes": "Bajo en las tres semicorcheas de después de cada tiempo: Re – Si♭ – Fa – Do.",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -8,
      "centroid": 94
+    }
+   ]
+  },
+  {
+   "id": "harmony-05",
+   "name": "Harmony 05",
+   "title": "Escuelas del hardcore y del newstyle",
+   "version": "1.0.0",
+   "date": "2026-10-18",
+   "license": "CC0-1.0",
+   "licenseName": "CC0 1.0 (dominio público)",
+   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/deed.es",
+   "origin": "Síntesis y procesado digital en tools/samples/ (Harmony), con melodías compuestas para Harmony. Sin grabaciones, sin samples de terceros y sin melodías de nadie.",
+   "credits": "Harmony",
+   "count": 42,
+   "bytes": 13281198,
+   "samples": [
+    {
+     "id": "harmony-05/rt-kick-fuzz",
+     "slug": "rt-kick-fuzz",
+     "name": "Kick gabber zumbón",
+     "style": "hardcore",
+     "type": "kick",
+     "cat": "kick",
+     "tags": [
+      "gabber",
+      "909",
+      "rotterdam",
+      "saturado",
+      "escuela rotterdam"
+     ],
+     "key": "D1",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": [
+      170,
+      190
+     ],
+     "duration": 0.612,
+     "channels": 1,
+     "bytes": 54040,
+     "file": "samples/harmony-05/rt-kick-fuzz.wav",
+     "notes": "El 909 saturado hasta que zumba: válvula, recorte y un realce de 6 dB en 1 kHz (la «bocina» del gabber de los 90), cola en Re 1.",
+     "peakDb": -1.1,
+     "rmsDb": -9.9,
+     "centroid": 73
+    },
+    {
+     "id": "harmony-05/rt-kick-thump",
+     "slug": "rt-kick-thump",
+     "name": "Kick early gordo",
+     "style": "hardcore",
+     "type": "kick",
+     "cat": "kick",
+     "tags": [
+      "early",
+      "909",
+      "corto",
+      "escuela rotterdam"
+     ],
+     "key": "A1",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": [
+      160,
+      180
+     ],
+     "duration": 0.42,
+     "channels": 1,
+     "bytes": 37088,
+     "file": "samples/harmony-05/rt-kick-thump.wav",
+     "notes": "Golpe gordo y corto en La 1, con menos zumbido: para el early hardcore de 160–180 BPM.",
+     "peakDb": -1.1,
+     "rmsDb": -7.1,
+     "centroid": 74
+    },
+    {
+     "id": "harmony-05/rt-hoover-alarm",
+     "slug": "rt-hoover-alarm",
+     "name": "Hoover de alarma",
+     "style": "hardcore",
+     "type": "sintetizador",
+     "cat": "fx",
+     "tags": [
+      "hoover",
+      "rave",
+      "caída de tono",
+      "escuela rotterdam"
+     ],
+     "key": "A3",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": null,
+     "duration": 1.816,
+     "channels": 2,
+     "bytes": 320400,
+     "file": "samples/harmony-05/rt-hoover-alarm.wav",
+     "notes": "Hoover en La 3 que entra siete semitonos abajo y sube: pulsos con ancho modulado y sierras desafinadas.",
+     "peakDb": -1,
+     "truePeakDb": -1,
+     "rmsDb": -10.7,
+     "centroid": 482
+    },
+    {
+     "id": "harmony-05/rt-stab-rave",
+     "slug": "rt-stab-rave",
+     "name": "Stab de rave (Re m7)",
+     "style": "hardcore",
+     "type": "stab",
+     "cat": "fx",
+     "tags": [
+      "stab",
+      "órgano",
+      "rave",
+      "escuela rotterdam"
+     ],
+     "key": "D4",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": null,
+     "duration": 1.011,
+     "channels": 2,
+     "bytes": 178352,
+     "file": "samples/harmony-05/rt-stab-rave.wav",
+     "notes": "Acorde de Re menor con séptima en órgano y sierras, corto y algo saturado.",
+     "peakDb": -1,
+     "rmsDb": -17,
+     "centroid": 805
+    },
+    {
+     "id": "harmony-05/rt-clap-909",
+     "slug": "rt-clap-909",
+     "name": "Palma 909 saturada",
+     "style": "hardcore",
+     "type": "palma",
+     "cat": "perc",
+     "tags": [
+      "clap",
+      "909",
+      "escuela rotterdam"
+     ],
+     "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": null,
+     "duration": 0.631,
+     "channels": 2,
+     "bytes": 111296,
+     "file": "samples/harmony-05/rt-clap-909.wav",
+     "notes": "Cuatro ráfagas de ruido a 1,2 kHz, saturadas, con sala corta.",
+     "peakDb": -1,
+     "truePeakDb": -1,
+     "rmsDb": -19.8,
+     "centroid": 2248
+    },
+    {
+     "id": "harmony-05/rt-hat-open",
+     "slug": "rt-hat-open",
+     "name": "Charles abierto sucio",
+     "style": "hardcore",
+     "type": "charles",
+     "cat": "perc",
+     "tags": [
+      "hi-hat",
+      "abierto",
+      "escuela rotterdam"
+     ],
+     "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": null,
+     "duration": 0.349,
+     "channels": 2,
+     "bytes": 61608,
+     "file": "samples/harmony-05/rt-hat-open.wav",
+     "notes": "Metal inarmónico y ruido por encima de 6,5 kHz con 90 ms de caída, un poco saturado.",
+     "peakDb": -2.6,
+     "rmsDb": -18.5,
+     "centroid": 14804
+    },
+    {
+     "id": "harmony-05/rt-riff",
+     "slug": "rt-riff",
+     "name": "Riff hoover Rotterdam",
+     "style": "hardcore",
+     "type": "melodía",
+     "cat": "loop",
+     "tags": [
+      "hoover",
+      "riff",
+      "escuela rotterdam"
+     ],
+     "key": null,
+     "tonality": "Re menor",
+     "loop": true,
+     "bars": 2,
+     "bpm": [
+      175,
+      175
+     ],
+     "duration": 2.743,
+     "channels": 2,
+     "bytes": 483884,
+     "file": "samples/harmony-05/rt-riff.wav",
+     "notes": "Riff de hoover de 2 compases a 175 BPM en Re menor, con la caída de tono corta para que no se coma las semicorcheas.",
+     "peakDb": -1,
+     "rmsDb": -8,
+     "centroid": 747
+    },
+    {
+     "id": "harmony-05/rt-siren-up",
+     "slug": "rt-siren-up",
+     "name": "Sirena que sube",
+     "style": "hardcore",
+     "type": "efecto",
+     "cat": "fx",
+     "tags": [
+      "sirena",
+      "subida",
+      "escuela rotterdam"
+     ],
+     "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": [
+      175,
+      175
+     ],
+     "duration": 1.183,
+     "channels": 2,
+     "bytes": 208740,
+     "file": "samples/harmony-05/rt-siren-up.wav",
+     "notes": "Sierra y cuadrada que barren de 500 Hz a 2 kHz en dos tiempos a 175 BPM, con eco.",
+     "peakDb": -1.1,
+     "rmsDb": -9.2,
+     "centroid": 1390
+    },
+    {
+     "id": "harmony-05/it-kick-tail",
+     "slug": "it-kick-tail",
+     "name": "Kick italiano con cola",
+     "style": "hardcore",
+     "type": "kick",
+     "cat": "kick",
+     "tags": [
+      "italiano",
+      "cola larga",
+      "afinado",
+      "escuela italiana"
+     ],
+     "key": "F#1",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": [
+      165,
+      180
+     ],
+     "duration": 0.919,
+     "channels": 1,
+     "bytes": 81070,
+     "file": "samples/harmony-05/it-kick-tail.wav",
+     "notes": "Golpe con mucho ataque y una cola larga afinada en Fa# 1, plegada y saturada, que se cierra de 6,5 a 1,3 kHz y cae un poco al final.",
+     "peakDb": -1,
+     "rmsDb": -7.5,
+     "centroid": 61
+    },
+    {
+     "id": "harmony-05/it-kick-high",
+     "slug": "it-kick-high",
+     "name": "Kick italiano agudo",
+     "style": "hardcore",
+     "type": "kick",
+     "cat": "kick",
+     "tags": [
+      "italiano",
+      "cola",
+      "escuela italiana"
+     ],
+     "key": "A1",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": [
+      165,
+      180
+     ],
+     "duration": 0.723,
+     "channels": 1,
+     "bytes": 63806,
+     "file": "samples/harmony-05/it-kick-high.wav",
+     "notes": "La misma escuela en La 1, con la cola más corta y brillante.",
+     "peakDb": -1.1,
+     "rmsDb": -7.8,
+     "centroid": 71
+    },
+    {
+     "id": "harmony-05/it-choir-stab",
+     "slug": "it-choir-stab",
+     "name": "Golpe de coro épico",
+     "style": "hardcore",
+     "type": "coro",
+     "cat": "voz",
+     "tags": [
+      "coro",
+      "épico",
+      "Fa# menor",
+      "escuela italiana"
+     ],
+     "key": "F#3",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": null,
+     "duration": 0.879,
+     "channels": 2,
+     "bytes": 155020,
+     "file": "samples/harmony-05/it-choir-stab.wav",
+     "notes": "Coro sintético (tenores y sopranos, por formantes) en Fa# menor con la reverb cortada en seco.",
+     "peakDb": -1,
+     "rmsDb": -15.2,
+     "centroid": 768
+    },
+    {
+     "id": "harmony-05/it-lead",
+     "slug": "it-lead",
+     "name": "Lead épico italiano",
+     "style": "hardcore",
+     "type": "melodía",
+     "cat": "loop",
+     "tags": [
+      "lead",
+      "épico",
+      "supersierra",
+      "escuela italiana"
+     ],
+     "key": null,
+     "tonality": "Fa# menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      172,
+      172
+     ],
+     "duration": 5.581,
+     "channels": 2,
+     "bytes": 984604,
+     "file": "samples/harmony-05/it-lead.wav",
+     "notes": "Melodía de 4 compases sobre Fa#m – Re – Mi – Do#: supersierra con un hoover una octava abajo, sala grande y eco.",
+     "peakDb": -1.1,
+     "rmsDb": -7.8,
+     "centroid": 1521
+    },
+    {
+     "id": "harmony-05/it-strings",
+     "slug": "it-strings",
+     "name": "Cuerdas oscuras (Fa# m)",
+     "style": "hardcore",
+     "type": "acordes",
+     "cat": "fx",
+     "tags": [
+      "pad",
+      "cuerdas",
+      "escuela italiana"
+     ],
+     "key": "F#3",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": null,
+     "duration": 4.17,
+     "channels": 2,
+     "bytes": 735608,
+     "file": "samples/harmony-05/it-strings.wav",
+     "notes": "Pad de sierras desafinadas en Fa# menor con ataque lento y sala larga.",
+     "peakDb": -1,
+     "rmsDb": -13.2,
+     "centroid": 493
+    },
+    {
+     "id": "harmony-05/it-roll",
+     "slug": "it-roll",
+     "name": "Redoble italiano",
+     "style": "hardcore",
+     "type": "redoble",
+     "cat": "perc",
+     "tags": [
+      "fill",
+      "redoble",
+      "subida",
+      "escuela italiana"
+     ],
+     "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": [
+      172,
+      172
+     ],
+     "duration": 1.847,
+     "channels": 2,
+     "bytes": 325844,
+     "file": "samples/harmony-05/it-roll.wav",
+     "notes": "Un compás a 172 BPM: corcheas, semicorcheas y fusas, subiendo de volumen y de tono.",
+     "peakDb": -4,
+     "rmsDb": -18.1,
+     "centroid": 11170
+    },
+    {
+     "id": "harmony-05/it-reverse",
+     "slug": "it-reverse",
+     "name": "Kick al revés",
+     "style": "hardcore",
+     "type": "transición",
+     "cat": "fx",
+     "tags": [
+      "reverse",
+      "entrada",
+      "escuela italiana"
+     ],
+     "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": null,
+     "duration": 2.236,
+     "channels": 2,
+     "bytes": 394460,
+     "file": "samples/harmony-05/it-reverse.wav",
+     "notes": "La cola del kick italiano con su reverb, al revés: crece hasta el golpe.",
+     "peakDb": -1,
+     "rmsDb": -13.6,
+     "centroid": 81
+    },
+    {
+     "id": "harmony-05/mo-kick-screech",
+     "slug": "mo-kick-screech",
+     "name": "Kick oscuro con chillido",
+     "style": "hardcore",
+     "type": "kick",
+     "cat": "kick",
+     "tags": [
+      "mainstream",
+      "oscuro",
+      "screech",
+      "escuela mainstream oscuro"
+     ],
+     "key": "E1",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": [
+      175,
+      185
+     ],
+     "duration": 0.976,
+     "channels": 1,
+     "bytes": 86136,
+     "file": "samples/harmony-05/mo-kick-screech.wav",
+     "notes": "Cola larga en Mi 1 plegada y muy saturada, con un chillido de sierra por un paso banda resonante que baja.",
+     "peakDb": -1.1,
+     "rmsDb": -5.7,
+     "centroid": 46
+    },
+    {
+     "id": "harmony-05/mo-kick-rumble",
+     "slug": "mo-kick-rumble",
+     "name": "Kick rumble",
+     "style": "hardcore",
+     "type": "kick",
+     "cat": "kick",
+     "tags": [
+      "mainstream",
+      "rumble",
+      "cola larga",
+      "escuela mainstream oscuro"
+     ],
+     "key": "F1",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": [
+      175,
+      185
+     ],
+     "duration": 1.166,
+     "channels": 1,
+     "bytes": 102924,
+     "file": "samples/harmony-05/mo-kick-rumble.wav",
+     "notes": "Cola larguísima en Fa 1, saturada con válvula, que se cierra de 4,5 kHz a 600 Hz hasta quedarse en un gruñido.",
+     "peakDb": -1.1,
+     "rmsDb": -8.2,
+     "centroid": 61
+    },
+    {
+     "id": "harmony-05/mo-screech",
+     "slug": "mo-screech",
+     "name": "Chillido oscuro",
+     "style": "hardcore",
+     "type": "efecto",
+     "cat": "fx",
+     "tags": [
+      "screech",
+      "oscuro",
+      "escuela mainstream oscuro"
+     ],
+     "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": null,
+     "duration": 1.58,
+     "channels": 2,
+     "bytes": 278672,
+     "file": "samples/harmony-05/mo-screech.wav",
+     "notes": "Sierra por un paso banda de Q 14 que sube y baja, saturada, con eco a 178 BPM.",
+     "peakDb": -1,
+     "rmsDb": -14.4,
+     "centroid": 2175
+    },
+    {
+     "id": "harmony-05/mo-bell",
+     "slug": "mo-bell",
+     "name": "Campana de terror",
+     "style": "hardcore",
+     "type": "nota",
+     "cat": "fx",
+     "tags": [
+      "campana",
+      "terror",
+      "fm",
+      "escuela mainstream oscuro"
+     ],
+     "key": "E3",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": null,
+     "duration": 5.878,
+     "channels": 2,
+     "bytes": 1036928,
+     "file": "samples/harmony-05/mo-bell.wav",
+     "notes": "Dos campanas FM inarmónicas (Mi 3 y Mi 2) con una sala larga y oscura.",
+     "peakDb": -1,
+     "truePeakDb": -1,
+     "rmsDb": -16.8,
+     "centroid": 689
+    },
+    {
+     "id": "harmony-05/mo-drone",
+     "slug": "mo-drone",
+     "name": "Drone oscuro (Mi)",
+     "style": "hardcore",
+     "type": "acordes",
+     "cat": "fx",
+     "tags": [
+      "drone",
+      "pad",
+      "oscuro",
+      "escuela mainstream oscuro"
+     ],
+     "key": "E1",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": null,
+     "duration": 5.302,
+     "channels": 2,
+     "bytes": 935244,
+     "file": "samples/harmony-05/mo-drone.wav",
+     "notes": "Sierras desafinadas en Mi 1, Mi 2, Si 2 y Mi 3 con un filtro que respira, saturadas: el fondo del break.",
+     "peakDb": -1,
+     "truePeakDb": -1,
+     "rmsDb": -11.6,
+     "centroid": 274
+    },
+    {
+     "id": "harmony-05/mo-impact",
+     "slug": "mo-impact",
+     "name": "Impacto oscuro",
+     "style": "hardcore",
+     "type": "impacto",
+     "cat": "fx",
+     "tags": [
+      "impact",
+      "sub",
+      "metal",
+      "escuela mainstream oscuro"
+     ],
+     "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": null,
+     "duration": 3.491,
+     "channels": 2,
+     "bytes": 615836,
+     "file": "samples/harmony-05/mo-impact.wav",
+     "notes": "Sub que cae de 85 a 30 Hz, golpe metálico y ruido que se cierra, con sala grande.",
+     "peakDb": -1,
+     "truePeakDb": -1,
+     "rmsDb": -11.7,
+     "centroid": 62
+    },
+    {
+     "id": "harmony-05/mo-lead",
+     "slug": "mo-lead",
+     "name": "Riff oscuro (Mi frigio)",
+     "style": "hardcore",
+     "type": "melodía",
+     "cat": "loop",
+     "tags": [
+      "riff",
+      "oscuro",
+      "raw",
+      "escuela mainstream oscuro"
+     ],
+     "key": null,
+     "tonality": "Mi frigio",
+     "loop": true,
+     "bars": 2,
+     "bpm": [
+      178,
+      178
+     ],
+     "duration": 2.697,
+     "channels": 2,
+     "bytes": 475728,
+     "file": "samples/harmony-05/mo-lead.wav",
+     "notes": "Riff de 2 compases a 178 BPM en Mi frigio: lead raw y supersierra una octava abajo.",
+     "peakDb": -1.1,
+     "rmsDb": -10.1,
+     "centroid": 913
+    },
+    {
+     "id": "harmony-05/mo-perc",
+     "slug": "mo-perc",
+     "name": "Golpe industrial",
+     "style": "hardcore",
+     "type": "percusión",
+     "cat": "perc",
+     "tags": [
+      "industrial",
+      "metal",
+      "escuela mainstream oscuro"
+     ],
+     "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": null,
+     "duration": 0.47,
+     "channels": 2,
+     "bytes": 82968,
+     "file": "samples/harmony-05/mo-perc.wav",
+     "notes": "Metal grave y ruido por un paso banda a 1,1 kHz, saturado, con sala corta.",
+     "peakDb": -1,
+     "rmsDb": -18.8,
+     "centroid": 1175
+    },
+    {
+     "id": "harmony-05/mm-kick-tonal",
+     "slug": "mm-kick-tonal",
+     "name": "Kick con cola tonal (La)",
+     "style": "hardcore",
+     "type": "kick",
+     "cat": "kick",
+     "tags": [
+      "mainstream",
+      "melódico",
+      "cola tonal",
+      "escuela mainstream melódico"
+     ],
+     "key": "A1",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": [
+      170,
+      178
+     ],
+     "duration": 0.801,
+     "channels": 1,
+     "bytes": 70736,
+     "file": "samples/harmony-05/mm-kick-tonal.wav",
+     "notes": "Cola afinada en La 1 que canta la nota antes de cerrarse: para tocar la tónica en La menor.",
+     "peakDb": -1.2,
+     "rmsDb": -7.7,
+     "centroid": 70
+    },
+    {
+     "id": "harmony-05/mm-kick-tonal-c",
+     "slug": "mm-kick-tonal-c",
+     "name": "Kick con cola tonal (Do)",
+     "style": "hardcore",
+     "type": "kick",
+     "cat": "kick",
+     "tags": [
+      "mainstream",
+      "melódico",
+      "cola tonal",
+      "escuela mainstream melódico"
+     ],
+     "key": "C2",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": [
+      170,
+      178
+     ],
+     "duration": 0.724,
+     "channels": 1,
+     "bytes": 63878,
+     "file": "samples/harmony-05/mm-kick-tonal-c.wav",
+     "notes": "La misma cola en Do 2 (la tercera de La menor), para cambiar de nota en el drop.",
+     "peakDb": -1,
+     "rmsDb": -7.5,
+     "centroid": 80
+    },
+    {
+     "id": "harmony-05/mm-lead",
+     "slug": "mm-lead",
+     "name": "Lead eufórico",
+     "style": "hardcore",
+     "type": "melodía",
+     "cat": "loop",
+     "tags": [
+      "lead",
+      "eufórico",
+      "supersierra",
+      "escuela mainstream melódico"
+     ],
+     "key": null,
+     "tonality": "La menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      174,
+      174
+     ],
+     "duration": 5.517,
+     "channels": 2,
+     "bytes": 973284,
+     "file": "samples/harmony-05/mm-lead.wav",
+     "notes": "Melodía de 4 compases sobre Lam – Fa – Do – Sol: supersierra brillante con su octava, «sidechain» y eco.",
+     "peakDb": -1.1,
+     "rmsDb": -8.2,
+     "centroid": 1674
+    },
+    {
+     "id": "harmony-05/mm-piano",
+     "slug": "mm-piano",
+     "name": "Piano melódico",
+     "style": "hardcore",
+     "type": "acordes",
+     "cat": "loop",
+     "tags": [
+      "piano",
+      "break",
+      "escuela mainstream melódico"
+     ],
+     "key": null,
+     "tonality": "La menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      174,
+      174
+     ],
+     "duration": 5.517,
+     "channels": 2,
+     "bytes": 973284,
+     "file": "samples/harmony-05/mm-piano.wav",
+     "notes": "Acordes largos de piano con la melodía del lead arriba (una nota de cada dos), para el break.",
+     "peakDb": -1.3,
+     "rmsDb": -11,
+     "centroid": 1010
+    },
+    {
+     "id": "harmony-05/mm-choir",
+     "slug": "mm-choir",
+     "name": "Coro del break (La m)",
+     "style": "hardcore",
+     "type": "coro",
+     "cat": "voz",
+     "tags": [
+      "coro",
+      "pad",
+      "escuela mainstream melódico"
+     ],
+     "key": "A3",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": null,
+     "duration": 4.425,
+     "channels": 2,
+     "bytes": 780680,
+     "file": "samples/harmony-05/mm-choir.wav",
+     "notes": "Coro sintético «Aah» en La menor, largo y con sala.",
+     "peakDb": -1,
+     "rmsDb": -15.1,
+     "centroid": 758
+    },
+    {
+     "id": "harmony-05/mm-arp",
+     "slug": "mm-arp",
+     "name": "Arpegio melódico",
+     "style": "hardcore",
+     "type": "arpegio",
+     "cat": "loop",
+     "tags": [
+      "arpegio",
+      "pluck",
+      "escuela mainstream melódico"
+     ],
+     "key": null,
+     "tonality": "La menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      174,
+      174
+     ],
+     "duration": 5.517,
+     "channels": 2,
+     "bytes": 973284,
+     "file": "samples/harmony-05/mm-arp.wav",
+     "notes": "Pluck en semicorcheas por los acordes del kit, con eco a corchea con puntillo.",
+     "peakDb": -1.3,
+     "rmsDb": -11.3,
+     "centroid": 1493
+    },
+    {
+     "id": "harmony-05/rw-kick-raw",
+     "slug": "rw-kick-raw",
+     "name": "Kick raw",
+     "style": "uptempo",
+     "type": "kick",
+     "cat": "kick",
+     "tags": [
+      "raw",
+      "distorsión",
+      "plegado",
+      "escuela raw"
+     ],
+     "key": "D2",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": [
+      200,
+      220
+     ],
+     "duration": 0.3,
+     "channels": 1,
+     "bytes": 26504,
+     "file": "samples/harmony-05/rw-kick-raw.wav",
+     "notes": "Corto y brutal en Re 2: plegado, recortado y saturado, con un hueco a 1,3 kHz.",
+     "peakDb": -1.1,
+     "rmsDb": -6.9,
+     "centroid": 249
+    },
+    {
+     "id": "harmony-05/rw-kick-bend",
+     "slug": "rw-kick-bend",
+     "name": "Kick raw que sube",
+     "style": "uptempo",
+     "type": "kick",
+     "cat": "kick",
+     "tags": [
+      "raw",
+      "pitch",
+      "escuela raw"
+     ],
+     "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": [
+      200,
+      220
+     ],
+     "duration": 0.36,
+     "channels": 1,
+     "bytes": 31796,
+     "file": "samples/harmony-05/rw-kick-bend.wav",
+     "notes": "El kick raw con la cola subiendo cinco semitonos.",
+     "peakDb": -1.1,
+     "rmsDb": -6.6,
+     "centroid": 302
+    },
+    {
+     "id": "harmony-05/rw-kick-noise",
+     "slug": "rw-kick-noise",
+     "name": "Kick raw con ruido",
+     "style": "uptempo",
+     "type": "kick",
+     "cat": "kick",
+     "tags": [
+      "raw",
+      "ruido",
+      "escuela raw"
+     ],
+     "key": "C2",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": [
+      200,
+      220
+     ],
+     "duration": 0.32,
+     "channels": 1,
+     "bytes": 28268,
+     "file": "samples/harmony-05/rw-kick-noise.wav",
+     "notes": "Kick raw en Do 2 con una capa de ruido a 2,5 kHz, más plegado.",
+     "peakDb": -1.3,
+     "rmsDb": -7.9,
+     "centroid": 287
+    },
+    {
+     "id": "harmony-05/rw-scream",
+     "slug": "rw-scream",
+     "name": "Grito de ruido",
+     "style": "uptempo",
+     "type": "efecto",
+     "cat": "fx",
+     "tags": [
+      "scream",
+      "ruido",
+      "escuela raw"
+     ],
+     "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": null,
+     "duration": 1.262,
+     "channels": 2,
+     "bytes": 222720,
+     "file": "samples/harmony-05/rw-scream.wav",
+     "notes": "Ruido rosa por dos pasos banda que suben, plegado y saturado.",
+     "peakDb": -1.9,
+     "rmsDb": -10.3,
+     "centroid": 3163
+    },
+    {
+     "id": "harmony-05/rw-riff",
+     "slug": "rw-riff",
+     "name": "Melodía de kicks raw",
+     "style": "uptempo",
+     "type": "línea",
+     "cat": "loop",
+     "tags": [
+      "kick melody",
+      "raw",
+      "escuela raw"
+     ],
+     "key": null,
+     "tonality": "Re menor",
+     "loop": true,
+     "bars": 2,
+     "bpm": [
+      205,
+      205
+     ],
+     "duration": 2.341,
+     "channels": 1,
+     "bytes": 206562,
+     "file": "samples/harmony-05/rw-riff.wav",
+     "notes": "El kick raw tocado a distintas alturas en Re menor, a contratiempo y en semicorcheas, 2 compases a 205 BPM: el «riff» del uptempo.",
+     "peakDb": -1.3,
+     "rmsDb": -8.4,
+     "centroid": 554
+    },
+    {
+     "id": "harmony-05/rw-stab",
+     "slug": "rw-stab",
+     "name": "Acorde raw (Re m)",
+     "style": "uptempo",
+     "type": "stab",
+     "cat": "fx",
+     "tags": [
+      "stab",
+      "raw",
+      "escuela raw"
+     ],
+     "key": "D3",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": null,
+     "duration": 0.581,
+     "channels": 2,
+     "bytes": 102496,
+     "file": "samples/harmony-05/rw-stab.wav",
+     "notes": "Sierras y cuadradas en Re menor, plegadas y muy cortas.",
+     "peakDb": -1,
+     "rmsDb": -14.7,
+     "centroid": 980
+    },
+    {
+     "id": "harmony-05/nw-kick-seco",
+     "slug": "nw-kick-seco",
+     "name": "Kick newstyle seco",
+     "style": "newstyle",
+     "type": "kick",
+     "cat": "kick",
+     "tags": [
+      "newstyle",
+      "corto",
+      "clic",
+      "escuela newstyle"
+     ],
+     "key": "A1",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": [
+      145,
+      155
+     ],
+     "duration": 0.28,
+     "channels": 1,
+     "bytes": 24740,
+     "file": "samples/harmony-05/nw-kick-seco.wav",
+     "notes": "Seco y corto en La 1, con mucho clic y presencia a 4 kHz.",
+     "peakDb": -1.6,
+     "rmsDb": -8.3,
+     "centroid": 64
+    },
+    {
+     "id": "harmony-05/nw-kick-tok",
+     "slug": "nw-kick-tok",
+     "name": "Kick newstyle tok",
+     "style": "newstyle",
+     "type": "kick",
+     "cat": "kick",
+     "tags": [
+      "newstyle",
+      "tok",
+      "medios",
+      "escuela newstyle"
+     ],
+     "key": "B1",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": [
+      145,
+      155
+     ],
+     "duration": 0.26,
+     "channels": 1,
+     "bytes": 22976,
+     "file": "samples/harmony-05/nw-kick-tok.wav",
+     "notes": "Golpe en los medios (realce a 600 Hz) en Si 1: se oye aunque el bajo vaya fuerte.",
+     "peakDb": -1.1,
+     "rmsDb": -8.9,
+     "centroid": 79
+    },
+    {
+     "id": "harmony-05/nw-bass-off",
+     "slug": "nw-bass-off",
+     "name": "Bajo a contratiempo (La)",
+     "style": "newstyle",
+     "type": "bajo",
+     "cat": "bajo",
+     "tags": [
+      "bajo",
+      "offbeat",
+      "escuela newstyle"
+     ],
+     "key": "A1",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": [
+      150,
+      150
+     ],
+     "duration": 0.19,
+     "channels": 1,
+     "bytes": 16802,
+     "file": "samples/harmony-05/nw-bass-off.wav",
+     "notes": "Golpe de bajo de una corchea a 150 BPM en La 1, con un paso bajo que se cierra.",
+     "peakDb": -1,
+     "rmsDb": -8.6,
+     "centroid": 74
+    },
+    {
+     "id": "harmony-05/nw-clap",
+     "slug": "nw-clap",
+     "name": "Palma newstyle con sala",
+     "style": "newstyle",
+     "type": "palma",
+     "cat": "perc",
+     "tags": [
+      "clap",
+      "reverb",
+      "escuela newstyle"
+     ],
+     "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": null,
+     "duration": 1.095,
+     "channels": 2,
+     "bytes": 193128,
+     "file": "samples/harmony-05/nw-clap.wav",
+     "notes": "Palma a 1,4 kHz con una sala grande, para el 2 y el 4.",
+     "peakDb": -1,
+     "truePeakDb": -1,
+     "rmsDb": -20.4,
+     "centroid": 2519
+    },
+    {
+     "id": "harmony-05/nw-hat",
+     "slug": "nw-hat",
+     "name": "Charles newstyle",
+     "style": "newstyle",
+     "type": "charles",
+     "cat": "perc",
+     "tags": [
+      "hi-hat",
+      "contratiempo",
+      "escuela newstyle"
+     ],
+     "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": null,
+     "duration": 0.25,
+     "channels": 2,
+     "bytes": 44140,
+     "file": "samples/harmony-05/nw-hat.wav",
+     "notes": "Charles abierto corto por encima de 8 kHz.",
+     "peakDb": -1.6,
+     "rmsDb": -18.7,
+     "centroid": 15408
+    },
+    {
+     "id": "harmony-05/nw-stab",
+     "slug": "nw-stab",
+     "name": "Golpe de órgano (La m)",
+     "style": "newstyle",
+     "type": "stab",
+     "cat": "fx",
+     "tags": [
+      "stab",
+      "órgano",
+      "piano",
+      "escuela newstyle"
+     ],
+     "key": "A3",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": null,
+     "duration": 0.857,
+     "channels": 2,
+     "bytes": 151140,
+     "file": "samples/harmony-05/nw-stab.wav",
+     "notes": "Órgano y piano en La menor (La 3, Do 4, Mi 4), corto: el acorde a contratiempo.",
+     "peakDb": -1,
+     "rmsDb": -19,
+     "centroid": 603
+    },
+    {
+     "id": "harmony-05/nw-bass-loop",
+     "slug": "nw-bass-loop",
+     "name": "Bajo newstyle (La – Fa – Sol – Mi)",
+     "style": "newstyle",
+     "type": "línea",
+     "cat": "loop",
+     "tags": [
+      "bajo",
+      "contratiempo",
+      "escuela newstyle"
+     ],
+     "key": null,
+     "tonality": "La menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      150,
+      150
+     ],
+     "duration": 6.4,
+     "channels": 1,
+     "bytes": 564524,
+     "file": "samples/harmony-05/nw-bass-loop.wav",
+     "notes": "Bajo a contratiempo de 4 compases: pluck oscuro con sub, La – Fa – Sol – Mi.",
+     "peakDb": -1,
+     "rmsDb": -8.8,
+     "centroid": 58
     }
    ]
   }

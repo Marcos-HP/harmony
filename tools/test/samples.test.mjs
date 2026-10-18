@@ -108,11 +108,12 @@ function chroma(x, a, b) {
   }
   return c.indexOf(Math.max(...c));
 }
-test('melodías de Harmony 04: cada nota suena a la altura escrita (al menos el 80 %; lo demás, su quinta, cuarta u octava)', async () => {
-  const { SCORES } = await import('../samples/packs/harmony-04.mjs');
+test('melodías de Harmony 04 y 05: cada nota suena a la altura escrita (al menos el 80 %; lo demás, su quinta, cuarta u octava)', async () => {
   const S = await import('../samples/synth.mjs');
+  for (const pack of ['harmony-04', 'harmony-05']) {
+  const { SCORES } = await import(`../samples/packs/${pack}.mjs`);
   for (const [id, [bpm, notes]] of Object.entries(SCORES)) {
-    const w = D.readWav(readFileSync(join(ROOT, 'samples/harmony-04', id + '.wav')));
+    const w = D.readWav(readFileSync(join(ROOT, 'samples', pack, id + '.wav')));
     const x = D.mix([w.chans[0], 0.5], [w.chans[1] || w.chans[0], 0.5]), sd = 60 / bpm / 4;
     let ok = 0;
     for (const [s, l, p] of notes) {
@@ -122,6 +123,7 @@ test('melodías de Harmony 04: cada nota suena a la altura escrita (al menos el 
     }
     assert.ok(ok / notes.length >= 0.8, `${id}: ${ok}/${notes.length} notas a su altura`);
   }
+  }
 });
 
 test('las recetas siguen dando el mismo audio (reproducible)', async () => {
@@ -130,10 +132,11 @@ test('las recetas siguen dando el mismo audio (reproducible)', async () => {
     'harmony-01': ['hc-kick-gabber', 'ut-kick-screech', 'clap-room', 'riser-noise'],
     'harmony-02': ['mc-hardcore', 'shout-hey', 'fx-robot', 'choir-chop-ah'],
     'harmony-03': ['ut-screech-lead', 'tk-acid', 'note-bell', 'retro-boom'],
-    'harmony-04': ['mk2-bass', 'ut2-raw']
+    'harmony-04': ['mk2-bass', 'ut2-raw'],
+    'harmony-05': ['it-kick-tail', 'nw-kick-seco']
   };
   const pick = packs.flatMap((p) => (want[p.pack.id] || []).map((id) => p.pack.id + '/' + id));
-  assert.equal(pick.length, 14);
+  assert.equal(pick.length, 16);
   const r = await build({ only: pick, check: true, log: () => {} });
   assert.equal(r.errors, 0);
   assert.equal(r.mismatches, 0);
