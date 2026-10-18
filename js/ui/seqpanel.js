@@ -251,12 +251,7 @@
       const b = ev.target.closest('[data-sq]'); if (!b || b.tagName === 'SELECT') return;
       const a = b.dataset.sq, s = seq(), row = b.closest('.sq-row'), i = row ? +row.dataset.i : -1;
       if (a === 'play') toggle();
-      else if (a === 'rec') {
-        if (!H.Seq.playing() && !H.Seq.start()) return;
-        H.Seq.setRecording(!H.Seq.recording());
-        if (H.Seq.recording()) U.toast('Grabando: toca los pads (o sus teclas) y cada golpe entra en el paso más cercano');
-        startLoop(); renderHead();
-      }
+      else if (a === 'rec') rec();
       else if (a === 'bpm-' || a === 'bpm+') { setBpm(s.bpm + (a === 'bpm+' ? 1 : -1)); }
       else if (a === 'tap') tap();
       else if (a === 'pat') { s.pattern = +b.dataset.p; bar = 0; save(); renderBar(); renderGrid(); }
@@ -319,6 +314,12 @@
       const d = (tapT[tapT.length - 1] - tapT[0]) / (tapT.length - 1);
       setBpm(60000 / d);
     }
+    function rec() {
+      if (!H.Seq.playing() && (!rowIdx().length || !H.Seq.start())) { if (!rowIdx().length) U.toast('Primero pon sonidos en los pads (o elige un kit)'); return; }
+      H.Seq.setRecording(!H.Seq.recording());
+      if (H.Seq.recording()) U.toast('Grabando: toca los pads (o sus teclas) y cada golpe entra en el paso más cercano');
+      startLoop(); renderHead();
+    }
     function toggle() {
       if (H.Seq.playing()) H.Seq.stop();
       else if (!rowIdx().length) { U.toast('Primero pon sonidos en los pads (o elige un kit)'); return; }
@@ -368,7 +369,7 @@
       render,
       /* un golpe grabado en directo: pinta esa casilla */
       recorded(n, i) { if (n && n.pat === seq().pattern) paintCell(i, n.step); renderBar(); },
-      toggle
+      toggle, rec
     };
   };
 })();

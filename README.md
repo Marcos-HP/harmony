@@ -54,7 +54,7 @@ mb: { title: '…', artist: '…' }   // buscar con otros términos
 mb: { skip: true }                 // no buscarlo
 ```
 
-**Tests**: `npm test` (53, incluidos los importadores de Deezer y Discogs contra servidores falsos, el modelo de bancos del Soundpad, el secuenciador con un reloj de audio falso y los packs de sonidos). Prueban normalización, emparejado, elección de edición, resumen, Cover Art Archive (elección de portada y galleta, descargas, `--no-art`), caché, reintentos, `--only`, `--offline`, el ritmo de peticiones, la fusión en la web, la coherencia de la capa importada de verdad (imágenes locales, galleta solo con vinilo), los desacuerdos entre fuentes editoriales y la integridad del catálogo (fuentes, artistas, sellos, rutas). El servidor falso tiene la forma real de las respuestas de la API; todos sus datos son inventados y nunca llegan al catálogo.
+**Tests**: `npm test` (59, incluidos los importadores de Deezer y Discogs contra servidores falsos, el modelo de bancos del Soundpad, el secuenciador con un reloj de audio falso y los packs de sonidos). Prueban normalización, emparejado, elección de edición, resumen, Cover Art Archive (elección de portada y galleta, descargas, `--no-art`), caché, reintentos, `--only`, `--offline`, el ritmo de peticiones, la fusión en la web, la coherencia de la capa importada de verdad (imágenes locales, galleta solo con vinilo), los desacuerdos entre fuentes editoriales y la integridad del catálogo (fuentes, artistas, sellos, rutas). El servidor falso tiene la forma real de las respuestas de la API; todos sus datos son inventados y nunca llegan al catálogo.
 
 ### Primera importación real (13-10-2026)
 - **81 aplicados**, 13 para revisar y 8 sin encontrar, de 102. Formato del original según MusicBrainz: 32 vinilo, 18 CD, 29 digital y 2 otros.
@@ -210,6 +210,24 @@ La cabecera tiene tres secciones. Cambiar de una a otra no recarga la página ni
 - **Los sonidos de Harmony necesitan servirse por web** (GitHub Pages o un servidor local): con `dist/index.html` abierto desde el disco el navegador no deja leerlos, y la interfaz lo dice. Cada uno se descarga y se decodifica una sola vez por sesión, se use en uno o en varios pads o en la escucha previa.
 - **Qué se guarda**: los bancos y sus ajustes, en `localStorage`; tus archivos, en **IndexedDB**, en este navegador y sin subirse a ningún sitio. Cuando un archivo deja de usarlo cualquier pad, se borra. Si el navegador no deja usar IndexedDB (algunos modos privados), la cabecera dice «solo en esta sesión» y tus archivos duran hasta cerrar la pestaña. Las muestras del catálogo **no se guardan nunca** (condiciones de Deezer): solo la referencia, y se vuelven a pedir en cada sesión; necesitan conexión y no suenan dentro del artefacto de Claude.
 
+## Controlador: Pioneer DDJ-FLX4
+`#controlador` (icono del conector en la cabecera; un punto verde dice que hay una tabla conectada). Con **Web MIDI** (Chrome y Edge, también Chrome para Android; Safari no tiene MIDI): la FLX4 es *class compliant*, así que el navegador la ve sin drivers. Se conecta una vez con permiso del navegador y, si ya lo tenía, se reconecta sola al abrir Harmony.
+
+| Control | En Harmony |
+|---|---|
+| PLAY/PAUSE · CUE | platos A (deck 1) y B (deck 2) de la mesa; CUE para y vuelve al principio (no hay puntos de cue) |
+| TEMPO | pitch del plato con su rango (±8 / ±16 %); «Invertir el tempo» si va al revés |
+| JOG | borde: empujar o frenar mientras gira; plato tocado: arrastrar tu archivo; SHIFT + jog: buscar |
+| EQ · CFX · faders · crossfader | aislador de 3 bandas, filtro (izquierda paso bajo, derecha paso alto), faders de canal y crossfader |
+| PADS | los 16 pads del Soundpad: deck 1 = pads 1–8, deck 2 = pads 9–16, en cualquier modo; SHIFT + pad lo para. Se encienden los que tienen sonido y parpadean mientras suenan |
+| BEAT SYNC | deck 1: tocar o parar el secuenciador · deck 2: grabar en él lo que se toca con los pads |
+| Navegador | la rueda recorre la cola (o los registros con muestra; con SHIFT, de 10 en 10), LOAD carga en el plato de ese lado y pulsar la rueda abre o cierra la mesa |
+
+- **Luces**: PLAY, CUE, BEAT SYNC, pads y vúmetros. Opcional, el mensaje SysEx de «programa conectado» que mandan los programas de DJ cada pocos ms (pide un permiso más), por si la tabla no enciende luces sin él.
+- **Monitor** en la misma página: cada mensaje que llega, en hexadecimal y con lo que significa. **No se ha probado con la tabla en la mano**: el mapeo sale de la lista de mensajes MIDI de Pioneer (los mismos números que usa el mapeo libre de Mixxx) y se ha comprobado con una FLX4 simulada en el navegador; si un control no responde como aquí, el monitor dice qué manda.
+- **Sin función todavía**: CUE de auriculares (hace falta una segunda salida de audio), TRIM, LOOP, BEAT FX y SMART CFX. El sonido sale por la salida de audio del navegador: para oírlo por la FLX4, elígela como salida del equipo.
+- Código: `js/lib/flx4.js` (qué significa cada mensaje, sin DOM ni audio, con tests), `js/lib/midi.js` (conexión, acciones y luces), `js/views/controller.js` (la página).
+
 ## Qué hay en la web
 - **Inicio**: cabecera, **espectro** en dos vistas (ver abajo), dos rutas editoriales («De Chicago a Ámsterdam» y «De la Ruta a la Masía»), décadas e índice de géneros.
 - **Espectro**: *Carriles* (por defecto en el móvil): una fila por género sobre una escala común, por tempo o por época; toca la escala para marcar un tempo o un año y toca una fila para ver sus temas. *Mapa* (por defecto en el ordenador): BPM × año, cada género una zona y cada registro un punto.
@@ -233,17 +251,17 @@ La cabecera tiene tres secciones. Cambiar de una a otra no recarga la página ni
 samples/      sonidos originales de Harmony, un directorio por pack (WAV); los genera tools/samples/build.mjs
 js/data/      samples.js (catálogo de samples, generado) · genres.js (6 familias, 24 géneros, relaciones) · catalog.js (capa editorial: 109 registros, sellos, artistas, fuentes, rutas)
               mb.js (MusicBrainz) · dc.js (Discogs) · dz.js (muestras de Deezer); las generan los importadores: no editar
-js/lib/       library.js (biblioteca de samples: búsqueda y filtros) · util.js · theme.js (tema claro/oscuro) · archive.js (índice, fusión con MusicBrainz y Discogs, búsqueda, filtros, orden, relacionados, sorpréndeme) · links.js
+js/lib/       flx4.js (mensajes de la DDJ-FLX4) · midi.js (controlador MIDI) · library.js (biblioteca de samples: búsqueda y filtros) · util.js · theme.js (tema claro/oscuro) · archive.js (índice, fusión con MusicBrainz y Discogs, búsqueda, filtros, orden, relacionados, sorpréndeme) · links.js
               banks.js (modelo de bancos, pads y efectos del Soundpad) · patterns.js (patrones del secuenciador) · padstore.js (guardado en localStorage + IndexedDB, exportar e importar)
 js/art/       art.js → fundas generativas, etiqueta del disco, reglas de BPM y época
 js/audio/     engine.js (mezclador Web Audio de dos canales; bus y decodificación para otros instrumentos) · analysis.js (BPM, fase y forma de onda) · deezer.js (muestras de 30 s) · pads.js (disparo de los pads) · sequencer.js (reloj del secuenciador)
 js/ui/        libpanel.js (panel de la biblioteca, en Soundpad y Sonidos) · components.js · controls.js (potenciómetros y faders) · deck.js (plato + barra mínima) · mesa.js · soundpad.js · seqpanel.js (secuenciador) · sections.js (Biblioteca · Mixer · Soundpad)
-js/views/     spectrum.js · lanes.js · home.js · lineage.js (explorador de linajes) · genres.js · catalog.js · pages.js (artista, sello, caja) · sounds.js (sonidos) · js/app.js (rutas, ficha, atajos)
+js/views/     spectrum.js · lanes.js · home.js · lineage.js (explorador de linajes) · genres.js · catalog.js · pages.js (artista, sello, caja) · sounds.js (sonidos) · controller.js (controlador MIDI) · js/app.js (rutas, ficha, atajos)
 css/          tokens.css (claro/oscuro) · base.css · views.css · deck.css · soundpad.css
 art/          diseño real de los discos (generado por el importador)
 tools/        samples/ (dsp.mjs, voice.mjs, voices/, packs/, build.mjs, report.md) · mb-import.mjs · dc-import.mjs · dz-import.mjs · sus informes *-report.md (generados) · cache/ (generada) · test/
 ```
-Rutas con hash: `#mixer`, `#soundpad`, `#sonidos`, `#espectro`, `#generos`, `#catalogo`, `#caja`, `#g-makina`, `#a-skudero`, `#l-bit-music`, `#t-flying-free`.
+Rutas con hash: `#mixer`, `#soundpad`, `#sonidos`, `#controlador`, `#espectro`, `#generos`, `#catalogo`, `#caja`, `#g-makina`, `#a-skudero`, `#l-bit-music`, `#t-flying-free`.
 
 ## Taxonomía
 6 familias y 24 géneros: raíces, hardcore, hardstyle y jump, techno duro, hard house y trance, y **mákina y newstyle**.

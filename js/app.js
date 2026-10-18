@@ -28,7 +28,7 @@
   };
 
   /* ---------- rutas ---------- */
-  const TITLES = { '': 'Archivo', inicio: 'Archivo', espectro: 'Espectro', generos: 'Géneros', catalogo: 'Catálogo', caja: 'Tu caja', sonidos: 'Sonidos' };
+  const TITLES = { '': 'Archivo', inicio: 'Archivo', espectro: 'Espectro', generos: 'Géneros', catalogo: 'Catálogo', caja: 'Tu caja', sonidos: 'Sonidos', controlador: 'Controlador' };
 
   function parse() {
     const h = decodeURIComponent(location.hash.replace(/^#/, ''));
@@ -76,6 +76,7 @@
     else if (r.id === 'catalogo') { H.Views.catalog(main); title = 'Catálogo · Harmony'; }
     else if (r.id === 'caja') { H.Views.crate(main); title = 'Tu caja · Harmony'; }
     else if (r.id === 'sonidos') { H.Views.sounds(main); title = 'Sonidos · Harmony'; }
+    else if (r.id === 'controlador') { H.Views.controller(main); title = 'Controlador · Harmony'; }
     else { H.Views.home(main); title = 'Harmony · ' + (TITLES[r.id] || 'Archivo'); }
     document.title = title;
     App.viewKey = key;
@@ -268,6 +269,7 @@
           </nav>
           <div class="top-tools">
             <button class="ibtn" type="button" id="top-search" aria-label="Buscar (tecla /)">${U.icon('search')}</button>
+            <a class="ibtn top-midi" href="#controlador" id="top-midi" aria-label="Controlador MIDI" title="Controlador MIDI (DDJ-FLX4)">${U.icon('midi')}<i aria-hidden="true"></i></a>
             <div class="theme-pick">
               <button class="ibtn" type="button" id="top-theme" aria-haspopup="menu" aria-expanded="false" aria-controls="theme-menu"></button>
               <div class="theme-menu" id="theme-menu" role="menu" aria-label="Tema" hidden>
@@ -316,6 +318,10 @@
     shell();
     H.Deck.init();
     H.Sections.init();
+    // controlador MIDI: el punto de la cabecera dice si hay una tabla conectada; si ya tenía permiso, se reconecta solo
+    const midiDot = () => { const b = document.getElementById('top-midi'); if (b) { b.classList.toggle('is-on', H.Midi.status === 'on'); b.title = H.Midi.status === 'on' ? 'Controlador conectado: ' + H.Midi.device : 'Controlador MIDI (DDJ-FLX4)'; } };
+    U.on('midi', midiDot); midiDot();
+    H.Midi.init();
     document.addEventListener('click', onClick);
     // portadas reales: se muestran al cargar; si fallan (sin portada, sin red, bloqueadas) queda la funda generativa
     document.addEventListener('load', (ev) => { const i = ev.target; if (i && i.classList && i.classList.contains('cv-img')) { i.classList.add('is-loaded'); const f = i.closest('figure'); if (f) f.classList.add('has-cover'); } }, true);

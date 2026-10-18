@@ -66,6 +66,7 @@
     trash: '<path d="M5 7h14M10 7V4h4v3M7 7l1 13h8l1-13"/>',
     stop: '<path d="M6 6h12v12H6z" fill="currentColor" stroke="none"/>',
     rec: '<circle cx="12" cy="12" r="6" fill="currentColor" stroke="none"/>',
+    midi: '<circle cx="12" cy="12" r="8.5"/><circle cx="7.6" cy="12.6" r="1" fill="currentColor" stroke="none"/><circle cx="8.9" cy="9.2" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="7.9" r="1" fill="currentColor" stroke="none"/><circle cx="15.1" cy="9.2" r="1" fill="currentColor" stroke="none"/><circle cx="16.4" cy="12.6" r="1" fill="currentColor" stroke="none"/><path d="M10.4 17.2h3.2"/>',
     dots: '<circle cx="5.5" cy="12" r="1.6" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/><circle cx="18.5" cy="12" r="1.6" fill="currentColor" stroke="none"/>',
     library: '<path d="M4 4h4v16H4zM10 4h4v16h-4zM16 5l3.5-1 2.5 15.5-3.5 1z"/>',
     mixer: '<path d="M6 4v16M12 4v16M18 4v16"/><path d="M4 14h4M10 8h4M16 12h4" stroke-width="2.6"/>',

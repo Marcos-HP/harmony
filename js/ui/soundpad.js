@@ -533,6 +533,14 @@
     } catch (err) { U.toast(err.message || 'No se ha podido importar.'); }
   }
 
+  /* ---------- para un controlador MIDI (js/lib/midi.js) ---------- */
+  SP.hit = (i) => { const p = bank().pads[i]; if (p && p.src) fire(i); };   // un pad vacío en la tabla no hace nada
+  SP.stopPad = (i) => H.PadAudio.stop(vkey(i));
+  SP.seqToggle = () => seqPanel && seqPanel.toggle();
+  SP.recToggle = () => seqPanel && seqPanel.rec();
+  SP.padsLit = () => bank().pads.map((p) => !!p.src);
+  SP.padPlaying = (i) => H.PadAudio.isPlaying(vkey(i));
+
   /* ---------- para la página de sonidos de la biblioteca ---------- */
   SP.state = state;
   SP.vkey = (bankId, i) => bankId + ':' + i;

@@ -30,6 +30,9 @@
     paint();
   };
 
+  /* el Soundpad construido aunque no esté a la vista (un controlador MIDI puede tocar sus pads desde el Mixer) */
+  S.ensureSoundpad = function () { if (!built && pad) { H.Soundpad.build(pad); built = true; } };
+
   S.apply = function (sec) {
     const prev = S.current;
     if (sec === prev) { if (sec === 'mixer' && !H.Deck.open) { applying = true; H.Deck.openDeck(); applying = false; } paint(); return; }

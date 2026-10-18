@@ -490,3 +490,28 @@
   .eg-fbpm { display: none; }
 }
 .g-explore { justify-self: start; }
+
+/* ---------- controlador MIDI ---------- */
+.top-midi { position: relative; }
+.top-midi i { position: absolute; right: 5px; top: 5px; width: 7px; height: 7px; border-radius: 50%; background: var(--c-voz); box-shadow: 0 0 0 2px var(--paper); opacity: 0; }
+.top-midi.is-on i { opacity: 1; }
+.ctl-main { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(16px, 3vw, 32px); align-items: start; }
+@media (max-width: 820px) { .ctl-main { grid-template-columns: 1fr; } }
+.ctl-card { border: 1px solid var(--ink); padding: 18px; display: grid; gap: 14px; }
+.ctl-state { margin: 0; display: flex; align-items: flex-start; gap: 10px; font-size: 17px; line-height: 1.35; }
+.ctl-state i { flex: none; width: 10px; height: 10px; margin-top: 7px; border-radius: 50%; background: var(--line); }
+.ctl-state.is-on i { background: var(--c-voz); }
+.ctl-acts { display: flex; flex-wrap: wrap; gap: 8px; }
+.ctl-dev select { max-width: none; }
+.ctl-opts { display: grid; gap: 12px; }
+.ctl-opt { display: flex; gap: 10px; align-items: flex-start; border: 1px solid var(--line); padding: 12px 14px; cursor: pointer; }
+.ctl-opt input { margin-top: 4px; accent-color: var(--ink); width: 16px; height: 16px; flex: none; }
+.ctl-map { margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0 28px; }
+.ctl-map div { padding: 10px 0; border-top: 1px solid var(--line); }
+.ctl-map dt { font-size: 11px; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 4px; }
+.ctl-map dd { margin: 0; font-size: 15px; line-height: 1.4; color: var(--ink-2); }
+.ctl-note { margin: 14px 0 0; max-width: 80ch; }
+.ctl-log { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--ink); font-size: 12px; max-height: 420px; overflow-y: auto; }
+.ctl-log li { display: grid; grid-template-columns: 11ch minmax(0, 1fr); gap: 12px; padding: 6px 0; border-bottom: 1px solid var(--line); }
+.ctl-log li.fine { display: block; padding: 12px 0; }
+.ctl-hex { color: var(--ink-3); }
