@@ -47,6 +47,8 @@
     corcheas: { name: 'Corcheas', at: (s) => s % 2 === 0 },
     semis: { name: 'Semicorcheas', at: () => true },
     galope: { name: 'Galope (1 · 3 · 4 de cada tiempo)', at: (s) => s % 4 !== 1 },
+    subida: { name: 'Subida: negras → corcheas → semicorcheas', at: (s, len) => (s < len / 2 ? s % 4 === 0 : s < (len * 3) / 4 ? s % 2 === 0 : true) },
+    tresillo: { name: 'Tresillo (3 · 3 · 2)', at: (s) => [0, 3, 6].includes(s % 8) },
     redoble: { name: 'Añadir redoble al final', add: true, at: (s, len) => s >= len - 4 || (s >= len - 8 && s % 2 === 0) }
   };
 

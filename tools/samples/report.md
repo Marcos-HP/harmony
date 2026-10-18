@@ -36,10 +36,12 @@ Licencia: CC0 1.0 (dominio público). Síntesis y procesado digital en tools/sam
 
 | Sonido | Estilo · tipo | Dur. | Canales | Pico real | RMS | Centroide | Nota medida | Avisos |
 |---|---|---|---|---|---|---|---|---|
-| Hoover de alarma `rt-hoover-alarm` | hardcore · sintetizador | 1.82 s | 2 | -1.0 dBTP | -10.7 dB | 482 Hz | — | — |
-| Palma 909 saturada `rt-clap-909` | hardcore · palma | 0.63 s | 2 | -1.0 dBTP | -19.8 dB | 2248 Hz | — | — |
-| Campana de terror `mo-bell` | hardcore · nota | 5.88 s | 2 | -1.0 dBTP | -16.8 dB | 689 Hz | — | — |
-| Drone oscuro (Mi) `mo-drone` | hardcore · acordes | 5.30 s | 2 | -1.0 dBTP | -11.6 dB | 274 Hz | — | — |
-| Impacto oscuro `mo-impact` | hardcore · impacto | 3.49 s | 2 | -1.0 dBTP | -11.7 dB | 62 Hz | — | — |
-| Palma newstyle con sala `nw-clap` | newstyle · palma | 1.09 s | 2 | -1.0 dBTP | -20.4 dB | 2519 Hz | — | — |
+
+## Harmony 06 · Pitidos del newstyle
+
+Licencia: CC0 1.0 (dominio público). Síntesis aditiva en tools/samples/ (Harmony), con el timbre ajustado a partir de medidas de espectrograma. Melodías compuestas para Harmony; sin grabaciones ni samples de terceros.
+
+| Sonido | Estilo · tipo | Dur. | Canales | Pico real | RMS | Centroide | Nota medida | Avisos |
+|---|---|---|---|---|---|---|---|---|
+| Pitidos · break `pt-break` | newstyle · melodía | 5.49 s | 2 | -1.0 dBTP | -5.7 dB | 1519 Hz | — | — |
 

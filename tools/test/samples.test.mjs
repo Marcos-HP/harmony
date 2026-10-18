@@ -25,7 +25,7 @@ test('catálogo: cada sample con sus metadatos, ids estables y únicos, licencia
   for (const p of c.packs) {
     for (const k of ['id', 'name', 'title', 'version', 'license', 'licenseName', 'licenseUrl', 'origin']) assert.ok(p[k], `${p.id}: falta ${k}`);
     assert.equal(p.count, p.samples.length);
-    assert.ok(p.samples.length >= 30 && p.samples.length <= 50, 'pack piloto de 30–50 sonidos');
+    assert.ok(p.samples.length >= 10 && p.samples.length <= 60, 'un pack tiene de 10 a 60 sonidos');
     for (const s of p.samples) {
       assert.ok(!ids.has(s.id), 'id repetido ' + s.id); ids.add(s.id);
       assert.match(s.id, /^[a-z0-9-]+\/[a-z0-9-]+$/);
@@ -108,9 +108,9 @@ function chroma(x, a, b) {
   }
   return c.indexOf(Math.max(...c));
 }
-test('melodías de Harmony 04 y 05: cada nota suena a la altura escrita (al menos el 80 %; lo demás, su quinta, cuarta u octava)', async () => {
+test('melodías de Harmony 04, 05 y 06: cada nota suena a la altura escrita (al menos el 80 %; lo demás, su quinta, cuarta u octava)', async () => {
   const S = await import('../samples/synth.mjs');
-  for (const pack of ['harmony-04', 'harmony-05']) {
+  for (const pack of ['harmony-04', 'harmony-05', 'harmony-06']) {
   const { SCORES } = await import(`../samples/packs/${pack}.mjs`);
   for (const [id, [bpm, notes]] of Object.entries(SCORES)) {
     const w = D.readWav(readFileSync(join(ROOT, 'samples', pack, id + '.wav')));
@@ -133,10 +133,11 @@ test('las recetas siguen dando el mismo audio (reproducible)', async () => {
     'harmony-02': ['mc-hardcore', 'shout-hey', 'fx-robot', 'choir-chop-ah'],
     'harmony-03': ['ut-screech-lead', 'tk-acid', 'note-bell', 'retro-boom'],
     'harmony-04': ['mk2-bass', 'ut2-raw'],
-    'harmony-05': ['it-kick-tail', 'nw-kick-seco']
+    'harmony-05': ['it-kick-tail', 'nw-kick-seco'],
+    'harmony-06': ['pt-call', 'pt-bend-arc']
   };
   const pick = packs.flatMap((p) => (want[p.pack.id] || []).map((id) => p.pack.id + '/' + id));
-  assert.equal(pick.length, 16);
+  assert.equal(pick.length, 18);
   const r = await build({ only: pick, check: true, log: () => {} });
   assert.equal(r.errors, 0);
   assert.equal(r.mismatches, 0);

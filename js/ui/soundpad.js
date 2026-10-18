@@ -132,6 +132,7 @@
       bank, save: () => save(), fire, flash,
       addToFreePad: (src, o) => SP.addToFreePad(src, o),
       refreshPads: () => render(),
+      newBankFromPreset: (id) => SP.newBankFromPreset(id),
       assignSample: (i, id) => assignSample(i, id),
       assignFile: (i, f) => { sel = i; assignFile(i, f); },
       // abre la biblioteca de Harmony apuntando a ese pad (lo que se añada desde ahí va a él)
@@ -556,6 +557,22 @@
     if (root && b === bank()) { sel = i; render(); }
     H.PadAudio.load(src).catch(() => {});
     return { bank: b, i };
+  };
+  /* Banco nuevo con un preset de escuela (js/data/presets.js): no toca el banco que hay abierto */
+  SP.newBankFromPreset = function (id) {
+    const pr = ((H.data && H.data.presets) || []).find((x) => x.id === id);
+    if (!pr) return null;
+    H.Seq.stop();
+    const nb = B().fromPreset(state(), pr, (sid) => { const x = H.Lib && H.Lib.get(sid); return x ? x.cat : 'otro'; });
+    if (!nb) return null;
+    save(); sel = 0; if (root) render();
+    // los bucles se lanzan una vez por patrón: mejor tenerlos cargados antes de darle a Tocar
+    U.toast(`Banco nuevo «${nb.name}»: cargando sus 16 sonidos…`);
+    Promise.allSettled(nb.pads.filter((p) => p.src).map((p) => H.PadAudio.load(p.src))).then((r) => {
+      const bad = r.filter((x) => x.status === 'rejected').length;
+      U.toast(bad ? `«${nb.name}»: ${bad} sonidos no han cargado (prueba a recargar la página)` : `«${nb.name}» listo: ${pr.bpm} BPM, ${pr.tonality}, cadena ${pr.chain}. Dale a Tocar.`);
+    });
+    return nb;
   };
   SP.openBank = function (id) { B().select(state(), id); H.PadStore.saveNow(st); sel = 0; if (root) render(); };
   function renderEditSource() {

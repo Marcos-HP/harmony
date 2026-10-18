@@ -150,6 +150,22 @@
       if (out.length) s.current = out[0].id;
       return out;
     },
+    /* Banco nuevo a partir de un preset (js/data/presets.js): pads, tempo y patrones; nunca toca los bancos que ya hay.
+       catOf(sampleId) da la categoría (color) de cada sonido; sin él, «otro» */
+    fromPreset(s, preset, catOf = () => 'otro') {
+      if (!preset || !Array.isArray(preset.pads)) return null;
+      const b = newBank(B.freeName(s, preset.name));
+      preset.pads.slice(0, PADS).forEach((p, i) => {
+        if (!p || !p.sampleId) return;
+        b.pads[i] = normPad({ ...p, cat: catOf(p.sampleId), key: KEYS[i], src: { type: 'harmony', sampleId: p.sampleId } }, i);
+      });
+      const P = H.Patterns;
+      if (P) {
+        b.seq = P.normalize({ bpm: preset.bpm, swing: preset.swing, pattern: 0, patterns: preset.patterns, chain: P.parseChain(preset.chain), chainOn: !!preset.chain });
+      }
+      s.banks.push(b); s.current = b.id;
+      return b;
+    },
     /* Vaciar el banco: los 16 pads sin sonido (y sus filas del secuenciador); se quedan el nombre, las teclas y el tempo.
        Devuelve cuántos pads tenían sonido */
     clearBank(bank) { const n = bank.pads.filter((p) => p.src).length; bank.pads.forEach((_, i) => B.clearPad(bank, i)); return n; },

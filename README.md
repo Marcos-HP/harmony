@@ -115,7 +115,7 @@ Escribe `js/data/dc.js` y `tools/dc-report.md`, y baja la imagen principal de ca
 **Primera importación (16-10-2026, en GitHub Actions y sin token)**: 87 aplicados, 18 fijados a mano y 69 por el enlace de MusicBrainz; 39 portadas nuevas, donde Cover Art Archive no tenía. Fijadas tras comprobarlas en Discogs: la serie Anonim (del primero al Vol. 7), Extres, Ex-P-Cial (el vinilo español de 1995, no el CD mexicano que enlazaba MusicBrainz), Impact, Pildo, Pont Aeri Vol. 3, Elements, Other Side, Boom Dem, Time Is Up… Later!!! (en el maxi *Leire*), The Drabel, Oh Break, Look at This (en *Evolution*; la biografía del grupo habla de *Vol. 6* y la ficha muestra el desacuerdo) y Enter the Time Machine. De la mákina y el newstyle, 20 de 22 registros tienen ya portada real y caras del disco. Sin edición propia en Discogs (solo recopilatorios): Reaching Dreams y Sweet Revenge. Quedan 20 sin buscar hasta que haya token.
 
 ## Biblioteca original de sonidos
-150 sonidos hechos para Harmony por **síntesis y procesado digital**, sin grabaciones de personas, sin samples de terceros y sin melodías de nadie, con licencia **CC0** (dominio público), en cuatro packs: `samples/harmony-01/` (41, batería y efectos), `samples/harmony-02/` (40, voces), `samples/harmony-03/` (39, melodías y 8 bits) y `samples/harmony-04/` (30, más melodías). Hay 52 bucles melódicos en 15 kits. WAV de 16 bits a 44,1 kHz que la web sirve tal cual.
+206 sonidos hechos para Harmony por **síntesis y procesado digital**, sin grabaciones de personas, sin samples de terceros y sin melodías de nadie, con licencia **CC0** (dominio público), en seis packs: `samples/harmony-01/` (41, batería y efectos), `samples/harmony-02/` (40, voces), `samples/harmony-03/` (39, melodías y 8 bits), `samples/harmony-04/` (30, más melodías), `samples/harmony-05/` (42, escuelas del hardcore y del newstyle) y `samples/harmony-06/` (14, pitidos del newstyle). Los nombres van por escuela, nunca por artista. WAV de 16 bits a 44,1 kHz que la web sirve tal cual.
 
 Lo que no entra: sonidos sacados de juegos, discos o películas (el «¡Yahoo!» de un personaje, por ejemplo) ni imitaciones de su voz o de su melodía. Son de quien los hizo. Si tienes los tuyos, cárgalos en un pad: se quedan en tu navegador.
 
@@ -177,6 +177,42 @@ Ocho kits más, con el mismo motor y las mismas reglas que Harmony 03 (y más m�
 
 - **Comprobado**: duración exacta de cada bucle y, en las 9 melodías, la altura que domina en cada nota de la partitura (el pack exporta sus partituras y un test lo mide): 166 de 177 notas exactas; las demás se leen como su quinta u octava, por los armónicos de la supersierra saturada en notas cortas.
 
+### Harmony 05 · Escuelas del hardcore y del newstyle
+42 sonidos agrupados por escuela, cada una con su tempo y su tonalidad para que todo encaje (y para los presets de banco). Recrean los rasgos de cada estilo (tempo, tipo de kick, distorsión, timbre), no los temas de nadie.
+
+| Escuela | Tempo · tonalidad | Qué hay |
+|---|---|---|
+| Rotterdam / early | 175 · Re menor | kick 909 saturado hasta que zumba (realce en 1 kHz), kick early corto, hoover de alarma, stab de rave (Re m7), palma 909, charles abierto, riff de hoover (2 compases), sirena que sube |
+| Hardcore italiano | 172 · Fa# menor | kicks con cola larga afinada (Fa# 1 y La 1), golpe de coro, lead épico (Fa#m – Re – Mi – Do#, 4 compases), cuerdas oscuras, redoble, kick al revés |
+| Mainstream oscuro | 178 · Mi frigio | kick con chillido (Mi 1), kick rumble (Fa 1), chillido, campana de terror, drone, impacto, riff oscuro (2), golpe industrial |
+| Mainstream melódico | 174 · La menor | kicks con cola tonal en La y Do (para seguir los acordes), lead eufórico (Lam – Fa – Do – Sol), piano, coro, arpegio |
+| Raw / uptempo | 205 · Re menor | kick raw plegado, kick que sube, kick con ruido, grito de ruido, melodía de kicks (2), acorde raw |
+| Newstyle | 150 · La menor | kick seco, kick «tok», bajo a contratiempo (golpe y bucle La – Fa – Sol – Mi), palma con sala, charles, golpe de órgano |
+
+- **Comprobado**: la nota de la cola de cada kick (las de los kicks raw salen hasta un semitono por debajo de la anunciada por el plegado; se deja como aviso), duración exacta de los bucles y la altura de cada nota de los dos leads.
+
+### Harmony 06 · Pitidos del newstyle
+El pitido es un tono agudo casi puro. El timbre sale de **medir una referencia** que pasó el usuario (espectrograma y seguimiento de altura). Esa referencia no está en el repositorio, y de ella solo se han sacado medidas. Las mediciones:
+- **Registro y timbre:** va de 1 a 1,9 kHz, con los armónicos 2.º y 3.º a −15 dB y el 4.º a −18 dB.
+- **Afinación:** sin vibrato, con un portamento de 20 a 40 ms entre notas ligadas y arcos de pitch bend en el break.
+- **Octava:** a veces va doblado una octava por debajo.
+
+El pack trae 6 bucles a 175 BPM en La menor, con melodías de Harmony:
+- melodía ligada con glide;
+- melodía picada con su octava;
+- la misma con un «sidechain» fuerte para el drop;
+- pregunta y respuesta con bends;
+- golpes a contratiempo;
+- un break de notas largas.
+
+Además hay 8 sueltos:
+- notas en La 5 y Mi 6, y en La con su octava;
+- un pitido que sube y otro que cae;
+- un arco y un silbato;
+- un trino.
+
+Hecho por síntesis aditiva. **Comprobado**: los armónicos del sonido final coinciden con los medidos, y las notas de los tres bucles melódicos están a su altura.
+
 ### Cómo se hacen y se validan
 - **Cómo se hacen**: `tools/samples/dsp.mjs` (osciladores sin aliasing, ruido con semilla, filtros barridos, saturación, limitador, reverb, WAV con dither) y una receta por sonido en `tools/samples/packs/<pack>.mjs`. `node tools/samples/build.mjs` (o `npm run samples`) los construye, los valida y escribe `js/data/samples.js` y `tools/samples/report.md`. Es determinista: la misma receta da el mismo audio, y un test lo comprueba.
 - **Validación** (lo que no la pasa no se escribe): sin muestras recortadas, pico real ≤ −0,8 dBTP (normalizados a −1 dBTP con sobremuestreo ×4), sin continua ni infrasonidos, principio y final sin clic, duración razonable, y en los kicks y bajos, la nota medida en la cola (FFT de 65 536 puntos) igual a la anunciada. Además se revisaron forma de onda y espectrograma de todos (así se encontraron y corrigieron capas cortadas en seco, colas de kick que acababan de golpe y, en los coros, aliasing de la primera fuente glotal y falta de agudos) y se comparó su parecido espectral para no meter variantes casi iguales. **No se han escuchado**: este entorno no tiene salida de audio; la validación es técnica y visual. Con las voces es donde más falta hace escucharlas: lo que no se puede medir es si cada frase se entiende bien.
@@ -202,7 +238,12 @@ La cabecera tiene tres secciones. Cambiar de una a otra no recarga la página ni
   - **Sonidos**: cada pad con sonido es una fila. *Añadir sonido*, al final de la rejilla, abre la biblioteca apuntando al primer pad libre; al elegirlo con su botón ＋ se vuelve a la fila nueva (es la forma de hacerlo en el móvil, donde los navegadores no arrastran). En el ordenador también se puede soltar encima un sonido de la biblioteca o un archivo de audio (sobre una fila cambia el sonido de ese pad y conserva su ritmo). En pantallas estrechas, el panel lateral ya no se queda con el gesto: deslizar sobre los filtros mueve la página.
   - **Pasos**: clic pone o quita un golpe; clic derecho, Alt+clic o mantener pulsado en el móvil, golpe suave (en el móvil, un toque solo se descarta si el dedo se desplaza más de 10 px) (a medio volumen); con el ratón se arrastra para pintar varios. Cada fila: escuchar (el nombre), M (silenciar), S (solo) y *Rellenar…*: cada negra, a contratiempo, en el 2 y el 4, corcheas, semicorcheas, galope, mover un paso a cada lado y vaciar (sustituyen la fila), y *añadir redoble al final* (se suma: semicorcheas en el último tiempo del patrón).
   - **Tempo**: 60–260 BPM (con − y +, escribiéndolo o con *Tap*) y swing de 0 a 100 % (retrasa la segunda semicorchea de cada corchea hasta medio paso).
-  - **Patrones A–D** por banco; el cambio entra al acabar la vuelta. *Cadena* (p. ej. `AABA`) los toca en ese orden. Acciones: base 4×4 con los sonidos de los pads (kick a negras, palma o caja en el 2 y el 4, charles y bajo a contratiempo), vaciar y copiar a otro patrón, y tres **kits de Harmony** (hardcore 180, newstyle 150, uptempo 200) que llenan pads libres, ponen el tempo y dejan la base.
+  - **Patrones A–D** por banco; el cambio entra al acabar la vuelta. *Cadena* (p. ej. `AABA`) los toca en ese orden. Acciones: base 4×4 con los sonidos de los pads (kick a negras, palma o caja en el 2 y el 4, charles y bajo a contratiempo), vaciar y copiar a otro patrón, y tres **kits de Harmony** (hardcore 180, newstyle 150, uptempo 200) que llenan pads libres, ponen el tempo y dejan la base. *Rellenar…* tiene además dos rellenos de escuela: *subida* (negras, luego corcheas y luego semicorcheas, el kick roll antes del drop) y *tresillo* (3 · 3 · 2).
+  - **Presets por escuela** (`js/data/presets.js`), en *Acciones* y en el secuenciador vacío. Cada preset crea un **banco nuevo**, sin tocar el que hay. Hay siete: Rotterdam (175), Hardcore italiano (172), Mainstream oscuro (178), Mainstream melódico (174), Raw / uptempo (205), Newstyle (150) y Newstyle de pitidos (175).
+    - **Qué trae cada uno:** 16 pads de los packs 01–06, el tempo y cuatro patrones de 16 tiempos (A intro, B subida, C drop, D break) que suenan encadenados: `ABCCDBCC`.
+    - **Reparto de pads, igual en todos:** del 1 al 8 (deck 1 de la FLX4), kicks, palma, charles, percusión, redoble y plato. Del 9 al 16 (deck 2), bucles, stabs, coros, subida, efecto, MC y grito.
+    - **Bucles:** van en modo disparo y se lanzan al empezar sus compases. Duran compases exactos al tempo del preset; si cambias el tempo, se descuadran.
+    - **Al crearlo**, el banco carga los 16 sonidos y avisa cuando están listos.
   - **Grabar**: con el secuenciador en marcha, lo que se toca con los pads (o sus teclas) entra en el paso más cercano.
   - **Audio**: cada golpe se programa con antelación contra el reloj de audio (120 ms por delante, tic cada 25 ms desde un worker para que no se frene con la pestaña en segundo plano), así que el ritmo va cuadrado aunque la página esté ocupada. En el secuenciador cada pad es monofónico: un golpe corta el anterior del mismo pad y los de su grupo de corte. Lo que se edita mientras suena se oye en la vuelta siguiente; el tempo, al momento.
   - **Se guarda con el banco** (en el navegador, al duplicarlo y al exportarlo). Vaciar un pad borra su fila; cambiarle el sonido la conserva.

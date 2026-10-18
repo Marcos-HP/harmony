@@ -15,6 +15,8 @@
     uptempo: { name: 'Uptempo', bpm: 200, ids: ['harmony-01/ut-kick-raw', 'harmony-01/clap-room', 'harmony-01/hat-closed', 'harmony-01/hat-open'] }
   };
 
+  const presets = () => (H.data && H.data.presets) || [];
+
   /* Qué papel tiene un pad en una base 4×4, por su sonido de Harmony, su categoría o su nombre */
   function role(p) {
     if (!p.src) return null;
@@ -97,6 +99,9 @@
         </optgroup>
         <optgroup label="Kits de Harmony en los pads libres">
           ${Object.entries(KITS).map(([k, x]) => `<option value="kit:${k}">${x.name} · ${x.bpm} BPM, con su base</option>`).join('')}
+        </optgroup>
+        <optgroup label="Banco nuevo con un preset de escuela">
+          ${presets().map((x) => `<option value="preset:${x.id}">${e(x.name)} · ${x.bpm} BPM, 16 pads y 4 patrones</option>`).join('')}
         </optgroup>`;
       renderBars();
       $('#sq-chain-on').checked = s.chainOn;
@@ -121,7 +126,10 @@
       if (!rows.length) {
         grid.innerHTML = `<div class="sq-empty"><p>Pon sonidos en los pads y cada uno será una fila del secuenciador.</p>
           <div class="chips">${Object.entries(KITS).map(([k, x]) => `<button class="chip" type="button" data-sq="kit" data-kit="${k}">${U.icon('plus')} Kit ${x.name} (${x.bpm} BPM)</button>`).join('')}</div>
-          <p class="fine">Un kit pone cuatro sonidos de la biblioteca de Harmony en los pads libres, ajusta el tempo y deja una base 4×4 en el patrón ${PT().NAMES[p]}.</p></div>`;
+          <p class="fine">Un kit pone cuatro sonidos de la biblioteca de Harmony en los pads libres, ajusta el tempo y deja una base 4×4 en el patrón ${PT().NAMES[p]}.</p>
+          ${presets().length ? `<p class="sq-empty-h mono">O un banco entero por escuela</p>
+          <div class="sq-presets">${presets().map((x) => `<button class="sq-preset" type="button" data-sq="preset" data-preset="${e(x.id)}"><b>${e(x.name)}</b><span class="mono">${x.bpm} BPM · ${e(x.tonality)}</span><span class="fine">${e(x.desc)}</span></button>`).join('')}</div>
+          <p class="fine">Un preset crea un banco nuevo (el que tienes no se toca) con 16 pads, el tempo y cuatro patrones encadenados: intro, subida, drop y break.</p>` : ''}</div>`;
         shownNow = -1;
         return;
       }
@@ -260,6 +268,7 @@
       else if (a === 'hear') api.fire(i);
       else if (a === 'mute' || a === 'solo') { PT().flag(s, a, i); save(); renderGrid(); }
       else if (a === 'kit') kit(b.dataset.kit);
+      else if (a === 'preset') preset(b.dataset.preset);
       else if (a === 'add') { const f = pads().findIndex((x) => !x.src); if (f >= 0) api.openLibrary(f); }
     });
 
@@ -340,7 +349,9 @@
       else if (v === 'clear') { PT().clearPattern(s, s.pattern); save(); renderGrid(); renderBar(); U.toast(`Patrón ${PT().NAMES[s.pattern]} vacío`); }
       else if (v.startsWith('copy:')) { const to = +v.slice(5); PT().copy(s, s.pattern, to); save(); renderBar(); U.toast(`${PT().NAMES[s.pattern]} copiado en ${PT().NAMES[to]}`); }
       else if (v.startsWith('kit:')) kit(v.slice(4));
+      else if (v.startsWith('preset:')) preset(v.slice(7));
     }
+    function preset(id) { bar = 0; if (api.newBankFromPreset(id)) render(); }
     function kit(k) {
       const x = KITS[k]; if (!x) return;
       const got = [];
