@@ -39,6 +39,9 @@ if (existsSync(join(root, 'art'))) {
   cpSync(join(root, 'art'), join(root, 'dist/art'), { recursive: true });
   console.log('dist/art', readdirSync(join(root, 'dist/art')).length + ' imágenes');
 }
+// los workers (el motor del Extractor) van aparte: un worker no se puede meter dentro del HTML
+rmSync(join(root, 'dist/workers'), { recursive: true, force: true });
+if (existsSync(join(root, 'workers'))) cpSync(join(root, 'workers'), join(root, 'dist/workers'), { recursive: true });
 // los samples originales de Harmony (samples/<pack>/*.wav) también se sirven tal cual
 rmSync(join(root, 'dist/samples'), { recursive: true, force: true });
 if (existsSync(join(root, 'samples'))) {

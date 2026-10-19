@@ -660,6 +660,7 @@
       <div class="chips">
         <button class="chip" type="button" data-sp="file">${U.icon('file')} Archivo de tu equipo</button>
         <button class="chip" type="button" data-sp="tab" data-tab="lib">${U.icon('pads')} Biblioteca de Harmony</button>
+        <a class="chip" href="#extractor" title="Separa una canción en voz, batería, bajo e instrumentos y trae un trozo">${U.icon('file')} De una canción</a>
         <button class="chip${catOpen ? ' chip-on' : ''}" type="button" data-sp="cat-toggle" aria-expanded="${catOpen}">${U.icon('search')} Muestras del catálogo</button>
       </div>
       ${catOpen ? `<div class="sp-catpick">

@@ -257,6 +257,22 @@ La cabecera tiene tres secciones. Cambiar de una a otra no recarga la página ni
 - **Los sonidos de Harmony necesitan servirse por web** (GitHub Pages o un servidor local): con `dist/index.html` abierto desde el disco el navegador no deja leerlos, y la interfaz lo dice. Cada uno se descarga y se decodifica una sola vez por sesión, se use en uno o en varios pads o en la escucha previa.
 - **Qué se guarda**: los bancos y sus ajustes, en `localStorage`; tus archivos, en **IndexedDB**, en este navegador y sin subirse a ningún sitio. Cuando un archivo deja de usarlo cualquier pad, se borra. Si el navegador no deja usar IndexedDB (algunos modos privados), la cabecera dice «solo en esta sesión» y tus archivos duran hasta cerrar la pestaña. Las muestras del catálogo **no se guardan nunca** (condiciones de Deezer): solo la referencia, y se vuelven a pedir en cada sesión; necesitan conexión y no suenan dentro del artefacto de Claude.
 
+## Extractor: sacar samples de una canción
+`#extractor` (Biblioteca › Extractor; también «De una canción», en las opciones de un pad del Soundpad). Subes una canción y la separa con IA en **voz, batería, bajo e instrumentos** (sintes, leads, pads…). Todo pasa en el navegador: la canción no se sube a ningún sitio.
+- **El modelo**: HTDemucs, de Meta (licencia MIT), exportado a ONNX. Corre con ONNX Runtime Web, por WebGPU (la tarjeta gráfica) o, si no hay, por el procesador. La parte que lo maneja es [demucs-web](https://github.com/timcsy/demucs-web) (MIT), copiada en `workers/demucs/`.
+  - Va en un *worker* para que la página no se congele.
+  - La primera vez descarga el motor (de jsDelivr) y el modelo (unos 172 MB, de Hugging Face). El modelo queda en la caché del navegador y se puede borrar desde la página.
+  - Sin aislamiento entre orígenes (GitHub Pages no deja poner esas cabeceras), por el procesador va con un solo hilo: funciona, pero lento. Con WebGPU (Chrome y Edge de ordenador) es lo rápido.
+- **Cómo se usa**:
+  1. Eliges la canción (o la arrastras).
+  2. Si quieres, marcas el tramo que te interesa sobre su onda (8 minutos como mucho) y le das a *Separar*. Mientras trabaja, dice qué está haciendo, cuánto lleva y cuánto le queda, y se puede cancelar.
+  3. Las cuatro partes se escuchan juntas, con solo y silencio por parte, cabezal y bucle en la selección.
+  4. Arrastrando sobre cualquier onda marcas un trozo. *Al pad* lo manda al primer pad libre del banco abierto como archivo tuyo, con su categoría (voz, percusión, bajo, FX). *WAV* lo descarga.
+  5. La fila *Lo que suena* hace lo mismo con las partes que no estén silenciadas, juntas (por ejemplo, la canción sin voz).
+- **Límites**: solo saca esas cuatro partes. Los pitidos, los hoovers y los pads salen juntos en «instrumentos». El modelo está entrenado sobre todo con pop y rock: con kicks distorsionados de cola larga puede repartir el kick entre batería y bajo o dejar artefactos. Las partes viven en memoria y se pierden al recargar; lo que mandas a un pad, no.
+- **Derechos**: es para practicar y hacerte samples para ti. Lo que sale de una canción sigue siendo de sus autores. Por eso las partes y los trozos se quedan en tu navegador, como tus archivos, y nunca entran en la biblioteca de Harmony.
+- **Comprobado**: la interfaz entera (cargar, marcar el tramo, separar, escuchar, solo y silencio, mandar al pad y descargar el WAV) con un motor de pruebas en Playwright. También se ha probado que el worker de verdad arranca, carga su librería y avisa con claridad si no puede bajar el motor. La separación real no se ha podido probar desde el entorno de desarrollo, que no tiene tarjeta gráfica ni acceso a jsDelivr o Hugging Face: hay que probarla en un navegador normal.
+
 ## Controlador: Pioneer DDJ-FLX4
 `#controlador` (icono del conector en la cabecera; un punto verde dice que hay una tabla conectada). Con **Web MIDI** (Chrome y Edge, también Chrome para Android; Safari no tiene MIDI): la FLX4 es *class compliant*, así que el navegador la ve sin drivers. Se conecta una vez con permiso del navegador y, si ya lo tenía, se reconecta sola al abrir Harmony.
 
