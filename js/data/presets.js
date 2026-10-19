@@ -243,6 +243,53 @@
         pat({ 1: 'x...............', 5: at(0, 32), 2: CL, 3: 'o.o.o.o.o.o.o.o.', 9: at(0, 32), 7: at(0), 13: at(56), 15: at(30) }),
         pat({ 4: VUELVE, 8: at(0, 32), 10: at(0, 32), 11: at(62) })
       ]
+    },
+    {
+      id: 'uptempo-himno', name: 'Uptempo himno', school: 'Raw / uptempo', bpm: 200, swing: 0, tonality: 'Re menor', chain: 'ABCCDBCC',
+      desc: 'El kick sigue los acordes (Rem – Si♭ – Fa – Do): un kick afinado a cada uno. Lead de himno, coro, chops de voz y un redoble de kick que sube hasta el drop.',
+      pads: [
+        pad('harmony-08/up-kick-d2', 'Kick Re', { v: 0.8 }), pad('harmony-08/up-kick-as1', 'Kick Si♭', { v: 0.8 }), pad('harmony-08/up-kick-f2', 'Kick Fa', { v: 0.8 }), pad('harmony-08/up-kick-c2', 'Kick Do', { v: 0.8 }),
+        pad('harmony-08/himno-palma', 'Palma', { v: 0.75 }), pad('harmony-08/himno-charles', 'Charles', { v: 0.45 }), pad('harmony-08/himno-redoble', 'Redoble', { v: 0.75 }), pad('harmony-08/himno-impacto', 'Impacto', { v: 0.7 }),
+        pad('harmony-08/himno-lead', 'Lead del himno', { v: 1 }), pad('harmony-08/himno-lead', 'Lead filtrado', { v: 0.6, fx: { filter: 'lp', cutoff: 900, res: 35 } }),
+        pad('harmony-08/himno-acordes', 'Acordes', { v: 0.55 }), pad('harmony-08/himno-coro', 'Coro', { v: 0.6 }),
+        pad('harmony-08/himno-subida', 'Subida', { v: 0.7 }), pad('harmony-08/himno-chops', 'Chops de voz', { v: 0.6 }),
+        pad('harmony-08/himno-kickroll', 'Redoble de kick', { v: 0.85 }), pad('harmony-08/himno-plato-reves', 'Plato al revés', { v: 0.65 })
+      ],
+      patterns: [
+        // intro: el lead filtrado, los acordes y el kick ya siguiendo la armonía
+        pat({ 0: `${K4}|${NADA}|${NADA}|${NADA}`, 1: `${NADA}|${K4}|${NADA}|${NADA}`, 2: `${NADA}|${NADA}|${K4}|${NADA}`, 3: `${NADA}|${NADA}|${NADA}|${K4}`,
+          5: OH, 7: at(0), 9: at(0), 10: at(0) }),
+        // subida: corcheas en Fa, el redoble de kick en Do, la subida, el redoble y el plato al revés antes del drop
+        pat({ 0: `${K4}|${NADA}|${NADA}|${NADA}`, 1: `${NADA}|${K4}|${NADA}|${NADA}`, 2: `${NADA}|${NADA}|x.x.x.x.x.x.x.x.|${NADA}`,
+          4: `${CL}|${CL}|x...x...x...x...|${NADA}`, 6: at(48), 10: at(0), 11: at(0), 12: at(32), 14: at(48), 15: at(56) }),
+        // drop: el lead, el kick por los acordes y un remate al final del ciclo
+        pat({ 0: `${K4}|${NADA}|${NADA}|${NADA}`, 1: `${NADA}|${K4}|${NADA}|${NADA}`, 2: `${NADA}|${NADA}|${K4}|${NADA}`, 3: `${NADA}|${NADA}|${NADA}|x...x...x...x.xx`,
+          4: CL, 5: 'o.x.o.x.o.x.o.x.', 7: at(0), 8: at(0) }),
+        // break: acordes, coro y chops; el kick de Do vuelve en el último compás
+        pat({ 3: VUELVE, 10: at(0), 11: at(0), 13: at(0) })
+      ]
+    },
+    {
+      id: 'frenchcore-himno', name: 'Frenchcore himno', school: 'Frenchcore', bpm: 200, swing: 0, tonality: 'Re menor', chain: 'ABCCDBCC',
+      desc: 'Kick de frenchcore con su cola zumbona y el bajo distorsionado a contratiempo siguiendo los acordes. Piano, cuerdas en staccato y el mismo himno arriba.',
+      pads: [
+        pad('harmony-08/fc-kick', 'Kick frenchcore', { v: 0.8 }), pad('harmony-08/fc-bajo-d2', 'Bajo Re', { v: 0.7 }), pad('harmony-08/fc-bajo-as1', 'Bajo Si♭', { v: 0.7 }), pad('harmony-08/fc-bajo-f2', 'Bajo Fa', { v: 0.7 }), pad('harmony-08/fc-bajo-c2', 'Bajo Do', { v: 0.7 }),
+        pad('harmony-08/himno-palma', 'Palma', { v: 0.75 }), pad('harmony-08/himno-charles', 'Charles', { v: 0.4 }), pad('harmony-08/himno-impacto', 'Impacto', { v: 0.7 }),
+        pad('harmony-08/himno-piano', 'Piano', { v: 0.7 }), pad('harmony-08/fc-cuerdas', 'Cuerdas', { v: 0.65 }), pad('harmony-08/himno-lead', 'Lead del himno', { v: 1 }),
+        pad('harmony-08/himno-coro', 'Coro', { v: 0.6 }), pad('harmony-08/himno-subida', 'Subida', { v: 0.7 }), pad('harmony-08/himno-plato-reves', 'Plato al revés', { v: 0.65 }),
+        pad('harmony-08/himno-redoble', 'Redoble', { v: 0.75 }), pad('harmony-08/himno-chops', 'Chops de voz', { v: 0.55 })
+      ],
+      patterns: [
+        // intro: piano y coro; el kick entra en la segunda mitad
+        pat({ 0: `${NADA}|${NADA}|${K4}|${K4}`, 6: `${NADA}|${NADA}|${OH}|${OH}`, 8: at(0), 11: at(0) }),
+        // subida: cuerdas, kick que se acelera, subida, redoble y plato al revés
+        pat({ 0: SUBIDA, 5: `${CL}|${CL}|${NADA}|${NADA}`, 9: at(0), 11: at(0), 12: at(32), 13: at(56), 14: at(48) }),
+        // drop: kick en los tiempos y el bajo a contratiempo, cambiando con cada acorde
+        pat({ 0: K4, 1: `${OH}|${NADA}|${NADA}|${NADA}`, 2: `${NADA}|${OH}|${NADA}|${NADA}`, 3: `${NADA}|${NADA}|${OH}|${NADA}`, 4: `${NADA}|${NADA}|${NADA}|${OH}`,
+          5: CL, 6: 'o.o.o.o.o.o.o.o.', 7: at(0), 10: at(0) }),
+        // break: piano, coro y chops; vuelve el kick con el bajo de Do al final
+        pat({ 0: VUELVE, 4: `${NADA}|${NADA}|${NADA}|..x...x.........`, 8: at(0), 11: at(0), 15: at(0) })
+      ]
     }
   ];
 })();

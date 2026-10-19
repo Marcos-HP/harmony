@@ -50,5 +50,18 @@ Licencia: CC0 1.0 (dominio público). Síntesis y procesado digital en tools/sam
 
 | Sonido | Estilo · tipo | Dur. | Canales | Pico real | RMS | Centroide | Nota medida | Avisos |
 |---|---|---|---|---|---|---|---|---|
-| Campana de iglesia (Fa) `os-bell` | hardcore · nota | 7.20 s | 2 | -1.0 dBTP | -19.0 dB | 186 Hz | — | — |
+
+## Harmony 08 · Himnos: uptempo y frenchcore
+
+Licencia: CC0 1.0 (dominio público). Síntesis y procesado digital en tools/samples/ (Harmony): kicks con el motor de hard.mjs, hecho a partir de cómo se diseñan los kicks de uptempo y frenchcore. Melodías compuestas para Harmony; sin grabaciones ni samples de terceros.
+
+| Sonido | Estilo · tipo | Dur. | Canales | Pico real | RMS | Centroide | Nota medida | Avisos |
+|---|---|---|---|---|---|---|---|---|
+| Kick uptempo (Re) `up-kick-d2` | uptempo · kick | 0.36 s | 2 | -1.0 dBTP | -7.6 dB | 238 Hz | D2 (75 Hz) | — |
+| Kick uptempo (Si♭) `up-kick-as1` | uptempo · kick | 0.36 s | 2 | -1.0 dBTP | -7.2 dB | 207 Hz | A#1 (60 Hz) | — |
+| Kick uptempo (Fa) `up-kick-f2` | uptempo · kick | 0.36 s | 2 | -1.0 dBTP | -6.2 dB | 239 Hz | F2 (89 Hz) | — |
+| Kick uptempo (Do) `up-kick-c2` | uptempo · kick | 0.36 s | 2 | -1.0 dBTP | -7.4 dB | 267 Hz | C2 (66 Hz) | — |
+| Kick uptempo que se abre `up-kick-chillon` | uptempo · kick | 0.36 s | 2 | -1.0 dBTP | -6.6 dB | 271 Hz | D2 (75 Hz) | — |
+| Kick uptempo con vaivén `up-kick-wobble` | uptempo · kick | 0.36 s | 2 | -1.0 dBTP | -7.9 dB | 296 Hz | D#2 (76 Hz) | afinación: se mide D#2 (75.6 Hz) y se anuncia D2 |
+| Lead del himno `himno-lead` | uptempo · melodía | 4.80 s | 2 | -1.0 dBTP | -8.5 dB | 1587 Hz | — | — |
 

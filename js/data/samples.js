@@ -6243,7 +6243,6 @@
      "file": "samples/harmony-07/os-bell.wav",
      "notes": "Campana con los parciales de una de verdad (bordón, tercera menor, quinta, nominal): la tercera menor la hace sonar triste.",
      "peakDb": -1,
-     "truePeakDb": -1,
      "rmsDb": -19,
      "centroid": 186
     },
@@ -6940,6 +6939,748 @@
      "peakDb": -2.6,
      "rmsDb": -10.8,
      "centroid": 2150
+    }
+   ]
+  },
+  {
+   "id": "harmony-08",
+   "name": "Harmony 08",
+   "title": "Himnos: uptempo y frenchcore",
+   "version": "1.0.0",
+   "date": "2026-10-19",
+   "license": "CC0-1.0",
+   "licenseName": "CC0 1.0 (dominio público)",
+   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/deed.es",
+   "origin": "Síntesis y procesado digital en tools/samples/ (Harmony): kicks con el motor de hard.mjs, hecho a partir de cómo se diseñan los kicks de uptempo y frenchcore. Melodías compuestas para Harmony; sin grabaciones ni samples de terceros.",
+   "credits": "Harmony",
+   "count": 25,
+   "bytes": 8288256,
+   "samples": [
+    {
+     "id": "harmony-08/up-kick-d2",
+     "slug": "up-kick-d2",
+     "name": "Kick uptempo (Re)",
+     "style": "uptempo",
+     "type": "kick",
+     "cat": "kick",
+     "tags": [
+      "himno",
+      "uptempo",
+      "afinado",
+      "Re"
+     ],
+     "key": "D2",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": [
+      195,
+      210
+     ],
+     "duration": 0.359,
+     "channels": 2,
+     "bytes": 63416,
+     "file": "samples/harmony-08/up-kick-d2.wav",
+     "notes": "Kick de uptempo en Re (cola en D2): bajo sostenido que cae desde Do 5, reflexiones antes de distorsionar, dos etapas de distorsión con la banda resonante delante, tok limpio aparte, graves en mono y OTT. La cola se va cerrando.",
+     "peakDb": -1.2,
+     "truePeakDb": -1,
+     "rmsDb": -7.6,
+     "centroid": 238
+    },
+    {
+     "id": "harmony-08/up-kick-as1",
+     "slug": "up-kick-as1",
+     "name": "Kick uptempo (Si♭)",
+     "style": "uptempo",
+     "type": "kick",
+     "cat": "kick",
+     "tags": [
+      "himno",
+      "uptempo",
+      "afinado",
+      "Si♭"
+     ],
+     "key": "A#1",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": [
+      195,
+      210
+     ],
+     "duration": 0.359,
+     "channels": 2,
+     "bytes": 63416,
+     "file": "samples/harmony-08/up-kick-as1.wav",
+     "notes": "Kick de uptempo en Si♭ (cola en A♯1): bajo sostenido que cae desde Do 5, reflexiones antes de distorsionar, dos etapas de distorsión con la banda resonante delante, tok limpio aparte, graves en mono y OTT. La cola se va cerrando.",
+     "peakDb": -1.1,
+     "truePeakDb": -1,
+     "rmsDb": -7.2,
+     "centroid": 207
+    },
+    {
+     "id": "harmony-08/up-kick-f2",
+     "slug": "up-kick-f2",
+     "name": "Kick uptempo (Fa)",
+     "style": "uptempo",
+     "type": "kick",
+     "cat": "kick",
+     "tags": [
+      "himno",
+      "uptempo",
+      "afinado",
+      "Fa"
+     ],
+     "key": "F2",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": [
+      195,
+      210
+     ],
+     "duration": 0.359,
+     "channels": 2,
+     "bytes": 63416,
+     "file": "samples/harmony-08/up-kick-f2.wav",
+     "notes": "Kick de uptempo en Fa (cola en F2): bajo sostenido que cae desde Do 5, reflexiones antes de distorsionar, dos etapas de distorsión con la banda resonante delante, tok limpio aparte, graves en mono y OTT. La cola se va cerrando.",
+     "peakDb": -1.5,
+     "truePeakDb": -1,
+     "rmsDb": -6.2,
+     "centroid": 239
+    },
+    {
+     "id": "harmony-08/up-kick-c2",
+     "slug": "up-kick-c2",
+     "name": "Kick uptempo (Do)",
+     "style": "uptempo",
+     "type": "kick",
+     "cat": "kick",
+     "tags": [
+      "himno",
+      "uptempo",
+      "afinado",
+      "Do"
+     ],
+     "key": "C2",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": [
+      195,
+      210
+     ],
+     "duration": 0.359,
+     "channels": 2,
+     "bytes": 63416,
+     "file": "samples/harmony-08/up-kick-c2.wav",
+     "notes": "Kick de uptempo en Do (cola en C2): bajo sostenido que cae desde Do 5, reflexiones antes de distorsionar, dos etapas de distorsión con la banda resonante delante, tok limpio aparte, graves en mono y OTT. La cola se va cerrando.",
+     "peakDb": -1.3,
+     "truePeakDb": -1,
+     "rmsDb": -7.4,
+     "centroid": 267
+    },
+    {
+     "id": "harmony-08/up-kick-chillon",
+     "slug": "up-kick-chillon",
+     "name": "Kick uptempo que se abre",
+     "style": "uptempo",
+     "type": "kick",
+     "cat": "kick",
+     "tags": [
+      "himno",
+      "uptempo",
+      "screech"
+     ],
+     "key": "D2",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": [
+      195,
+      210
+     ],
+     "duration": 0.36,
+     "channels": 2,
+     "bytes": 63532,
+     "file": "samples/harmony-08/up-kick-chillon.wav",
+     "notes": "El mismo kick en Re con la banda resonante subiendo: la cola se abre y chilla al final.",
+     "peakDb": -1.4,
+     "truePeakDb": -1,
+     "rmsDb": -6.6,
+     "centroid": 271
+    },
+    {
+     "id": "harmony-08/up-kick-wobble",
+     "slug": "up-kick-wobble",
+     "name": "Kick uptempo con vaivén",
+     "style": "uptempo",
+     "type": "kick",
+     "cat": "kick",
+     "tags": [
+      "himno",
+      "uptempo",
+      "movimiento"
+     ],
+     "key": "D2",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": [
+      195,
+      210
+     ],
+     "duration": 0.356,
+     "channels": 2,
+     "bytes": 62772,
+     "file": "samples/harmony-08/up-kick-wobble.wav",
+     "notes": "El kick en Re con la cola que se abre y se cierra dos veces en un tiempo.",
+     "peakDb": -1.9,
+     "truePeakDb": -1,
+     "rmsDb": -7.9,
+     "centroid": 296
+    },
+    {
+     "id": "harmony-08/fc-kick",
+     "slug": "fc-kick",
+     "name": "Kick frenchcore",
+     "style": "hardcore",
+     "type": "kick",
+     "cat": "kick",
+     "tags": [
+      "himno",
+      "frenchcore",
+      "zumbido"
+     ],
+     "key": "D2",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": [
+      190,
+      210
+     ],
+     "duration": 0.3,
+     "channels": 2,
+     "bytes": 52964,
+     "file": "samples/harmony-08/fc-kick.wav",
+     "notes": "El ataque del kick duro en Re y, detrás, un trozo pegado al ataque repetido tres veces por negra: la cola zumbona del frenchcore.",
+     "peakDb": -2,
+     "rmsDb": -8.7,
+     "centroid": 140
+    },
+    {
+     "id": "harmony-08/fc-bajo-d2",
+     "slug": "fc-bajo-d2",
+     "name": "Bajo frenchcore (Re)",
+     "style": "hardcore",
+     "type": "bajo",
+     "cat": "bajo",
+     "tags": [
+      "himno",
+      "frenchcore",
+      "contratiempo",
+      "Re"
+     ],
+     "key": "D2",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": [
+      200,
+      200
+     ],
+     "duration": 0.199,
+     "channels": 2,
+     "bytes": 35176,
+     "file": "samples/harmony-08/fc-bajo-d2.wav",
+     "notes": "Bajo distorsionado de una corchea en Re, para el contratiempo: la cola del kick duro sin tok.",
+     "peakDb": -1.3,
+     "rmsDb": -7.1,
+     "centroid": 133
+    },
+    {
+     "id": "harmony-08/fc-bajo-as1",
+     "slug": "fc-bajo-as1",
+     "name": "Bajo frenchcore (Si♭)",
+     "style": "hardcore",
+     "type": "bajo",
+     "cat": "bajo",
+     "tags": [
+      "himno",
+      "frenchcore",
+      "contratiempo",
+      "Si♭"
+     ],
+     "key": "A#1",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": [
+      200,
+      200
+     ],
+     "duration": 0.187,
+     "channels": 2,
+     "bytes": 33056,
+     "file": "samples/harmony-08/fc-bajo-as1.wav",
+     "notes": "Bajo distorsionado de una corchea en Si♭, para el contratiempo: la cola del kick duro sin tok.",
+     "peakDb": -1,
+     "rmsDb": -6.7,
+     "centroid": 102
+    },
+    {
+     "id": "harmony-08/fc-bajo-f2",
+     "slug": "fc-bajo-f2",
+     "name": "Bajo frenchcore (Fa)",
+     "style": "hardcore",
+     "type": "bajo",
+     "cat": "bajo",
+     "tags": [
+      "himno",
+      "frenchcore",
+      "contratiempo",
+      "Fa"
+     ],
+     "key": "F2",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": [
+      200,
+      200
+     ],
+     "duration": 0.198,
+     "channels": 2,
+     "bytes": 34896,
+     "file": "samples/harmony-08/fc-bajo-f2.wav",
+     "notes": "Bajo distorsionado de una corchea en Fa, para el contratiempo: la cola del kick duro sin tok.",
+     "peakDb": -1.3,
+     "rmsDb": -7.2,
+     "centroid": 153
+    },
+    {
+     "id": "harmony-08/fc-bajo-c2",
+     "slug": "fc-bajo-c2",
+     "name": "Bajo frenchcore (Do)",
+     "style": "hardcore",
+     "type": "bajo",
+     "cat": "bajo",
+     "tags": [
+      "himno",
+      "frenchcore",
+      "contratiempo",
+      "Do"
+     ],
+     "key": "C2",
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": [
+      200,
+      200
+     ],
+     "duration": 0.186,
+     "channels": 2,
+     "bytes": 32792,
+     "file": "samples/harmony-08/fc-bajo-c2.wav",
+     "notes": "Bajo distorsionado de una corchea en Do, para el contratiempo: la cola del kick duro sin tok.",
+     "peakDb": -1.2,
+     "rmsDb": -7.2,
+     "centroid": 126
+    },
+    {
+     "id": "harmony-08/himno-lead",
+     "slug": "himno-lead",
+     "name": "Lead del himno",
+     "style": "uptempo",
+     "type": "melodía",
+     "cat": "loop",
+     "tags": [
+      "himno",
+      "lead",
+      "supersierra"
+     ],
+     "key": null,
+     "tonality": "Re menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      200,
+      200
+     ],
+     "duration": 4.8,
+     "channels": 2,
+     "bytes": 846764,
+     "file": "samples/harmony-08/himno-lead.wav",
+     "notes": "El gancho (frases de 3 + 3 + 2) sobre Rem – Si♭ – Fa – Do: siete sierras que entran desde abajo, formantes, dos distorsiones, vibrato tardío y su octava, con «sidechain», sala y eco.",
+     "peakDb": -1.2,
+     "truePeakDb": -1,
+     "rmsDb": -8.5,
+     "centroid": 1587
+    },
+    {
+     "id": "harmony-08/himno-acordes",
+     "slug": "himno-acordes",
+     "name": "Acordes del himno",
+     "style": "uptempo",
+     "type": "acordes",
+     "cat": "loop",
+     "tags": [
+      "himno",
+      "acordes",
+      "pad"
+     ],
+     "key": null,
+     "tonality": "Re menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      200,
+      200
+     ],
+     "duration": 4.8,
+     "channels": 2,
+     "bytes": 846764,
+     "file": "samples/harmony-08/himno-acordes.wav",
+     "notes": "Rem – Si♭ – Fa – Do en supersierras largas con mucha sala: para la intro y el break.",
+     "peakDb": -1.1,
+     "rmsDb": -10.1,
+     "centroid": 778
+    },
+    {
+     "id": "harmony-08/himno-coro",
+     "slug": "himno-coro",
+     "name": "Coro del himno",
+     "style": "uptempo",
+     "type": "coro",
+     "cat": "voz",
+     "tags": [
+      "himno",
+      "coro",
+      "aah"
+     ],
+     "key": null,
+     "tonality": "Re menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      200,
+      200
+     ],
+     "duration": 4.8,
+     "channels": 2,
+     "bytes": 846764,
+     "file": "samples/harmony-08/himno-coro.wav",
+     "notes": "Coro sintético «aah» (sopranos y tenores) que sigue los acordes compás a compás.",
+     "peakDb": -1,
+     "rmsDb": -14.1,
+     "centroid": 812
+    },
+    {
+     "id": "harmony-08/himno-piano",
+     "slug": "himno-piano",
+     "name": "Piano del himno",
+     "style": "hardcore",
+     "type": "acordes",
+     "cat": "loop",
+     "tags": [
+      "himno",
+      "piano",
+      "break"
+     ],
+     "key": null,
+     "tonality": "Re menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      200,
+      200
+     ],
+     "duration": 4.8,
+     "channels": 2,
+     "bytes": 846764,
+     "file": "samples/harmony-08/himno-piano.wav",
+     "notes": "Acordes de piano y el gancho una octava arriba: el break de frenchcore.",
+     "peakDb": -1.3,
+     "rmsDb": -10.7,
+     "centroid": 1230
+    },
+    {
+     "id": "harmony-08/himno-arp",
+     "slug": "himno-arp",
+     "name": "Arpegio del himno",
+     "style": "uptempo",
+     "type": "arpegio",
+     "cat": "loop",
+     "tags": [
+      "himno",
+      "arpegio",
+      "pluck"
+     ],
+     "key": null,
+     "tonality": "Re menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      200,
+      200
+     ],
+     "duration": 4.8,
+     "channels": 2,
+     "bytes": 846764,
+     "file": "samples/harmony-08/himno-arp.wav",
+     "notes": "Pluck en semicorcheas por los acordes, con eco a corchea con puntillo.",
+     "peakDb": -1.2,
+     "rmsDb": -13.9,
+     "centroid": 1698
+    },
+    {
+     "id": "harmony-08/fc-cuerdas",
+     "slug": "fc-cuerdas",
+     "name": "Cuerdas en staccato",
+     "style": "hardcore",
+     "type": "acordes",
+     "cat": "loop",
+     "tags": [
+      "himno",
+      "frenchcore",
+      "cuerdas"
+     ],
+     "key": null,
+     "tonality": "Re menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      200,
+      200
+     ],
+     "duration": 4.8,
+     "channels": 2,
+     "bytes": 846764,
+     "file": "samples/harmony-08/fc-cuerdas.wav",
+     "notes": "Cuerdas de sierra en conjunto, cortas y a corcheas, por las notas de cada acorde.",
+     "peakDb": -1,
+     "rmsDb": -13.8,
+     "centroid": 733
+    },
+    {
+     "id": "harmony-08/himno-chops",
+     "slug": "himno-chops",
+     "name": "Chops de voz",
+     "style": "uptempo",
+     "type": "voz",
+     "cat": "voz",
+     "tags": [
+      "himno",
+      "voz",
+      "chops"
+     ],
+     "key": null,
+     "tonality": "Re menor",
+     "loop": true,
+     "bars": 4,
+     "bpm": [
+      200,
+      200
+     ],
+     "duration": 4.8,
+     "channels": 2,
+     "bytes": 846764,
+     "file": "samples/harmony-08/himno-chops.wav",
+     "notes": "Sílabas cortas de soprano sintética («a», «e», «o», «i») por las notas de los acordes, sincopadas, con eco.",
+     "peakDb": -1,
+     "rmsDb": -13,
+     "centroid": 821
+    },
+    {
+     "id": "harmony-08/himno-palma",
+     "slug": "himno-palma",
+     "name": "Palma del himno",
+     "style": "uptempo",
+     "type": "palma",
+     "cat": "perc",
+     "tags": [
+      "himno",
+      "clap"
+     ],
+     "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": null,
+     "duration": 0.593,
+     "channels": 2,
+     "bytes": 104636,
+     "file": "samples/harmony-08/himno-palma.wav",
+     "notes": "Palma de cuatro ráfagas con una caja debajo, saturada.",
+     "peakDb": -2.4,
+     "rmsDb": -21.4,
+     "centroid": 4125
+    },
+    {
+     "id": "harmony-08/himno-charles",
+     "slug": "himno-charles",
+     "name": "Charles del himno",
+     "style": "uptempo",
+     "type": "charles",
+     "cat": "perc",
+     "tags": [
+      "himno",
+      "hi-hat"
+     ],
+     "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": null,
+     "duration": 0.199,
+     "channels": 2,
+     "bytes": 35084,
+     "file": "samples/harmony-08/himno-charles.wav",
+     "notes": "Charles corto y brillante por encima de 8 kHz.",
+     "peakDb": -1.5,
+     "rmsDb": -19.9,
+     "centroid": 15649
+    },
+    {
+     "id": "harmony-08/himno-redoble",
+     "slug": "himno-redoble",
+     "name": "Redoble del himno",
+     "style": "uptempo",
+     "type": "redoble",
+     "cat": "perc",
+     "tags": [
+      "himno",
+      "fill"
+     ],
+     "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": [
+      200,
+      200
+     ],
+     "duration": 1.703,
+     "channels": 2,
+     "bytes": 300400,
+     "file": "samples/harmony-08/himno-redoble.wav",
+     "notes": "Un compás a 200: corcheas, semicorcheas y fusas, subiendo.",
+     "peakDb": -4.2,
+     "rmsDb": -18.3,
+     "centroid": 10616
+    },
+    {
+     "id": "harmony-08/himno-kickroll",
+     "slug": "himno-kickroll",
+     "name": "Redoble de kick",
+     "style": "uptempo",
+     "type": "redoble",
+     "cat": "kick",
+     "tags": [
+      "himno",
+      "kick roll",
+      "fill"
+     ],
+     "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": [
+      200,
+      200
+     ],
+     "duration": 1.194,
+     "channels": 1,
+     "bytes": 105352,
+     "file": "samples/harmony-08/himno-kickroll.wav",
+     "notes": "El kick de Re a semicorcheas durante un compás a 200, subiendo una octava.",
+     "peakDb": -1.7,
+     "rmsDb": -10.7,
+     "centroid": 847
+    },
+    {
+     "id": "harmony-08/himno-subida",
+     "slug": "himno-subida",
+     "name": "Subida del himno",
+     "style": "uptempo",
+     "type": "subida",
+     "cat": "fx",
+     "tags": [
+      "himno",
+      "riser"
+     ],
+     "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": [
+      200,
+      200
+     ],
+     "duration": 3.009,
+     "channels": 2,
+     "bytes": 530848,
+     "file": "samples/harmony-08/himno-subida.wav",
+     "notes": "Dos compases a 200: ruido que se abre y una sierra que sube dos octavas.",
+     "peakDb": -1.9,
+     "rmsDb": -17.1,
+     "centroid": 11312
+    },
+    {
+     "id": "harmony-08/himno-impacto",
+     "slug": "himno-impacto",
+     "name": "Impacto del himno",
+     "style": "uptempo",
+     "type": "impacto",
+     "cat": "fx",
+     "tags": [
+      "himno",
+      "impacto",
+      "plato"
+     ],
+     "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": null,
+     "duration": 3.457,
+     "channels": 2,
+     "bytes": 609852,
+     "file": "samples/harmony-08/himno-impacto.wav",
+     "notes": "Sub que cae, golpe y un plato largo, con sala grande: para el primer tiempo del drop.",
+     "peakDb": -1.8,
+     "rmsDb": -12.9,
+     "centroid": 1549
+    },
+    {
+     "id": "harmony-08/himno-plato-reves",
+     "slug": "himno-plato-reves",
+     "name": "Plato al revés",
+     "style": "uptempo",
+     "type": "transición",
+     "cat": "fx",
+     "tags": [
+      "himno",
+      "reverse"
+     ],
+     "key": null,
+     "tonality": null,
+     "loop": false,
+     "bars": null,
+     "bpm": [
+      200,
+      200
+     ],
+     "duration": 0.6,
+     "channels": 2,
+     "bytes": 105884,
+     "file": "samples/harmony-08/himno-plato-reves.wav",
+     "notes": "Dos tiempos a 200: un plato al revés que crece hasta el golpe.",
+     "peakDb": -2.3,
+     "rmsDb": -12.8,
+     "centroid": 12921
     }
    ]
   }

@@ -114,3 +114,11 @@ test('presets con efectos de pad y notas con duración: llegan al banco nuevo', 
   const osc = B.fromPreset(st, H.data.presets.find((p) => p.id === 'hardcore-oscuro'));
   assert.equal(H.Patterns.noteLen(osc.seq, 3, 13, 8), 8, 'la campana del break, cortada cada medio compás');
 });
+
+test('renderizador de presets: toca la cadena entera con su tempo, sin pasarse de nivel', async () => {
+  const { renderPreset } = await import('../samples/render-preset.mjs');
+  const r = renderPreset('uptempo-himno');
+  assert.ok(Math.abs(r.seconds - 8 * 64 * 0.075) < 1e-9, 'ABCCDBCC a 200 BPM: 38,4 s');
+  let peak = 0; for (const v of r.audio.L) peak = Math.max(peak, Math.abs(v));
+  assert.ok(peak < 0.95 && peak > 0.3);
+});
