@@ -98,3 +98,19 @@ test('rellenos de escuela: subida y tresillo', () => {
   s.patterns[1].len = 16; P.fill(s, 1, 0, 'tresillo');
   assert.deepEqual(hits(P.row(s, 1, 0), 16), [0, 3, 6, 8, 11, 14]);
 });
+
+test('presets con efectos de pad y notas con duración: llegan al banco nuevo', () => {
+  const { H } = load();
+  const B = H.Banks, st = B.defaultState();
+  const ind = B.fromPreset(st, H.data.presets.find((p) => p.id === 'industrial'));
+  assert.equal(ind.pads[5].echo, 35); assert.equal(ind.pads[5].echoDiv, 0.75);
+  assert.equal(ind.pads[6].bits, 6);
+  assert.equal(ind.pads[1].filter, 'lp'); assert.equal(ind.pads[1].cutoff, 2600);
+  assert.equal(ind.pads[0].drive, 0, 'sin fx, limpio');
+  // «x-..» = notas de dos pasos en el patrón B (kick picado)
+  assert.equal(H.Patterns.noteLen(ind.seq, 1, 1, 0), 2);
+  assert.equal(H.Patterns.noteLen(ind.seq, 1, 1, 60), 0, 'las semicorcheas del final, enteras');
+  assert.equal(H.Patterns.row(ind.seq, 1, 1).slice(0, 8), '10001000');
+  const osc = B.fromPreset(st, H.data.presets.find((p) => p.id === 'hardcore-oscuro'));
+  assert.equal(H.Patterns.noteLen(osc.seq, 3, 13, 8), 8, 'la campana del break, cortada cada medio compás');
+});

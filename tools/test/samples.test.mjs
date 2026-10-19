@@ -108,9 +108,9 @@ function chroma(x, a, b) {
   }
   return c.indexOf(Math.max(...c));
 }
-test('melodías de Harmony 04, 05 y 06: cada nota suena a la altura escrita (al menos el 80 %; lo demás, su quinta, cuarta u octava)', async () => {
+test('melodías de Harmony 04 a 07: cada nota suena a la altura escrita (al menos el 80 %; lo demás, su quinta, cuarta u octava)', async () => {
   const S = await import('../samples/synth.mjs');
-  for (const pack of ['harmony-04', 'harmony-05', 'harmony-06']) {
+  for (const pack of ['harmony-04', 'harmony-05', 'harmony-06', 'harmony-07']) {
   const { SCORES } = await import(`../samples/packs/${pack}.mjs`);
   for (const [id, [bpm, notes]] of Object.entries(SCORES)) {
     const w = D.readWav(readFileSync(join(ROOT, 'samples', pack, id + '.wav')));
@@ -134,10 +134,11 @@ test('las recetas siguen dando el mismo audio (reproducible)', async () => {
     'harmony-03': ['ut-screech-lead', 'tk-acid', 'note-bell', 'retro-boom'],
     'harmony-04': ['mk2-bass', 'ut2-raw'],
     'harmony-05': ['it-kick-tail', 'nw-kick-seco'],
-    'harmony-06': ['pt-call', 'pt-bend-arc']
+    'harmony-06': ['pt-call', 'pt-bend-arc'],
+    'harmony-07': ['os-kick-doom', 'ud-kick-zaag']
   };
   const pick = packs.flatMap((p) => (want[p.pack.id] || []).map((id) => p.pack.id + '/' + id));
-  assert.equal(pick.length, 18);
+  assert.equal(pick.length, 20);
   const r = await build({ only: pick, check: true, log: () => {} });
   assert.equal(r.errors, 0);
   assert.equal(r.mismatches, 0);

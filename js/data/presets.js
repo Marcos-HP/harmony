@@ -6,13 +6,15 @@
      pads 1–8  (deck 1)  kick · kick 2 · palma o caja · charles cerrado · charles abierto · percusión · redoble · plato
      pads 9–16 (deck 2)  melodía en bucle · segundo bucle o stab · stab · pad o coro · subida · efecto · MC · grito
    Los bucles van en modo disparo y se lanzan al empezar el compás que toca: duran compases exactos al tempo del preset.
-   Escrito en pasos de semicorchea: x golpe · o golpe suave · . nada · | separa compases (si hay menos de cuatro, se repiten). */
+   Escrito en pasos de semicorchea: x golpe · o golpe suave · - la nota sigue (x--- dura 4 pasos; sin guiones, suena
+   entera) · . nada · | separa compases (si hay menos de cuatro, se repiten).
+   Un pad puede llevar sus efectos de sonido (fx: distorsión, filtro, bits, eco; ver js/lib/banks.js). */
 (function () {
   const H = (window.H = window.H || {});
   H.data = H.data || {};
 
   const r = (txt) => {
-    const s = String(txt).replace(/[\s|]/g, '').replace(/x/g, '1').replace(/o/g, '2').replace(/\./g, '0');
+    const s = String(txt).replace(/[\s|]/g, '').replace(/x/g, '1').replace(/o/g, '2').replace(/\./g, '0');   // el «-» se queda
     let out = s;
     while (out.length < 64) out += s;
     return out.slice(0, 64);
@@ -23,8 +25,21 @@
   const K4 = 'x...x...x...x...', CL = '....x.......x...', OH = '..x...x...x...x.';
   const SUBIDA = `${K4}|${K4}|x.x.x.x.x.x.x.x.|xxxxxxxxxxxxxxxx`;
   const VUELVE = `${NADA}|${NADA}|${NADA}|o...o...o...x.x.`;   // el kick vuelve en el último compás del break
-  const pat = (rows) => ({ len: 64, rows: Object.fromEntries(Object.entries(rows).map(([i, t]) => [i, r(t)])) });
-  const pad = (sampleId, name, o = {}) => ({ sampleId, name, volume: o.v != null ? o.v : 0.9, choke: o.ch || 0, pitch: o.p || 0 });
+  /* patrón: filas de golpes y, de los «-», la duración de cada nota (pat.lens, js/lib/patterns.js) */
+  function pat(rows) {
+    const out = { len: 64, rows: {}, lens: {} };
+    for (const [i, t] of Object.entries(rows)) {
+      const row = r(t);
+      for (let k = 0; k < 64; k++) {
+        if (row[k] !== '1' && row[k] !== '2') continue;
+        let n = 1; while (k + n < 64 && row[k + n] === '-') n++;
+        if (n > 1) (out.lens[i] = out.lens[i] || {})[k] = n;
+      }
+      out.rows[i] = row.replace(/-/g, '0');
+    }
+    return out;
+  }
+  const pad = (sampleId, name, o = {}) => ({ sampleId, name, volume: o.v != null ? o.v : 0.9, choke: o.ch || 0, pitch: o.p || 0, ...(o.fx || {}) });
 
   H.data.presets = [
     {
@@ -152,6 +167,81 @@
         pat({ 0: SUBIDA, 2: `${CL}|${CL}|${CL}|${NADA}`, 5: `${OH}|${OH}|${NADA}|${NADA}`, 8: at(0), 12: at(33), 13: at(56) }),
         pat({ 0: K4, 2: CL, 4: OH, 5: OH, 7: at(0), 9: at(0), 15: at(52) }),
         pat({ 0: VUELVE, 11: at(0), 13: at(28), 14: at(48) })
+      ]
+    },
+    {
+      id: 'hardcore-oscuro', name: 'Hardcore oscuro', school: 'Hardcore oscuro', bpm: 170, swing: 0, tonality: 'Fa menor', chain: 'ABCCDBCC',
+      desc: 'Kick largo que gruñe, órgano siniestro, bajo rumble, coro grave y campana de iglesia. Metal y portazos de fábrica.',
+      pads: [
+        pad('harmony-07/os-kick-doom', 'Kick oscuro'), pad('harmony-07/os-kick-metal', 'Kick con metal'), pad('harmony-07/os-clap', 'Palma oscura', { v: 0.8 }),
+        pad('harmony-07/os-hat', 'Charles de chatarra', { v: 0.5, ch: 1 }), pad('harmony-01/hat-open', 'Charles abierto', { v: 0.45, ch: 1, fx: { filter: 'lp', cutoff: 5000, res: 10 } }),
+        pad('harmony-07/os-pipe', 'Tubo', { v: 0.55 }), pad('harmony-01/fill-toms-180', 'Redoble de toms', { v: 0.75, fx: { drive: 30, shape: 'soft' } }), pad('harmony-07/os-slam', 'Portazo', { v: 0.7 }),
+        pad('harmony-07/os-organ', 'Órgano siniestro', { v: 0.7 }), pad('harmony-07/os-lead', 'Riff oscuro', { v: 0.75 }), pad('harmony-07/os-bass', 'Bajo rumble', { v: 0.8 }),
+        pad('harmony-07/os-choir', 'Coro grave', { v: 0.7 }), pad('harmony-07/os-riser', 'Subida oscura', { v: 0.7 }), pad('harmony-07/os-bell', 'Campana', { v: 0.6 }),
+        pad('harmony-02/fx-demon', 'Voz demonio', { v: 0.8, fx: { echo: 30, echoDiv: 0.75, echoFb: 40 } }), pad('harmony-07/os-scream', 'Chillido', { v: 0.6 })
+      ],
+      patterns: [
+        pat({ 0: K4, 3: '..o...o...o...o.', 5: `${NADA}|..........x.....`, 7: at(0), 11: at(0), 13: at(0, 32) }),
+        pat({ 0: SUBIDA, 2: `${CL}|${CL}|${NADA}|${NADA}`, 6: at(48), 8: at(0), 12: at(28), 14: at(16) }),
+        pat({ 0: K4, 2: CL, 3: 'o...o...o...o...', 4: OH, 7: at(0), 9: at(0, 32), 10: at(0), 15: at(56) }),
+        // en el break, la campana se corta cada medio compás (notas de 8 pasos)
+        pat({ 1: VUELVE, 8: at(0), 11: at(0), 13: 'x-------x-------', 14: at(48) })
+      ]
+    },
+    {
+      id: 'industrial', name: 'Industrial', school: 'Hardcore oscuro', bpm: 170, swing: 0, tonality: 'Fa menor', chain: 'ABCCDBCC',
+      desc: 'Más seco y mecánico: medio tiempo, caja de fábrica, tubos con eco, metal triturado, bajo rumble y un latido en el break.',
+      pads: [
+        pad('harmony-07/os-kick-thud', 'Kick sordo'), pad('harmony-07/os-kick-doom', 'Kick largo', { fx: { filter: 'lp', cutoff: 2600, res: 30 } }), pad('harmony-07/os-snare', 'Caja industrial', { v: 0.8 }),
+        pad('harmony-07/os-hat', 'Charles de chatarra', { v: 0.5, ch: 1 }), pad('harmony-05/mo-perc', 'Golpe industrial', { v: 0.65 }),
+        pad('harmony-07/os-pipe', 'Tubo con eco', { v: 0.6, fx: { echo: 35, echoDiv: 0.75, echoFb: 45 } }), pad('harmony-01/perc-metal', 'Metal triturado', { v: 0.55, fx: { bits: 6 } }), pad('harmony-07/os-slam', 'Portazo', { v: 0.7 }),
+        pad('harmony-07/os-bass', 'Bajo rumble', { v: 0.8 }), pad('harmony-07/os-drone', 'Drone de fábrica', { v: 0.6 }), pad('harmony-07/os-stab', 'Golpe disonante', { v: 0.7, fx: { echo: 25, echoDiv: 0.5, echoFb: 30 } }),
+        pad('harmony-07/os-heart', 'Latido', { v: 0.85 }), pad('harmony-07/os-riser', 'Subida oscura', { v: 0.7 }), pad('harmony-05/mo-screech', 'Chillido', { v: 0.55 }),
+        pad('harmony-02/fx-radio', 'Voz de radio', { v: 0.8, fx: { bits: 6 } }), pad('harmony-02/fx-warning', 'Aviso', { v: 0.8 })
+      ],
+      patterns: [
+        // medio tiempo: kick en el 1 y en la «y» del 2, caja en el 3
+        pat({ 0: 'x.....x.........', 2: '........x.......', 3: 'o.o.o.o.o.o.o.o.', 5: `${NADA}|............x...`, 9: at(0), 7: at(0) }),
+        // kick picado: notas de dos pasos que cortan la cola
+        pat({ 1: 'x-..x-..x-..x-..|x-..x-..x-..x-..|x-x-x-x-x-x-x-x-|xxxxxxxxxxxxxxxx', 2: '....x.......x...|....x.......x...|..x...x...x...x.|x.x.x.x.xxxxxxxx', 6: '...o...o...o...o', 12: at(28) }),
+        pat({ 1: K4, 2: CL, 3: OH, 4: '.......x.......x', 6: '...o...o...o...o', 8: at(0), 10: at(0, 32), 7: at(0), 13: at(56) }),
+        pat({ 0: VUELVE, 9: at(0), 11: 'x.......x.......', 5: at(16, 48), 15: at(0), 14: at(32) })
+      ]
+    },
+    {
+      id: 'uptempo-distorsionado', name: 'Uptempo distorsionado', school: 'Raw / uptempo', bpm: 210, swing: 0, tonality: 'Re menor', chain: 'ABCCDBCC',
+      desc: 'A 210 BPM: kick zaag que zumba como una sierra, screech triturado, acordes cortados, sirena raw y gritos de ruido.',
+      pads: [
+        pad('harmony-07/ud-kick-zaag', 'Kick zaag'), pad('harmony-07/ud-kick-tok', 'Kick tok'), pad('harmony-07/ud-clap', 'Palma', { v: 0.75 }),
+        pad('harmony-07/ud-hat', 'Charles roto', { v: 0.5, ch: 1 }), pad('harmony-01/hat-open', 'Charles abierto', { v: 0.45, ch: 1, fx: { bits: 8 } }),
+        pad('harmony-07/ud-kick-crush', 'Kick triturado', { v: 0.8 }), pad('harmony-07/ud-roll', 'Redoble raw', { v: 0.8 }), pad('harmony-07/ud-impact', 'Impacto', { v: 0.7 }),
+        pad('harmony-07/ud-screech', 'Screech', { v: 0.6 }), pad('harmony-07/ud-chords', 'Acordes cortados', { v: 0.6 }), pad('harmony-04/ut2-raw', 'Riff raw', { v: 0.65 }),
+        pad('harmony-07/ud-siren', 'Sirena raw', { v: 0.6 }), pad('harmony-07/ud-riser', 'Subida plegada', { v: 0.7 }), pad('harmony-07/ud-scream', 'Grito', { v: 0.65 }),
+        pad('harmony-02/mc-uptempo', 'MC Uptempo', { v: 0.85, fx: { drive: 35, shape: 'hard' } }), pad('harmony-07/ud-stutter', 'Tartamudeo', { v: 0.8 })
+      ],
+      patterns: [
+        pat({ 0: K4, 3: '..x...x...x...x.', 7: at(0), 9: at(0), 14: at(48) }),
+        pat({ 1: 'x.xxx.xxx.xxx.xx|x.xxx.xxx.xxx.xx|x.xxx.xxx.xxx.xx|xxxxxxxxxxxxxxxx', 2: `${CL}|${CL}|${NADA}|${NADA}`, 6: at(48), 11: at(0, 16), 12: at(27) }),
+        pat({ 0: K4, 2: CL, 3: 'o.o.o.o.o.o.o.o.', 4: OH, 5: '..............x.', 7: at(0), 8: at(0, 32), 13: at(56), 15: at(60) }),
+        pat({ 0: VUELVE, 9: at(0), 10: at(0, 32), 11: at(48) })
+      ]
+    },
+    {
+      id: 'uptempo-kicks', name: 'Uptempo de kicks', school: 'Raw / uptempo', bpm: 210, swing: 0, tonality: 'Re menor', chain: 'ABCCDBCC',
+      desc: 'El kick como instrumento: kick con bajo inverso en cada tiempo, melodías de kicks rodantes y kick que chilla, con screech y acordes.',
+      pads: [
+        pad('harmony-07/ud-kick-tok', 'Kick tok'), pad('harmony-07/ud-kick-screech', 'Kick que chilla'), pad('harmony-07/ud-clap', 'Palma', { v: 0.75 }),
+        pad('harmony-07/ud-hat', 'Charles roto', { v: 0.5, ch: 1 }), pad('harmony-07/ud-kick-pump', 'Kick con bajo inverso'),
+        pad('harmony-07/ud-kick-melody', 'Melodía de kicks', { v: 0.85 }), pad('harmony-07/ud-roll', 'Redoble raw', { v: 0.8 }), pad('harmony-07/ud-impact', 'Impacto', { v: 0.7 }),
+        pad('harmony-07/ud-raw', 'Golpes raw', { v: 0.65 }), pad('harmony-04/ut2-screech', 'Screech II', { v: 0.6 }), pad('harmony-04/ut2-chords', 'Acordes II', { v: 0.6 }),
+        pad('harmony-07/ud-laser', 'Láser roto', { v: 0.6 }), pad('harmony-07/ud-riser', 'Subida plegada', { v: 0.7 }), pad('harmony-07/ud-scream', 'Grito', { v: 0.65 }),
+        pad('harmony-02/mc-louder', 'Louder', { v: 0.85, fx: { drive: 40, shape: 'hard', echo: 20, echoDiv: 0.5 } }), pad('harmony-02/shout-oi', 'Oi', { v: 0.8, fx: { bits: 6 } })
+      ],
+      patterns: [
+        pat({ 4: K4, 3: '..x...x...x...x.', 10: at(0, 32), 11: at(14, 46) }),
+        pat({ 0: 'x.xxx.xxx.xxx.xx|x.xxx.xxx.xxx.xx|xxxxxxxxxxxxxxxx|xxxxxxxxxxxxxxxx', 2: `${CL}|${CL}|${CL}|${NADA}`, 6: at(48), 12: at(27), 14: at(0) }),
+        pat({ 1: 'x...............', 5: at(0, 32), 2: CL, 3: 'o.o.o.o.o.o.o.o.', 9: at(0, 32), 7: at(0), 13: at(56), 15: at(30) }),
+        pat({ 4: VUELVE, 8: at(0, 32), 10: at(0, 32), 11: at(62) })
       ]
     }
   ];

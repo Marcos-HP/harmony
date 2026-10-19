@@ -1,6 +1,6 @@
 # Samples de Harmony
 
-Construido el 2026-10-18 con tools/samples/build.mjs. Medidas sobre el archivo final (16 bits, 44,1 kHz).
+Construido el 2026-10-19 con tools/samples/build.mjs. Medidas sobre el archivo final (16 bits, 44,1 kHz).
 
 ## Harmony 01 · Hardcore, Newstyle y Uptempo
 
@@ -43,5 +43,12 @@ Licencia: CC0 1.0 (dominio público). Síntesis aditiva en tools/samples/ (Harmo
 
 | Sonido | Estilo · tipo | Dur. | Canales | Pico real | RMS | Centroide | Nota medida | Avisos |
 |---|---|---|---|---|---|---|---|---|
-| Pitidos · break `pt-break` | newstyle · melodía | 5.49 s | 2 | -1.0 dBTP | -5.7 dB | 1519 Hz | — | — |
+
+## Harmony 07 · Oscuro y distorsionado
+
+Licencia: CC0 1.0 (dominio público). Síntesis y procesado digital en tools/samples/ (Harmony), con melodías compuestas para Harmony. Sin grabaciones, sin samples de terceros y sin melodías de nadie.
+
+| Sonido | Estilo · tipo | Dur. | Canales | Pico real | RMS | Centroide | Nota medida | Avisos |
+|---|---|---|---|---|---|---|---|---|
+| Campana de iglesia (Fa) `os-bell` | hardcore · nota | 7.20 s | 2 | -1.0 dBTP | -19.0 dB | 186 Hz | — | — |
 
