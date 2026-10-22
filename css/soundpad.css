@@ -342,3 +342,48 @@
   .sq-chain input[type="text"] { flex: 1; }
 }
 @media (prefers-reduced-motion: reduce) { .sq-rec.is-on .ic { animation: none; } }
+
+/* ---------- piano roll ---------- */
+.sq-melb { font-size: 13px; }
+.sq-rollopen { width: auto; padding: 0 8px; font-size: 10.5px; letter-spacing: .04em; text-transform: uppercase; border: 1px solid var(--line); min-height: 26px; }
+.sq-rollopen:hover { border-color: var(--ink); }
+.sq-melst { overflow: hidden; }
+.sq-mn { position: absolute; inset: 0; display: grid; place-items: center; font: 600 9px/1 var(--f-mono); color: var(--paper); letter-spacing: -.02em; pointer-events: none; }
+.sq-melst.v2 .sq-mn { color: var(--ink); }
+.sq-roll { margin-top: 12px; border: 1px solid var(--ink); }
+.sq-roll-h { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 10px 16px; padding: 12px 14px; border-bottom: 1px solid var(--ink); }
+.sq-roll-t { display: grid; gap: 2px; }
+.sq-roll-t .eyebrow { margin: 0; }
+.sq-roll-t b { display: inline-flex; align-items: center; gap: 8px; font-size: 17px; }
+.sq-roll-t b i { width: 10px; height: 10px; background: var(--c); }
+.sq-roll-t .fine { margin: 0; }
+.sq-roll-ctl { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.sq-roll-len { display: flex; align-items: center; gap: 6px; }
+.sq-roll-len .mono { font-size: 10.5px; color: var(--ink-2); }
+.sq-roll-len button { min-height: 30px; padding: 0 9px; }
+.sq-roll-ctl select + select { margin-left: 4px; }
+.sq-roll-scroll { max-height: 420px; overflow: auto; overscroll-behavior: contain; }
+.sq-roll-body { position: relative; display: grid; grid-template-columns: 52px calc(var(--cols) * var(--cw)); width: max-content; }
+.sq-roll-keys { position: sticky; left: 0; z-index: 3; background: var(--paper); border-right: 1px solid var(--ink); }
+.sq-rk { display: block; width: 52px; height: var(--rh); padding: 0 6px; font: 500 9.5px/var(--rh) var(--f-mono); text-align: right; color: var(--ink-3); border-bottom: 1px solid color-mix(in srgb, var(--line) 50%, transparent); }
+.sq-rk.in { color: var(--ink-2); }
+.sq-rk.is-black { background: color-mix(in srgb, var(--ink) 7%, var(--paper)); }
+.sq-rk.is-tonic { color: var(--ink); font-weight: 700; }
+.sq-rk.is-root { box-shadow: inset 3px 0 0 var(--ink); }
+.sq-rk:hover { background: var(--ink); color: var(--paper); }
+.sq-roll-grid { position: relative; height: calc(var(--rows) * var(--rh)); cursor: crosshair; touch-action: pan-x pan-y; user-select: none; -webkit-user-select: none;
+  background-image: linear-gradient(to right, var(--ink) 1px, transparent 1px), linear-gradient(to right, color-mix(in srgb, var(--ink) 35%, transparent) 1px, transparent 1px), linear-gradient(to right, var(--line) 1px, transparent 1px);
+  background-size: calc(var(--cw) * 16) 100%, calc(var(--cw) * 4) 100%, var(--cw) 100%; }
+.sq-rrow { position: absolute; left: 0; right: 0; height: var(--rh); border-bottom: 1px solid color-mix(in srgb, var(--line) 45%, transparent); pointer-events: none; }
+.sq-rrow.in { background: color-mix(in srgb, var(--ink) 4%, transparent); }
+.sq-rrow.is-tonic { background: color-mix(in srgb, var(--ink) 9%, transparent); }
+.sq-rnotes { position: absolute; inset: 0; }
+.sq-rn { position: absolute; height: calc(var(--rh) - 1px); background: var(--c, var(--ink)); color: var(--paper); font: 600 9px/calc(var(--rh) - 1px) var(--f-mono); padding-left: 3px; overflow: hidden; white-space: nowrap; cursor: grab; box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 40%, transparent); }
+.sq-rn.is-soft { background: color-mix(in srgb, var(--c, var(--ink)) 45%, var(--paper)); color: var(--ink); }
+.sq-rn i { position: absolute; top: 0; right: 0; bottom: 0; width: 6px; cursor: ew-resize; background: color-mix(in srgb, var(--paper) 35%, transparent); }
+.sq-rhead { position: absolute; top: 0; bottom: 0; width: var(--cw); background: color-mix(in srgb, var(--ink) 14%, transparent); pointer-events: none; }
+.sq-roll-help { margin: 0; padding: 10px 14px; max-width: 90ch; }
+@media (hover: none) { .sq-rn i { display: none; } }
+.sq-roll-ctl .sel select { min-width: 4.5em; }
+.sq-roll-ctl .sel select + select { min-width: 8.5em; }
+@media (max-width: 640px) { .sq-roll-ctl .sel { flex-wrap: wrap; } .sq-roll-len { flex-wrap: wrap; } }

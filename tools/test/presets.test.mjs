@@ -122,3 +122,17 @@ test('renderizador de presets: toca la cadena entera con su tempo, sin pasarse d
   let peak = 0; for (const v of r.audio.L) peak = Math.max(peak, Math.abs(v));
   assert.ok(peak < 0.95 && peak > 0.3);
 });
+
+test('renderizador: un pad en modo notas suena con sus notas (y no con sus golpes)', async () => {
+  const { renderPreset } = await import('../samples/render-preset.mjs');
+  const pad = { sampleId: 'harmony-08/up-kick-d2', name: 'Kick', volume: 0.9, choke: 0, pitch: 0 };
+  const empty = { len: 16, rows: {} };
+  const base = { id: 'prueba', name: 'Prueba', school: 'x', bpm: 200, swing: 0, chain: '', desc: 'x', pads: [pad] };
+  // golpes en todos los pasos, pero el pad está en modo notas: solo suena la nota del paso 8
+  const mel = renderPreset({ ...base, melodic: [0], patterns: [{ len: 16, rows: { 0: '1'.repeat(16) }, mel: { 0: [[8, 4, 12, 1]] } }, empty, empty, empty] });
+  const hits = renderPreset({ ...base, patterns: [{ len: 16, rows: { 0: '1'.repeat(16) } }, empty, empty, empty] });
+  const sd = 60 / 200 / 4, sr = 44100, rms = (x, a, b) => { let s = 0; for (let j = Math.round(a * sr); j < Math.round(b * sr); j++) s += x[j] * x[j]; return Math.sqrt(s / (Math.round(b * sr) - Math.round(a * sr))); };
+  assert.ok(rms(mel.audio.L, 0, 8 * sd - 0.005) < 1e-4, 'antes de la nota, silencio (los golpes no suenan)');
+  assert.ok(rms(mel.audio.L, 8 * sd, 12 * sd) > 0.05, 'la nota suena');
+  assert.ok(rms(hits.audio.L, 0, 8 * sd) > 0.05, 'sin modo notas, los golpes suenan');
+});

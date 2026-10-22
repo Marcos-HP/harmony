@@ -175,7 +175,7 @@
 
     /* Dispara un pad. vkey identifica la voz (banco:pad) para pararla o relanzarla sin tocar las demás.
        choke: voces de su grupo de corte, que se paran al disparar este. */
-    async trigger(vkey, pad, { choke = [], bpm } = {}) {
+    async trigger(vkey, pad, { choke = [], bpm, semis = 0, chainKey } = {}) {
       if (!pad || !pad.src) return;
       const ctx = H.Audio.ensure();   // el gesto del usuario despierta el contexto
       if (!ctx || !out()) throw err('noaudio', 'sin web audio');
@@ -188,7 +188,7 @@
       if (pad.reverse) b = reversed(H.Banks.srcKey(pad.src), b);
       choke.forEach((k) => P.stop(k, 0.004));
       if (playing) P.stop(vkey, 0.004, true);   // se relanza: sin avisar de que «ha parado»
-      const rate = Math.pow(2, (pad.pitch || 0) / 12);
+      const rate = Math.pow(2, ((pad.pitch || 0) + semis) / 12);
       // el recorte se mide sobre el sonido tal y como suena (al revés, si va al revés)
       const a = (pad.start || 0) * b.duration, z = (pad.end == null ? 1 : pad.end) * b.duration;
       const len = Math.max(0.005, z - a);
@@ -197,7 +197,7 @@
       const n = ctx.createBufferSource();
       n.buffer = b; n.loop = pad.mode === 'loop'; n.playbackRate.value = rate;
       if (n.loop) { n.loopStart = a; n.loopEnd = z; }
-      n.connect(g); g.connect(chainFor(vkey, pad, bpm));
+      n.connect(g); g.connect(chainFor(chainKey || vkey, pad, bpm));
       const v = { node: n, gain: g, t0: ctx.currentTime, dur: len / rate, loop: n.loop };
       n.onended = () => { if (voices.get(vkey) === v) { voices.delete(vkey); U.emit('pads:voice', vkey); } };
       voices.set(vkey, v);
@@ -209,7 +209,7 @@
        Cada pad del secuenciador es monofónico: un golpe corta el anterior del mismo pad y los de su grupo de corte,
        justo en `when`. vel: 0…1. dur: duración de la nota en segundos (0 = entera: suena el sonido completo, con su
        recorte). Con duración se corta ahí con un fundido corto; si el pad está en modo bucle, se repite hasta entonces. */
-    at(vkey, pad, when, { vel = 1, choke = [], dur = 0, bpm } = {}) {
+    at(vkey, pad, when, { vel = 1, choke = [], dur = 0, bpm, semis = 0, chainKey } = {}) {
       if (!pad || !pad.src) return false;
       const ctx = H.Audio.ctx();
       if (!ctx || !out()) return false;
@@ -218,14 +218,14 @@
       let b = e.buffer;
       if (pad.reverse) b = reversed(k, b);
       [vkey, ...choke].forEach((c) => cutAt(c, when));
-      const rate = Math.pow(2, (pad.pitch || 0) / 12);
+      const rate = Math.pow(2, ((pad.pitch || 0) + semis) / 12);   // semis: la altura de la nota del piano roll
       const a = (pad.start || 0) * b.duration, z = (pad.end == null ? 1 : pad.end) * b.duration, len = Math.max(0.005, z - a);
       const g = ctx.createGain(), n = ctx.createBufferSource();
       g.gain.value = pad.volume * vel;
       const loop = dur > 0 && pad.mode === 'loop';
       n.buffer = b; n.playbackRate.value = rate; n.loop = loop;
       if (loop) { n.loopStart = a; n.loopEnd = z; }
-      n.connect(g); g.connect(chainFor(vkey, pad, bpm));
+      n.connect(g); g.connect(chainFor(chainKey || vkey, pad, bpm));   // las notas de un pad comparten su cadena de efectos
       const v = { node: n, gain: g, t0: when, dur: dur > 0 ? dur : len / rate };
       n.onended = () => { if (seqV.get(vkey) === v) seqV.delete(vkey); };
       seqV.set(vkey, v);

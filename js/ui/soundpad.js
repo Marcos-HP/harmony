@@ -143,6 +143,8 @@
       addToFreePad: (src, o) => SP.addToFreePad(src, o),
       refreshPads: () => render(),
       newBankFromPreset: (id) => SP.newBankFromPreset(id),
+      // una nota del piano roll: el pad transpuesto, con su cadena de efectos, siempre en disparo
+      previewNote: (i, t) => { const p = bank().pads[i]; if (p && p.src) H.PadAudio.trigger(vkey(i) + '~roll', { ...p, mode: 'shot' }, { semis: t, chainKey: vkey(i), bpm: bpmNow() }).catch(() => {}); },
       assignSample: (i, id) => assignSample(i, id),
       assignFile: (i, f) => { sel = i; assignFile(i, f); },
       // abre la biblioteca de Harmony apuntando a ese pad (lo que se añada desde ahí va a él)

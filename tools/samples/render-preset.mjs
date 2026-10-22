@@ -13,8 +13,9 @@ vm.createContext(ctx);
 for (const f of ['js/data/presets.js', 'js/lib/patterns.js', 'js/lib/banks.js']) vm.runInContext(readFileSync(join(ROOT, f), 'utf8'), ctx);
 const H = ctx.window.H;
 
+// id de un preset, o el propio objeto preset (para probar bancos que no están en la lista)
 export function renderPreset(id) {
-  const pr = H.data.presets.find((p) => p.id === id);
+  const pr = typeof id === 'object' ? id : H.data.presets.find((p) => p.id === id);
   if (!pr) throw new Error('No hay preset ' + id);
   const st = H.Banks.defaultState(), b = H.Banks.fromPreset(st, pr), seq = b.seq, P = H.Patterns;
   const sd = P.stepDur(seq.bpm), order = seq.chainOn && seq.chain.length ? seq.chain : [seq.pattern];
@@ -30,13 +31,23 @@ export function renderPreset(id) {
   // pistas por pad (para aplicar sus efectos al final, como la cadena de cada pad en el navegador)
   const tracks = b.pads.map(() => null);
   const voice = b.pads.map(() => null);   // la voz que suena en cada pad: { at, end }
+  const melVoice = new Map();             // pads en modo notas: una voz por altura (acordes)
   let t0 = 0;
   for (const p of order) {
     const pat = seq.patterns[p];
     for (let s = 0; s < pat.len; s++) {
       const when = t0 + (s * sd) + P.swingDelay(seq, s);
+      for (const i of seq.melodic) {
+        if (!audio[i]) continue;
+        for (const [, l, t, v] of P.melStarts(seq, p, i, s)) {
+          const key = i + ':' + t, old = melVoice.get(key);
+          if (old && old.end > when) old.end = when;
+          const x = { at: when, end: when + l * sd, vel: P.VEL[v], pad: i, semis: t };
+          melVoice.set(key, x); (tracks[i] = tracks[i] || []).push(x);
+        }
+      }
       for (const [k, row] of Object.entries(pat.rows)) {
-        const i = +k, v = +row[s]; if (!v || !audio[i]) continue;
+        const i = +k, v = +row[s]; if (!v || !audio[i] || P.isMel(seq, i)) continue;
         // corta lo que sonaba en este pad y en su grupo de corte
         [i, ...H.Banks.chokeMates(b, i)].forEach((j) => { if (voice[j] && voice[j].end > when) voice[j].end = when; });
         const len = P.noteLen(seq, p, i, s);
@@ -48,8 +59,11 @@ export function renderPreset(id) {
   }
   b.pads.forEach((pad, i) => {
     if (!tracks[i]) return;
-    const tl = new Float64Array(n), tr = new Float64Array(n), a = audio[i];
+    const tl = new Float64Array(n), tr = new Float64Array(n), shifted = new Map();
+    // una nota del piano roll suena transpuesta, como en un sampler (cambia el tono y la velocidad)
+    const at = (semis) => { if (!semis) return audio[i]; if (!shifted.has(semis)) { const r = Math.pow(2, semis / 12); shifted.set(semis, { L: D.rate(audio[i].L, r), R: D.rate(audio[i].R, r) }); } return shifted.get(semis); };
     for (const v of tracks[i]) {
+      const a = at(v.semis || 0);
       const s0 = Math.round(v.at * SR), dur = Math.min(a.L.length, v.end === Infinity ? a.L.length : Math.round((v.end - v.at) * SR));
       const fade = Math.round(0.004 * SR);
       for (let j = 0; j < dur && s0 + j < n; j++) {

@@ -179,7 +179,7 @@
       });
       const P = H.Patterns;
       if (P) {
-        b.seq = P.normalize({ bpm: preset.bpm, swing: preset.swing, pattern: 0, patterns: preset.patterns, chain: P.parseChain(preset.chain), chainOn: !!preset.chain });
+        b.seq = P.normalize({ bpm: preset.bpm, swing: preset.swing, pattern: 0, patterns: preset.patterns, melodic: preset.melodic, scale: preset.scale, chain: P.parseChain(preset.chain), chainOn: !!preset.chain });
       }
       s.banks.push(b); s.current = b.id;
       return b;

@@ -66,7 +66,8 @@
       </div>
       <div class="seg sq-bars" role="group" aria-label="Compás a la vista" hidden></div>
       <div class="sq-scroll"><div class="sq-grid" role="grid" aria-label="Pasos del patrón"></div></div>
-      <p class="fine sq-help">Para meter un sonido: «Añadir sonido» al final de la rejilla (en el ordenador también puedes arrastrarlo encima desde la biblioteca o desde tu equipo). Clic: poner o quitar un golpe. Clic derecho, Alt+clic o mantener pulsado: golpe suave (a medio volumen). Con el ratón, arrastra para pintar varios, y arrastra el borde derecho de una nota para alargarla o acortarla (doble clic en el borde: vuelve a sonar entera; en tenue se ve lo que dura el sonido entero). En un pad en modo bucle, una nota larga repite el bucle hasta su final. Los patrones duran 4, 8 o 16 tiempos y se ven de compás en compás (tiempos 1–4, 5–8…); al alargar, los compases nuevos repiten lo que ya había. Cada fila es un pad: el nombre lo escucha; M lo silencia y S lo deja solo. Un golpe corta el anterior del mismo pad y los de su grupo de corte. Los cambios de patrón entran al acabar la vuelta.</p>`;
+      <div class="sq-roll" hidden></div>
+      <p class="fine sq-help">Para meter un sonido: «Añadir sonido» al final de la rejilla (en el ordenador también puedes arrastrarlo encima desde la biblioteca o desde tu equipo). Clic: poner o quitar un golpe. Clic derecho, Alt+clic o mantener pulsado: golpe suave (a medio volumen). Con el ratón, arrastra para pintar varios, y arrastra el borde derecho de una nota para alargarla o acortarla (doble clic en el borde: vuelve a sonar entera; en tenue se ve lo que dura el sonido entero). En un pad en modo bucle, una nota larga repite el bucle hasta su final. Los patrones duran 4, 8 o 16 tiempos y se ven de compás en compás (tiempos 1–4, 5–8…); al alargar, los compases nuevos repiten lo que ya había. Cada fila es un pad: el nombre lo escucha; M lo silencia, S lo deja solo y ♪ la pasa a notas (piano roll: cada nota con su altura y su duración, para melodías, acordes o melodías de kicks). Un golpe corta el anterior del mismo pad y los de su grupo de corte. Los cambios de patrón entran al acabar la vuelta.</p>`;
     const $ = (s) => el.querySelector(s);
     const grid = $('.sq-grid');
 
@@ -142,15 +143,16 @@
             <button class="sq-name" type="button" data-sq="hear" title="Escuchar ${e(name)}"><span class="mono">${String(i + 1).padStart(2, '0')}</span> ${e(name)}</button>
             <button class="sq-ms${mute ? ' is-on' : ''}" type="button" data-sq="mute" aria-pressed="${mute}" title="Silenciar">M</button>
             <button class="sq-ms${solo ? ' is-on' : ''}" type="button" data-sq="solo" aria-pressed="${solo}" title="Solo">S</button>
-            <select class="sq-fill" data-sq="fill" aria-label="Rellenar la fila de ${e(name)}">
+            <button class="sq-ms sq-melb${PT().isMel(s, i) ? ' is-on' : ''}" type="button" data-sq="mel" aria-pressed="${PT().isMel(s, i)}" title="Notas: piano roll (melodías y acordes con este sonido)">♪</button>
+            ${PT().isMel(s, i) ? `<button class="sq-fill sq-rollopen mono" type="button" data-sq="roll">${rollPad === i ? 'Editando ↓' : 'Editar notas'}</button>` : `<select class="sq-fill" data-sq="fill" aria-label="Rellenar la fila de ${e(name)}">
               <option value="">Rellenar…</option>
               ${Object.entries(PT().FILLS).map(([k, f]) => `<option value="${k}">${f.name}</option>`).join('')}
               <option value="left">← Mover un paso</option><option value="right">Mover un paso →</option>
               <option value="whole">Notas enteras (sin duración)</option>
               <option value="clear">Vaciar la fila</option>
-            </select>
+            </select>`}
           </div>
-          <div class="sq-steps">${(() => { const st = rowState(i); return ks.map((k) => cell(name, k, st[k])).join(''); })()}</div>
+          <div class="sq-steps">${PT().isMel(s, i) ? melCells(i, ks) : (() => { const st = rowState(i); return ks.map((k) => cell(name, k, st[k])).join(''); })()}</div>
         </div>`;
       }).join('');
       const free = pads().findIndex((x) => !x.src);
@@ -159,8 +161,126 @@
         <div class="sq-drop fine">${free < 0 ? 'Para otra fila, vacía un pad.' : touch() ? `Pad ${free + 1}: toca «Añadir sonido» y elige con ＋.` : `Arrastra aquí un sonido de la biblioteca o un archivo de audio: entra en el pad ${free + 1}. Encima de una fila, cambia el sonido de ese pad.`}</div>
       </div>`);
       shownNow = -1; paintNow(true);
+      renderRoll();
     }
     const VAL = ['', 'golpe', 'golpe suave'];
+    /* fila en modo notas: los pasos muestran dónde empieza cada nota (con su nombre) y lo que dura; tocarla abre el piano roll */
+    function melCells(i, ks) {
+      const s = seq(), list = PT().mel(s, s.pattern, i), root = rootMidi(i);
+      return ks.map((k) => {
+        const starts = list.filter((n) => n[0] === k), over = list.some((n) => k > n[0] && k < n[0] + n[1]);
+        const top = starts.length ? starts.reduce((a, n) => (n[2] > a[2] ? n : a)) : null;
+        return `<button class="sq-st sq-melst${starts.length ? ' v' + top[3] : over ? ' v1 is-tail' : ' v0'}${k % 4 === 0 ? ' is-beat' : ''}${k === shownNow ? ' is-now' : ''}" type="button" role="gridcell" data-s="${k}" aria-label="Paso ${k + 1}${starts.length ? ': ' + starts.map((n) => noteName(root + n[2])).join(', ') : ''}">${top ? `<span class="sq-mn">${noteName(root + top[2], true)}${starts.length > 1 ? '+' : ''}</span>` : ''}</button>`;
+      }).join('');
+    }
+
+    /* ---------- piano roll ---------- */
+    const NN = ['Do', 'Do#', 'Re', 'Re#', 'Mi', 'Fa', 'Fa#', 'Sol', 'Sol#', 'La', 'Si♭', 'Si'];
+    const noteName = (m, short) => { const pc = ((m % 12) + 12) % 12, o = Math.floor(m / 12) - 1; return short ? NN[pc] + o : NN[pc] + ' ' + o; };
+    const toMidi = (k) => { const m = /^([A-G]#?)(-?\d)$/.exec(k || ''); return m ? 12 * (+m[2] + 1) + ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'].indexOf(m[1]) : null; };
+    /* la nota en la que suena el pad sin transponer: la de su sonido de Harmony (con el tono del pad) o, si no se sabe, Do 4 */
+    function rootMidi(i) {
+      const p = pads()[i], x = p && p.src && p.src.type === 'harmony' && H.Lib ? H.Lib.get(p.src.sampleId) : null;
+      const m = x && x.key ? toMidi(x.key) : null;
+      return (m == null ? 60 : m) + (p ? p.pitch || 0 : 0);
+    }
+    const RTOP = 24, RBOT = -24, RH = 16;
+    let rollPad = null, newLen = 2, rollDrag = null;
+    const colW = () => (touch() ? 22 : 24);
+    let rollShown = null;   // qué pad y qué patrón enseñaba el piano roll (para no mover el scroll al repintar el mismo)
+    function renderRoll() {
+      const box = $('.sq-roll'), s = seq();
+      const old = box.querySelector('.sq-roll-scroll'), keepPos = old && rollShown === rollPad + ':' + s.pattern ? { top: old.scrollTop, left: old.scrollLeft } : null;
+      if (rollPad == null || !PT().isMel(s, rollPad) || !pads()[rollPad] || !pads()[rollPad].src) { rollPad = null; box.hidden = true; box.innerHTML = ''; return; }
+      const i = rollPad, pad = pads()[i], len = s.patterns[s.pattern].len, root = rootMidi(i), W = colW(), sc = s.scale, steps = PT().SCALES[sc.mode].steps;
+      box.hidden = false;
+      box.innerHTML = `
+        <div class="sq-roll-h">
+          <div class="sq-roll-t"><p class="mono eyebrow">Piano roll · patrón ${PT().NAMES[s.pattern]}</p><b class="cat-${pad.cat}"><i></i>${e(pad.name || 'Pad ' + (i + 1))}</b><span class="fine">Sin transponer suena en ${noteName(root)}</span></div>
+          <div class="sq-roll-ctl">
+            <div class="sq-roll-len"><span class="mono">Nota nueva</span><div class="seg" role="group" aria-label="Duración de la nota nueva">${[[1, '1/16'], [2, '1/8'], [4, '1/4'], [8, '1/2'], [16, '1']].map(([v, n]) => `<button type="button" data-sq="rlen" data-v="${v}" aria-pressed="${newLen === v}">${n}</button>`).join('')}</div></div>
+            <label class="sel mono"><span>Escala</span><select id="sq-sroot">${NN.map((n, k) => `<option value="${k}"${k === sc.root ? ' selected' : ''}>${n}</option>`).join('')}</select><select id="sq-smode">${Object.entries(PT().SCALES).map(([k, x]) => `<option value="${k}"${k === sc.mode ? ' selected' : ''}>${x.name}</option>`).join('')}</select></label>
+            <button class="btn btn-sm" type="button" data-sq="rclear">Vaciar notas</button>
+            <button class="btn btn-sm" type="button" data-sq="rclose">Cerrar</button>
+          </div>
+        </div>
+        <div class="sq-roll-scroll">
+          <div class="sq-roll-body cat-${pad.cat}" style="--cw:${W}px;--rh:${RH}px;--cols:${len};--rows:${RTOP - RBOT + 1}">
+            <div class="sq-roll-keys">${Array.from({ length: RTOP - RBOT + 1 }, (_, r) => { const t = RTOP - r, m = root + t, pc = ((m % 12) + 12) % 12, inS = steps.includes((pc - sc.root + 12) % 12); return `<button type="button" class="sq-rk${[1, 3, 6, 8, 10].includes(pc) ? ' is-black' : ''}${inS ? ' in' : ''}${pc === sc.root ? ' is-tonic' : ''}${t === 0 ? ' is-root' : ''}" data-sq="rkey" data-t="${t}">${noteName(m, true)}</button>`; }).join('')}</div>
+            <div class="sq-roll-grid">${Array.from({ length: RTOP - RBOT + 1 }, (_, r) => { const t = RTOP - r, pc = (((root + t) % 12) + 12) % 12, inS = steps.includes((pc - sc.root + 12) % 12); return `<i class="sq-rrow${inS ? ' in' : ''}${pc === sc.root ? ' is-tonic' : ''}" style="top:${r * RH}px"></i>`; }).join('')}<div class="sq-rnotes"></div><i class="sq-rhead" hidden></i></div>
+          </div>
+        </div>
+        <p class="fine sq-roll-help">${touch() ? 'Toca un hueco para poner una nota (con la duración elegida arriba) y toca una nota para quitarla. Desliza para moverte por el piano roll.' : 'Clic en un hueco: nota nueva (arrastra a la derecha para alargarla). Arrastra una nota para moverla de tiempo o de altura; su borde derecho la alarga o acorta; un clic sin mover la quita. Alt+clic: nota suave.'} Las teclas de la izquierda la hacen sonar. Varias notas a la vez suenan juntas (acordes). Las filas claras son la escala elegida.</p>`;
+      paintRollNotes();
+      const sc2 = box.querySelector('.sq-roll-scroll');
+      if (keepPos) { sc2.scrollTop = keepPos.top; sc2.scrollLeft = keepPos.left; }
+      else {
+        // al abrirlo: a la vista, las notas que haya o la nota del sonido
+        const list = PT().mel(s, s.pattern, i), mid = list.length ? list.reduce((a, n) => a + n[2], 0) / list.length : 0;
+        sc2.scrollTop = Math.max(0, (RTOP - mid) * RH - sc2.clientHeight / 2);
+      }
+      rollShown = i + ':' + s.pattern;
+      bindRoll(box.querySelector('.sq-roll-grid'));
+    }
+    function paintRollNotes() {
+      const box = $('.sq-roll .sq-rnotes'); if (!box || rollPad == null) return;
+      const s = seq(), W = colW(), root = rootMidi(rollPad);
+      box.innerHTML = PT().mel(s, s.pattern, rollPad).map((n) => `<b class="sq-rn${n[3] === 2 ? ' is-soft' : ''}" style="left:${n[0] * W}px;top:${(RTOP - n[2]) * RH}px;width:${n[1] * W - 1}px" data-s="${n[0]}" data-t="${n[2]}">${n[1] * W > 34 ? noteName(root + n[2], true) : ''}<i></i></b>`).join('');
+    }
+    function previewNote(t) { if (rollPad != null && api.previewNote) api.previewNote(rollPad, t); }
+    function bindRoll(g) {
+      const at = (ev) => { const r = g.getBoundingClientRect(), W = colW(); return { s: Math.floor((ev.clientX - r.left) / W), t: RTOP - Math.floor((ev.clientY - r.top) / RH), x: ev.clientX - r.left }; };
+      const clampS = (v) => Math.max(0, Math.min(seq().patterns[seq().pattern].len - 1, v));
+      const clampT = (v) => Math.max(RBOT, Math.min(RTOP, v));
+      g.addEventListener('pointerdown', (ev) => {
+        if (ev.button !== 0) return;
+        const s = seq(), p = s.pattern, i = rollPad, c = at(ev), n = PT().melAt(s, p, i, c.s, c.t);
+        if (ev.pointerType === 'touch') { rollDrag = { touch: true, x: ev.clientX, y: ev.clientY, c }; return; }
+        ev.preventDefault(); g.setPointerCapture(ev.pointerId);
+        if (n) {
+          const endX = (n[0] + n[1]) * colW();
+          rollDrag = c.x > endX - 8 ? { mode: 'size', n: [...n] } : { mode: 'move', n: [...n], ds: c.s - n[0], moved: false };
+        } else {
+          const s0 = clampS(c.s), t0 = clampT(c.t);
+          PT().addMel(s, p, i, s0, newLen, t0, ev.altKey ? 2 : 1);
+          rollDrag = { mode: 'size', n: [s0, newLen, t0, ev.altKey ? 2 : 1], fresh: true };
+          paintRollNotes(); previewNote(t0);
+        }
+      });
+      g.addEventListener('pointermove', (ev) => {
+        if (!rollDrag || rollDrag.touch) return;
+        const s = seq(), p = s.pattern, i = rollPad, c = at(ev), d = rollDrag, n = d.n;
+        if (d.mode === 'size') {
+          const l = Math.max(1, Math.min(s.patterns[p].len - n[0], c.s - n[0] + 1));
+          if (l === n[1]) return;
+          PT().delMel(s, p, i, n[0], n[2]); PT().addMel(s, p, i, n[0], l, n[2], n[3]); n[1] = l;
+        } else {
+          const ns = clampS(c.s - d.ds), nt = clampT(c.t);
+          if (ns === n[0] && nt === n[2]) return;
+          PT().delMel(s, p, i, n[0], n[2]); PT().addMel(s, p, i, ns, Math.min(n[1], s.patterns[p].len - ns), nt, n[3]);
+          if (nt !== n[2]) previewNote(nt);
+          n[0] = ns; n[2] = nt; d.moved = true;
+        }
+        paintRollNotes();
+      });
+      const end = (ev) => {
+        const d = rollDrag; rollDrag = null; if (!d) return;
+        const s = seq(), p = s.pattern, i = rollPad;
+        if (d.touch) {
+          if (Math.hypot(ev.clientX - d.x, ev.clientY - d.y) > 8) return;   // era desplazar
+          const c = d.c;
+          if (!PT().delMel(s, p, i, c.s, c.t, true)) { PT().addMel(s, p, i, clampS(c.s), newLen, clampT(c.t), 1); previewNote(clampT(c.t)); }
+        } else if (d.mode === 'move' && !d.moved) PT().delMel(s, p, i, d.n[0], d.n[2]);
+        // solo las notas y la fila del pad: el piano roll no se rehace (ni se mueve)
+        paintRollNotes(); save(); paintRow(i); renderBar();
+      };
+      g.addEventListener('pointerup', end);
+      g.addEventListener('pointercancel', () => { rollDrag = null; });
+    }
+    function paintRollHead(k) {
+      const h = $('.sq-roll .sq-rhead'); if (!h) return;
+      h.hidden = k < 0; if (k >= 0) h.style.left = k * colW() + 'px';
+    }
     /* Cómo se ve cada paso de una fila: el golpe y la cola de la nota.
        Con duración, la cola es la nota (sólida); sin ella, se ve en tenue lo que dura el sonido entero.
        El asa (para alargar o acortar con el ratón) va en el último paso de la nota. */
@@ -192,6 +312,7 @@
     /* repinta una fila entera (una nota cambia también los pasos de su cola) */
     function paintRow(i) {
       const r = grid.querySelector(`.sq-row[data-i="${i}"]`); if (!r) return;
+      if (PT().isMel(seq(), i)) { const a0 = bar * PT().BAR; r.querySelector('.sq-steps').innerHTML = melCells(i, Array.from({ length: PT().BAR }, (_, j) => a0 + j)); return; }
       const st = rowState(i), pad = pads()[i], name = pad.name || 'Pad ' + (i + 1);
       r.querySelectorAll('.sq-st').forEach((b) => {
         const k = +b.dataset.s, c = st[k];
@@ -212,6 +333,7 @@
         const j = k - bar * PT().BAR;   // la columna, si ese paso está en el compás a la vista
         if (k >= 0 && j >= 0 && j < PT().BAR) grid.querySelectorAll(`.sq-st[data-s="${k}"], .sq-ruler .sq-n:nth-child(${j + 1})`).forEach((x) => x.classList.add('is-now'));
         shownNow = k;
+        paintRollHead(k);
         // qué compás está sonando
         const lb = k >= 0 ? Math.floor(k / PT().BAR) : -1;
         if (lb !== liveBar) { liveBar = lb; el.querySelectorAll('.sq-bars button').forEach((b) => b.classList.toggle('is-live', +b.dataset.b === lb)); }
@@ -227,7 +349,8 @@
         if (m.t > now) break;
         lastMark = m.t;
         const s = seq(), pt = s.patterns[m.pat];
-        for (const kk of Object.keys(pt.rows)) if (+pt.rows[kk][m.step] && PT().audible(s, +kk)) api.flash(+kk);
+        for (const kk of Object.keys(pt.rows)) if (+pt.rows[kk][m.step] && PT().audible(s, +kk) && !PT().isMel(s, +kk)) api.flash(+kk);
+        for (const i of s.melodic) if (PT().audible(s, i) && (pt.mel[i] || []).some((n) => n[0] === m.step)) api.flash(i);
         if (m.step === 0) paintLive(m.pat);
       }
       raf = requestAnimationFrame(loop);
@@ -261,7 +384,18 @@
       U.toast('Nota entera: suena el sonido completo');
     });
     grid.addEventListener('contextmenu', (ev) => { if (ev.target.closest('.sq-st')) ev.preventDefault(); });
+    /* abrir el piano roll de un pad en modo notas, con el paso k a la vista */
+    function openRoll(i, k) {
+      const same = rollPad === i;
+      rollPad = i; if (!same) rollShown = null;
+      renderGrid();
+      const sc = $('.sq-roll-scroll'); if (sc && k != null) sc.scrollLeft = Math.max(0, k * colW() - 60);
+      const box = $('.sq-roll'); if (box && box.scrollIntoView) box.scrollIntoView({ behavior: U.reducedMotion() ? 'auto' : 'smooth', block: 'nearest' });
+    }
     grid.addEventListener('pointerdown', (ev) => {
+      // en una fila en modo notas, los pasos abren su piano roll
+      const mc = ev.target.closest('.sq-melst');
+      if (mc) { if (ev.pointerType !== 'touch') ev.preventDefault(); openRoll(+mc.closest('.sq-row').dataset.i, +mc.dataset.s); return; }
       const gr = ev.target.closest('.sq-grip');
       if (gr && ev.pointerType !== 'touch' && ev.button === 0) {
         ev.preventDefault();
@@ -310,6 +444,7 @@
     grid.addEventListener('click', (ev) => {
       const b = ev.target.closest('.sq-st');
       if (!b || ev.detail !== 0) return;
+      if (b.classList.contains('sq-melst')) { openRoll(+b.closest('.sq-row').dataset.i, +b.dataset.s); return; }
       const i = +b.closest('.sq-row').dataset.i, k = +b.dataset.s;
       PT().toggle(seq(), seq().pattern, i, k, ev.altKey); paintCell(i, k); save(); renderBar();
     });
@@ -325,6 +460,17 @@
       else if (a === 'len') { PT().setLen(s, s.pattern, +b.dataset.len); save(); renderBar(); renderGrid(); }
       else if (a === 'bar') { bar = +b.dataset.b; renderBars(); renderGrid(); }
       else if (a === 'hear') api.fire(i);
+      else if (a === 'mel') {
+        const on = !PT().isMel(s, i); PT().setMel(s, i, on); save();
+        if (on) { openRoll(i, 0); U.toast(`${pads()[i].name || 'Pad ' + (i + 1)} en modo notas: escribe la melodía en el piano roll (sus golpes se guardan)`); }
+        else { if (rollPad === i) rollPad = null; renderGrid(); }
+        renderBar();
+      }
+      else if (a === 'roll') openRoll(i, 0);
+      else if (a === 'rlen') { newLen = +b.dataset.v; el.querySelectorAll('[data-sq="rlen"]').forEach((x) => x.setAttribute('aria-pressed', +x.dataset.v === newLen)); }
+      else if (a === 'rclose') { rollPad = null; renderGrid(); }
+      else if (a === 'rclear') { if (rollPad != null) { PT().clearMel(s, s.pattern, rollPad); save(); renderGrid(); renderBar(); U.toast(`Notas del patrón ${PT().NAMES[s.pattern]} vaciadas`); } }
+      else if (a === 'rkey') previewNote(+b.dataset.t);
       else if (a === 'mute' || a === 'solo') { PT().flag(s, a, i); save(); renderGrid(); }
       else if (a === 'kit') kit(b.dataset.kit);
       else if (a === 'preset') preset(b.dataset.preset);
@@ -359,6 +505,7 @@
       else if (t.id === 'sq-chain-on') { s.chainOn = t.checked; if (t.checked && !s.chain.length) U.toast('Escribe la cadena con las letras de los patrones: AABA, ABAC…'); save(); renderBar(); }
       else if (t.id === 'sq-chain') { s.chain = PT().parseChain(t.value); t.value = PT().chainText(s.chain); if (s.chain.length && !s.chainOn) s.chainOn = true; save(); renderBar(); }
       else if (t.id === 'sq-act') { const v = t.value; t.value = ''; action(v); }
+      else if (t.id === 'sq-sroot' || t.id === 'sq-smode') { s.scale = { root: +$('#sq-sroot').value, mode: $('#sq-smode').value }; save(); renderRoll(); }
       else if (t.matches('.sq-fill')) { const i = +t.closest('.sq-row').dataset.i, v = t.value; t.value = ''; if (v) { PT().fill(s, s.pattern, i, v); save(); renderGrid(); renderBar(); } }
     });
     el.addEventListener('input', (ev) => {

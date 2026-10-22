@@ -229,3 +229,28 @@ test('duración de las notas: se pone, se acorta con la siguiente, se mueve y se
   P.fill(n, 0, 0, 'whole'); assert.equal(P.noteLen(n, 0, 0, 0), 0, '«notas enteras» quita las duraciones');
   P.setNoteLen(n, 0, 0, 0, 4); P.clearRow(n, 0); assert.equal(P.noteLen(n, 0, 0, 0), 0);
 });
+
+test('piano roll: notas con altura y duración, modo notas por pad, y se guardan', () => {
+  const ctx = { window: {} };
+  vm.createContext(ctx);
+  vm.runInContext(readFileSync(ROOT + 'js/lib/patterns.js', 'utf8'), ctx);
+  const P = ctx.window.H.Patterns, s = P.create();
+  assert.equal(P.isMel(s, 3), false);
+  P.setMel(s, 3, true); assert.deepEqual([...s.melodic], [3]);
+  P.addMel(s, 0, 3, 0, 4, 0); P.addMel(s, 0, 3, 0, 4, 3); P.addMel(s, 0, 3, 0, 2, 7, 2);   // un acorde en el paso 0
+  P.addMel(s, 0, 3, 8, 2, -5);
+  assert.equal(P.mel(s, 0, 3).length, 4);
+  assert.equal(P.melStarts(s, 0, 3, 0).length, 3, 'tres notas a la vez');
+  P.addMel(s, 0, 3, 0, 8, 3);   // la misma nota en el mismo sitio: se sustituye
+  assert.equal(P.mel(s, 0, 3).length, 4); assert.equal(P.melAt(s, 0, 3, 6, 3)[1], 8);
+  assert.equal(P.delMel(s, 0, 3, 9, -5, true), true, 'quitar por un paso que tapa la nota');
+  assert.equal(P.addMel(s, 0, 3, 62, 10, 50) >= 0, false, 'fuera de rango (más de 36 semitonos) no entra');
+  // lo guardado se normaliza y lo raro se descarta
+  const n = P.normalize(JSON.parse(JSON.stringify({ ...s, patterns: [{ len: 64, rows: {}, mel: { 3: [[0, 4, 0, 1], [2, 99, 5, 2], ['x'], [70, 1, 0, 1]] } }] })));
+  assert.deepEqual(JSON.parse(JSON.stringify(n.patterns[0].mel[3])), [[0, 4, 0, 1], [2, 62, 5, 2]]);
+  assert.deepEqual([...n.melodic], [3]); assert.equal(n.scale.mode, 'menor');
+  // al alargar el patrón, las notas se repiten; vaciar el pad las quita y lo saca del modo notas
+  s.patterns[1].len = 16; P.addMel(s, 1, 3, 2, 2, 5); P.setLen(s, 1, 64);
+  assert.equal(P.mel(s, 1, 3).length, 4);
+  P.clearRow(s, 3); assert.equal(P.mel(s, 0, 3).length, 0); assert.equal(P.isMel(s, 3), false);
+});

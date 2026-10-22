@@ -36,9 +36,17 @@
   function schedule(b, seq, t) {
     const pt = seq.patterns[pat], PT = H.Patterns;
     const when = t + PT.swingDelay(seq, step);
+    // pads en modo notas (piano roll): cada nota con su altura y su duración; varias a la vez hacen un acorde
+    for (const i of seq.melodic) {
+      const pad = b.pads[i];
+      if (!pad || !pad.src || !PT.audible(seq, i)) continue;
+      for (const [, l, t, v] of PT.melStarts(seq, pat, i, step)) {
+        H.PadAudio.at(vkey(b, i) + '~' + t, pad, when, { vel: PT.VEL[v], dur: l * PT.stepDur(seq.bpm), bpm: seq.bpm, semis: t, chainKey: vkey(b, i) });
+      }
+    }
     for (const k of Object.keys(pt.rows)) {
       const i = +k, v = +pt.rows[k][step];
-      if (!v || !PT.audible(seq, i)) continue;
+      if (!v || !PT.audible(seq, i) || PT.isMel(seq, i)) continue;
       const pad = b.pads[i];
       if (!pad || !pad.src) continue;
       const n = PT.noteLen(seq, pat, i, step);   // pasos de duración (0 = la nota suena entera)
