@@ -14,7 +14,8 @@ for (const f of ['js/data/presets.js', 'js/lib/patterns.js', 'js/lib/banks.js'])
 const H = ctx.window.H;
 
 // id de un preset, o el propio objeto preset (para probar bancos que no están en la lista)
-export function renderPreset(id) {
+// opts.master = false: la mezcla sin limitador ni normalizar (para comparar niveles de pads)
+export function renderPreset(id, opts = {}) {
   const pr = typeof id === 'object' ? id : H.data.presets.find((p) => p.id === id);
   if (!pr) throw new Error('No hay preset ' + id);
   const st = H.Banks.defaultState(), b = H.Banks.fromPreset(st, pr), seq = b.seq, P = H.Patterns;
@@ -82,6 +83,7 @@ export function renderPreset(id) {
     for (let j = 0; j < n; j++) { L[j] += fl[j]; R[j] += fr[j]; }
   });
   // máster: un poco de margen, limitador y −1 dBTP (en el navegador va el compresor del máster de Harmony)
+  if (opts.master === false) return { audio: D.stereo(L, R), preset: pr, seconds: total * sd };
   let out = D.stereo(D.gain(L, 0.7), D.gain(R, 0.7));
   out = D.limitSt(out, -1.3);
   out = D.normalizeTP(out, -1);

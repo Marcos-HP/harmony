@@ -136,3 +136,32 @@ test('renderizador: un pad en modo notas suena con sus notas (y no con sus golpe
   assert.ok(rms(mel.audio.L, 8 * sd, 12 * sd) > 0.05, 'la nota suena');
   assert.ok(rms(hits.audio.L, 0, 8 * sd) > 0.05, 'sin modo notas, los golpes suenan');
 });
+
+test('presets en modo notas: notas dentro del patrón, en su escala, y los pads en modo notas las tienen', () => {
+  const { H, byId } = load();
+  const NN = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+  const midi = (k) => { const m = /^([A-G]#?)(-?\d)$/.exec(k); return 12 * (+m[2] + 1) + NN.indexOf(m[1]); };
+  const mel = H.data.presets.filter((p) => p.melodic);
+  assert.ok(mel.length >= 2);
+  for (const pr of mel) {
+    const sc = H.Patterns.SCALES[pr.scale.mode].steps.map((x) => (x + pr.scale.root) % 12);
+    const ok = new Set([...sc, (pr.scale.root + 10) % 12]);   // menor armónica más la séptima natural (el acorde de Do en Re menor)
+    for (const i of pr.melodic) {
+      const s = byId.get(pr.pads[i].sampleId);
+      assert.ok(s.key, `${pr.id}: el pad ${i} en modo notas necesita un sonido con nota`);
+      const root = midi(s.key) + (pr.pads[i].pitch || 0);
+      const all = pr.patterns.flatMap((p) => p.mel[i] || []);
+      assert.ok(all.length > 0, `${pr.id}: el pad ${i} en modo notas no tiene notas`);
+      for (const [st, l, t, v] of all) {
+        assert.ok(st >= 0 && st + l <= 64 && l >= 1 && (v === 1 || v === 2), `${pr.id}: nota mal formada`);
+        assert.ok(Math.abs(t) <= 24, `${pr.id}: pad ${i} transpuesto ${t} semitonos`);
+        assert.ok(ok.has((root + t) % 12), `${pr.id}: pad ${i}, paso ${st}: ${NN[(root + t) % 12]} fuera de escala`);
+      }
+    }
+    // llegan al banco y el secuenciador las toca (y no los golpes de esos pads)
+    const b = H.Banks.fromPreset(H.Banks.defaultState(), pr);
+    assert.equal(b.seq.melodic.join(), pr.melodic.join());
+    assert.equal(b.seq.scale.mode, pr.scale.mode);
+    assert.ok(b.seq.patterns.every((p) => H.Patterns.hasMel(p)), 'los cuatro patrones traen notas');
+  }
+});

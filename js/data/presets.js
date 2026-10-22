@@ -8,7 +8,10 @@
    Los bucles van en modo disparo y se lanzan al empezar el compás que toca: duran compases exactos al tempo del preset.
    Escrito en pasos de semicorchea: x golpe · o golpe suave · - la nota sigue (x--- dura 4 pasos; sin guiones, suena
    entera) · . nada · | separa compases (si hay menos de cuatro, se repiten).
-   Un pad puede llevar sus efectos de sonido (fx: distorsión, filtro, bits, eco; ver js/lib/banks.js). */
+   Un pad puede llevar sus efectos de sonido (fx: distorsión, filtro, bits, eco; ver js/lib/banks.js).
+   Un pad en modo notas (melodic: [...]) toca su sonido transpuesto desde el piano roll: sus notas se escriben con
+   notas(raíz del pad, compás 1, compás 2…), un elemento por semicorchea separado por espacios: D4 nota · d4 nota suave
+   · D4+F4+A4 acorde · - la nota sigue · . nada. on('D2', 'x---x---') pone esa nota en los golpes de una fila. */
 (function () {
   const H = (window.H = window.H || {});
   H.data = H.data || {};
@@ -26,8 +29,8 @@
   const SUBIDA = `${K4}|${K4}|x.x.x.x.x.x.x.x.|xxxxxxxxxxxxxxxx`;
   const VUELVE = `${NADA}|${NADA}|${NADA}|o...o...o...x.x.`;   // el kick vuelve en el último compás del break
   /* patrón: filas de golpes y, de los «-», la duración de cada nota (pat.lens, js/lib/patterns.js) */
-  function pat(rows) {
-    const out = { len: 64, rows: {}, lens: {} };
+  function pat(rows, mel) {
+    const out = { len: 64, rows: {}, lens: {}, mel: mel || {} };
     for (const [i, t] of Object.entries(rows)) {
       const row = r(t);
       for (let k = 0; k < 64; k++) {
@@ -39,7 +42,45 @@
     }
     return out;
   }
+  /* notas del piano roll (pat.mel): semitonos respecto a la raíz del pad (la nota de su sonido) */
+  const NOTE = { C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11 };
+  const midi = (n) => { const m = /^([A-G])(#?)(-?\d)$/i.exec(n); if (!m) throw new Error('Nota mal escrita: ' + n); return 12 * (+m[3] + 1) + NOTE[m[1].toUpperCase()] + (m[2] ? 1 : 0); };
+  function notas(root, ...bars) {
+    const r0 = midi(root), toks = bars.join(' ').replace(/\|/g, ' ').trim().split(/\s+/), out = [];
+    let all = toks; while (all.length < 64) all = all.concat(toks);
+    all = all.slice(0, 64);
+    all.forEach((t, k) => {
+      if (t === '-' || t === '.') return;
+      let n = 1; while (k + n < 64 && all[k + n] === '-') n++;
+      t.split('+').forEach((x) => out.push([k, n, midi(x) - r0, x[0] === x[0].toLowerCase() ? 2 : 1]));
+    });
+    return out;
+  }
+  /* una nota en los golpes de una fila de golpes: on('D2', 'x---x---') → «D2 - - - D2 - - -» */
+  const on = (note, row) => [...row.replace(/[\s|]/g, '')].map((c) => (c === 'x' ? note : c === 'o' ? note.toLowerCase() : c)).join(' ');
   const pad = (sampleId, name, o = {}) => ({ sampleId, name, volume: o.v != null ? o.v : 0.9, choke: o.ch || 0, pitch: o.p || 0, ...(o.fx || {}) });
+
+  /* ---- partes de los presets en modo notas ---- */
+  const K4L = 'x---x---x---x---', OCH = 'x-x-x-x-x-x-x-x-';
+  const entero = (ch) => ch + ' -'.repeat(15);                                    // una nota o acorde que dura el compás
+  const contra = (ch) => `. . ${ch} - . . ${ch} - . . ${ch} - . . ${ch} -`;        // a contratiempo, de corchea
+  const bajo = (n, oct) => `. . ${n} - . . ${n} - . . ${n} - . . ${oct} -`;       // contratiempo con salto de octava al final
+  const calla = NADA.split('').join(' ');
+  // Uptempo melódico: Rem – Si♭ – Do – La (menor armónica), un acorde por compás
+  const UM = { Dm: 'D4+F4+A4', Bb: 'D4+F4+A#4', C: 'E4+G4+C5', A: 'C#4+E4+A4' };
+  const UM_LEAD = ['A4 - - - F4 - A4 - D5 - - - - - C5 -', 'A#4 - - - A4 - F4 - D4 - - - - - F4 -',
+    'G4 - - - E4 - G4 - C5 - - - - - A#4 -', 'A4 - - - - - C#5 - E5 - - - D5 - C#5 -'];
+  const UM_CHOPS = ['D4 - . F4 - . A4 - D5 - . A4 - . F4 -', 'D4 - . F4 - . A#4 - D5 - . A#4 - . F4 -',
+    'E4 - . G4 - . C5 - E5 - . C5 - . G4 -', 'C#4 - . E4 - . A4 - C#5 - . A4 - . E4 -'];
+  const suave = (bar) => bar.toLowerCase();
+  // Frenchcore melódico: Rem – Solm – Si♭ – La
+  const FM = { Dm: 'D4+F4+A4', Gm: 'D4+G4+A#4', Bb: 'D4+F4+A#4', A: 'C#4+E4+A4' };
+  const FM_LEAD = ['D5 - - - - - A4 - D5 - E5 - F5 - - -', 'G5 - - - F5 - E5 - D5 - - - A#4 - - -',
+    'F5 - - - - - D5 - A#4 - D5 - F5 - - -', 'E5 - - - C#5 - - - A4 - - - C#5 - E5 -'];
+  const arpe = (a, b, c) => Array(4).fill(`${a} ${b} ${c} ${b}`).join(' ');      // arpegio de semicorcheas
+  const FM_ARP = [arpe('d5', 'a4', 'f4'), arpe('d5', 'a#4', 'g4'), arpe('d5', 'a#4', 'f4'), arpe('e5', 'c#5', 'a4')];
+  const FM_CHOPS = ['. . . . . . . . A4 - . A4 - . D5 -', '. . . . . . . . A#4 - . A#4 - . G5 -',
+    '. . . . . . . . A#4 - . A#4 - . F5 -', '. . . . . . . . C#5 - . C#5 - . E5 -'];
 
   H.data.presets = [
     {
@@ -289,6 +330,79 @@
           5: CL, 6: 'o.o.o.o.o.o.o.o.', 7: at(0), 10: at(0) }),
         // break: piano, coro y chops; vuelve el kick con el bajo de Do al final
         pat({ 0: VUELVE, 4: `${NADA}|${NADA}|${NADA}|..x...x.........`, 8: at(0), 11: at(0), 15: at(0) })
+      ]
+    },
+    {
+      id: 'uptempo-melodico', name: 'Uptempo melódico', school: 'Raw / uptempo', bpm: 200, swing: 0, tonality: 'Re menor armónica', chain: 'ABCCDBCC',
+      melodic: [0, 8, 9, 10, 11], scale: { root: 2, mode: 'armonica' },
+      desc: 'Todo lo que suena a nota sale del piano roll: un solo kick que toca los acordes (Rem – Si♭ – Do – La) y una melodía de kicks, bajo a contratiempo, órgano en acordes, lead y chops de voz.',
+      pads: [
+        pad('harmony-08/up-kick-d2', 'Kick (notas)', { v: 0.8 }), pad('harmony-07/ud-kick-tok', 'Kick tok', { v: 0.75 }), pad('harmony-08/himno-palma', 'Palma', { v: 0.75 }),
+        pad('harmony-08/himno-charles', 'Charles', { v: 0.45, ch: 1 }), pad('harmony-05/rt-hat-open', 'Charles abierto', { v: 0.5, ch: 1 }),
+        pad('harmony-01/perc-metal', 'Metal', { v: 0.45 }), pad('harmony-08/himno-redoble', 'Redoble', { v: 0.75 }), pad('harmony-08/himno-impacto', 'Impacto', { v: 0.7 }),
+        pad('harmony-03/note-lead', 'Lead (notas)', { v: 0.8 }), pad('harmony-08/fc-bajo-d2', 'Bajo (notas)', { v: 0.6 }),
+        pad('harmony-03/note-organ', 'Órgano (notas)', { v: 0.35 }), pad('harmony-02/choir-chop-ah', 'Chops «ah» (notas)', { v: 0.45 }),
+        pad('harmony-08/himno-subida', 'Subida', { v: 0.7 }), pad('harmony-08/himno-plato-reves', 'Plato al revés', { v: 0.65 }),
+        pad('harmony-02/mc-louder', 'Louder', { v: 0.85 }), pad('harmony-07/ud-scream', 'Grito', { v: 0.6 })
+      ],
+      patterns: [
+        // intro: órgano a contratiempo y chops; el kick y el bajo entran en los dos últimos compases
+        pat({ 3: `${NADA}|${NADA}|${OH}|${OH}` }, {
+          0: notas('D2', calla, calla, on('C2', K4L), on('A1', K4L)),
+          9: notas('D2', calla, calla, bajo('C2', 'C3'), bajo('A1', 'A2')),
+          10: notas('C4', contra(UM.Dm), contra(UM.Bb), contra(UM.C), contra(UM.A)),
+          11: notas('C#4', ...UM_CHOPS) }),
+        // subida: el kick pasa a corcheas y acaba en un arpegio de La que sube al drop
+        pat({ 2: `${CL}|${CL}|x...x...x...x...|x.x.x.x.x.x.x.x.`, 6: at(48), 12: at(32), 13: at(56), 14: at(0) }, {
+          0: notas('D2', on('D2', K4L), on('A#1', K4L), on('C2', OCH), 'A1 A1 A1 A1 A1 A1 A1 A1 C#2 C#2 C#2 C#2 E2 E2 E2 E2'),
+          9: notas('D2', bajo('D2', 'D3'), bajo('A#1', 'A#2'), calla, calla),
+          10: notas('C4', contra(UM.Dm), contra(UM.Bb), on(UM.C, OCH), on(UM.A, OCH)) }),
+        // drop: el kick por los acordes con una melodía de kicks en el cuarto compás, bajo, lead y el órgano suave
+        pat({ 2: CL, 3: '..x...x...x...x.', 5: '......o.......o.', 7: at(0), 15: at(60) }, {
+          0: notas('D2', on('D2', K4L), on('A#1', K4L), on('C2', K4L), 'E2 - E2 E2 A2 - E2 - C#2 - E2 - A2 - A2 -'),
+          8: notas('C4', ...UM_LEAD),
+          9: notas('D2', bajo('D2', 'D3'), bajo('A#1', 'A#2'), bajo('C2', 'C3'), bajo('A1', 'A2')),
+          10: notas('C4', ...[UM.Dm, UM.Bb, UM.C, UM.A].map((c) => suave(contra(c)))) }),
+        // break: acordes largos, el lead suave presentando la melodía y los chops; el kick vuelve en el último compás
+        pat({ 13: at(56) }, {
+          0: notas('D2', calla, calla, calla, 'a1 - - - a1 - - - a1 - - - A1 - A1 -'),
+          8: notas('C4', ...UM_LEAD.map(suave)),
+          10: notas('C4', entero(UM.Dm), entero(UM.Bb), entero(UM.C), entero(UM.A)),
+          11: notas('C#4', ...UM_CHOPS) })
+      ]
+    },
+    {
+      id: 'frenchcore-melodico', name: 'Frenchcore melódico', school: 'Frenchcore', bpm: 200, swing: 0, tonality: 'Re menor', chain: 'ABCCDBCC',
+      melodic: [1, 8, 9, 10, 11], scale: { root: 2, mode: 'armonica' },
+      desc: 'Kick de frenchcore en los tiempos y todo lo demás desde el piano roll (Rem – Solm – Si♭ – La): un solo bajo que sigue los acordes, piano, arpegio de pluck, lead saturado y chops de voz.',
+      pads: [
+        pad('harmony-08/fc-kick', 'Kick frenchcore', { v: 0.8 }), pad('harmony-08/fc-bajo-d2', 'Bajo (notas)', { v: 0.65 }), pad('harmony-08/himno-palma', 'Palma', { v: 0.75 }),
+        pad('harmony-08/himno-charles', 'Charles', { v: 0.4, ch: 1 }), pad('harmony-05/rt-hat-open', 'Charles abierto', { v: 0.45, ch: 1 }),
+        pad('harmony-01/perc-metal', 'Metal', { v: 0.45 }), pad('harmony-08/himno-redoble', 'Redoble', { v: 0.75 }), pad('harmony-08/himno-impacto', 'Impacto', { v: 0.7 }),
+        pad('harmony-03/note-piano', 'Piano (notas)', { v: 0.45 }), pad('harmony-03/note-pluck', 'Pluck (notas)', { v: 0.6 }),
+        pad('harmony-03/note-lead', 'Lead (notas)', { v: 0.2, fx: { drive: 20, shape: 'soft' } }), pad('harmony-02/choir-chop-ey', 'Chops «ey» (notas)', { v: 0.45 }),
+        pad('harmony-08/himno-subida', 'Subida', { v: 0.7 }), pad('harmony-08/himno-plato-reves', 'Plato al revés', { v: 0.65 }),
+        pad('harmony-02/shout-hey', 'Hey', { v: 0.8 }), pad('harmony-07/ud-scream', 'Grito', { v: 0.55 })
+      ],
+      patterns: [
+        // intro: piano en acordes; el kick y el arpegio entran en la segunda mitad
+        pat({ 0: `${NADA}|${NADA}|${K4}|${K4}`, 3: `${NADA}|${NADA}|${OH}|${OH}` }, {
+          8: notas('C4', entero(FM.Dm), entero(FM.Gm), entero(FM.Bb), entero(FM.A)),
+          9: notas('C4', calla, calla, FM_ARP[2], FM_ARP[3]) }),
+        // subida: el kick se acelera, el arpegio sigue y el bajo marca los dos primeros acordes
+        pat({ 0: SUBIDA, 2: `${CL}|${CL}|${NADA}|${NADA}`, 6: at(48), 12: at(32), 13: at(56), 14: at(0) }, {
+          1: notas('D2', bajo('D2', 'D3'), bajo('G1', 'G2'), calla, calla),
+          9: notas('C4', ...FM_ARP) }),
+        // drop: kick, bajo a contratiempo por los acordes, lead saturado y el arpegio por debajo
+        pat({ 0: K4, 2: CL, 3: 'o.o.o.o.o.o.o.o.', 5: '......o.......o.', 7: at(0), 15: at(60) }, {
+          1: notas('D2', bajo('D2', 'D3'), bajo('G1', 'G2'), bajo('A#1', 'A#2'), bajo('A1', 'A2')),
+          9: notas('C4', ...FM_ARP),
+          10: notas('C4', ...FM_LEAD) }),
+        // break: piano con la melodía encima de los acordes y chops; el kick vuelve con el bajo al final
+        pat({ 0: VUELVE }, {
+          1: notas('D2', calla, calla, calla, '. . A1 - . . A1 - . . . . . . . .'),
+          8: [...notas('C4', entero(FM.Dm), entero(FM.Gm), entero(FM.Bb), entero(FM.A)), ...notas('C4', ...FM_LEAD.map(suave))],
+          11: notas('F#4', ...FM_CHOPS) })
       ]
     }
   ];
