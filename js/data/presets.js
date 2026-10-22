@@ -82,16 +82,26 @@
   const FM_CHOPS = ['. . . . . . . . A4 - . A4 - . D5 -', '. . . . . . . . A#4 - . A#4 - . G5 -',
     '. . . . . . . . A#4 - . A#4 - . F5 -', '. . . . . . . . C#5 - . C#5 - . E5 -'];
 
+  // Gabber de rave: Fam – Re♭ – Mi♭ – Do (Fa menor armónica), los acordes del Harmony 09
+  const GR_HOOV = ['F2+C3', 'C#2+G#2', 'D#2+A#2', 'C2+G2'];
+  // Happy hardcore: La♭ – Mi♭ – Fam – Re♭ y la melodía del piano (3 + 3 + 2)
+  const HH_MEL = ['C5 - - D#5 - - G#5 - G5 - - D#5 - - C5 -', 'A#4 - - D#5 - - G5 - F5 - - D#5 - - A#4 -',
+    'C5 - - F5 - - G#5 - G5 - - F5 - - C5 -', 'C#5 - - F5 - - G#5 - A#5 - - G#5 - - F5 -'];
+  const HH_CHOPS = ['. . . . . . . . C5 - . D#5 - . G#5 -', '. . . . . . . . A#4 - . D#5 - . G5 -',
+    '. . . . . . . . C5 - . F5 - . G#5 -', '. . . . . . . . C#5 - . F5 - . A#5 -'];
+  // Hard techno: stabs de Fam a contratiempo sincopado, que bajan a Re♭m y Mi♭m
+  const HT_STAB = (n) => `. . . ${n} - . ${n} - . . . ${n} - . . .`;
+
   H.data.presets = [
     {
       id: 'rotterdam', name: 'Rotterdam', school: 'Rotterdam / early', bpm: 175, swing: 0, tonality: 'Re menor', chain: 'ABCCDBCC',
       desc: 'Gabber de los 90: kick 909 saturado hasta que zumba, hoovers, sirenas y palma 909.',
       pads: [
         pad('harmony-05/rt-kick-fuzz', 'Kick gabber'), pad('harmony-05/rt-kick-thump', 'Kick early'), pad('harmony-05/rt-clap-909', 'Palma 909', { v: 0.8 }),
-        pad('harmony-01/hat-closed', 'Charles cerrado', { v: 0.6, ch: 1 }), pad('harmony-05/rt-hat-open', 'Charles abierto', { v: 0.6, ch: 1 }),
-        pad('harmony-01/perc-metal', 'Metal', { v: 0.6 }), pad('harmony-01/fill-snare-180', 'Redoble', { v: 0.75 }), pad('harmony-01/crash', 'Plato', { v: 0.6 }),
+        pad('harmony-09/hd-charles', 'Charles cerrado', { v: 0.6, ch: 1 }), pad('harmony-05/rt-hat-open', 'Charles abierto', { v: 0.6, ch: 1 }),
+        pad('harmony-01/perc-metal', 'Metal', { v: 0.6 }), pad('harmony-01/fill-snare-180', 'Redoble', { v: 0.75 }), pad('harmony-09/hd-plato', 'Plato', { v: 0.55 }),
         pad('harmony-05/rt-riff', 'Riff hoover', { v: 0.8 }), pad('harmony-05/rt-stab-rave', 'Stab Re m7', { v: 0.8 }), pad('harmony-05/rt-hoover-alarm', 'Hoover de alarma', { v: 0.75 }),
-        pad('harmony-01/hoover-stab', 'Hoover stab (Re)', { v: 0.75, p: 2 }), pad('harmony-05/rt-siren-up', 'Sirena', { v: 0.7 }), pad('harmony-01/riser-noise', 'Subida', { v: 0.7 }),
+        pad('harmony-09/hd-hoover', 'Hoover (Re)', { v: 0.7, p: 2 }), pad('harmony-05/rt-siren-up', 'Sirena', { v: 0.7 }), pad('harmony-09/hd-subida', 'Subida', { v: 0.7 }),
         pad('harmony-02/mc-rotterdam', 'MC Rotterdam', { v: 0.85 }), pad('harmony-02/shout-hey', 'Hey', { v: 0.8 })
       ],
       patterns: [
@@ -105,11 +115,11 @@
       id: 'italiano', name: 'Hardcore italiano', school: 'Hardcore italiano', bpm: 172, swing: 0, tonality: 'Fa# menor', chain: 'ABCCDBCC',
       desc: 'Kick con cola larga afinada, leads épicos con supersierras, coros y cuerdas oscuras.',
       pads: [
-        pad('harmony-05/it-kick-tail', 'Kick italiano'), pad('harmony-05/it-kick-high', 'Kick agudo (La)'), pad('harmony-01/clap-hardcore', 'Palma', { v: 0.8 }),
-        pad('harmony-01/hat-closed', 'Charles cerrado', { v: 0.6, ch: 1 }), pad('harmony-01/hat-open', 'Charles abierto', { v: 0.6, ch: 1 }),
-        pad('harmony-01/snare-hardcore', 'Caja', { v: 0.7 }), pad('harmony-05/it-roll', 'Redoble', { v: 0.75 }), pad('harmony-01/crash', 'Plato', { v: 0.6 }),
+        pad('harmony-05/it-kick-tail', 'Kick italiano'), pad('harmony-05/it-kick-high', 'Kick agudo (La)'), pad('harmony-09/hd-palma', 'Palma', { v: 0.8 }),
+        pad('harmony-09/hd-charles', 'Charles cerrado', { v: 0.6, ch: 1 }), pad('harmony-09/hd-charles-abierto', 'Charles abierto', { v: 0.6, ch: 1 }),
+        pad('harmony-09/hd-caja', 'Caja', { v: 0.7 }), pad('harmony-05/it-roll', 'Redoble', { v: 0.75 }), pad('harmony-09/hd-plato', 'Plato', { v: 0.6 }),
         pad('harmony-05/it-lead', 'Lead épico', { v: 0.8 }), pad('harmony-05/it-strings', 'Cuerdas', { v: 0.75 }), pad('harmony-05/it-choir-stab', 'Golpe de coro', { v: 0.8 }),
-        pad('harmony-02/choir-ooh', 'Coro «ooh»', { v: 0.75 }), pad('harmony-05/it-reverse', 'Kick al revés', { v: 0.8 }), pad('harmony-01/riser-noise', 'Subida', { v: 0.7 }),
+        pad('harmony-02/choir-ooh', 'Coro «ooh»', { v: 0.75 }), pad('harmony-05/it-reverse', 'Kick al revés', { v: 0.8 }), pad('harmony-09/hd-subida', 'Subida', { v: 0.7 }),
         pad('harmony-02/mc-hardcore', 'MC Hardcore', { v: 0.85 }), pad('harmony-02/shout-oi', 'Oi', { v: 0.8 })
       ],
       patterns: [
@@ -123,11 +133,11 @@
       id: 'mainstream-oscuro', name: 'Mainstream oscuro', school: 'Mainstream oscuro', bpm: 178, swing: 0, tonality: 'Mi frigio', chain: 'ABCCDBCC',
       desc: 'Kick largo con chillido y rumble, campanas de terror, drones y golpes industriales.',
       pads: [
-        pad('harmony-05/mo-kick-screech', 'Kick con chillido'), pad('harmony-05/mo-kick-rumble', 'Kick rumble'), pad('harmony-01/clap-room', 'Palma con sala', { v: 0.8 }),
-        pad('harmony-01/hat-closed', 'Charles cerrado', { v: 0.55, ch: 1 }), pad('harmony-01/hat-open', 'Charles abierto', { v: 0.55, ch: 1 }),
+        pad('harmony-05/mo-kick-screech', 'Kick con chillido'), pad('harmony-05/mo-kick-rumble', 'Kick rumble'), pad('harmony-09/hd-palma-grande', 'Palma con sala', { v: 0.8 }),
+        pad('harmony-09/hd-charles', 'Charles cerrado', { v: 0.55, ch: 1 }), pad('harmony-09/hd-charles-abierto', 'Charles abierto', { v: 0.55, ch: 1 }),
         pad('harmony-05/mo-perc', 'Golpe industrial', { v: 0.7 }), pad('harmony-01/fill-toms-180', 'Redoble de toms', { v: 0.75 }), pad('harmony-05/mo-impact', 'Impacto', { v: 0.7 }),
         pad('harmony-05/mo-lead', 'Riff oscuro', { v: 0.8 }), pad('harmony-05/mo-drone', 'Drone', { v: 0.7 }), pad('harmony-05/mo-bell', 'Campana', { v: 0.75 }),
-        pad('harmony-05/mo-screech', 'Chillido', { v: 0.7 }), pad('harmony-01/riser-noise', 'Subida', { v: 0.7 }), pad('harmony-02/fx-demon', 'Voz demonio', { v: 0.85 }),
+        pad('harmony-05/mo-screech', 'Chillido', { v: 0.7 }), pad('harmony-09/hd-subida', 'Subida', { v: 0.7 }), pad('harmony-02/fx-demon', 'Voz demonio', { v: 0.85 }),
         pad('harmony-02/fx-warning', 'Aviso', { v: 0.85 }), pad('harmony-02/shout-ho', 'Ho', { v: 0.8 })
       ],
       patterns: [
@@ -141,9 +151,9 @@
       id: 'mainstream-melodico', name: 'Mainstream melódico', school: 'Mainstream melódico', bpm: 174, swing: 0, tonality: 'La menor', chain: 'ABCCDBCC',
       desc: 'Kick con cola tonal que sigue los acordes, lead eufórico, piano, arpegios y coro en el break.',
       pads: [
-        pad('harmony-05/mm-kick-tonal', 'Kick La'), pad('harmony-05/mm-kick-tonal-c', 'Kick Do'), pad('harmony-01/clap-room', 'Palma', { v: 0.8 }),
-        pad('harmony-01/hat-closed', 'Charles cerrado', { v: 0.55, ch: 1 }), pad('harmony-01/hat-open', 'Charles abierto', { v: 0.55, ch: 1 }),
-        pad('harmony-01/snare-clap', 'Caja palma', { v: 0.7 }), pad('harmony-01/fill-snare-180', 'Redoble', { v: 0.75 }), pad('harmony-01/crash', 'Plato', { v: 0.6 }),
+        pad('harmony-05/mm-kick-tonal', 'Kick La'), pad('harmony-05/mm-kick-tonal-c', 'Kick Do'), pad('harmony-09/hd-palma', 'Palma', { v: 0.8 }),
+        pad('harmony-09/hd-charles', 'Charles cerrado', { v: 0.55, ch: 1 }), pad('harmony-09/hd-charles-abierto', 'Charles abierto', { v: 0.55, ch: 1 }),
+        pad('harmony-01/snare-clap', 'Caja palma', { v: 0.7 }), pad('harmony-01/fill-snare-180', 'Redoble', { v: 0.75 }), pad('harmony-09/hd-plato', 'Plato', { v: 0.6 }),
         pad('harmony-05/mm-lead', 'Lead eufórico', { v: 0.8 }), pad('harmony-05/mm-piano', 'Piano', { v: 0.8 }), pad('harmony-05/mm-arp', 'Arpegio', { v: 0.7 }),
         pad('harmony-05/mm-choir', 'Coro', { v: 0.75 }), pad('harmony-01/riser-supersaw', 'Subida', { v: 0.7 }), pad('harmony-01/reverse-crash', 'Plato al revés', { v: 0.65 }),
         pad('harmony-02/mc-make-some-noise', 'Make some noise', { v: 0.85 }), pad('harmony-02/shout-yeah', 'Yeah', { v: 0.8 })
@@ -214,12 +224,12 @@
       id: 'hardcore-oscuro', name: 'Hardcore oscuro', school: 'Hardcore oscuro', bpm: 170, swing: 0, tonality: 'Fa menor', chain: 'ABCCDBCC',
       desc: 'Kick largo que gruñe, órgano siniestro, bajo rumble, coro grave y campana de iglesia. Metal y portazos de fábrica.',
       pads: [
-        pad('harmony-07/os-kick-doom', 'Kick oscuro'), pad('harmony-07/os-kick-metal', 'Kick con metal'), pad('harmony-07/os-clap', 'Palma oscura', { v: 0.8 }),
-        pad('harmony-07/os-hat', 'Charles de chatarra', { v: 0.5, ch: 1 }), pad('harmony-01/hat-open', 'Charles abierto', { v: 0.45, ch: 1, fx: { filter: 'lp', cutoff: 5000, res: 10 } }),
+        pad('harmony-07/os-kick-doom', 'Kick oscuro'), pad('harmony-07/os-kick-metal', 'Kick con metal'), pad('harmony-09/hd-palma-grande', 'Palma oscura', { v: 0.8 }),
+        pad('harmony-07/os-hat', 'Charles de chatarra', { v: 0.5, ch: 1 }), pad('harmony-09/hd-charles-abierto', 'Charles abierto', { v: 0.45, ch: 1, fx: { filter: 'lp', cutoff: 5000, res: 10 } }),
         pad('harmony-07/os-pipe', 'Tubo', { v: 0.55 }), pad('harmony-01/fill-toms-180', 'Redoble de toms', { v: 0.75, fx: { drive: 30, shape: 'soft' } }), pad('harmony-07/os-slam', 'Portazo', { v: 0.7 }),
         pad('harmony-07/os-organ', 'Órgano siniestro', { v: 0.7 }), pad('harmony-07/os-lead', 'Riff oscuro', { v: 0.75 }), pad('harmony-07/os-bass', 'Bajo rumble', { v: 0.8 }),
         pad('harmony-07/os-choir', 'Coro grave', { v: 0.7 }), pad('harmony-07/os-riser', 'Subida oscura', { v: 0.7 }), pad('harmony-07/os-bell', 'Campana', { v: 0.6 }),
-        pad('harmony-02/fx-demon', 'Voz demonio', { v: 0.8, fx: { echo: 30, echoDiv: 0.75, echoFb: 40 } }), pad('harmony-07/os-scream', 'Chillido', { v: 0.6 })
+        pad('harmony-02/fx-demon', 'Voz demonio', { v: 0.8, fx: { echo: 30, echoDiv: 0.75, echoFb: 40 } }), pad('harmony-09/hd-grito', 'Chillido', { v: 0.6 })
       ],
       patterns: [
         pat({ 0: K4, 3: '..o...o...o...o.', 5: `${NADA}|..........x.....`, 7: at(0), 11: at(0), 13: at(0, 32) }),
@@ -233,9 +243,9 @@
       id: 'industrial', name: 'Industrial', school: 'Hardcore oscuro', bpm: 170, swing: 0, tonality: 'Fa menor', chain: 'ABCCDBCC',
       desc: 'Más seco y mecánico: medio tiempo, caja de fábrica, tubos con eco, metal triturado, bajo rumble y un latido en el break.',
       pads: [
-        pad('harmony-07/os-kick-thud', 'Kick sordo'), pad('harmony-07/os-kick-doom', 'Kick largo', { fx: { filter: 'lp', cutoff: 2600, res: 30 } }), pad('harmony-07/os-snare', 'Caja industrial', { v: 0.8 }),
+        pad('harmony-07/os-kick-thud', 'Kick sordo'), pad('harmony-07/os-kick-doom', 'Kick largo', { fx: { filter: 'lp', cutoff: 2600, res: 30 } }), pad('harmony-09/hd-caja', 'Caja industrial', { v: 0.8 }),
         pad('harmony-07/os-hat', 'Charles de chatarra', { v: 0.5, ch: 1 }), pad('harmony-05/mo-perc', 'Golpe industrial', { v: 0.65 }),
-        pad('harmony-07/os-pipe', 'Tubo con eco', { v: 0.6, fx: { echo: 35, echoDiv: 0.75, echoFb: 45 } }), pad('harmony-01/perc-metal', 'Metal triturado', { v: 0.55, fx: { bits: 6 } }), pad('harmony-07/os-slam', 'Portazo', { v: 0.7 }),
+        pad('harmony-07/os-pipe', 'Tubo con eco', { v: 0.6, fx: { echo: 35, echoDiv: 0.75, echoFb: 45 } }), pad('harmony-09/ht-percusion', 'Metal triturado', { v: 0.55, fx: { bits: 6 } }), pad('harmony-07/os-slam', 'Portazo', { v: 0.7 }),
         pad('harmony-07/os-bass', 'Bajo rumble', { v: 0.8 }), pad('harmony-07/os-drone', 'Drone de fábrica', { v: 0.6 }), pad('harmony-07/os-stab', 'Golpe disonante', { v: 0.7, fx: { echo: 25, echoDiv: 0.5, echoFb: 30 } }),
         pad('harmony-07/os-heart', 'Latido', { v: 0.85 }), pad('harmony-07/os-riser', 'Subida oscura', { v: 0.7 }), pad('harmony-05/mo-screech', 'Chillido', { v: 0.55 }),
         pad('harmony-02/fx-radio', 'Voz de radio', { v: 0.8, fx: { bits: 6 } }), pad('harmony-02/fx-warning', 'Aviso', { v: 0.8 })
@@ -403,6 +413,87 @@
           1: notas('D2', calla, calla, calla, '. . A1 - . . A1 - . . . . . . . .'),
           8: [...notas('C4', entero(FM.Dm), entero(FM.Gm), entero(FM.Bb), entero(FM.A)), ...notas('C4', ...FM_LEAD.map(suave))],
           11: notas('F#4', ...FM_CHOPS) })
+      ]
+    },
+    {
+      id: 'gabber-rave', name: 'Gabber de rave', school: 'Rotterdam / early', bpm: 175, swing: 0, tonality: 'Fa menor', chain: 'ABCCDBCC',
+      melodic: [9, 10], scale: { root: 5, mode: 'armonica' },
+      desc: 'Gabber de los 90 con los sonidos duros del Harmony 09: kick 909 casi cuadrado, riff de hoover y hoover en acordes desde el piano roll, bajo que cae a contratiempo, sirena y screech.',
+      pads: [
+        pad('harmony-09/hd-kick-gabber-f', 'Kick gabber (Fa)', { v: 0.7 }), pad('harmony-09/hd-kick-early', 'Kick early', { v: 0.8 }), pad('harmony-09/hd-palma', 'Palma', { v: 0.7 }),
+        pad('harmony-09/hd-charles', 'Charles', { v: 0.5, ch: 1 }), pad('harmony-09/hd-charles-abierto', 'Charles abierto', { v: 0.5, ch: 1 }),
+        pad('harmony-09/hd-caja', 'Caja', { v: 0.6 }), pad('harmony-09/hd-redoble', 'Redoble', { v: 0.7 }), pad('harmony-09/hd-impacto', 'Impacto', { v: 0.7 }),
+        pad('harmony-09/hd-hoover-riff', 'Riff de hoover', { v: 1 }), pad('harmony-09/hd-hoover', 'Hoover (notas)', { v: 0.55 }), pad('harmony-09/hd-bajo', 'Bajo (notas)', { v: 0.75 }),
+        pad('harmony-09/hd-screech-riff', 'Riff de screech', { v: 0.55 }), pad('harmony-09/hd-sirena', 'Sirena', { v: 0.55 }),
+        pad('harmony-09/hd-subida', 'Subida', { v: 0.7 }), pad('harmony-09/hd-plato-reves', 'Plato al revés', { v: 0.6 }), pad('harmony-09/hd-grito', 'Grito', { v: 0.65 })
+      ],
+      patterns: [
+        // intro: la sirena y el hoover en acordes; el kick early entra en la segunda mitad
+        pat({ 1: `${NADA}|${NADA}|${K4}|${K4}`, 3: `${NADA}|${NADA}|${OH}|${OH}`, 12: at(0) }, {
+          9: notas('C3', ...GR_HOOV.map(entero)) }),
+        // subida: el kick gabber se acelera, el bajo marca los dos primeros acordes
+        pat({ 0: SUBIDA, 2: `${CL}|${CL}|x...x...x...x...|x.x.x.x.x.x.x.x.`, 6: at(48), 13: at(32), 14: at(56) }, {
+          10: notas('F2', bajo('F2', 'F3'), bajo('C#2', 'C#3'), calla, calla) }),
+        // drop: kick, bajo a contratiempo por los acordes, el riff de hoover y el grito al final
+        pat({ 0: K4, 2: CL, 3: 'o.x.o.x.o.x.o.x.', 7: at(0), 8: at(0), 15: at(60) }, {
+          10: notas('F2', bajo('F2', 'F3'), bajo('C#2', 'C#3'), bajo('D#2', 'D#3'), bajo('C2', 'C3')) }),
+        // break: el screech y el hoover en acordes; el kick vuelve en el último compás
+        pat({ 0: VUELVE, 11: at(0), 15: at(0) }, {
+          9: notas('C3', ...GR_HOOV.map((c) => suave(entero(c)))) })
+      ]
+    },
+    {
+      id: 'happy-hardcore', name: 'Happy hardcore', school: 'Happy hardcore', bpm: 175, swing: 0, tonality: 'La♭ mayor', chain: 'ABCCDBCC',
+      melodic: [9, 10, 11], scale: { root: 8, mode: 'mayor' },
+      desc: 'Piano de rave en acordes (La♭ – Mi♭ – Fam – Re♭) y la melodía encima desde el piano roll, bajo a contratiempo, chops de voz en el break y el kick early.',
+      pads: [
+        pad('harmony-09/hd-kick-early', 'Kick (Fa)', { v: 0.8 }), pad('harmony-09/hd-kick-mainstream-f', 'Kick 2 (Fa)', { v: 0.75 }), pad('harmony-09/hd-palma', 'Palma', { v: 0.7 }),
+        pad('harmony-09/hd-charles', 'Charles', { v: 0.45, ch: 1 }), pad('harmony-09/hd-charles-abierto', 'Charles abierto', { v: 0.45, ch: 1 }),
+        pad('harmony-09/hd-caja', 'Caja', { v: 0.55 }), pad('harmony-09/hd-redoble', 'Redoble', { v: 0.7 }), pad('harmony-09/hd-impacto', 'Impacto', { v: 0.65 }),
+        pad('harmony-09/hd-piano-happy', 'Piano en acordes', { v: 0.7 }), pad('harmony-09/hd-piano', 'Piano (notas)', { v: 0.6 }), pad('harmony-09/hd-bajo', 'Bajo (notas)', { v: 0.55 }),
+        pad('harmony-02/choir-chop-ah', 'Chops «ah» (notas)', { v: 0.45 }), pad('harmony-09/hd-subida', 'Subida', { v: 0.7 }), pad('harmony-09/hd-plato-reves', 'Plato al revés', { v: 0.6 }),
+        pad('harmony-02/mc-make-some-noise', 'MC', { v: 0.8 }), pad('harmony-09/hd-laser', 'Láser', { v: 0.5 })
+      ],
+      patterns: [
+        // intro: el piano en acordes y, en la segunda mitad, el kick
+        pat({ 0: `${NADA}|${NADA}|${K4}|${K4}`, 8: at(0), 3: `${NADA}|${NADA}|${OH}|${OH}`, 14: at(48) }),
+        // subida: el kick se acelera, el piano sigue y el bajo marca dos acordes
+        pat({ 0: SUBIDA, 8: at(0), 2: `${CL}|${CL}|x...x...x...x...|x.x.x.x.x.x.x.x.`, 6: at(48), 12: at(32), 13: at(56) }, {
+          10: notas('F2', bajo('G#2', 'G#3'), bajo('D#2', 'D#3'), calla, calla) }),
+        // drop: kick, piano en acordes, la melodía encima, bajo a contratiempo
+        pat({ 0: K4, 8: at(0), 2: CL, 3: 'o.x.o.x.o.x.o.x.', 7: at(0), 15: at(30) }, {
+          9: notas('C4', ...HH_MEL),
+          10: notas('F2', bajo('G#2', 'G#3'), bajo('D#2', 'D#3'), bajo('F2', 'F3'), bajo('C#2', 'C#3')) }),
+        // break: la melodía suave y los chops; el kick vuelve en el último compás
+        pat({ 0: VUELVE }, {
+          9: notas('C4', ...HH_MEL.map(suave)),
+          11: notas('C#4', ...HH_CHOPS) })
+      ]
+    },
+    {
+      id: 'hard-techno', name: 'Hard techno industrial', school: 'Hard techno', bpm: 150, swing: 0, tonality: 'Fa menor', chain: 'ABCCDBCC',
+      melodic: [11], scale: { root: 5, mode: 'menor' },
+      desc: 'Kick de hard techno con su rumble (la sala del kick, distorsionada y empujada por el kick), acid, charles a semicorcheas, ride, golpes metálicos y stabs oscuros desde el piano roll.',
+      pads: [
+        pad('harmony-09/ht-kick-f', 'Kick (Fa)', { v: 0.75 }), pad('harmony-09/ht-kick', 'Kick 2 (Sol)', { v: 0.8 }), pad('harmony-09/hd-palma-grande', 'Palma', { v: 0.6 }),
+        pad('harmony-09/hd-charles', 'Charles', { v: 0.45, ch: 1 }), pad('harmony-09/hd-charles-abierto', 'Charles abierto', { v: 0.45, ch: 1 }),
+        pad('harmony-09/ht-percusion', 'Golpe metálico', { v: 0.9 }), pad('harmony-09/hd-redoble', 'Redoble', { v: 0.6 }), pad('harmony-09/ht-ride', 'Ride', { v: 0.55 }),
+        pad('harmony-09/ht-rumble-solo', 'Rumble', { v: 0.55 }), pad('harmony-09/ht-acid', 'Acid', { v: 0.85 }), pad('harmony-09/ht-charles', 'Charles en bucle', { v: 0.6 }),
+        pad('harmony-09/ht-stab', 'Stab (notas)', { v: 0.9 }), pad('harmony-09/ht-subida', 'Subida', { v: 0.65 }), pad('harmony-09/hd-impacto', 'Impacto', { v: 0.65 }),
+        pad('harmony-09/hd-grunido', 'Gruñido', { v: 0.6 }), pad('harmony-09/hd-laser', 'Láser', { v: 0.45 })
+      ],
+      patterns: [
+        // intro: kick y charles en bucle; el rumble entra en la segunda mitad
+        pat({ 0: K4, 10: at(0, 16, 32, 48), 8: at(32, 48), 5: '......o.......o.' }),
+        // subida: rumble, acid y palmas que se aceleran; el kick se corta antes del drop
+        pat({ 0: `${K4}|${K4}|${K4}|x.x.x.x.........`, 8: at(0, 16, 32), 9: at(0, 32), 10: at(0, 16, 32, 48), 2: `${CL}|${CL}|x...x...x...x...|x.x.x.x.x.x.x.x.`, 12: at(32), 6: at(48) }, {
+          11: notas('F3', HT_STAB('F3'), HT_STAB('F3'), calla, calla) }),
+        // drop: todo; stabs que bajan a Re♭m y Mi♭m
+        pat({ 0: K4, 8: at(0, 16, 32, 48), 9: at(0, 32), 10: at(0, 16, 32, 48), 2: CL, 7: '..x...x...x...x.', 5: '......o.......o.', 13: at(0), 14: at(56) }, {
+          11: notas('F3', HT_STAB('F3'), HT_STAB('F3'), HT_STAB('C#3'), HT_STAB('D#3')) }),
+        // break: sin kick ni rumble, el acid y los stabs largos; el kick vuelve en el último compás
+        pat({ 0: VUELVE, 9: at(0, 32), 15: at(16), 14: at(0) }, {
+          11: notas('F3', suave(entero('F3')), suave(entero('C#3')), suave(entero('D#3')), suave(entero('F3'))) })
       ]
     }
   ];

@@ -59,7 +59,18 @@
     // Harmony 07
     'harmony-07/os-kick-doom': ['industrial', { note: 'F1', len: 1040, close: 0.85, fold: 0.4, verb: 0.3, dark: 0.2, bits: 0, bpm: 170, seed: 121 }],
     'harmony-07/os-kick-metal': ['industrial', { note: 'G#1', len: 680, bits: 8, screech: 0.3, bpm: 170, seed: 122 }],
-    'harmony-07/os-kick-thud': ['industrial', { note: 'F1', len: 400, fade: 0.12, dark: 0.75, clip: 0.3, grit: 0, verb: 0.1, bits: 0, bpm: 150, seed: 123 }]
+    'harmony-07/os-kick-thud': ['industrial', { note: 'F1', len: 400, fade: 0.12, dark: 0.75, clip: 0.3, grit: 0, verb: 0.1, bits: 0, bpm: 150, seed: 123 }],
+    // Harmony 09: los puntos de partida tal cual (y alguna variante)
+    'harmony-09/hd-kick-early': ['early', { seed: 201 }],
+    'harmony-09/hd-kick-gabber': ['gabber909', { seed: 202 }],
+    'harmony-09/hd-kick-gabber-f': ['gabber909', { note: 'F1', len: 480, seed: 203 }],
+    'harmony-09/hd-kick-mainstream': ['mainstream', { seed: 204 }],
+    'harmony-09/hd-kick-mainstream-f': ['mainstream', { note: 'F1', len: 360, seed: 205 }],
+    'harmony-09/hd-kick-industrial': ['industrial', { seed: 206 }],
+    'harmony-09/hd-kick-crossbreed': ['crossbreed', { seed: 207 }],
+    'harmony-09/hd-kick-terror': ['terror', { seed: 208 }],
+    'harmony-09/ht-kick': ['hardtechno', { seed: 209 }],
+    'harmony-09/ht-kick-f': ['hardtechno', { note: 'F1', seed: 210 }]
   };
   H.data.kicks = {
     BASE, PRESETS, LIB,

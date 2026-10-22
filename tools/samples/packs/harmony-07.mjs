@@ -7,6 +7,7 @@
    El uptempo va a 210 BPM y en Re menor, como el kit Uptempo II de Harmony 04, para que se mezclen.
    Todo por síntesis; las melodías son de Harmony. */
 import * as D from '../dsp.mjs';
+import * as R from '../rave.mjs';
 import { labKick as LK } from '../kicklib.mjs';
 import * as S from '../synth.mjs';
 import * as V from '../voice.mjs';
@@ -353,13 +354,10 @@ function udSiren() {
   return finishSt(D.mixSt([D.widen(y, 0.35, 3), 1], [room(y, 0.6, 0.6), 0.12]));
 }
 function udScream() {
-  // grito de ruido con formantes «a-e» y mucha saturación (para el drop)
-  const L = 0.9;
-  const src = D.mix([D.osc(L, (t) => 260 * (1 + 0.05 * Math.sin(2 * Math.PI * 7 * t)), { shape: 'saw' }), 0.6], [D.noise(L, 811, 'pink'), 0.6]);
-  const f1 = (t) => 800 - 300 * Math.min(1, t / 0.5), f2 = (t) => 1200 + 700 * Math.min(1, t / 0.5);
-  const v = D.mix([D.filter(src, 'bp', f1, { q: 7 }), 1], [D.filter(src, 'bp', f2, { q: 8 }), 0.8], [D.filter(src, 'bp', 2600, { q: 6 }), 0.4]);
-  const x = D.env(D.crush(D.drive(D.fold(D.gain(v, 4), 2.4), 3), 9, 1), D.ahd(0.02, 0.6, 0.15));
-  return finishSt(D.mixSt([D.widen(x, 0.45, 6), 1], [room(x, 0.7, 0.8), 0.18]));
+  // grito oscuro (rave.mjs, darkScream): voz de bajo sintética de «a» a «o» que cae de tono, con gruñido y ruido áspero,
+  // distorsionada y sin agudos; antes era ruido con formantes «a-e» triturado a 9 bits y sonaba raro
+  const x = R.darkScream(0.9, { f0: 165, to: 105, seed: 811, growl: 0.45, rasp: 0.5, drive: 6 });
+  return finishSt(D.mixSt([D.widen(x, 0.4, 6), 1], [room(x, 0.75, 0.9), 0.2]));
 }
 function udImpact() {
   const sub = D.osc(1.6, D.sweep(110, 32, 0.2), { amp: D.ahd(0.001, 0.15, 0.35) });
@@ -465,7 +463,7 @@ export const SAMPLES = [
   { id: 'ud-siren', name: 'Sirena raw', style: 'uptempo', type: 'efecto', cat: 'fx', bpm: [210, 210], tags: ud('sirena'), render: udSiren,
     notes: 'Un compás a 210: dos sierras a una cuarta que suben y bajan dos veces, plegadas.' },
   { id: 'ud-scream', name: 'Grito distorsionado', style: 'uptempo', type: 'efecto', cat: 'fx', tags: ud('scream'), render: udScream,
-    notes: 'Sierra y ruido por formantes «a-e», plegados, saturados y triturados.' },
+    notes: 'Grito oscuro: voz de bajo sintética de «a» a «o» que cae de tono, con gruñido y ruido áspero, distorsionada y sin agudos (el peso entre 700 Hz y 1,6 kHz).' },
   { id: 'ud-impact', name: 'Impacto triturado', style: 'uptempo', type: 'impacto', cat: 'fx', tags: ud('impacto', 'bits'), render: udImpact,
     notes: 'Sub que cae de 110 a 32 Hz y un platillo de ruido, saturado a 8 bits.' },
   { id: 'ud-riser', name: 'Subida plegada', style: 'uptempo', type: 'subida', cat: 'fx', bpm: [210, 210], tags: ud('riser'), render: udRiser,

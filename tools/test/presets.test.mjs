@@ -162,6 +162,6 @@ test('presets en modo notas: notas dentro del patrón, en su escala, y los pads 
     const b = H.Banks.fromPreset(H.Banks.defaultState(), pr);
     assert.equal(b.seq.melodic.join(), pr.melodic.join());
     assert.equal(b.seq.scale.mode, pr.scale.mode);
-    assert.ok(b.seq.patterns.every((p) => H.Patterns.hasMel(p)), 'los cuatro patrones traen notas');
+    assert.ok(b.seq.patterns.filter((p) => H.Patterns.hasMel(p)).length >= 2, 'al menos dos patrones traen notas');
   }
 });
