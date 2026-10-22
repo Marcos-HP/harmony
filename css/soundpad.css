@@ -217,6 +217,8 @@
 .lib-play.is-on { background: var(--ink); color: var(--paper); }
 .lib-play.is-loading { border-style: dashed; animation: sp-pulse 1s ease-in-out infinite; }
 .lib-add { padding: 0 10px; }
+.lib-acts { display: inline-flex; gap: 6px; align-items: center; }
+.lib-lab { padding: 0 8px; font-family: var(--mono, monospace); font-size: 10.5px; letter-spacing: .04em; }
 .sp-lib .lib-list { max-height: 52vh; overflow-y: auto; }
 .lib-lic { margin: 0; font-size: 12.5px !important; }
 @media (max-width: 560px) { .lib-add span { display: none; } .lib-tags { display: none; } }

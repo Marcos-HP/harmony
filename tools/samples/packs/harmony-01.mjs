@@ -3,6 +3,7 @@
    construir el pack otra vez da exactamente los mismos archivos. Nada sale de grabaciones ni de samples ajenos.
    Para añadir sonidos: una entrada más en SAMPLES (id estable: no se cambia nunca, los bancos lo guardan). */
 import * as D from '../dsp.mjs';
+import { labKick as LK } from '../kicklib.mjs';
 const { SR } = D;
 
 export const PACK = {
@@ -68,111 +69,9 @@ function gabber() {
   x = D.hp(x, 32);
   return finish(x, { release: 0.26 });
 }
-function mainstream() {
-  // punch limpio + cola tonal distorsionada que se va cerrando: la cola «habla» al bajar el filtro
-  const punch = D.drive(body({ f0: 3000, mid: 240, f1: 62, tau: 0.003, tau2: 0.03, len: 0.16, amp: D.ahd(0.0005, 0.03, 0.04) }), 2.2);
-  const tailN = D.note('G#', 1);
-  let tail = body({ f0: 900, mid: tailN * 2, f1: tailN, tau: 0.004, tau2: 0.04, len: 0.72, amp: D.ahd(0.02, 0.32, 0.17), bend: -0.7, bendStart: 0.3 });
-  tail = D.fold(D.gain(tail, 1.8), 1);
-  tail = D.drive(tail, 6);
-  tail = D.filter(tail, 'lp', D.ramp(7000, 1600, 0.7, 0.6), { q: 1.4 });
-  tail = D.env(tail, (t) => (t < 0.04 ? t / 0.04 : 1));
-  let x = D.mix([punch, 0.9], [click(12, { f: 5200, tok: 2000 }), 0.3], [tail, 0.75, 0.035]);
-  x = D.eq(x, 90, 2.5, 0.8);
-  x = D.hp(x, 30);
-  return finish(x, { release: 0.26 });
-}
-function industrial() {
-  // más oscuro: cuerpo grave, capa de ruido metálico y una sala pequeña
-  const b = body({ f0: 1800, mid: 160, f1: D.note('D#', 1), tau: 0.005, tau2: 0.06, len: 0.7, amp: D.ahd(0.0008, 0.14, 0.18) });
-  const metal = D.env(D.bp(D.mix([D.osc(0.25, 317, { shape: 'square' }), 0.5], [D.osc(0.25, 461, { shape: 'square' }), 0.5], [D.noise(0.25, 21), 0.6]), 1900, 2.5), D.expEnv(0.045));
-  let x = D.mix([b, 1], [metal, 0.35], [click(13, { f: 2600, tok: 900, q: 1.4 }), 0.4]);
-  x = D.tube(x, 5, 0.25);
-  x = D.drive(x, 2.6);
-  x = D.lp(x, 4200, 0.9);
-  x = D.fadeEnd(x, 0.24);
-  const room = D.reverb(x, { size: 0.55, damp: 0.6, tail: 0.5 });
-  const y = D.mixSt([x, 1], [room, 0.18]);
-  return finishSt(D.stereo(D.hp(y.L, 30), D.hp(y.R, 30)));
-}
-function crunch() {
-  // corto y roto: reducción de bits y frecuencia de muestreo sobre un kick saturado
-  const b = body({ f0: 2200, mid: 200, f1: D.note('A', 1), tau: 0.004, tau2: 0.04, len: 0.36, amp: D.ahd(0.0006, 0.07, 0.09) });
-  let x = D.mix([b, 1], [click(14, { f: 3000 }), 0.4]);
-  x = D.drive(x, 5);
-  x = D.crush(x, 6, 3);
-  x = D.lp(x, 7000);
-  x = D.clip(x, 1.4, 0.95);
-  x = D.hp(x, 35);
-  return finish(x, { release: 0.12 });
-}
-function earlyHC() {
-  // early hardcore (1992–1995): 909 saturado, menos cola, más golpe; a 160–180 BPM
-  const b = body({ f0: 1500, mid: 150, f1: D.note('B', 1), tau: 0.006, tau2: 0.05, len: 0.48, amp: D.ahd(0.0008, 0.05, 0.13) });
-  let x = D.mix([b, 1], [click(15, { f: 3500, tok: 1200, nGain: 0.9 }), 0.45]);
-  x = D.drive(x, 3.5);
-  x = D.eq(x, 160, 2, 1);
-  x = D.lp(x, 8000);
-  x = D.hp(x, 35);
-  return finish(x, { release: 0.16 });
-}
-function millennium() {
-  // golpe con clic seco y cola grave y redonda, saturación media y filtrada (más «boom» que «crunch»)
-  const b = body({ f0: 3200, mid: 180, f1: D.note('E', 1), tau: 0.0025, tau2: 0.055, len: 1.0, amp: D.ahd(0.0006, 0.24, 0.26) });
-  let x = D.mix([b, 1], [click(16, { f: 6000, tok: 2400, tau: 0.0018 }), 0.5]);
-  x = D.tube(x, 2.5, 0.1);
-  x = D.drive(x, 1.6);
-  x = D.lp(x, 1800, 0.8);
-  x = D.eq(x, 50, 4, 0.9);
-  // el clic vuelve a ponerse por encima del filtro: golpe seco arriba, «boom» limpio abajo
-  x = D.mix([x, 1], [D.hp(click(17, { f: 6500, tok: 2600, tau: 0.0015 }), 2500), 0.35]);
-  x = D.hp(x, 28);
-  return finish(x, { release: 0.28 });
-}
 
 /* ---------------------------------------------------------------- kicks · newstyle */
 
-function nsPunch() {
-  // corto y apretado, mucho ataque: el kick del newstyle de sala, a 150 BPM
-  const b = body({ f0: 2000, mid: 160, f1: D.note('G#', 1), tau: 0.003, tau2: 0.035, len: 0.32, amp: D.ahd(0.0005, 0.05, 0.07) });
-  let x = D.mix([b, 1], [click(21, { f: 5000, tok: 1800 }), 0.5]);
-  x = D.tube(x, 2.5, 0.1);
-  x = D.drive(x, 2);
-  x = D.eq(x, 100, 3, 0.9);
-  x = D.eq(x, 3500, 2, 1);
-  x = D.hp(x, 35);
-  return finish(x, { release: 0.1 });
-}
-function nsTail() {
-  // golpe y cola afinada (La 1) que cae un tono: la herencia del hard house americano
-  const b = body({ f0: 2200, mid: 200, f1: D.note('A', 1), tau: 0.003, tau2: 0.04, len: 0.56, amp: D.ahd(0.0005, 0.14, 0.13), bend: -2, bendStart: 0.1 });
-  let x = D.mix([b, 1], [click(22, { f: 4200, tok: 1500 }), 0.4]);
-  x = D.tube(x, 3.5, 0.15);
-  x = D.drive(x, 2.4);
-  x = D.lp(x, 6500);
-  x = D.hp(x, 32);
-  return finish(x, { release: 0.2 });
-}
-function nsMasia() {
-  // parte de arriba dura y metálica sobre un cuerpo corto: corta la mezcla sin subir graves
-  const b = body({ f0: 2600, mid: 230, f1: D.note('A#', 1), tau: 0.003, tau2: 0.03, len: 0.26, amp: D.ahd(0.0005, 0.04, 0.06) });
-  const top = D.env(D.hp(D.noise(0.06, 23), 5500), D.expEnv(0.012));
-  let x = D.mix([b, 1], [click(24, { f: 6500, q: 1.2, tok: 2600 }), 0.55], [top, 0.45]);
-  x = D.drive(x, 4.5);
-  x = D.eq(x, 4500, 4, 1.3);
-  x = D.hp(x, 38);
-  return finish(x, { release: 0.1 });
-}
-function nsJump() {
-  // «boom» redondo y largo, poca distorsión: el kick de jump que el newstyle mezcla con el suyo
-  const b = body({ f0: 1300, mid: 130, f1: D.note('F#', 1), tau: 0.004, tau2: 0.06, len: 0.62, amp: D.ahd(0.0008, 0.12, 0.18) });
-  let x = D.mix([b, 1], [click(25, { f: 3000, tok: 1000, nGain: 0.5 }), 0.3]);
-  x = D.tube(x, 1.8, 0.1);
-  x = D.lp(x, 5000);
-  x = D.eq(x, 70, 2.5, 0.8);
-  x = D.hp(x, 28);
-  return finish(x, { release: 0.22 });
-}
 function nsOffbeat() {
   // bajo inverso para el contratiempo (La 1, 150 BPM): sube en una corchea y se corta seco antes del kick
   const f = D.note('A', 1), L = beat(150) / 2;
@@ -486,27 +385,27 @@ function horn() {
 
 /* cat: kick · bajo · perc · fx · loop · voz · tema · otro (las categorías del Soundpad); type: subtipo para filtrar */
 export const SAMPLES = [
-  { id: 'hc-kick-gabber', name: 'Kick gabber', style: 'hardcore', type: 'kick', cat: 'kick', key: 'F1', bpm: [170, 190], tags: ['gabber', 'rotterdam', '909', 'distorsión', 'cola larga'], render: gabber,
-    notes: 'Seno con doble caída de tono (2,4 kHz → 210 Hz → Fa 1) y clic de ruido; saturación asimétrica, medios recortados a 420 Hz, presencia a 2,6 kHz y tanh.' },
-  { id: 'hc-kick-mainstream', name: 'Kick mainstream', style: 'hardcore', type: 'kick', cat: 'kick', key: 'G#1', bpm: [180, 200], tags: ['mainstream', 'cola tonal', 'distorsión', 'moderno'], render: mainstream,
-    notes: 'Dos capas: golpe limpio y cola afinada en Sol# 1 que se curva hacia abajo al final, plegada y saturada, con un paso bajo que se cierra de 7 a 1,6 kHz.' },
-  { id: 'hc-kick-industrial', name: 'Kick industrial', style: 'hardcore', type: 'kick', cat: 'kick', key: 'D#1', bpm: [140, 180], tags: ['industrial', 'oscuro', 'metálico', 'sala'], render: industrial,
-    notes: 'Cuerpo grave en Re# 1, capa metálica de cuadradas y ruido, filtrado a 4,2 kHz y una sala pequeña.' },
-  { id: 'hc-kick-crunch', name: 'Kick crunch', style: 'hardcore', type: 'kick', cat: 'kick', key: 'A1', bpm: [170, 200], tags: ['bitcrush', 'corto', 'roto', 'lo-fi'], render: crunch,
-    notes: 'Kick corto saturado y reducido a 6 bits y un tercio de la frecuencia de muestreo, con recorte final.' },
-  { id: 'hc-kick-early', name: 'Kick early hardcore', style: 'hardcore', type: 'kick', cat: 'kick', key: 'B1', bpm: [160, 180], tags: ['early', '90s', '909', 'golpe'], render: earlyHC,
-    notes: 'Un 909 saturado al estilo de principios de los 90: menos cola y más golpe, realce a 160 Hz.' },
-  { id: 'hc-kick-millennium', name: 'Kick millennium', style: 'hardcore', type: 'kick', cat: 'kick', key: 'E1', bpm: [170, 190], tags: ['millennium', 'boom', 'grave', 'clic'], render: millennium,
-    notes: 'Cola larga y grave en Mi 1, poco saturada y filtrada a 1,8 kHz con los subgraves realzados, y el clic seco repuesto por encima: más «boom» que «crunch».' },
+  { id: 'hc-kick-gabber', name: 'Kick gabber', style: 'hardcore', type: 'kick', cat: 'kick', key: 'F1', bpm: [170, 190], tags: ['gabber', 'rotterdam', '909', 'distorsión', 'cola larga'], ...LK('harmony-01/hc-kick-gabber'),
+    notes: 'Gabber 909 en Fa 1 (Laboratorio de kicks, tipo hardcore): el 909 cae y se apaga despacio, con algo de cuadrada; sala antes de distorsionar, válvula, medios realzados entre las dos distorsiones, grano y recorte final sobremuestreado hasta casi una cuadrada. Ábrelo en el laboratorio para retocarlo.' },
+  { id: 'hc-kick-mainstream', name: 'Kick mainstream', style: 'hardcore', type: 'kick', cat: 'kick', key: 'G#1', bpm: [180, 200], tags: ['mainstream', 'cola tonal', 'distorsión', 'moderno'], ...LK('harmony-01/hc-kick-mainstream'),
+    notes: 'Mainstream en Sol# 1 con la cola sostenida que se curva hacia abajo al final: cuadrada en la fuente, plegado, mucho grano y medios, recorte final y hueco en 130–400 Hz para que la nota quede sola abajo.' },
+  { id: 'hc-kick-industrial', name: 'Kick industrial', style: 'hardcore', type: 'kick', cat: 'kick', key: 'D#1', bpm: [140, 180], tags: ['industrial', 'oscuro', 'metálico', 'sala'], ...LK('harmony-01/hc-kick-industrial'),
+    notes: 'Industrial en Re# 1: rumble (sala antes de distorsionar), 6 bits, válvula y un paso bajo que oscurece; largo y retumbante.' },
+  { id: 'hc-kick-crunch', name: 'Kick crunch', style: 'hardcore', type: 'kick', cat: 'kick', key: 'A1', bpm: [170, 200], tags: ['bitcrush', 'corto', 'roto', 'lo-fi'], ...LK('harmony-01/hc-kick-crunch'),
+    notes: 'Corto y roto en La 1: 6 bits antes de distorsionar, plegado, cuadrada y recorte duro.' },
+  { id: 'hc-kick-early', name: 'Kick early hardcore', style: 'hardcore', type: 'kick', cat: 'kick', key: 'B1', bpm: [160, 180], tags: ['early', '90s', '909', 'golpe'], ...LK('harmony-01/hc-kick-early'),
+    notes: 'Early de principios de los 90 en Si 1: un 909 que se apaga, saturado con válvula y recortado, con punch y medios; menos cola que el gabber.' },
+  { id: 'hc-kick-millennium', name: 'Kick millennium', style: 'hardcore', type: 'kick', cat: 'kick', key: 'E1', bpm: [170, 190], tags: ['millennium', 'boom', 'grave', 'clic'], ...LK('harmony-01/hc-kick-millennium'),
+    notes: 'Cola larga y grave en Mi 1, poco distorsionada, con el sub realzado y un paso bajo que se va cerrando: más «boom» que «crunch».' },
 
-  { id: 'ns-kick-punch', name: 'Kick newstyle punch', style: 'newstyle', type: 'kick', cat: 'kick', key: 'G#1', bpm: [145, 155], tags: ['punch', 'corto', 'sala', 'masía'], render: nsPunch,
-    notes: 'Corto y apretado, con mucho ataque: saturación suave, graves a 100 Hz y presencia a 3,5 kHz.' },
-  { id: 'ns-kick-tail', name: 'Kick newstyle con cola', style: 'newstyle', type: 'kick', cat: 'kick', key: 'G#1', bpm: [145, 155], tags: ['cola', 'hard house', 'afinado'], render: nsTail,
-    notes: 'Golpe y cola que arranca en La 1 y cae un tono (se oye en torno a Sol# 1), heredera del hard house americano.' },
-  { id: 'ns-kick-masia', name: 'Kick newstyle duro', style: 'newstyle', type: 'kick', cat: 'kick', key: null, bpm: [145, 155], tags: ['agudo', 'metálico', 'corta la mezcla'], render: nsMasia,
-    notes: 'Cuerpo corto con una capa de ruido agudo y realce a 4,5 kHz: se oye sin subir los graves.' },
-  { id: 'ns-kick-jump', name: 'Kick jump', style: 'newstyle', type: 'kick', cat: 'kick', key: 'F#1', bpm: [140, 150], tags: ['jumpstyle', 'boom', 'redondo'], render: nsJump,
-    notes: '«Boom» largo y redondo en Fa# 1 con poca distorsión, el kick de jump que el newstyle mezcla con el suyo.' },
+  { id: 'ns-kick-punch', name: 'Kick newstyle punch', style: 'newstyle', type: 'kick', cat: 'kick', key: 'G#1', bpm: [145, 155], tags: ['punch', 'corto', 'sala', 'masía'], ...LK('harmony-01/ns-kick-punch'),
+    notes: 'Corto y apretado en Sol# 1, con mucho punch y clic: para el newstyle de 150.' },
+  { id: 'ns-kick-tail', name: 'Kick newstyle con cola', style: 'newstyle', type: 'kick', cat: 'kick', key: 'G#1', bpm: [145, 155], tags: ['cola', 'hard house', 'afinado'], ...LK('harmony-01/ns-kick-tail'),
+    notes: 'Golpe y cola en Sol# 1 que se curva un semitono hacia abajo al final y se va cerrando, heredera del hard house americano.' },
+  { id: 'ns-kick-masia', name: 'Kick newstyle duro', style: 'newstyle', type: 'kick', cat: 'kick', key: null, bpm: [145, 155], tags: ['agudo', 'metálico', 'corta la mezcla'], ...LK('harmony-01/ns-kick-masia'),
+    notes: 'Corto, con mucho grano, clic de ruido y medios: se oye sin subir los graves.' },
+  { id: 'ns-kick-jump', name: 'Kick jump', style: 'newstyle', type: 'kick', cat: 'kick', key: 'F#1', bpm: [140, 150], tags: ['jumpstyle', 'boom', 'redondo'], ...LK('harmony-01/ns-kick-jump'),
+    notes: '«Boom» largo y redondo en Fa# 1 con poca distorsión y mucho sub, el kick de jump que el newstyle mezcla con el suyo.' },
   { id: 'ns-bass-offbeat', name: 'Bajo de contratiempo', style: 'newstyle', type: 'bajo', cat: 'bajo', key: 'A1', bpm: [150, 150], tags: ['reverse bass', 'offbeat', 'contratiempo'], render: nsOffbeat,
     notes: 'Bajo inverso de una corchea a 150 BPM en La 1: sube de volumen y de brillo y se corta seco justo antes del siguiente kick.' },
 

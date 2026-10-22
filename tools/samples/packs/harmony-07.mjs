@@ -7,6 +7,7 @@
    El uptempo va a 210 BPM y en Re menor, como el kit Uptempo II de Harmony 04, para que se mezclen.
    Todo por síntesis; las melodías son de Harmony. */
 import * as D from '../dsp.mjs';
+import { labKick as LK } from '../kicklib.mjs';
 import * as S from '../synth.mjs';
 import * as V from '../voice.mjs';
 
@@ -91,36 +92,11 @@ function pipe(f, dur, seed, { decay = 0.9, noise = 0.25 } = {}) {
 
 /* ================================================================= HARDCORE OSCURO / INDUSTRIAL · 170 BPM · Fa menor */
 const OS = { bpm: 170 };
-function osKickDoom() {
-  // kick largo y grave en Fa 1: golpe seco, cola plegada que se va cerrando hasta un gruñido, y aire oscuro debajo
-  const f1 = D.note('F', 1);
-  const punch = D.drive(body({ f0: 3200, mid: 240, f1: 60, tau: 0.0028, tau2: 0.028, len: 0.15, amp: D.ahd(0.0005, 0.03, 0.035) }), 2.6);
-  let tail = body({ f0: 900, mid: f1 * 2.3, f1, tau: 0.004, tau2: 0.045, len: 1.05, amp: D.ahd(0.02, 0.5, 0.26), bend: -0.6, bendStart: 0.6 });
-  tail = D.tube(tail, 7, 0.25); tail = D.drive(tail, 5);
-  tail = D.filter(tail, 'lp', D.ramp(5200, 300, 1.05, 0.55), { q: 1.4 }); tail = D.eq(tail, f1, 6, 1);
-  const air = D.env(D.lp(D.noise(1, 701, 'pink'), 900), D.ahd(0.01, 0.2, 0.25));
-  let x = D.mix([punch, 0.9], [click(701, { f: 5000, tok: 2000 }), 0.3], [tail, 0.85, 0.03], [air, 0.06, 0.03]);
-  x = D.eq(x, 60, 3, 0.8); x = D.hp(x, 26);
-  return finish(x, { release: 0.36 });
-}
-function osKickMetal() {
-  // kick industrial en Sol# 1 con un golpe de metal encima: suena a fábrica
-  const f1 = D.note('G#', 1);
-  const b = body({ f0: 2800, mid: 260, f1, tau: 0.003, tau2: 0.04, len: 0.7, amp: D.ahd(0.0006, 0.3, 0.18) });
-  let x = D.mix([b, 1], [click(702, { f: 3800, tok: 1500 }), 0.5]);
-  x = D.tube(x, 7, 0.2); x = D.drive(x, 3.2);
-  x = D.filter(x, 'lp', D.ramp(6000, 900, 0.7, 0.6), { q: 1.2 });
+/* el golpe de tubo metálico encima del kick industrial del laboratorio */
+function metalHit(k) {
   const hit = D.drive(D.hp(pipe(311, 0.25, 703, { decay: 0.08 }), 400), 2);
-  x = D.mix([x, 1], [hit, 0.22]);
-  x = D.eq(x, 2400, 3, 1.2); x = D.hp(x, 30);
-  return finish(x, { release: 0.24 });
-}
-function osKickThud() {
-  // golpe corto y sordo en Fa 1, sin cola: para medio tiempo y para los breaks
-  const b = body({ f0: 1500, mid: 150, f1: D.note('F', 1), tau: 0.005, tau2: 0.03, len: 0.4, amp: D.ahd(0.0008, 0.06, 0.1) });
-  let x = D.mix([b, 1], [click(704, { f: 2200, tok: 800, nGain: 0.5 }), 0.4]);
-  x = D.tube(x, 3, 0.15); x = D.drive(x, 2); x = D.lp(x, 2600); x = D.hp(x, 28);
-  return finish(x, { release: 0.12 });
+  const add = (c) => D.mix([c, 1], [hit, 0.22]);
+  return D.normalizeTP(D.limitSt(D.stereo(D.fades(add(k.L).slice(0, k.L.length), 0.0005, 0.01), D.fades(add(k.R).slice(0, k.R.length), 0.0005, 0.01)), -0.7), -1);
 }
 function osClap() {
   // palma oscura: grave (900 Hz), sucia y con una sala que se apaga pronto en los agudos
@@ -424,12 +400,12 @@ const os = (...t) => ['oscuro', 'industrial', ...t];
 const ud = (...t) => ['uptempo', 'distorsión', ...t];
 export const SAMPLES = [
   // Hardcore oscuro / industrial
-  K({ id: 'os-kick-doom', name: 'Kick oscuro largo', style: 'hardcore', key: 'F1', bpm: [160, 180], tags: os('cola larga', 'grave'), render: osKickDoom,
-    notes: 'Golpe seco y una cola larguísima en Fa 1, saturada y plegada, que se cierra de 5,2 kHz a 420 Hz hasta quedarse en un gruñido.' }),
-  K({ id: 'os-kick-metal', name: 'Kick industrial con metal', style: 'hardcore', key: 'G#1', bpm: [160, 180], tags: os('metal', 'fábrica'), render: osKickMetal,
-    notes: 'Kick en Sol# 1 saturado con válvula y un golpe de tubo metálico encima.' }),
-  K({ id: 'os-kick-thud', name: 'Kick sordo', style: 'hardcore', key: 'F1', bpm: [140, 180], tags: os('corto', 'medio tiempo'), render: osKickThud,
-    notes: 'Golpe corto y sordo en Fa 1, sin cola: para el medio tiempo y los breaks.' }),
+  K({ id: 'os-kick-doom', name: 'Kick oscuro largo', style: 'hardcore', key: 'F1', bpm: [160, 180], tags: os('cola larga', 'grave'), ...LK('harmony-07/os-kick-doom'),
+    notes: 'Golpe seco y una cola larguísima en Fa 1, plegada, con rumble, que se va cerrando hasta quedarse en un gruñido.' }),
+  K({ id: 'os-kick-metal', name: 'Kick industrial con metal', style: 'hardcore', key: 'G#1', bpm: [160, 180], tags: os('metal', 'fábrica'), ...LK('harmony-07/os-kick-metal', metalHit),
+    notes: 'Kick industrial en Sol# 1 a 8 bits, con un chillido que baja y un golpe de tubo metálico encima: suena a fábrica.' }),
+  K({ id: 'os-kick-thud', name: 'Kick sordo', style: 'hardcore', key: 'F1', bpm: [140, 180], tags: os('corto', 'medio tiempo'), ...LK('harmony-07/os-kick-thud'),
+    notes: 'Golpe corto y sordo en Fa 1, oscuro y poco recortado: para el medio tiempo y los breaks.' }),
   { id: 'os-clap', name: 'Palma oscura', style: 'hardcore', type: 'palma', cat: 'perc', tags: os('clap', 'reverb'), render: osClap,
     notes: 'Palma grave (900 Hz), saturada, con una sala larga que apaga los agudos.' },
   { id: 'os-snare', name: 'Caja industrial', style: 'hardcore', type: 'caja', cat: 'perc', tags: os('snare', 'metal', 'bits'), render: osSnare,

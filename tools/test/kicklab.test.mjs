@@ -6,6 +6,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, writeFileSync, mkdtempSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import vm from 'node:vm';
 
 const ROOT = new URL('../../', import.meta.url).pathname;
 const BASE = { type: 'hard', note: 'D2', len: 300, semis: 34, drop: 130, saw: 0.3, refl: 0.35, mids: 11, res: 4, drive1: 11, drive2: 5, low: 0.45, scoop: -2, move: 'down', tok: 0.8, tick: 0.5, ott: 0.45, seed: 11, bpm: 200, at: 70, per: 3, decay: 0.6 };
@@ -34,4 +35,45 @@ test('kick duro, de frenchcore y en otra nota: afinados, sin NaN y a −1 dBTP',
     assert.ok(m.peakDb <= -0.9 && m.peakDb >= -1.2, 'pico real a −1 dBTP');
   }
   delete globalThis.self;
+});
+
+function kicksData() {
+  const ctx = { window: {} };
+  vm.createContext(ctx);
+  vm.runInContext(readFileSync(join(ROOT, 'js/data/kicks.js'), 'utf8'), ctx);
+  return ctx.window.H.data.kicks;
+}
+const NN = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+const midiOf = (n) => { const m = /^([A-G]#?)(-?\d)$/.exec(n); return 12 * (+m[2] + 1) + NN.indexOf(m[1]); };
+
+test('puntos de partida de hardcore: el worker los calcula afinados (±1 semitono), sin NaN y a −1 dBTP', async () => {
+  const run = await worker(), K = kicksData();
+  const hc = Object.keys(K.PRESETS).filter((k) => K.PRESETS[k].group === 'hc');
+  assert.ok(hc.length >= 6);
+  for (const k of hc) {
+    const p = K.params(k), m = run(JSON.parse(JSON.stringify(p)));
+    assert.ok(!m.error, m.error);
+    assert.ok(m.L.every(Number.isFinite) && m.R.every(Number.isFinite), k);
+    const d = Math.abs(12 * Math.log2(m.hz / (440 * Math.pow(2, (midiOf(p.note) - 69) / 12))));
+    assert.ok(d <= 1.05, `${k}: cola en ${m.note}, pedida en ${p.note}`);
+    assert.ok(m.peakDb <= -0.9 && m.peakDb >= -1.2, k);
+  }
+  delete globalThis.self;
+});
+
+test('kicks de la biblioteca hechos con el laboratorio: el catálogo guarda sus ajustes exactos y su nota', () => {
+  const K = kicksData(), ctx = { window: {} };
+  vm.createContext(ctx);
+  vm.runInContext(readFileSync(join(ROOT, 'js/data/samples.js'), 'utf8'), ctx);
+  const byId = new Map();
+  ctx.window.H.data.samples.packs.forEach((p) => p.samples.forEach((s) => byId.set(s.id, s)));
+  const ids = Object.keys(K.LIB);
+  assert.ok(ids.length >= 20);
+  for (const id of ids) {
+    const s = byId.get(id), p = K.lib(id);
+    assert.ok(s, 'no está en el catálogo: ' + id);
+    assert.equal(JSON.stringify(s.lab), JSON.stringify(p), `${id}: los ajustes del catálogo no son los de js/data/kicks.js (vuelve a construir los samples)`);
+    assert.equal(p.type, 'hc');
+    if (s.key) assert.equal(p.note, s.key, `${id}: receta en ${p.note} y sonido anunciado en ${s.key}`);
+  }
 });

@@ -240,6 +240,12 @@ El uptempo va a 210 y en Re menor, como el kit Uptempo II de Harmony 04, para qu
 - **Percusión y efectos**: palma, charles, redoble, redoble de kick, subida, impacto y plato al revés.
 - **Comprobado**: las notas de todos los kicks y bajos y la altura de cada nota del gancho. Además, el reparto de graves, medios y agudos se ha comparado con el del preset Uptempo distorsionado. En la primera versión el himno tenía 6 dB menos de medios; se corrigió en el kick y en el lead.
 
+### Kicks de hardcore rehechos (22-10-2026)
+Los 23 kicks de hardcore, gabber, early, italiano, mainstream, industrial y newstyle de Harmony 01, 05 y 07 se han rehecho con el motor de hardcore del Laboratorio de kicks (`hcKick` en `tools/samples/hard.mjs`, recetas en `js/data/kicks.js`). Antes eran casi un seno saturado y no sonaban duros. Ahora tienen la cola casi cuadrada, grano en los medios, la nota sola abajo y el final limpio, como los kicks de referencia (ver *Laboratorio de kicks*).
+- **No cambian** el id, el nombre ni la nota, así que los presets que los usan suenan mejor sin desafinarse. El *Kick industrial con metal* conserva su golpe de tubo encima.
+- **Los de uptempo y raw** (Harmony 01 `ut-*`, 05 `rw-*`, 07 `ud-*` y 08) no se tocan.
+- Las versiones anteriores siguen en el historial de git.
+
 ### Cómo se hacen y se validan
 - **Cómo se hacen**: `tools/samples/dsp.mjs` (osciladores sin aliasing, ruido con semilla, filtros barridos, saturación, limitador, reverb, WAV con dither) y una receta por sonido en `tools/samples/packs/<pack>.mjs`. `node tools/samples/build.mjs` (o `npm run samples`) los construye, los valida y escribe `js/data/samples.js` y `tools/samples/report.md`. Es determinista: la misma receta da el mismo audio, y un test lo comprueba.
 - **Validación** (lo que no la pasa no se escribe): sin muestras recortadas, pico real ≤ −0,8 dBTP (normalizados a −1 dBTP con sobremuestreo ×4), sin continua ni infrasonidos, principio y final sin clic, duración razonable, y en los kicks y bajos, la nota medida en la cola (FFT de 65 536 puntos) igual a la anunciada. Además se revisaron forma de onda y espectrograma de todos (así se encontraron y corrigieron capas cortadas en seco, colas de kick que acababan de golpe y, en los coros, aliasing de la primera fuente glotal y falta de agudos) y se comparó su parecido espectral para no meter variantes casi iguales. **No se han escuchado**: este entorno no tiene salida de audio; la validación es técnica y visual. Con las voces es donde más falta hace escucharlas: lo que no se puede medir es si cada frase se entiende bien.
@@ -292,15 +298,21 @@ La cabecera tiene tres secciones. Cambiar de una a otra no recarga la página ni
 ## Laboratorio de kicks
 `#kicks` (Biblioteca › Kicks). Es el motor con el que se hacen los kicks de Harmony (`tools/samples/hard.mjs`), con sus mandos a la vista. Cada cambio recalcula el kick en un *worker* (`workers/kick/`) en unas décimas de segundo y lo hace sonar.
 - **Mandos**:
-  - Tipo (duro o frenchcore) y nota de la cola (de La 1 a Sol# 2).
+  - Tipo (uptempo / raw, hardcore o frenchcore) y nota de la cola (de Mi 1 a Sol# 2).
   - Cómo se mueve la cola: se cierra, se abre, va y viene, o fija.
   - Golpe: largo, caída de tono, tiempo de caída, tok y tick.
   - Cola: sierra en la fuente, reflexiones, medios, resonancia y dos distorsiones.
   - Equilibrio: sub, hueco en 300 Hz y OTT.
   - En frenchcore, además: repeticiones por negra, desde dónde se coge el trozo y caída de la cola.
-- **Puntos de partida**: Uptempo (el kick del himno), Uptempo que se abre, Uptempo con vaivén, Raw corto, Gabber zumbón, Hardstyle y Frenchcore. Hay también *Al azar*, dentro de lo que suena a kick duro, y *Otra variación*, que es la misma receta con otra semilla.
+  - **Hardcore** es otro motor (`hcKick`), con sus mandos:
+    - Golpe: largo, caída de tono, caída de volumen del 909, punch, tok, tick y curva final.
+    - Distorsión: cuadrada en la fuente, rumble (sala antes de distorsionar), bits, válvula, medios, cuerpo, plegado, recorte, grano, recorte final y chillido.
+    - Equilibrio: sub, hueco en 130–400 Hz, gabinete, oscuro, «se cierra», reflexiones y OTT.
+- **Puntos de partida**: Uptempo (el kick del himno), Uptempo que se abre, Uptempo con vaivén, Raw corto, Gabber zumbón, Hardstyle y Frenchcore. De hardcore y hard techno: Early / Rotterdam, Gabber 909, Mainstream, Industrial, Crossbreed, Hard techno, Rumble y Terror. Hay también *Al azar*, dentro de lo que suena a kick duro, y *Otra variación*, que es la misma receta con otra semilla.
 - **Escucharlo**: suelto o *en bucle* a un tempo, con palma y charles. Debajo dice en qué nota se mide la cola (y si no es la pedida), lo que dura, el RMS y lo que ha tardado en calcularse.
 - **Llevárselo**: *Al pad* lo manda al primer pad libre del banco abierto, como archivo tuyo; *WAV* lo descarga. Los ajustes se recuerdan en este navegador.
+- **Abrir un kick de la biblioteca**: los kicks de hardcore de la biblioteca salen de este motor. Sus ajustes están en `js/data/kicks.js` (`LIB`) y el catálogo los guarda con cada sonido. En Sonidos y en el Soundpad, el botón *Lab* de esos kicks lo abre en el laboratorio con sus ajustes exactos, para retocarlo; lo que se cambie no toca el sonido de la biblioteca.
+- **Cómo se afinó el motor de hardcore**: se compararon sus kicks con kicks de hardcore de referencia que pasó Marcos, solo para analizarlos; no se guardan ni se usan en ningún sonido. Se midieron la cola (100–300 ms), su cresta y el nivel de cada banda respecto a la nota. Las referencias tienen la cola casi cuadrada (cresta de 3,5 dB) y la nota unos 20 dB por encima de 130–400 Hz. Los medios (400 Hz–4 kHz) quedan a −12/−20 dB, y además hay una joroba de ruido en 1–4 kHz. Los kicks de antes eran casi un seno (cresta de 6 dB, pocos medios), y de ahí salen el recorte final sobremuestreado, el hueco y el grano. Comprobado en espectrogramas.
 - **El mismo motor**: el build copia `dsp.mjs` y `hard.mjs` de `tools/samples` junto al worker, así que no hay una segunda versión del código. Un test monta el worker como lo hace el build y comprueba que los kicks salen afinados y a −1 dBTP.
 - **Cabecera**: con un apartado más en el menú, la cabecera pasa a dos filas por debajo de 1240 px (antes, 980). Comprobado de 360 a 1800 px sin desbordarse.
 

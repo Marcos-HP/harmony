@@ -93,14 +93,15 @@ export async function build({ only = null, check = false, log = console.log } = 
           id: pack.id + '/' + s.id, slug: s.id, name: s.name, style: s.style, type: s.type, cat: s.cat, tags: s.tags,
           key: s.key || null, tonality: s.tonality || null, loop: !!s.loop, bars: s.bars || null,
           bpm: s.bpm || null, duration: r2(a.duration, 3), channels: w.channels, bytes: bytes.length, file,
-          notes: s.notes, peakDb: r2(a.peakDb, 1), truePeakDb: r2(a.truePeakDb, 1), rmsDb: r2(a.rmsDb, 1), centroid: Math.round(a.centroid)
+          notes: s.notes, peakDb: r2(a.peakDb, 1), truePeakDb: r2(a.truePeakDb, 1), rmsDb: r2(a.rmsDb, 1), centroid: Math.round(a.centroid),
+          ...(s.lab ? { lab: s.lab } : {})
         };
         report.push(`| ${s.name} \`${s.id}\` | ${s.style} · ${s.type} | ${a.duration.toFixed(2)} s | ${w.channels} | ${a.truePeakDb.toFixed(1)} dBTP | ${a.rmsDb.toFixed(1)} dB | ${Math.round(a.centroid)} Hz | ${a.tailHz && /kick|bajo/.test(s.type) ? D.hzToNote(a.tailHz) + ' (' + a.tailHz.toFixed(0) + ' Hz)' : '—'} | ${[...v.err, ...v.warn].join('; ') || '—'} |`);
       } else {
         // con --only, los demás se describen a partir del archivo que ya existe
         if (!existsSync(abs)) continue;
         const w = D.readWav(readFileSync(abs)), aud = w.channels === 2 ? D.stereo(w.chans[0], w.chans[1]) : w.chans[0], a = D.analyze(aud);
-        meta = { id: pack.id + '/' + s.id, slug: s.id, name: s.name, style: s.style, type: s.type, cat: s.cat, tags: s.tags, key: s.key || null, tonality: s.tonality || null, loop: !!s.loop, bars: s.bars || null, bpm: s.bpm || null, duration: r2(a.duration, 3), channels: w.channels, bytes: readFileSync(abs).length, file, notes: s.notes, peakDb: r2(a.peakDb, 1), rmsDb: r2(a.rmsDb, 1), centroid: Math.round(a.centroid) };
+        meta = { id: pack.id + '/' + s.id, slug: s.id, name: s.name, style: s.style, type: s.type, cat: s.cat, tags: s.tags, key: s.key || null, tonality: s.tonality || null, loop: !!s.loop, bars: s.bars || null, bpm: s.bpm || null, duration: r2(a.duration, 3), channels: w.channels, bytes: readFileSync(abs).length, file, notes: s.notes, peakDb: r2(a.peakDb, 1), rmsDb: r2(a.rmsDb, 1), centroid: Math.round(a.centroid), ...(s.lab ? { lab: s.lab } : {}) };
       }
       metas.push(meta);
     }

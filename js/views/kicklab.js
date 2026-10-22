@@ -6,22 +6,14 @@
   const H = (window.H = window.H || {});
   const U = H.U, e = U.esc;
   const STORE = 'kicklab';
-  const NOTES = ['A1', 'A#1', 'B1', 'C2', 'C#2', 'D2', 'D#2', 'E2', 'F2', 'F#2', 'G2', 'G#2'];
+  const KD = H.data.kicks, NOTES = KD.NOTES, BASE = KD.BASE, PRESETS = KD.PRESETS;
   const NOTE_ES = { C: 'Do', 'C#': 'Do#', D: 'Re', 'D#': 'Re#', E: 'Mi', F: 'Fa', 'F#': 'Fa#', G: 'Sol', 'G#': 'Sol#', A: 'La', 'A#': 'Si♭', B: 'Si' };
   const es = (n) => { const m = /^([A-G]#?)(-?\d)$/.exec(n || ''); return m ? NOTE_ES[m[1]] + ' ' + m[2] : '—'; };
+  const TYPES = [['hard', 'Uptempo / raw'], ['hc', 'Hardcore'], ['french', 'Frenchcore']];
 
-  /* puntos de partida: uptempo (el kick del himno), sus variantes, raw, gabber, hardstyle y frenchcore */
-  const BASE = { type: 'hard', note: 'D2', len: 300, semis: 34, drop: 130, saw: 0.3, refl: 0.35, mids: 11, res: 4, drive1: 11, drive2: 5, low: 0.45, scoop: -2, move: 'down', tok: 0.8, tick: 0.5, ott: 0.45, seed: 11, bpm: 200, at: 70, per: 3, decay: 0.6 };
-  const PRESETS = {
-    uptempo: { name: 'Uptempo', p: {} },
-    chillon: { name: 'Uptempo que se abre', p: { move: 'up' } },
-    vaiven: { name: 'Uptempo con vaivén', p: { move: 'wobble' } },
-    raw: { name: 'Raw corto', p: { len: 210, saw: 0.5, mids: 13, drive1: 16, drive2: 9, move: 'hold', low: 0.6, ott: 0.6 } },
-    gabber: { name: 'Gabber zumbón', p: { note: 'F2', len: 450, semis: 30, drop: 60, saw: 0.1, refl: 0.1, mids: 6, res: 8, drive1: 14, drive2: 3, low: 1, scoop: -6, move: 'hold', tok: 1, bpm: 180 } },
-    hardstyle: { name: 'Hardstyle', p: { note: 'F2', len: 420, semis: 36, drop: 160, saw: 0.2, mids: 8, res: 5, drive1: 7, drive2: 3, low: 1, scoop: -6, move: 'down', bpm: 150 } },
-    frenchcore: { name: 'Frenchcore', p: { type: 'french', seed: 21 } }
-  };
   /* los mandos: [clave, nombre, mín, máx, paso, cómo se lee, ayuda] */
+  const pct = (v) => Math.round(v * 100) + ' %';
+  /* cada mando vale para unos tipos (por defecto, uptempo y frenchcore); los de hardcore llevan «hc» */
   const KNOBS = [
     ['Golpe', [
       ['len', 'Largo', 120, 700, 10, (v) => v + ' ms', 'Lo que dura el kick. Un tiempo dura 60 000 / BPM ms (300 ms a 200 BPM).'],
@@ -44,6 +36,42 @@
       ['ott', 'OTT', 0, 1, 0.05, (v) => Math.round(v * 100) + ' %', 'Compresión en tres bandas: lo flojo sube.']
     ]]
   ];
+  /* hardcore: otro motor (hcKick), con sus mandos */
+  const HC_KNOBS = [
+    ['Golpe', [
+      ['len', 'Largo', 150, 1200, 10, (v) => v + ' ms', 'Lo que dura el kick. Un tiempo dura 60 000 / BPM ms (343 ms a 175 BPM).'],
+      ['semis', 'Caída de tono', 12, 48, 1, (v) => v + ' st', 'Desde cuántos semitonos por encima de la nota cae.'],
+      ['drop', 'Tiempo de caída', 15, 150, 5, (v) => v + ' ms', 'Rápido: golpe seco de 909. Lento: más «piuuu».'],
+      ['fade', 'Caída de volumen', 0, 1, 0.01, (v) => (v ? Math.round(v * 1000) + ' ms' : 'sostenido'), 'Cuánto tarda el 909 en apagarse antes de distorsionar (0: sostenido, como el mainstream). Con mucha distorsión casi no se nota hasta el final.'],
+      ['punch', 'Punch', 0, 1.6, 0.05, pct, 'Golpe limpio de ~150 Hz, afinado a la nota.'],
+      ['tok', 'Tok', 0, 1.6, 0.05, pct, 'El clic de tono de delante.'],
+      ['tick', 'Tick', 0, 1.6, 0.05, pct, 'El clic de ruido del principio.'],
+      ['bend', 'Curva final', -3, 3, 0.1, (v) => (v > 0 ? '+' : '') + v.toFixed(1) + ' st', 'La cola se curva al final (hacia abajo con valores negativos).']
+    ]],
+    ['Distorsión', [
+      ['sq', 'Cuadrada en la fuente', 0, 1, 0.05, pct, 'Más cuadrada: zumba más desde el principio.'],
+      ['verb', 'Rumble', 0, 1, 0.05, pct, 'Sala ANTES de distorsionar: la distorsión convierte su cola en retumbe (industrial, hard techno).'],
+      ['bits', 'Bits', 0, 12, 1, (v) => (v ? v + ' bits' : 'no'), 'Reducción de bits antes de distorsionar: el crunch del gabber de los 90.'],
+      ['drive1', 'Válvula', 1, 24, 0.5, (v) => '×' + v, 'Primera distorsión, asimétrica (armónicos pares e impares).'],
+      ['mids', 'Medios', 0, 16, 0.5, (v) => '+' + v + ' dB', 'Realce de ~1,5 y 3 kHz entre las dos distorsiones: la dureza.'],
+      ['body', 'Cuerpo', -6, 10, 0.5, (v) => (v > 0 ? '+' : '') + v + ' dB', 'Realce o corte de ~200 Hz entre las dos distorsiones.'],
+      ['fold', 'Plegado', 0, 1, 0.05, pct, 'Armónicos ásperos (crossbreed, terror).'],
+      ['drive2', 'Recorte', 1, 14, 0.5, (v) => '×' + v, 'Segunda distorsión, dura.'],
+      ['grit', 'Grano', 0, 1, 0.05, pct, 'Ruido de 0,5–5 kHz metido antes de distorsionar: bordes ásperos, como en los kicks de hardcore de verdad.'],
+      ['clip', 'Recorte final', 0, 1, 0.05, pct, 'Recorte de todo el kick (sobremuestreado): la cola casi cuadrada del gabber.'],
+      ['screech', 'Chillido', 0, 1, 0.05, pct, 'Un paso banda resonante que baja de 3,2 kHz a 700 Hz.']
+    ]],
+    ['Equilibrio', [
+      ['low', 'Sub', 0, 1.6, 0.05, pct, 'Graves en la nota y refuerzo de sub limpio.'],
+      ['hollow', 'Hueco', 0, 12, 0.5, (v) => '−' + v + ' dB', 'Quita los armónicos bajos (130–400 Hz) que llena el recorte: la nota sola abajo y el golpe en los medios.'],
+      ['cab', 'Gabinete', 0, 1, 0.05, pct, 'Quita la bola de 4,5 kHz y los agudos ásperos.'],
+      ['dark', 'Oscuro', 0, 1, 0.05, pct, 'Un paso bajo que se cierra enseguida: industrial.'],
+      ['close', 'Se cierra', 0, 1, 0.05, pct, 'Un paso bajo que se va cerrando a lo largo de la cola.'],
+      ['refl', 'Reflexiones', 0, 0.8, 0.05, pct, 'Textura y estéreo en la cola.'],
+      ['ott', 'OTT', 0, 1, 0.05, pct, 'Compresión en tres bandas.']
+    ]]
+  ];
+  const sections = () => (p.type === 'hc' ? HC_KNOBS : KNOBS);
   const FRENCH = [
     ['per', 'Repeticiones por negra', 1, 6, 1, (v) => v + '×', 'Cuántas veces cabe el trozo repetido en un tiempo.'],
     ['at', 'Trozo desde', 20, 150, 5, (v) => v + ' ms', 'Cuanto más pegado al ataque, más zumba.'],
@@ -66,7 +94,10 @@
     </section>
     <section class="sec wrap kl-main">
       <div class="kl-top">
-        <div class="kl-presets" role="group" aria-label="Puntos de partida">${Object.entries(PRESETS).map(([k, x]) => `<button class="chip" type="button" data-kl="preset" data-k="${k}">${e(x.name)}</button>`).join('')}<button class="chip" type="button" data-kl="random">${U.icon('shuffle')} Al azar</button></div>
+        <div class="kl-presets" role="group" aria-label="Puntos de partida">
+          <span class="mono kl-pg">Uptempo, raw y frenchcore</span>${Object.entries(PRESETS).filter(([, x]) => !x.group).map(([k, x]) => `<button class="chip" type="button" data-kl="preset" data-k="${k}">${e(x.name)}</button>`).join('')}
+          <span class="mono kl-pg">Hardcore y hard techno</span>${Object.entries(PRESETS).filter(([, x]) => x.group === 'hc').map(([k, x]) => `<button class="chip" type="button" data-kl="preset" data-k="${k}">${e(x.name)}</button>`).join('')}
+          <button class="chip" type="button" data-kl="random">${U.icon('shuffle')} Al azar</button></div>
       </div>
       <div class="kl-grid">
         <div class="kl-out">
@@ -96,6 +127,15 @@
     render(true);
   };
   const live = () => root && root.isConnected && root.querySelector('.kl-main');
+  /* abrir en el laboratorio los ajustes de un kick de la biblioteca (los guarda y va a #kicks) */
+  H.KickLab = {
+    open(params, name) {
+      p = { ...BASE, ...params }; keep();
+      if (live()) { renderKnobs(); root.querySelector('#kl-bpm').value = p.bpm; render(true); }
+      else location.hash = '#kicks';
+      if (name) U.toast(`«${name}» en el laboratorio: lo que cambies no toca el sonido de la biblioteca`);
+    }
+  };
   window.addEventListener('hashchange', () => setTimeout(() => { if (!live()) stopLoop(); }, 0));
 
   /* ---------- mandos ---------- */
@@ -106,15 +146,15 @@
     const box = root.querySelector('.kl-knobs');
     box.innerHTML = `
       <div class="kl-sec"><p class="mono eyebrow">Tipo y nota</p>
-        <div class="seg" role="group" aria-label="Tipo">${[['hard', 'Duro'], ['french', 'Frenchcore']].map(([v, n]) => `<button type="button" data-kl="type" data-v="${v}" aria-pressed="${p.type === v}">${n}</button>`).join('')}</div>
+        <div class="seg" role="group" aria-label="Tipo">${TYPES.map(([v, n]) => `<button type="button" data-kl="type" data-v="${v}" aria-pressed="${p.type === v}">${n}</button>`).join('')}</div>
         <label class="sel mono kl-note"><span>Nota de la cola</span><select id="kl-note">${NOTES.map((n) => `<option value="${n}"${n === p.note ? ' selected' : ''}>${es(n)} (${n.replace('#', '♯')})</option>`).join('')}</select></label>
-        <div class="kl-move${p.type === 'french' ? ' is-off' : ''}"><span class="mono">Movimiento de la cola</span>
-          <div class="seg" role="group" aria-label="Movimiento">${Object.entries(MOVES).map(([v, n]) => `<button type="button" data-kl="move" data-v="${v}" aria-pressed="${p.move === v}"${p.type === 'french' ? ' disabled' : ''}>${n}</button>`).join('')}</div></div>
+        ${p.type === 'hc' ? '' : `<div class="kl-move${p.type === 'french' ? ' is-off' : ''}"><span class="mono">Movimiento de la cola</span>
+          <div class="seg" role="group" aria-label="Movimiento">${Object.entries(MOVES).map(([v, n]) => `<button type="button" data-kl="move" data-v="${v}" aria-pressed="${p.move === v}"${p.type === 'french' ? ' disabled' : ''}>${n}</button>`).join('')}</div></div>`}
         ${p.type === 'french' ? `<div class="kl-ks">${FRENCH.map(knob).join('')}</div>` : ''}
       </div>
-      ${KNOBS.map(([title, list]) => `<div class="kl-sec"><p class="mono eyebrow">${title}</p><div class="kl-ks">${list.map(knob).join('')}</div></div>`).join('')}`;
+      ${sections().map(([title, list]) => `<div class="kl-sec"><p class="mono eyebrow">${title}</p><div class="kl-ks">${list.map(knob).join('')}</div></div>`).join('')}`;
   }
-  function allKnobs() { return [...KNOBS.flatMap(([, l]) => l), ...FRENCH]; }
+  function allKnobs() { return [...sections().flatMap(([, l]) => l), ...FRENCH]; }
   function onInput(ev) {
     const t = ev.target;
     if (t.dataset && t.dataset.k) {
@@ -146,6 +186,14 @@
   /* al azar, pero dentro de lo que suena a kick duro */
   function randomize() {
     const r = Math.random, pick = (a) => a[Math.floor(r() * a.length)], rr = (a, b, s) => Math.round((a + r() * (b - a)) / s) * s;
+    if (r() < 0.45) {
+      // hardcore: alrededor de una de sus escuelas, para que salga algo con sentido
+      const base = KD.params(pick(Object.keys(PRESETS).filter((k) => PRESETS[k].group === 'hc')));
+      p = { ...base, note: pick(['E1', 'F1', 'F#1', 'G1', 'G#1', 'A1']), len: rr(260, 700, 10), semis: rr(30, 46, 1), drop: rr(25, 90, 5), fade: r() < 0.3 ? 0 : rr(0.1, 0.7, 0.01),
+        sq: rr(0, 0.4, 0.05), verb: rr(0, 0.5, 0.05), bits: r() < 0.25 ? rr(5, 9, 1) : 0, fold: rr(0, 0.4, 0.05), mids: rr(4, 12, 0.5), drive1: rr(8, 18, 0.5), drive2: rr(3, 10, 0.5),
+        grit: rr(0.1, 0.6, 0.05), clip: rr(0.3, 1, 0.05), hollow: rr(2, 8, 0.5), screech: r() < 0.2 ? rr(0.2, 0.7, 0.05) : 0, close: r() < 0.3 ? rr(0.2, 0.8, 0.05) : 0, bpm: p.bpm, seed: 1 + Math.floor(r() * 9999) };
+      return;
+    }
     const t = r() < 0.2 ? 'french' : 'hard';
     p = { ...p, type: t, note: pick(['C2', 'C#2', 'D2', 'D#2', 'E2', 'F2']), len: rr(200, 420, 10), semis: rr(24, 40, 1), drop: rr(60, 200, 5), saw: rr(0, 0.6, 0.05),
       refl: rr(0.1, 0.6, 0.05), mids: rr(5, 14, 0.5), res: rr(2, 9, 0.5), drive1: rr(6, 18, 0.5), drive2: rr(2, 10, 0.5), low: rr(0.55, 1.1, 0.05),
@@ -247,14 +295,15 @@
   }
 
   /* ---------- llevárselo ---------- */
-  const fileName = () => `kick-${p.type === 'french' ? 'frenchcore' : 'duro'}-${(last && last.note ? last.note : p.note).replace('#', 's')}-${p.seed}.wav`;
+  const kind = () => ({ french: 'frenchcore', hc: 'hardcore' }[p.type] || 'duro');
+  const fileName = () => `kick-${kind()}-${(last && last.note ? last.note : p.note).replace('#', 's')}-${p.seed}.wav`;
   async function toPad() {
     if (!buf) return;
     const blob = H.Stems.wav(buf, 0, buf.duration), name = fileName();
     let id;
     try { id = await H.PadStore.putFile(new File([blob], name, { type: 'audio/wav' })); }
     catch (err) { U.toast('No se ha podido guardar el kick en este navegador'); return; }
-    const label = `Kick ${p.type === 'french' ? 'frenchcore' : 'lab'} ${es(last && last.note ? last.note : p.note)}`;
+    const label = `Kick ${p.type === 'french' ? 'frenchcore' : p.type === 'hc' ? 'hardcore' : 'lab'} ${es(last && last.note ? last.note : p.note)}`;
     const r = H.Soundpad.addToFreePad({ type: 'file', fileId: id, fileName: name }, { name: label, cat: 'kick' });
     if (!r) { U.toast('No quedan pads libres en el banco abierto: vacía alguno o crea un banco nuevo en el Soundpad'); return; }
     U.toast(`«${label}» en el pad ${r.i + 1} de «${r.bank.name}»`);

@@ -144,6 +144,137 @@ export function frenchKick(note, { len = 0.3, bpm = 200, at = 0.07, per = 3, dec
   return D.stereo(one(k.L), one(k.R));
 }
 
+/* El kick de hardcore (early, gabber, mainstream, industrial, crossbreed, terror). Otro animal que el de uptempo:
+     1. la fuente es un 909: un seno con caída de tono muy rápida y el volumen cayendo (fade, en s; 0 = sostenido
+        como en el mainstream), con algo de cuadrada si se quiere más zumbido;
+     2. «rumble» (verb): una sala ANTES de distorsionar; la distorsión convierte su cola en el retumbe del industrial;
+     3. reducción de bits (crunch) antes de distorsionar, como en el gabber de los 90;
+     4. realce de cuerpo (~200 Hz) y medios (~1,5 kHz) antes de distorsionar, saturación asimétrica (de válvula: pares
+        e impares), plegado opcional y recorte duro;
+     5. después: graves en la nota, «gabinete» (quita la bola de medios en 4,5 kHz y los agudos ásperos) y un filtro
+        que oscurece (dark) para el industrial;
+     6. el golpe aparte, limpio: punch (seno de ~150 Hz afinado a un armónico de la nota que cae en 6 ms), tok y tick;
+     7. graves en mono por debajo de 140 Hz, OTT y soft clip.
+   Fuentes: forum.renoise.com («Making gabber kicks…»: separar clic, cuerpo distorsionado y sub; distorsionar en
+   paralelo; 2–4 bits antes de distorsionar; gabinete para quitar la bola de medios), attackmagazine.com («In the red»:
+   un 909 con la ganancia de entrada al máximo, +100 Hz, +1,5 kHz, −4,5 kHz, +8 kHz). */
+/* una distorsión con sobremuestreo ×4 (FIR de seno enventanado): el recorte duro sin sobremuestrear crea aliasing y
+   picos entre muestras de +3–4 dB, que al normalizar a −1 dBTP dejan la cola 4 dB más floja */
+const FIR = (() => { const N = 64, fc = 0.5 / 4 * 0.9, h = new Float64Array(N + 1); let sum = 0;
+  for (let i = 0; i <= N; i++) { const m = i - N / 2, w = 0.42 - 0.5 * Math.cos(TAU * i / N) + 0.08 * Math.cos(2 * TAU * i / N); h[i] = (m === 0 ? 2 * fc : Math.sin(TAU * fc * m) / (Math.PI * m)) * w; sum += h[i]; }
+  for (let i = 0; i <= N; i++) h[i] /= sum; return h; })();
+function conv(x, gain) { const N = FIR.length, o = new Float64Array(x.length + N - 1); for (let i = 0; i < x.length; i++) { const v = x[i]; if (!v) continue; for (let k = 0; k < N; k++) o[i + k] += v * FIR[k] * gain; } return o.subarray((N - 1) / 2, (N - 1) / 2 + x.length); }
+export function os4(x, fn) {
+  const up = new Float64Array(x.length * 4); for (let i = 0; i < x.length; i++) up[i * 4] = x[i];
+  const y = conv(fn(conv(up, 4)), 1), o = new Float64Array(x.length);
+  for (let i = 0; i < x.length; i++) o[i] = y[i * 4];
+  return o;
+}
+
+export function hcKick(note, {
+  len = 0.45, from = null, semis = 36, drop = 0.04, fade = 0.25, sq = 0, punch = 0.8, verb = 0, bits = 0, fold = 0,
+  body = 4, mids = 6, drive1 = 12, drive2 = 5, low = 1, cab = 0.3, dark = 0, tok = 0.8, tick = 0.6, refl = 0.15, ottAmt = 0.45, seed = 1,
+  grit = 0, clip = 0, hollow = 0, bend = 0, screech = 0, close = 0
+} = {}) {
+  const f1 = hz(note), st = from ? 12 * Math.log2(hz(from) / f1) : semis, tc = drop / 3;
+  // bend: la cola se curva al final (semitonos, hacia abajo si es negativo), como en el mainstream
+  const fr = (t) => f1 * Math.pow(2, (st * Math.exp(-t / tc) + bend * Math.pow(Math.min(1, t / len), 3)) / 12);
+  const L = len + 0.02;
+  // 1. el 909: seno (y cuadrada) con caída de tono y de volumen
+  let src = sine(L, fr);
+  if (sq) { const s2 = saw(L, fr, 0), s3 = saw(L, fr, 0.5); src = D.mix([src, 1 - sq * 0.5], [D.map(s2, (v, i) => v - s3[i]), sq * 0.5]); }
+  const amp = (t) => Math.min(1, t / 0.0006) * (fade ? Math.exp(-t / fade) * 0.85 + 0.15 * Math.max(0, 1 - t / len) : 1) * (t < len - 0.03 ? 1 : Math.max(0, (L - t) / 0.05));
+  src = D.env(src, amp);
+  // 2. rumble: la sala antes de distorsionar, cortada al largo del golpe
+  if (verb) {
+    const w = D.reverb(src, { size: 0.86, damp: 0.55, tail: 0.6, pre: 0.008 });
+    src = D.mix([src, 1], [D.env(D.hp(w.L.slice(0, src.length), 35), (t) => Math.min(1, t / 0.03) * Math.max(0, 1 - t / L)), verb * 9]);
+  }
+  const stS = early(src, seed, { wet: refl });
+  const resF = f1 * Math.max(2, Math.round(1500 / f1));   // los medios, en un armónico de la nota
+  let side = 0;
+  const chain = (x) => {
+    // grano: ruido de 0,5–5 kHz que sigue al golpe, metido ANTES de distorsionar; el recorte lo pega a la onda y da
+    // los bordes ásperos y la joroba de 1–4 kHz que tienen los kicks de hardcore de verdad
+    if (grit) x = D.mix([x, 1], [D.env(D.bp(D.noise(x.length / SR, seed + 40 + side++), 1800, 0.45), amp), grit * 0.35]);
+    // 3. crunch
+    if (bits) x = D.crush(D.gain(x, 0.9), bits, 1);
+    // 4. válvula (crea los armónicos) → cuerpo y medios realzados → (plegado) → recorte: la segunda distorsión
+    //    convierte el realce en dureza (un realce antes de la primera no haría nada: el seno no tiene medios)
+    x = D.tube(x, drive1, 0.15);
+    x = D.filter(x, 'hp', 20, { q: 0.6 });   // la válvula asimétrica deja continua que sube y baja con el golpe: fuera antes de recortar
+    x = D.eq(x, f1 * Math.max(2, Math.round(200 / f1)), body, 0.9); x = D.eq(x, resF, mids, 0.8); x = D.eq(x, 3000, mids * 0.5, 1);
+    if (fold) x = D.mix([x, 1 - fold], [D.fold(x, 1 + fold * 2.5), fold]);
+    x = hardClip(x, drive2);
+    // 5. graves en la nota, gabinete, oscuridad, soft clip
+    x = D.eq(x, f1, 3 * low, 1); x = D.eq(x, 300, -3, 1.1);
+    if (cab) { x = D.eq(x, 4500, -8 * cab, 1); x = D.lp(x, 11000 - 5000 * cab, 0.7); }
+    x = D.shelf(x, 'highshelf', 8000, 2 - 3 * cab);
+    if (dark) x = D.filter(x, 'lp', (t) => (900 + 9000 * (1 - dark)) * (0.35 + 0.65 * Math.exp(-t / 0.08)) + 300, { q: 0.9 });
+    // close: un paso bajo que se va cerrando a lo largo del golpe (el «se apaga» de las colas largas)
+    if (close) x = D.filter(x, 'lp', (t) => 400 + 9000 * Math.pow(1 - close * Math.min(1, t / len), 2), { q: 1.1 });
+    // screech: un paso banda muy resonante que baja de 3,2 kHz a 700 Hz, distorsionado otra vez: el chillido
+    if (screech) { const b2 = D.filter(x, 'bp', (t) => 700 + 2500 * Math.pow(Math.max(0, 1 - t / len), 1.6), { q: 9 }); x = D.mix([x, 1], [D.map(b2, (v) => Math.tanh(v * 6)), screech * 0.5]); }
+    return softClip(D.gain(x, 0.6));
+  };
+  let tail = D.stereo(chain(stS.L), chain(stS.R));
+  // un refuerzo de sub: el mismo 909 sin distorsionar, solo la nota, que el recorte final pega a la cola
+  const sub = D.map(D.lp(D.lp(D.env(sine(L, fr), amp), f1 * 1.6, 0.7), f1 * 1.6, 0.7), (v) => Math.tanh(v * 1.6) * 0.35 * low);
+  const glue = (c) => softClip(hardClip(D.mix([c, 1], [sub, 1]), 2.2, 4));   // pegamento: una distorsión ligera sobre todo deja la cola densa
+  tail = D.stereo(glue(tail.L), glue(tail.R));
+  // 6. punch, tok y tick limpios, delante
+  const pf = f1 * Math.max(2, Math.round(150 / f1));
+  const pS = D.map(D.osc(0.12, D.sweep(pf * 2.2, pf, 0.006), { amp: D.ahd(0.0004, 0.012, 0.035) }), (v) => Math.tanh(v * 1.8));
+  const tokS = D.hp(D.osc(0.1, D.sweep(1800, 260, 0.01), { amp: D.ahd(0.0003, 0.006, 0.018) }), 180);
+  const tickS = D.env(D.hp(D.noise(0.03, seed + 9), 3000), D.expEnv(0.0035));
+  const front = D.mix([pS, punch], [tokS, tok], [tickS, tick]);
+  tail = D.stereo(D.mix([tail.L, 1], [front, 0.7]), D.mix([tail.R, 1], [front, 0.7]));
+  tail = monoLow(tail, 140);
+  // OTT y un último recorte suave: el OTT sube los armónicos y deja picos; el recorte los aplana (cola al tope)
+  // clip: el recorte final del gabber, la cola casi cuadrada (la del kick entero, sub incluido)
+  // hollow: después del recorte, quitar los armónicos bajos (130–400 Hz) que el recorte llena: la nota queda sola
+  // abajo y el golpe se oye en los medios, como en los kicks de referencia (la nota 20 dB por encima de esa banda)
+  const end = (c) => {
+    const hol = (y, k) => (hollow ? D.eq(D.eq(D.eq(y, f1 * 3, -hollow * k, 1.4), f1 * 5, -hollow * 0.8 * k, 1.4), 260, -hollow * 0.5 * k, 0.9) : y);
+    // la mitad antes del recorte (el recorte la rellena un poco: queda redondeada, sin pinchos) y la mitad después
+    return softClip(D.gain(hol(os4(hol(ott(c, { amount: ottAmt }), 0.6), (u) => softClip(hardClip(u, 1.6 + clip * 3, 4 + clip * 8))), 0.5), 1.08));
+  };
+  // el final, limpio y después de todo el recorte: si no, al bajar la nota el recorte sube el ruido y la sala (un
+  // soplido al final del golpe)
+  const out = (c) => D.env(end(c), (t) => (t < len - 0.025 ? 1 : Math.pow(Math.max(0, (len + 0.01 - t) / 0.035), 1.5)));
+  return D.stereo(out(tail.L), out(tail.R));
+}
+
+/* Ajustes del Laboratorio de kicks (js/data/kicks.js) → kick. Lo usan el worker del laboratorio y los packs, así que un
+   kick de la biblioteca y el mismo ajuste en el laboratorio suenan igual. Devuelve el kick sin normalizar. */
+export function labKick(p) {
+  const f1 = hz(p.note);
+  if (p.type === 'hc') {
+    return hcKick(p.note, {
+      len: p.len / 1000, semis: p.semis, drop: p.drop / 1000, fade: p.fade, sq: p.sq, punch: p.punch, verb: p.verb, bits: p.bits, fold: p.fold,
+      body: p.body, mids: p.mids, drive1: p.drive1, drive2: p.drive2, low: p.low, cab: p.cab, dark: p.dark, tok: p.tok, tick: p.tick, refl: p.refl, ottAmt: p.ott, seed: p.seed, grit: p.grit || 0, clip: p.clip || 0, hollow: p.hollow || 0, bend: p.bend || 0, screech: p.screech || 0, close: p.close || 0
+    });
+  }
+  const common = {
+    from: f1 * Math.pow(2, p.semis / 12), drop: p.drop / 1000, sawMix: p.saw, refl: p.refl, mids: p.mids, res: p.res,
+    drive1: p.drive1, drive2: p.drive2, tok: p.tok, tick: p.tick, ottAmt: p.ott, low: p.low, scoop300: p.scoop, seed: p.seed
+  };
+  return p.type === 'french'
+    ? frenchKick(p.note, { ...common, len: p.len / 1000, bpm: p.bpm, at: p.at / 1000, per: p.per, decay: p.decay, drop: Math.min(common.drop, 0.05) })
+    : hardKick(p.note, { ...common, len: p.len / 1000, move: p.move });
+}
+
+/* el kick listo para sonar: sin continua, cola recortada a −66 dB, fundidos y −1 dBTP (igual en el laboratorio y en los packs) */
+export function labSound(p) {
+  let s = D.same(labKick(p));
+  // sin continua; en el hardcore con un filtro más bajo: a 18 Hz, la cola casi cuadrada de 40–55 Hz se combaría
+  const dc = (x) => (p.type === 'hc' ? D.filter(x, 'hp', 6, { q: 0.6 }) : D.dcBlock(x));
+  const L = dc(s.L), R = dc(s.R);
+  const n = Math.max(D.trimTail(L, -66).length, D.trimTail(R, -66).length);
+  s = D.stereo(D.fades(L.slice(0, n), 0.0005, 0.01), D.fades(R.slice(0, n), 0.0005, 0.01));
+  return D.normalizeTP(D.limitSt(s, -0.7), -1);
+}
+
 /* Lead de himno: supersierra con entrada desde abajo (2 semitonos), vibrato tardío, formantes y dos distorsiones */
 export function anthemVoice(seed = 1, { voices = 7, spread = 24, scoop = 2, vib = 0.18, formant = [1300, 2700], fgain = [7, 5], drive = 2.4, sub = 0.35 } = {}) {
   return (f, gate, vel = 1) => {

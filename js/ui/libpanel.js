@@ -47,7 +47,7 @@
       $('.lib-list').innerHTML = list.length ? list.map((s) => `<li class="lib-item cat-${s.cat}" draggable="true" data-id="${e(s.id)}">
           <button class="ibtn lib-play" type="button" data-lib="prev" aria-label="Escuchar ${e(s.name)}">${U.icon('play')}</button>
           <span class="lib-main"><b>${e(s.name)} <i class="lib-badge mono">Harmony</i></b><span class="lib-meta">${e(H.Lib.meta(s))}</span><span class="lib-tags mono">${s.tags.map(e).join(' · ')}</span></span>
-          <button class="btn btn-sm lib-add" type="button" data-lib="add" title="${e(s.notes)}">${U.icon('plus')}<span>${e(opts.addLabel ? opts.addLabel(s) : 'A un pad')}</span></button>
+          <span class="lib-acts">${s.lab && H.KickLab ? `<button class="btn btn-sm lib-lab" type="button" data-lib="lab" title="Abrir en el Laboratorio de kicks con sus ajustes, para retocarlo">Lab</button>` : ''}<button class="btn btn-sm lib-add" type="button" data-lib="add" title="${e(s.notes)}">${U.icon('plus')}<span>${e(opts.addLabel ? opts.addLabel(s) : 'A un pad')}</span></button></span>
         </li>`).join('')
         : `<li class="fine">${e(opts.empty || 'Nada coincide con la búsqueda.')}</li>`;
       paint();
@@ -71,6 +71,7 @@
       if (a === 'style') { st.style = b.dataset.v; st.type = 'all'; renderFilters(); renderList(); }
       else if (a === 'prev') H.PadAudio.preview(key(s.id), src(s.id)).catch((err) => U.toast(H.PadAudio.message(err)));
       else if (a === 'add' && opts.onAdd) opts.onAdd(s);
+      else if (a === 'lab' && s.lab && H.KickLab) H.KickLab.open(s.lab, s.name);
     });
     el.addEventListener('dragstart', (ev) => {
       const li = ev.target.closest && ev.target.closest('.lib-item'); if (!li) return;

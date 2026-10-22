@@ -9,6 +9,7 @@
      Raw / uptempo         205 BPM · Re menor   · distorsión extrema, kicks que cambian de tono, melodías de kicks
      Newstyle              150 BPM · La menor   · kick seco y corto, bajo a contratiempo, palma con sala (los pitidos, aparte) */
 import * as D from '../dsp.mjs';
+import { labKick as LK } from '../kicklib.mjs';
 import * as S from '../synth.mjs';
 import * as V from '../voice.mjs';
 
@@ -98,22 +99,6 @@ function metal(dur, seed, { hp = 7000, tau = 0.05 } = {}) {
 
 /* ================================================================= ROTTERDAM / EARLY · 175 BPM · Re menor */
 const RT = { bpm: 175 };
-function rtKickFuzz() {
-  // gabber de Rotterdam: el 909 empujado a la saturación hasta que «zumba», con el medio en 1 kHz (la bocina del gabber)
-  const b = body({ f0: 2300, mid: 220, f1: D.note('D', 1), tau: 0.004, tau2: 0.055, len: 0.62, amp: D.ahd(0.0006, 0.18, 0.16) });
-  let x = D.mix([b, 1], [click(51, { f: 3600, tok: 1300 }), 0.4]);
-  x = D.tube(x, 9, 0.2); x = D.clip(x, 1.6, 0.9);
-  x = D.eq(x, 1000, 6, 1.1); x = D.eq(x, 300, -3, 1);
-  x = D.drive(x, 2.6); x = D.lp(x, 7500); x = D.hp(x, 34);
-  return finish(x, { release: 0.2 });
-}
-function rtKickThump() {
-  // early: golpe gordo y corto, menos zumbido, para 160–180 BPM
-  const b = body({ f0: 1700, mid: 170, f1: D.note('A', 1), tau: 0.005, tau2: 0.05, len: 0.42, amp: D.ahd(0.0007, 0.06, 0.12) });
-  let x = D.mix([b, 1], [click(52, { f: 3200, tok: 1100, nGain: 0.9 }), 0.5]);
-  x = D.tube(x, 4, 0.12); x = D.drive(x, 3); x = D.eq(x, 140, 3, 0.9); x = D.lp(x, 7000); x = D.hp(x, 34);
-  return finish(x, { release: 0.14 });
-}
 function rtHoover() {
   // hoover de alarma (La 3): cae siete semitonos al entrar y vuelve, pulsos con ancho modulado y sierras
   const f = D.note('A', 3), L = 1.7;
@@ -175,8 +160,6 @@ function itTailKick(note, seed, { bend = -0.6, len = 0.9, cutoff = [6500, 1300] 
   x = D.eq(x, 95, 2.5, 0.8); x = D.hp(x, 30);
   return finish(x, { release: 0.3 });
 }
-const itKickTail = () => itTailKick(['F#', 1], 61);
-const itKickHigh = () => itTailKick(['A', 1], 62, { len: 0.7, bend: -1, cutoff: [7500, 1800] });
 function itChoir() {
   // golpe de coro en Fa# menor (Fa# 3, La 3, Do# 4, Fa# 4) con la reverb cortada: el coro épico del hardcore italiano
   const L = 0.9, amp = D.ahd(0.01, 0.42, 0.18);
@@ -228,29 +211,6 @@ function itReverse() {
 
 /* ================================================================= MAINSTREAM OSCURO · 178 BPM · Mi menor */
 const MO = { bpm: 178 };
-function moKickScreech() {
-  // kick largo y oscuro en Mi 1 con chillido arriba: cola plegada y muy saturada, un paso banda resonante que baja
-  const f1 = D.note('E', 1);
-  const punch = D.drive(body({ f0: 3400, mid: 260, f1: 60, tau: 0.0026, tau2: 0.026, len: 0.14, amp: D.ahd(0.0005, 0.03, 0.03) }), 2.6);
-  let tail = body({ f0: 900, mid: f1 * 2.2, f1, tau: 0.004, tau2: 0.04, len: 0.95, amp: D.ahd(0.02, 0.42, 0.24), bend: -0.8, bendStart: 0.5 });
-  tail = D.fold(D.gain(tail, 1.5), 1); tail = D.drive(tail, 6);
-  tail = D.filter(tail, 'lp', D.ramp(6000, 380, 0.95, 0.6), { q: 1.4 }); tail = D.eq(tail, f1, 5, 1);
-  const scr = D.filter(D.osc(0.4, (t) => f1 * 8 * Math.pow(0.8, t * 2), { shape: 'saw', amp: D.ahd(0.03, 0.16, 0.08) }), 'bp', D.ramp(2800, 1100, 0.4, 0.8), { q: 10 });
-  let x = D.mix([punch, 0.9], [click(71, { f: 5600, tok: 2200 }), 0.3], [tail, 0.75, 0.03], [D.drive(scr, 3), 0.3, 0.05]);
-  x = D.eq(x, 70, 3, 0.8); x = D.hp(x, 28);
-  return finish(x, { release: 0.32 });
-}
-function moKickRumble() {
-  // el «rumble»: cola larguísima en Fa 1, muy distorsionada, que se cierra hasta quedarse en un gruñido
-  const f1 = D.note('F', 1);
-  const punch = D.drive(body({ f0: 3000, mid: 240, f1: 62, tau: 0.003, tau2: 0.03, len: 0.15, amp: D.ahd(0.0005, 0.03, 0.035) }), 2.2);
-  let tail = body({ f0: 700, mid: f1 * 2, f1, tau: 0.005, tau2: 0.05, len: 1.15, amp: D.ahd(0.025, 0.55, 0.28) });
-  tail = D.tube(tail, 8, 0.25); tail = D.drive(tail, 6);
-  tail = D.filter(tail, 'lp', D.ramp(4500, 600, 1.15, 0.45), { q: 2.2 });
-  let x = D.mix([punch, 0.9], [click(72, { f: 4800, tok: 1900 }), 0.3], [tail, 0.85, 0.03]);
-  x = D.eq(x, 60, 3, 0.8); x = D.hp(x, 26);
-  return finish(x, { release: 0.38 });
-}
 function moScreech() {
   // chillido: sierra por un paso banda muy resonante que sube y baja, saturada, con eco
   const L = 1.1, f = 330;
@@ -302,8 +262,6 @@ function moPerc() {
 
 /* ================================================================= MAINSTREAM MELÓDICO · 174 BPM · La menor */
 const MM = { bpm: 174 };
-const mmKickA = () => itTailKick(['A', 1], 81, { len: 0.78, bend: -0.5, cutoff: [7000, 1600] });
-const mmKickC = () => itTailKick(['C', 2], 82, { len: 0.7, bend: -0.7, cutoff: [7500, 2000] });
 const MM_CH = [['A4', 'C5', 'E5'], ['A4', 'C5', 'F5'], ['G4', 'C5', 'E5'], ['G4', 'B4', 'D5']];
 const MM_LEAD = [
   [0, 2, 'E5'], [2, 2, 'A5'], [4, 2, 'C6'], [6, 2, 'B5'], [8, 4, 'A5'], [12, 2, 'E5'], [14, 2, 'G5'],
@@ -388,20 +346,6 @@ function rwStab() {
 
 /* ================================================================= NEWSTYLE · 150 BPM · La menor */
 const NW = { bpm: 150 };
-function nwKickSeco() {
-  // seco y corto, con mucho clic: el kick del newstyle de sala en La 1
-  const b = body({ f0: 2400, mid: 180, f1: D.note('A', 1), tau: 0.0026, tau2: 0.03, len: 0.28, amp: D.ahd(0.0005, 0.045, 0.06) });
-  let x = D.mix([b, 1], [click(101, { f: 5800, tok: 2200, nGain: 0.8 }), 0.6]);
-  x = D.tube(x, 3, 0.12); x = D.drive(x, 2.2); x = D.eq(x, 110, 3, 0.9); x = D.eq(x, 4000, 3, 1.1); x = D.hp(x, 36);
-  return finish(x, { release: 0.08 });
-}
-function nwKickTok() {
-  // «tok» con el golpe en los medios (Si 1): se oye aunque el bajo vaya fuerte
-  const b = body({ f0: 1800, mid: 420, f1: D.note('B', 1), tau: 0.003, tau2: 0.022, len: 0.26, amp: D.ahd(0.0005, 0.04, 0.06) });
-  let x = D.mix([b, 1], [click(102, { f: 3000, tok: 900, tGain: 1 }), 0.5]);
-  x = D.drive(x, 3); x = D.eq(x, 600, 4, 1.2); x = D.hp(x, 38);
-  return finish(x, { release: 0.08 });
-}
 function nwBass() {
   // bajo de contratiempo (La 1): golpe corto con cuerpo en la «y» del tiempo, a 150 BPM
   const f = D.note('A', 1), L = beat(150) / 2 - 0.01;
@@ -445,10 +389,10 @@ const L = (o) => ({ cat: 'loop', loop: true, ...o });
 const sch = (s) => 'escuela ' + s;
 export const SAMPLES = [
   // Rotterdam / early
-  K({ id: 'rt-kick-fuzz', name: 'Kick gabber zumbón', style: 'hardcore', key: 'D1', bpm: [170, 190], tags: ['gabber', '909', 'rotterdam', 'saturado', sch('rotterdam')], render: rtKickFuzz,
-    notes: 'El 909 saturado hasta que zumba: válvula, recorte y un realce de 6 dB en 1 kHz (la «bocina» del gabber de los 90), cola en Re 1.' }),
-  K({ id: 'rt-kick-thump', name: 'Kick early gordo', style: 'hardcore', key: 'A1', bpm: [160, 180], tags: ['early', '909', 'corto', sch('rotterdam')], render: rtKickThump,
-    notes: 'Golpe gordo y corto en La 1, con menos zumbido: para el early hardcore de 160–180 BPM.' }),
+  K({ id: 'rt-kick-fuzz', name: 'Kick gabber zumbón', style: 'hardcore', key: 'D1', bpm: [170, 190], tags: ['gabber', '909', 'rotterdam', 'saturado', sch('rotterdam')], ...LK('harmony-05/rt-kick-fuzz'),
+    notes: 'El 909 saturado hasta que zumba, en Re 1: cuadrada en la fuente, medios muy realzados (la «bocina» del gabber de los 90), grano y recorte final casi cuadrado.' }),
+  K({ id: 'rt-kick-thump', name: 'Kick early gordo', style: 'hardcore', key: 'A1', bpm: [160, 180], tags: ['early', '909', 'corto', sch('rotterdam')], ...LK('harmony-05/rt-kick-thump'),
+    notes: 'Golpe gordo y corto en La 1, con mucho punch y menos zumbido: para el early hardcore de 160–180 BPM.' }),
   { id: 'rt-hoover-alarm', name: 'Hoover de alarma', style: 'hardcore', type: 'sintetizador', cat: 'fx', key: 'A3', tags: ['hoover', 'rave', 'caída de tono', sch('rotterdam')], render: rtHoover,
     notes: 'Hoover en La 3 que entra siete semitonos abajo y sube: pulsos con ancho modulado y sierras desafinadas.' },
   { id: 'rt-stab-rave', name: 'Stab de rave (Re m7)', style: 'hardcore', type: 'stab', cat: 'fx', key: 'D4', tags: ['stab', 'órgano', 'rave', sch('rotterdam')], render: rtStab,
@@ -463,9 +407,9 @@ export const SAMPLES = [
     notes: 'Sierra y cuadrada que barren de 500 Hz a 2 kHz en dos tiempos a 175 BPM, con eco.' },
 
   // Hardcore italiano
-  K({ id: 'it-kick-tail', name: 'Kick italiano con cola', style: 'hardcore', key: 'F#1', bpm: [165, 180], tags: ['italiano', 'cola larga', 'afinado', sch('italiana')], render: itKickTail,
-    notes: 'Golpe con mucho ataque y una cola larga afinada en Fa# 1, plegada y saturada, que se cierra de 6,5 a 1,3 kHz y cae un poco al final.' }),
-  K({ id: 'it-kick-high', name: 'Kick italiano agudo', style: 'hardcore', key: 'A1', bpm: [165, 180], tags: ['italiano', 'cola', sch('italiana')], render: itKickHigh,
+  K({ id: 'it-kick-tail', name: 'Kick italiano con cola', style: 'hardcore', key: 'F#1', bpm: [165, 180], tags: ['italiano', 'cola larga', 'afinado', sch('italiana')], ...LK('harmony-05/it-kick-tail'),
+    notes: 'Golpe con mucho ataque y una cola larga en Fa# 1, plegada y con grano, que se va cerrando hasta apagarse.' }),
+  K({ id: 'it-kick-high', name: 'Kick italiano agudo', style: 'hardcore', key: 'A1', bpm: [165, 180], tags: ['italiano', 'cola', sch('italiana')], ...LK('harmony-05/it-kick-high'),
     notes: 'La misma escuela en La 1, con la cola más corta y brillante.' }),
   { id: 'it-choir-stab', name: 'Golpe de coro épico', style: 'hardcore', type: 'coro', cat: 'voz', key: 'F#3', tags: ['coro', 'épico', 'Fa# menor', sch('italiana')], render: itChoir,
     notes: 'Coro sintético (tenores y sopranos, por formantes) en Fa# menor con la reverb cortada en seco.' },
@@ -479,10 +423,10 @@ export const SAMPLES = [
     notes: 'La cola del kick italiano con su reverb, al revés: crece hasta el golpe.' },
 
   // Mainstream oscuro
-  K({ id: 'mo-kick-screech', name: 'Kick oscuro con chillido', style: 'hardcore', key: 'E1', bpm: [175, 185], tags: ['mainstream', 'oscuro', 'screech', sch('mainstream oscuro')], render: moKickScreech,
-    notes: 'Cola larga en Mi 1 plegada y muy saturada, con un chillido de sierra por un paso banda resonante que baja.' }),
-  K({ id: 'mo-kick-rumble', name: 'Kick rumble', style: 'hardcore', key: 'F1', bpm: [175, 185], tags: ['mainstream', 'rumble', 'cola larga', sch('mainstream oscuro')], render: moKickRumble,
-    notes: 'Cola larguísima en Fa 1, saturada con válvula, que se cierra de 4,5 kHz a 600 Hz hasta quedarse en un gruñido.' }),
+  K({ id: 'mo-kick-screech', name: 'Kick oscuro con chillido', style: 'hardcore', key: 'E1', bpm: [175, 185], tags: ['mainstream', 'oscuro', 'screech', sch('mainstream oscuro')], ...LK('harmony-05/mo-kick-screech'),
+    notes: 'Cola larga en Mi 1, plegada y muy distorsionada, con un chillido: un paso banda resonante que baja de 3,2 kHz a 700 Hz.' }),
+  K({ id: 'mo-kick-rumble', name: 'Kick rumble', style: 'hardcore', key: 'F1', bpm: [175, 185], tags: ['mainstream', 'rumble', 'cola larga', sch('mainstream oscuro')], ...LK('harmony-05/mo-kick-rumble'),
+    notes: 'Cola larguísima en Fa 1 con mucho rumble (sala antes de distorsionar) que se va cerrando hasta quedarse en un gruñido.' }),
   { id: 'mo-screech', name: 'Chillido oscuro', style: 'hardcore', type: 'efecto', cat: 'fx', tags: ['screech', 'oscuro', sch('mainstream oscuro')], render: moScreech,
     notes: 'Sierra por un paso banda de Q 14 que sube y baja, saturada, con eco a 178 BPM.' },
   { id: 'mo-bell', name: 'Campana de terror', style: 'hardcore', type: 'nota', cat: 'fx', key: 'E3', tags: ['campana', 'terror', 'fm', sch('mainstream oscuro')], render: moBell,
@@ -497,9 +441,9 @@ export const SAMPLES = [
     notes: 'Metal grave y ruido por un paso banda a 1,1 kHz, saturado, con sala corta.' },
 
   // Mainstream melódico
-  K({ id: 'mm-kick-tonal', name: 'Kick con cola tonal (La)', style: 'hardcore', key: 'A1', bpm: [170, 178], tags: ['mainstream', 'melódico', 'cola tonal', sch('mainstream melódico')], render: mmKickA,
-    notes: 'Cola afinada en La 1 que canta la nota antes de cerrarse: para tocar la tónica en La menor.' }),
-  K({ id: 'mm-kick-tonal-c', name: 'Kick con cola tonal (Do)', style: 'hardcore', key: 'C2', bpm: [170, 178], tags: ['mainstream', 'melódico', 'cola tonal', sch('mainstream melódico')], render: mmKickC,
+  K({ id: 'mm-kick-tonal', name: 'Kick con cola tonal (La)', style: 'hardcore', key: 'A1', bpm: [170, 178], tags: ['mainstream', 'melódico', 'cola tonal', sch('mainstream melódico')], ...LK('harmony-05/mm-kick-tonal'),
+    notes: 'Cola afinada en La 1, menos distorsionada para que cante la nota, que se va cerrando: para tocar la tónica en La menor.' }),
+  K({ id: 'mm-kick-tonal-c', name: 'Kick con cola tonal (Do)', style: 'hardcore', key: 'C2', bpm: [170, 178], tags: ['mainstream', 'melódico', 'cola tonal', sch('mainstream melódico')], ...LK('harmony-05/mm-kick-tonal-c'),
     notes: 'La misma cola en Do 2 (la tercera de La menor), para cambiar de nota en el drop.' }),
   L({ id: 'mm-lead', name: 'Lead eufórico', style: 'hardcore', type: 'melodía', tonality: 'La menor', bpm: [174, 174], bars: 4, tags: ['lead', 'eufórico', 'supersierra', sch('mainstream melódico')], render: mmLead,
     notes: 'Melodía de 4 compases sobre Lam – Fa – Do – Sol: supersierra brillante con su octava, «sidechain» y eco.' }),
@@ -525,10 +469,10 @@ export const SAMPLES = [
     notes: 'Sierras y cuadradas en Re menor, plegadas y muy cortas.' },
 
   // Newstyle
-  K({ id: 'nw-kick-seco', name: 'Kick newstyle seco', style: 'newstyle', key: 'A1', bpm: [145, 155], tags: ['newstyle', 'corto', 'clic', sch('newstyle')], render: nwKickSeco,
-    notes: 'Seco y corto en La 1, con mucho clic y presencia a 4 kHz.' }),
-  K({ id: 'nw-kick-tok', name: 'Kick newstyle tok', style: 'newstyle', key: 'B1', bpm: [145, 155], tags: ['newstyle', 'tok', 'medios', sch('newstyle')], render: nwKickTok,
-    notes: 'Golpe en los medios (realce a 600 Hz) en Si 1: se oye aunque el bajo vaya fuerte.' }),
+  K({ id: 'nw-kick-seco', name: 'Kick newstyle seco', style: 'newstyle', key: 'A1', bpm: [145, 155], tags: ['newstyle', 'corto', 'clic', sch('newstyle')], ...LK('harmony-05/nw-kick-seco'),
+    notes: 'Seco y corto en La 1, con mucho clic y grano.' }),
+  K({ id: 'nw-kick-tok', name: 'Kick newstyle tok', style: 'newstyle', key: 'B1', bpm: [145, 155], tags: ['newstyle', 'tok', 'medios', sch('newstyle')], ...LK('harmony-05/nw-kick-tok'),
+    notes: 'Golpe en los medios en Si 1, con mucho tok y cuerpo: se oye aunque el bajo vaya fuerte.' }),
   { id: 'nw-bass-off', name: 'Bajo a contratiempo (La)', style: 'newstyle', type: 'bajo', cat: 'bajo', key: 'A1', bpm: [150, 150], tags: ['bajo', 'offbeat', sch('newstyle')], render: nwBass,
     notes: 'Golpe de bajo de una corchea a 150 BPM en La 1, con un paso bajo que se cierra.' },
   { id: 'nw-clap', name: 'Palma newstyle con sala', style: 'newstyle', type: 'palma', cat: 'perc', tags: ['clap', 'reverb', sch('newstyle')], render: nwClap,
