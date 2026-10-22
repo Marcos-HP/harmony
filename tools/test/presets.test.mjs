@@ -105,12 +105,12 @@ test('presets con efectos de pad y notas con duración: llegan al banco nuevo', 
   const ind = B.fromPreset(st, H.data.presets.find((p) => p.id === 'industrial'));
   assert.equal(ind.pads[5].echo, 35); assert.equal(ind.pads[5].echoDiv, 0.75);
   assert.equal(ind.pads[6].bits, 6);
-  assert.equal(ind.pads[1].filter, 'lp'); assert.equal(ind.pads[1].cutoff, 2600);
   assert.equal(ind.pads[0].drive, 0, 'sin fx, limpio');
-  // «x-..» = notas de dos pasos en el patrón B (kick picado)
-  assert.equal(H.Patterns.noteLen(ind.seq, 1, 1, 0), 2);
-  assert.equal(H.Patterns.noteLen(ind.seq, 1, 1, 60), 0, 'las semicorcheas del final, enteras');
-  assert.equal(H.Patterns.row(ind.seq, 1, 1).slice(0, 8), '10001000');
+  // el kick picado del patrón B, ahora en notas: «x-..» = notas de dos pasos; el redoble del final, semicorcheas
+  assert.equal(H.Patterns.melStarts(ind.seq, 1, 1, 0).map((n) => n[1]).join(), '2');
+  assert.equal(H.Patterns.melStarts(ind.seq, 1, 1, 60).map((n) => n[1]).join(), '1');
+  const hos = B.fromPreset(st, H.data.presets.find((p) => p.id === 'hardcore-oscuro'));
+  assert.equal(hos.pads[4].filter, 'lp'); assert.equal(hos.pads[4].cutoff, 5000);
   const osc = B.fromPreset(st, H.data.presets.find((p) => p.id === 'hardcore-oscuro'));
   assert.equal(H.Patterns.noteLen(osc.seq, 3, 13, 8), 8, 'la campana del break, cortada cada medio compás');
 });

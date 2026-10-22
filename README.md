@@ -297,6 +297,12 @@ La cabecera tiene tres secciones. Cambiar de una a otra no recarga la página ni
   - **Tempo**: 60–260 BPM (con − y +, escribiéndolo o con *Tap*) y swing de 0 a 100 % (retrasa la segunda semicorchea de cada corchea hasta medio paso).
   - **Patrones A–D** por banco; el cambio entra al acabar la vuelta. *Cadena* (p. ej. `AABA`) los toca en ese orden. Acciones: base 4×4 con los sonidos de los pads (kick a negras, palma o caja en el 2 y el 4, charles y bajo a contratiempo), vaciar y copiar a otro patrón, y tres **kits de Harmony** (hardcore 180, newstyle 150, uptempo 200) que llenan pads libres, ponen el tempo y dejan la base. *Rellenar…* tiene además dos rellenos de escuela: *subida* (negras, luego corcheas y luego semicorcheas, el kick roll antes del drop) y *tresillo* (3 · 3 · 2).
   - **Presets por escuela** (`js/data/presets.js`), en *Acciones* y en el secuenciador vacío. Cada preset crea un **banco nuevo**, sin tocar el que hay. Hay dieciocho: Gabber de rave (175), Happy hardcore (175) y Hard techno industrial (150), Uptempo melódico (200) y Frenchcore melódico (200), Uptempo himno (200) y Frenchcore himno (200), Rotterdam (175), Hardcore italiano (172), Mainstream oscuro (178), Mainstream melódico (174), Raw / uptempo (205), Newstyle (150), Newstyle de pitidos (175), Hardcore oscuro (170), Industrial (170, a medio tiempo), Uptempo distorsionado (210) y Uptempo de kicks (210).
+    - **El kick manda, desde el piano roll** (22-10-2026): en Rotterdam, Hardcore italiano, Mainstream oscuro, Mainstream melódico, Hardcore oscuro, Industrial y Gabber de rave el kick principal va en modo notas, como en Uptempo melódico.
+      - Sigue la raíz de cada compás: Fa#m – Re – Mi – Do# en el italiano; Mi y el Fa frigio en el mainstream oscuro; Lam – Fa – Do – Sol en el melódico; Fa – Re♭ – Mi♭ – Do con el bajo rumble en el oscuro y el industrial.
+      - El drop acaba con un remate (quinta y octava) y la subida con un redoble de kick que sube. En el break, el kick vuelve suave en el último compás.
+      - Va 3–5 dB por encima del lead, como en el hardcore de verdad.
+      - Usa los kicks rehechos y, en Hardcore oscuro, el mainstream del Harmony 09.
+      - Comprobado en el render: todas las negras del kick suenan en su nota.
     - **Con el Harmony 09:**
       - Gabber de rave: kick 909 casi cuadrado, riff de hoover, hoover en acordes y bajo desde el piano roll, sirena y screech.
       - Happy hardcore: piano en acordes con la melodía encima desde el piano roll, bajo y chops.
