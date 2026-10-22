@@ -42,6 +42,14 @@ if (existsSync(join(root, 'art'))) {
 // los workers (el motor del Extractor) van aparte: un worker no se puede meter dentro del HTML
 rmSync(join(root, 'dist/workers'), { recursive: true, force: true });
 if (existsSync(join(root, 'workers'))) cpSync(join(root, 'workers'), join(root, 'dist/workers'), { recursive: true });
+// el laboratorio de kicks usa el mismo motor que hace los samples (tools/samples): se copia junto a su worker
+{
+  const dsp = readFileSync(join(root, 'tools/samples/dsp.mjs'), 'utf8');
+  const hard = readFileSync(join(root, 'tools/samples/hard.mjs'), 'utf8').replace("from './dsp.mjs'", "from './dsp.js'");
+  mkdirSync(join(root, 'dist/workers/kick'), { recursive: true });
+  writeFileSync(join(root, 'dist/workers/kick/dsp.js'), dsp);
+  writeFileSync(join(root, 'dist/workers/kick/hard.js'), hard);
+}
 // los samples originales de Harmony (samples/<pack>/*.wav) también se sirven tal cual
 rmSync(join(root, 'dist/samples'), { recursive: true, force: true });
 if (existsSync(join(root, 'samples'))) {

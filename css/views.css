@@ -565,3 +565,29 @@
   .xt-lane .xt-wave { grid-column: 1 / -1; grid-row: 2; }
   .xt-mixlane .xt-lh { grid-column: 1; }
 }
+
+/* ---------- Laboratorio de kicks ---------- */
+.kl-top { margin-bottom: 16px; }
+.kl-presets { display: flex; flex-wrap: wrap; gap: 6px; }
+.kl-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: clamp(16px, 3vw, 32px); align-items: start; }
+.kl-out { position: sticky; top: calc(var(--top-off, 60px) + 12px); display: grid; gap: 12px; border: 1px solid var(--ink); padding: 16px; }
+.kl-wave { position: relative; height: 170px; border: 1px solid var(--line); background: var(--paper); }
+.kl-wave canvas { display: block; width: 100%; height: 100%; }
+.kl-busy { position: absolute; top: 8px; right: 10px; font-size: 10.5px; color: var(--ink-2); }
+.kl-meta { margin: 0; font-size: 11.5px; color: var(--ink-2); }
+.kl-meta b { color: var(--ink); }
+.kl-acts { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.kl-bpm input { width: 4.6em; }
+.kl-chk { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; }
+.kl-out .fine { margin: 0; }
+.kl-knobs { display: grid; gap: 18px; }
+.kl-sec { display: grid; gap: 10px; padding-bottom: 14px; border-bottom: 1px dashed var(--line); }
+.kl-sec .eyebrow { margin: 0; }
+.kl-ks { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(220px, 100%), 1fr)); gap: 10px 18px; }
+.kl-k { display: grid; gap: 4px; min-width: 0; }
+.kl-k .mono, .kl-move > .mono { color: var(--ink-2); display: flex; justify-content: space-between; font-size: 10.5px; }
+.kl-k output { color: var(--ink); text-transform: none; }
+.kl-move { display: grid; gap: 6px; }
+.kl-move.is-off { opacity: .45; }
+.kl-note select { min-width: 12ch; }
+@media (max-width: 860px) { .kl-grid { grid-template-columns: 1fr; } .kl-out { position: static; } }

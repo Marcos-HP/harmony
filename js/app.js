@@ -28,7 +28,7 @@
   };
 
   /* ---------- rutas ---------- */
-  const TITLES = { '': 'Archivo', inicio: 'Archivo', espectro: 'Espectro', generos: 'Géneros', catalogo: 'Catálogo', caja: 'Tu caja', sonidos: 'Sonidos', extractor: 'Extractor', controlador: 'Controlador' };
+  const TITLES = { '': 'Archivo', inicio: 'Archivo', espectro: 'Espectro', generos: 'Géneros', catalogo: 'Catálogo', caja: 'Tu caja', sonidos: 'Sonidos', extractor: 'Extractor', kicks: 'Laboratorio de kicks', controlador: 'Controlador' };
 
   function parse() {
     const h = decodeURIComponent(location.hash.replace(/^#/, ''));
@@ -78,6 +78,7 @@
     else if (r.id === 'sonidos') { H.Views.sounds(main); title = 'Sonidos · Harmony'; }
     else if (r.id === 'controlador') { H.Views.controller(main); title = 'Controlador · Harmony'; }
     else if (r.id === 'extractor') { H.Views.extractor(main); title = 'Extractor · Harmony'; }
+    else if (r.id === 'kicks') { H.Views.kicklab(main); title = 'Laboratorio de kicks · Harmony'; }
     else { H.Views.home(main); title = 'Harmony · ' + (TITLES[r.id] || 'Archivo'); }
     document.title = title;
     App.viewKey = key;
@@ -266,7 +267,7 @@
             <a href="#inicio" data-section="biblioteca">${U.icon('library')}<span>Biblioteca</span></a><a href="#mixer" data-section="mixer">${U.icon('mixer')}<span>Mixer</span></a><a href="#soundpad" data-section="soundpad">${U.icon('pads')}<span>Soundpad</span></a>
           </nav>
           <nav class="nav mono" aria-label="Biblioteca">
-            <a href="#espectro" data-nav="espectro">Espectro</a><a href="#generos" data-nav="generos">Géneros</a><a href="#catalogo" data-nav="catalogo">Catálogo</a><a href="#sonidos" data-nav="sonidos">Sonidos</a><a href="#extractor" data-nav="extractor">Extractor</a><a href="#caja" data-nav="caja">Caja <span class="nav-n"></span></a>
+            <a href="#espectro" data-nav="espectro">Espectro</a><a href="#generos" data-nav="generos">Géneros</a><a href="#catalogo" data-nav="catalogo">Catálogo</a><a href="#sonidos" data-nav="sonidos">Sonidos</a><a href="#extractor" data-nav="extractor">Extractor</a><a href="#kicks" data-nav="kicks">Kicks</a><a href="#caja" data-nav="caja">Caja <span class="nav-n"></span></a>
           </nav>
           <div class="top-tools">
             <button class="ibtn" type="button" id="top-search" aria-label="Buscar (tecla /)">${U.icon('search')}</button>

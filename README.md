@@ -287,6 +287,21 @@ La cabecera tiene tres secciones. Cambiar de una a otra no recarga la página ni
 - **Los sonidos de Harmony necesitan servirse por web** (GitHub Pages o un servidor local): con `dist/index.html` abierto desde el disco el navegador no deja leerlos, y la interfaz lo dice. Cada uno se descarga y se decodifica una sola vez por sesión, se use en uno o en varios pads o en la escucha previa.
 - **Qué se guarda**: los bancos y sus ajustes, en `localStorage`; tus archivos, en **IndexedDB**, en este navegador y sin subirse a ningún sitio. Cuando un archivo deja de usarlo cualquier pad, se borra. Si el navegador no deja usar IndexedDB (algunos modos privados), la cabecera dice «solo en esta sesión» y tus archivos duran hasta cerrar la pestaña. Las muestras del catálogo **no se guardan nunca** (condiciones de Deezer): solo la referencia, y se vuelven a pedir en cada sesión; necesitan conexión y no suenan dentro del artefacto de Claude.
 
+## Laboratorio de kicks
+`#kicks` (Biblioteca › Kicks). Es el motor con el que se hacen los kicks de Harmony (`tools/samples/hard.mjs`), con sus mandos a la vista. Cada cambio recalcula el kick en un *worker* (`workers/kick/`) en unas décimas de segundo y lo hace sonar.
+- **Mandos**:
+  - Tipo (duro o frenchcore) y nota de la cola (de La 1 a Sol# 2).
+  - Cómo se mueve la cola: se cierra, se abre, va y viene, o fija.
+  - Golpe: largo, caída de tono, tiempo de caída, tok y tick.
+  - Cola: sierra en la fuente, reflexiones, medios, resonancia y dos distorsiones.
+  - Equilibrio: sub, hueco en 300 Hz y OTT.
+  - En frenchcore, además: repeticiones por negra, desde dónde se coge el trozo y caída de la cola.
+- **Puntos de partida**: Uptempo (el kick del himno), Uptempo que se abre, Uptempo con vaivén, Raw corto, Gabber zumbón, Hardstyle y Frenchcore. Hay también *Al azar*, dentro de lo que suena a kick duro, y *Otra variación*, que es la misma receta con otra semilla.
+- **Escucharlo**: suelto o *en bucle* a un tempo, con palma y charles. Debajo dice en qué nota se mide la cola (y si no es la pedida), lo que dura, el RMS y lo que ha tardado en calcularse.
+- **Llevárselo**: *Al pad* lo manda al primer pad libre del banco abierto, como archivo tuyo; *WAV* lo descarga. Los ajustes se recuerdan en este navegador.
+- **El mismo motor**: el build copia `dsp.mjs` y `hard.mjs` de `tools/samples` junto al worker, así que no hay una segunda versión del código. Un test monta el worker como lo hace el build y comprueba que los kicks salen afinados y a −1 dBTP.
+- **Cabecera**: con un apartado más en el menú, la cabecera pasa a dos filas por debajo de 1240 px (antes, 980). Comprobado de 360 a 1800 px sin desbordarse.
+
 ## Extractor: sacar samples de una canción
 `#extractor` (Biblioteca › Extractor; también «De una canción», en las opciones de un pad del Soundpad). Subes una canción y la separa con IA en **voz, batería, bajo e instrumentos** (sintes, leads, pads…). Todo pasa en el navegador: la canción no se sube a ningún sitio.
 - **El modelo**: HTDemucs, de Meta (licencia MIT), exportado a ONNX. Corre con ONNX Runtime Web, por WebGPU (la tarjeta gráfica) o, si no hay, por el procesador. La parte que lo maneja es [demucs-web](https://github.com/timcsy/demucs-web) (MIT), copiada en `workers/demucs/`.
